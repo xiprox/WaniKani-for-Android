@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_pull_to_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        android:scrollbarStyle="outsideOverlay">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/fragment_dashboard_available_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+
+                <fragment
+                    android:name="tr.xip.wanikani.cards.AvailableCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/card_available" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_dashboard_reviews_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+
+                <fragment
+                    android:name="tr.xip.wanikani.cards.ReviewsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/card_reviews" />
+            </LinearLayout>
+
+            <fragment
+                android:name="tr.xip.wanikani.cards.StatusCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                tools:layout="@layout/card_status" />
+
+            <fragment
+                android:name="tr.xip.wanikani.cards.ProgressCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                tools:layout="@layout/card_progress" />
+
+            <LinearLayout
+                android:id="@+id/fragment_dashboard_recent_unlocks_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:orientation="vertical">
+
+                <fragment
+                    android:name="tr.xip.wanikani.cards.RecentUnlocksCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@layout/card_recent_unlocks" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_dashboard_critical_items_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fragment
+                    android:name="tr.xip.wanikani.cards.CriticalItemsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:layout="@layout/card_critical_items" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>

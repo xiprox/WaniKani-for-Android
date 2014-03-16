@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextApparance.PullToRefresh" parent="android:TextAppearance.Medium">
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.Light.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+</resources>

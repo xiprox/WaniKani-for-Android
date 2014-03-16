@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:minHeight="48dp">
+
+    <View
+        android:id="@+id/item_recent_unlock_type"
+        android:layout_width="4dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:background="@color/background_disabled" />
+
+    <TextView
+        android:id="@+id/item_recent_unlock_character"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:text="サンプル"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/text_gray" />
+
+    <TextView
+        android:id="@+id/item_recent_unlock_date"
+        style="@style/Widget.TextView.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:text="Mar 11"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/text_gray_light" />
+
+</RelativeLayout>

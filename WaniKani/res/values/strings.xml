@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App Strings -->
+    <string name="app_name">WaniKani</string>
+
+    <!-- Navigation drawer Strings -->
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_profile">Profile</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Menu Strings -->
+    <string name="action_profile">Profile</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_back">Back</string>
+
+    <!-- Profile Strings -->
+    <string name="content_profile_sect">Sect</string>
+    <string name="content_profile_joined">Joined</string>
+    <string name="content_profile_posts_scribed">Posts Scribed</string>
+    <string name="content_profile_topics_scribed">Topics Scribed</string>
+    <string name="content_profile_website">Website</string>
+    <string name="content_profile_twitter">Twitter</string>
+
+    <!-- Card Title Strings -->
+    <string name="card_title_available">Available</string>
+    <string name="card_title_reviews">Reviews</string>
+    <string name="card_title_status">Status</string>
+    <string name="card_title_progress">Progress</string>
+    <string name="card_title_recent_unlocks">Recent Unlocks</string>
+    <string name="card_title_critical_items">Critical Items</string>
+
+    <!-- Card Content (Available) Strings -->
+    <string name="card_content_available_lessons">Lessons</string>
+    <string name="card_content_available_reviews">Reviews</string>
+
+    <!-- Card Content (Progress) Strings -->
+    <string name="card_content_progress_level">Level</string>
+    <string name="card_content_progress_radicals">Radicals</string>
+    <string name="card_content_progress_kanji">Kanji</string>
+    <string name="card_content_progress_vocabulary">Vocabulary</string>
+    <string name="card_content_progress_total">Total</string>
+
+    <!-- Card Content (Progress) Strings -->
+    <string name="card_content_reviews_available_now">Available Now</string>
+    <string name="card_content_reviews_next_review">Next Review</string>
+    <string name="card_content_reviews_next_hour">Next Hour</string>
+    <string name="card_content_reviews_next_day">Next Day</string>
+
+    <!-- SRS Levels -->
+    <string name="srs_title_apprentice">Apprentice</string>
+    <string name="srs_title_guru">Guru</string>
+    <string name="srs_title_master">Master</string>
+    <string name="srs_title_enlightened">Enlightened</string>
+    <string name="srs_title_burned">Burned</string>
+
+    <!-- Pull To Refresh Strings -->
+    <string name="ptr_pull">Pull to refresh...</string>
+    <string name="ptr_refreshing">Loading...</string>
+    <string name="ptr_release">Release to refresh...</string>
+
+    <!-- Error Strings -->
+    <string name="error_no_connection">No connection!</string>
+    <string name="error_items_cant_be_displayed">Items can\'t be displayed as there is no reachable internet connection</string>
+
+    <!-- Info Strings -->
+    <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
+</resources>

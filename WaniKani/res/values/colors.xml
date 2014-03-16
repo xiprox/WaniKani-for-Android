@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- WaniKani Colors -->
+    <color name="wanikani_radical">#009ce9</color>
+    <color name="wanikani_kanji">#f500a3</color>
+    <color name="wanikani_vocabulary">#9d33b7</color>
+
+    <!-- Tint Colors -->
+    <color name="tint_black_30">#30000000</color>
+
+    <!-- Background Colors -->
+    <color name="apptheme_background">#ffdddddd</color>
+    <color name="background_disabled">#7a7a7a</color>
+    <color name="background_nav_draw_lesson_review">#ffffffff</color>
+    <color name="simple_item_background">@android:color/transparent</color>
+    <color name="simple_item_background_pressed">#09000000</color>
+
+    <!-- Text Colors -->
+    <color name="text_white">#ffffff</color>
+    <color name="text_light">#f2f2f2</color>
+    <color name="text_black">#000000</color>
+    <color name="text_dark">#3a3a3a</color>
+    <color name="text_gray">#7a7a7a</color>
+    <color name="text_gray_light">#9a9a9a</color>
+
+    <!-- Separator Colors -->
+    <color name="separator_light">#ffd2d2d2</color>
+    <color name="separator_dark">#7a7a7a</color>
+
+    <!-- Card colors -->
+    <color name="card_shadow">#cbcbcb</color>
+    <color name="card_shadow2">#d6d6d6</color>
+    <color name="card_content">#ffffff</color>
+    <color name="card_content_pressed">#f8f8f8</color>
+
+    <!-- Pull To Refresh Colors -->
+    <color name="ptr_progress_bar">#ffb4673c</color>
+
+</resources>

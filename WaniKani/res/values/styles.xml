@@ -1,0 +1,37 @@
+<resources>
+
+    <style name="AppTheme.ActionBar.Light" parent="Widget.AppCompat.Light.ActionBar.Solid"></style>
+
+    <style name="ProgressBarRadical" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/radical_progress_horizontal_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/radical_progress_indeterminate_horizontal_holo_light
+        </item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
+    <style name="ProgressBarKanji" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/kanji_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">
+            @drawable/kanji_progress_indeterminate_horizontal_holo_light
+        </item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
+    <style name="Widget.PtrHeader" parent="android:Widget">
+        <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh</item>
+        <item name="ptrProgressBarColor">@color/ptr_progress_bar</item>
+        <item name="ptrProgressBarStyle">inside</item>
+        <item name="ptrPullText">@string/ptr_pull</item>
+        <item name="ptrRefreshingText">@string/ptr_refreshing</item>
+        <item name="ptrReleaseText">@string/ptr_release</item>
+    </style>
+
+    <style name="TextApparance.PullToRefresh" parent="android:TextAppearance.Medium">
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+</resources>

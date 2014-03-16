@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/Widget.TextView.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/card_title_progress"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/text_gray" />
+
+        <TextView
+            style="@style/Widget.TextView.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/card_progress_space1"
+            android:text="@string/card_content_progress_level"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/text_gray_light" />
+
+        <TextView
+            android:id="@+id/card_progress_space1"
+            style="@style/Widget.TextView.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/card_progress_level"
+            android:text=" "
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/text_gray" />
+
+        <TextView
+            android:id="@+id/card_progress_level"
+            style="@style/Widget.TextView.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="1"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/text_gray_light" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:background="@drawable/simple_item_background"
+        android:orientation="vertical"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/card_content_progress_radicals"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_radicals_percentage"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/card_progress_radicals_percentage_sign"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_radicals_percentage_sign"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="%"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/card_progress_radicals_progress_bar"
+                style="@style/ProgressBarRadical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="0" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/card_progress_radicals_progress"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/card_progress_radicals_slash"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_radicals_slash"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/card_progress_radicals_total"
+                    android:text="/"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_radicals_total"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/card_content_progress_kanji"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp" />
+                ;
+
+                <TextView
+                    android:id="@+id/card_progress_kanji_percentage"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/card_progress_kanji_percentage_sign"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_kanji_percentage_sign"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="%"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/card_progress_kanji_progress_bar"
+                style="@style/ProgressBarKanji"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="0" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/card_progress_kanji_progress"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/card_progress_kanji_slash"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_kanji_slash"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/card_progress_kanji_total"
+                    android:text="/"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/card_progress_kanji_total"
+                    style="@style/Widget.TextView.Light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
