@@ -17,11 +17,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AnimationUtils;
 
 import com.cocosw.undobar.UndoBarController;
+import com.cocosw.undobar.UndoBarStyle;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, UndoBarController.UndoListener {
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
@@ -139,45 +141,24 @@ public class MainActivity extends ActionBarActivity
 
     private void showConnectionError(String error) {
         if (error.equals("timeout")) {
-            new UndoBarController.UndoBar(this)
-                    .message("Connection Timeout")
-                    .listener(new UndoBarController.UndoListener() {
-                        @Override
-                        public void onUndo(Parcelable parcelable) {
-                            Intent intent = new Intent(BroadcastIntents.SYNC());
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-                            Log.d(TAG, "Initiating sync after connection timeout");
-                        }
-                    })
-                    .show();
+            UndoBarController.show(this, getString(R.string.error_connection_timeout),
+                    this, UndoBarController.RETRYSTYLE);
         }
 
         if (error.equals("connection")) {
-            new UndoBarController.UndoBar(this)
-                    .message("Connection Error")
-                    .listener(new UndoBarController.UndoListener() {
-                        @Override
-                        public void onUndo(Parcelable parcelable) {
-                            Intent intent = new Intent(BroadcastIntents.SYNC());
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-                            Log.d(TAG, "Initiating sync after connection error");
-                        }
-                    })
-                    .show();
+            UndoBarController.show(this, getString(R.string.error_connection_error),
+                    this, UndoBarController.RETRYSTYLE);
         }
 
         if (error.equals("unknown")) {
-            new UndoBarController.UndoBar(this)
-                    .message("Unknown Error")
-                    .listener(new UndoBarController.UndoListener() {
-                        @Override
-                        public void onUndo(Parcelable parcelable) {
-                            Intent intent = new Intent(BroadcastIntents.SYNC());
-                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-                            Log.d(TAG, "Initiating sync after unknown error");
-                        }
-                    })
-                    .show();
+            UndoBarController.show(this, getString(R.string.error_connection_error),
+                    this, UndoBarController.RETRYSTYLE);
         }
+    }
+
+    @Override
+    public void onUndo(Parcelable parcelable) {
+        Intent intent = new Intent(BroadcastIntents.SYNC());
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 }

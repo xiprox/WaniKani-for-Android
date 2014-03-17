@@ -63,6 +63,10 @@
     <!-- Error Strings -->
     <string name="error_no_connection">No connection!</string>
     <string name="error_items_cant_be_displayed">Items can\'t be displayed as there is no reachable internet connection</string>
+    <string name="error_connection_timeout">Connection timeout</string>
+    <string name="error_connection_error">Connection error</string>
+    <string name="error_unknown_error">Unknown error</string>
+    <string name="retry">RETRY</string>
 
     <!-- Info Strings -->
     <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
