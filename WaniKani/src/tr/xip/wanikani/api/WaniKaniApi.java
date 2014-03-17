@@ -15,6 +15,7 @@ import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.api.response.VocabularyList;
+import tr.xip.wanikani.managers.PrefManager;
 
 /**
  * Created by xihsa_000 on 3/11/14.
@@ -27,11 +28,9 @@ public class WaniKaniApi {
     String API_KEY;
 
     public WaniKaniApi(Context context) {
-//        PrefManager prefManager = new PrefManager(context);
-//        API_KEY = prefManager.getApiKey();
-        API_KEY = "4733cdca0ecb10ae771aca6aa42bb08d";
+        PrefManager prefManager = new PrefManager(context);
+        API_KEY = prefManager.getApiKey();
         this.context = context;
-
         setupService();
     }
 
@@ -42,6 +41,10 @@ public class WaniKaniApi {
                 .build();
 
         service = restAdapter.create(WaniKaniService.class);
+    }
+
+    public User checkAPIKey(String key) {
+        return service.getUser(key);
     }
 
     public User getUser() {

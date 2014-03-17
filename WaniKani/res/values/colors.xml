@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="color_apptheme">#ffb4673c</color>
+
     <!-- WaniKani Colors -->
     <color name="wanikani_radical">#009ce9</color>
     <color name="wanikani_kanji">#f500a3</color>
@@ -26,6 +28,7 @@
 
     <!-- Separator Colors -->
     <color name="separator_light">#ffd2d2d2</color>
+    <color name="separator_mid">#ffb8b8b8</color>
     <color name="separator_dark">#7a7a7a</color>
 
     <!-- Card colors -->
@@ -33,8 +36,5 @@
     <color name="card_shadow2">#d6d6d6</color>
     <color name="card_content">#ffffff</color>
     <color name="card_content_pressed">#f8f8f8</color>
-
-    <!-- Pull To Refresh Colors -->
-    <color name="ptr_progress_bar">#ffb4673c</color>
 
 </resources>

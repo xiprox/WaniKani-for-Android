@@ -14,6 +14,7 @@
     <string name="action_profile">Profile</string>
     <string name="action_settings">Settings</string>
     <string name="action_back">Back</string>
+    <string name="action_logout">Logout</string>
 
     <!-- Profile Strings -->
     <string name="content_profile_sect">Sect</string>
@@ -54,6 +55,14 @@
     <string name="srs_title_master">Master</string>
     <string name="srs_title_enlightened">Enlightened</string>
     <string name="srs_title_burned">Burned</string>
+
+    <!-- Login Strings -->
+    <string name="action_sign_in">Sign in</string>
+    <string name="hint_api_key">API Key</string>
+    <string name="action_how_to_api_key">How do I get my key?</string>
+    <string name="error_invalid_api_key">The key provided seems to be invalid. Please check again.</string>
+    <string name="error_enter_api_key">API Key can\'t be left empty!</string>
+    <string name="wanikani_hungers">WaniKani Hungers</string>
 
     <!-- Pull To Refresh Strings -->
     <string name="ptr_pull">Pull to refresh...</string>

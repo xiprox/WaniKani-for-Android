@@ -22,6 +22,8 @@ import android.view.animation.AnimationUtils;
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarStyle;
 
+import tr.xip.wanikani.managers.PrefManager;
+
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, UndoBarController.UndoListener {
 
@@ -29,6 +31,8 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     public String TAG = "WANIKANI";
+
+    PrefManager prefMan;
 
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -65,6 +69,13 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefMan = new PrefManager(getApplicationContext());
+
+        if(prefMan.isFirstLaunch()) {
+            startActivity(new Intent(this, FirstTimeActivity.class));
+            finish();
+        }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -123,7 +134,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.global, menu);
             restoreActionBar();
             return true;
         }
@@ -133,8 +144,11 @@ public class MainActivity extends ActionBarActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_logout:
+                prefMan.logout();
+                startActivity(new Intent(this, FirstTimeActivity.class));
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }

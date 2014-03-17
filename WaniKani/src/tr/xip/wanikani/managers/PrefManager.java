@@ -2,6 +2,7 @@ package tr.xip.wanikani.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 
 /**
@@ -12,10 +13,9 @@ public class PrefManager {
     private static SharedPreferences.Editor prefeditor;
     private static Context context;
 
-    public PrefManager(Context mContext)
-    {
+    public PrefManager(Context mContext) {
         context = mContext;
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs = context.getSharedPreferences("prefs", 0);
         prefeditor = prefs.edit();
     }
 
@@ -23,13 +23,28 @@ public class PrefManager {
         return prefs.getString("api_key", "0");
     }
 
+    public boolean isFirstLaunch() {
+        return prefs.getBoolean("first_launch", true);
+    }
+
+    public void setFirstLaunch(boolean value) {
+        prefeditor.putBoolean("first_launch", value).commit();
+    }
+
+    public void setApiKey(String key) {
+        prefeditor.putString("api_key", key).commit();
+    }
+
     public boolean isProfileFirstTime() {
         return prefs.getBoolean("first_time_profile", true);
     }
 
     public void setProfileFirstTime(boolean value) {
-        prefeditor.putBoolean("first_time_profile", value);
-        prefeditor.commit();
+        prefeditor.putBoolean("first_time_profile", value).commit();
+    }
+
+    public void logout() {
+        prefeditor.clear().commit();
     }
 
 }

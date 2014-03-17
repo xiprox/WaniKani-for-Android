@@ -3,7 +3,7 @@
     package="tr.xip.wanikani">
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,6 +26,7 @@
         <activity
             android:name="tr.xip.wanikani.Webview"
             android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
+        <activity android:name="tr.xip.wanikani.FirstTimeActivity"></activity>
     </application>
 
 </manifest>

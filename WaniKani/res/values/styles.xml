@@ -23,7 +23,7 @@
 
     <style name="Widget.PtrHeader" parent="android:Widget">
         <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh</item>
-        <item name="ptrProgressBarColor">@color/ptr_progress_bar</item>
+        <item name="ptrProgressBarColor">@color/color_apptheme</item>
         <item name="ptrProgressBarStyle">inside</item>
         <item name="ptrPullText">@string/ptr_pull</item>
         <item name="ptrRefreshingText">@string/ptr_refreshing</item>
@@ -32,6 +32,12 @@
 
     <style name="TextApparance.PullToRefresh" parent="android:TextAppearance.Medium">
         <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+    <style name="EditText.AppTheme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/apptheme_edit_text_holo_light</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textColorHint">@color/text_gray_light</item>
     </style>
 
 </resources>
