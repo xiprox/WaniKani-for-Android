@@ -94,16 +94,16 @@ public class ReviewsCard extends Fragment {
         int nextHour;
         int nextDay;
         boolean isVacationModeActive;
-        int reviewsavailable;
+        int reviewsAvailable;
 
         @Override
         protected String doInBackground(String... strings) {
             try {
                 nextReview = apiMan.getNextReviewDate();
                 nextHour = apiMan.getReviewsAvailableNextHour();
-                nextDay = api.getReviewsAvailableNextDay();
-                isVacationModeActive = api.isVacationModeActive();
-                reviewsavailable = api.getReviewsAvailable();
+                nextDay = apiMan.getReviewsAvailableNextDay();
+                isVacationModeActive = apiMan.isVacationModeActive();
+                reviewsAvailable = apiMan.getReviewsAvailable();
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -118,7 +118,7 @@ public class ReviewsCard extends Fragment {
                     mNextHour.setText(nextHour + "");
                     mNextDay.setText(nextDay + "");
 
-                    if (reviewsavailable != 0) {
+                    if (reviewsAvailable != 0) {
                         mNextReview.setText(R.string.card_content_reviews_available_now);
                     } else {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
