@@ -1,10 +1,12 @@
 package tr.xip.wanikani;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
@@ -12,14 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.cocosw.undobar.UndoBarController;
+
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class DashboardFragment extends Fragment
-        implements OnRefreshListener {
+        implements OnRefreshListener, UndoBarController.UndoListener {
 
     View rootView;
+
+    Activity activity;
 
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
@@ -106,6 +112,24 @@ public class DashboardFragment extends Fragment
         }
     };
 
+    private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showConnectionError("timeout");
+        }
+    };
+
+    private BroadcastReceiver mRetrofitConnectionErorReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showConnectionError("connection");
+        }
+    };
+
+    private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showConnectionError("unknown");
+        }
+    };
+
     @Override
     public void onResume() {
         super.onResume();
@@ -127,6 +151,8 @@ public class DashboardFragment extends Fragment
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle) {
 
         rootView = paramLayoutInflater.inflate(R.layout.fragment_dashboard, paramViewGroup, false);
+
+        activity = getActivity();
 
         mPullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.dashboard_pull_to_refresh);
 
@@ -153,30 +179,56 @@ public class DashboardFragment extends Fragment
     }
 
     private void registerReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mSyncCalled,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mSyncCalled,
                 new IntentFilter(BroadcastIntents.SYNC()));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mAvailableCardSyncFinishedReceiver,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mAvailableCardSyncFinishedReceiver,
                 new IntentFilter(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD()));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReviewsCardSyncFinishedReceiver,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mReviewsCardSyncFinishedReceiver,
                 new IntentFilter(BroadcastIntents.FINISHED_SYNC_REVIEWS_CARD()));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mStatusCardSyncFinishedReceiver,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mStatusCardSyncFinishedReceiver,
                 new IntentFilter(BroadcastIntents.FINISHED_SYNC_STATUS_CARD()));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mProgressCardSyncFinishedReceiver,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mProgressCardSyncFinishedReceiver,
                 new IntentFilter(BroadcastIntents.FINISHED_SYNC_PROGRESS_CARD()));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mRecentUnlocksCardSyncFinishedReceiver,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRecentUnlocksCardSyncFinishedReceiver,
                 new IntentFilter(BroadcastIntents.FINISHED_SYNC_RECENT_UNLOCKS_CARD()));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mCriticalItemsCardSyncFinishedReceiver,
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mCriticalItemsCardSyncFinishedReceiver,
                 new IntentFilter(BroadcastIntents.FINISHED_SYNC_CRITICAL_ITEMS_CARD()));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
+                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionErorReceiver,
+                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitUnknownErrorReceiver,
+                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_UNKNOWN()));
     }
 
     private void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mSyncCalled);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mAvailableCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReviewsCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mStatusCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mProgressCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mRecentUnlocksCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCriticalItemsCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mSyncCalled);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mAvailableCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mReviewsCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mStatusCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mProgressCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRecentUnlocksCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mCriticalItemsCardSyncFinishedReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionErorReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
+    }
+
+    private void showConnectionError(String error) {
+        if (error.equals("timeout")) {
+            UndoBarController.show(activity, getString(R.string.error_connection_timeout),
+                    this, UndoBarController.RETRYSTYLE);
+        }
+
+        if (error.equals("connection")) {
+            UndoBarController.show(activity, getString(R.string.error_connection_error),
+                    this, UndoBarController.RETRYSTYLE);
+        }
+
+        if (error.equals("unknown")) {
+            UndoBarController.show(activity, getString(R.string.error_connection_error),
+                    this, UndoBarController.RETRYSTYLE);
+        }
     }
 
     private void setCriticalItemsFragmentHeight(int height) {
@@ -202,5 +254,11 @@ public class DashboardFragment extends Fragment
 
         Intent intent = new Intent(BroadcastIntents.SYNC());
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+    }
+
+    @Override
+    public void onUndo(Parcelable parcelable) {
+        Intent intent = new Intent(BroadcastIntents.SYNC());
+        LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
     }
 }

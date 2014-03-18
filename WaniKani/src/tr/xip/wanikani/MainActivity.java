@@ -25,7 +25,7 @@ import com.cocosw.undobar.UndoBarStyle;
 import tr.xip.wanikani.managers.PrefManager;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, UndoBarController.UndoListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
@@ -34,33 +34,15 @@ public class MainActivity extends ActionBarActivity
 
     PrefManager prefMan;
 
-    private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            showConnectionError("timeout");
-        }
-    };
 
-    private BroadcastReceiver mRetrofitConnectionErorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            showConnectionError("connection");
-        }
-    };
-
-    private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            showConnectionError("unknown");
-        }
-    };
 
     @Override
     public void onResume() {
         super.onResume();
-        registerReceivers();
     }
 
     @Override
     public void onPause() {
-        unregisterReceivers();
         super.onPause();
     }
 
@@ -109,21 +91,6 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
-    private void registerReceivers() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRetrofitConnectionErorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRetrofitUnknownErrorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_UNKNOWN()));
-    }
-
-    private void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRetrofitConnectionErorReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRetrofitUnknownErrorReceiver);
-    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -151,28 +118,5 @@ public class MainActivity extends ActionBarActivity
                 finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void showConnectionError(String error) {
-        if (error.equals("timeout")) {
-            UndoBarController.show(this, getString(R.string.error_connection_timeout),
-                    this, UndoBarController.RETRYSTYLE);
-        }
-
-        if (error.equals("connection")) {
-            UndoBarController.show(this, getString(R.string.error_connection_error),
-                    this, UndoBarController.RETRYSTYLE);
-        }
-
-        if (error.equals("unknown")) {
-            UndoBarController.show(this, getString(R.string.error_connection_error),
-                    this, UndoBarController.RETRYSTYLE);
-        }
-    }
-
-    @Override
-    public void onUndo(Parcelable parcelable) {
-        Intent intent = new Intent(BroadcastIntents.SYNC());
-        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 }

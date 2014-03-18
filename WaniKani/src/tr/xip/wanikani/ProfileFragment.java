@@ -1,9 +1,15 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.cocosw.undobar.UndoBarController;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +35,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-public class ProfileFragment extends Fragment implements OnRefreshListener {
+public class ProfileFragment extends Fragment implements OnRefreshListener, UndoBarController.UndoListener {
 
     Activity activity;
 
@@ -55,6 +62,36 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
     PrefManager prefMan;
 
     private PullToRefreshLayout mPullToRefreshLayout;
+
+    private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showConnectionError("timeout");
+        }
+    };
+
+    private BroadcastReceiver mRetrofitConnectionErorReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showConnectionError("connection");
+        }
+    };
+
+    private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showConnectionError("unknown");
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceivers();
+    }
+
+    @Override
+    public void onPause() {
+        unregisterReceivers();
+        super.onPause();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,6 +153,21 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
         return rootView;
     }
 
+    private void registerReceivers() {
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
+                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionErorReceiver,
+                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitUnknownErrorReceiver,
+                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_UNKNOWN()));
+    }
+
+    private void unregisterReceivers() {
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionErorReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
+    }
+
     private void setOldValues() {
         mUsername.setText(dataMan.getUsername());
         mTitle.setText(dataMan.getTitle());
@@ -149,8 +201,31 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
 
     }
 
+    private void showConnectionError(String error) {
+        if (error.equals("timeout")) {
+            UndoBarController.show(activity, getString(R.string.error_connection_timeout),
+                    this, UndoBarController.RETRYSTYLE);
+        }
+
+        if (error.equals("connection")) {
+            UndoBarController.show(activity, getString(R.string.error_connection_error),
+                    this, UndoBarController.RETRYSTYLE);
+        }
+
+        if (error.equals("unknown")) {
+            UndoBarController.show(activity, getString(R.string.error_connection_error),
+                    this, UndoBarController.RETRYSTYLE);
+        }
+    }
+
     @Override
     public void onRefreshStarted(View view) {
+        new LoadTask().execute();
+    }
+
+    @Override
+    public void onUndo(Parcelable parcelable) {
+        mPullToRefreshLayout.setRefreshing(true);
         new LoadTask().execute();
     }
 
