@@ -1,6 +1,7 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -23,15 +24,14 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import tr.xip.wanikani.adapters.NavigationItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.items.NavigationItems;
-import tr.xip.wanikani.managers.ApiManager;
 import tr.xip.wanikani.managers.OfflineDataManager;
 
 public class NavigationDrawerFragment extends Fragment {
@@ -40,10 +40,9 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     View rootView;
-    Activity activity;
+    Context context;
 
     WaniKaniApi api;
-    ApiManager apiMan;
     OfflineDataManager dataMan;
 
     ImageView mAvatar;
@@ -69,10 +68,9 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         api = new WaniKaniApi(getActivity());
-        apiMan = new ApiManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
 
-        activity = getActivity();
+        context = getActivity();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
@@ -271,14 +269,16 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public class LoadTask extends AsyncTask<Void, Void, String> {
+        User user;
         String gravatar = dataMan.getGravatar();
         String username;
 
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                gravatar = apiMan.getGravatar();
-                username = apiMan.getUsername();
+                user = api.getUser();
+                gravatar = user.getGravatar(context);
+                username = user.getUsername(context);
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -289,7 +289,7 @@ public class NavigationDrawerFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Picasso.with(activity)
+            Picasso.with(context)
                     .load("http://www.gravatar.com/avatar/" + gravatar + "?s=100")
                     .placeholder(R.drawable.profile_loading)
                     .error(R.drawable.profile_error)

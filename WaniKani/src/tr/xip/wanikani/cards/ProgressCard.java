@@ -17,7 +17,8 @@ import android.widget.TextView;
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.managers.ApiManager;
+import tr.xip.wanikani.api.response.LevelProgression;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Utils;
@@ -28,12 +29,13 @@ import tr.xip.wanikani.utils.Utils;
 public class ProgressCard extends Fragment {
 
     WaniKaniApi api;
-    ApiManager apiMan;
     PrefManager prefMan;
     OfflineDataManager dataMan;
     Utils utils;
 
     View rootView;
+
+    Context context;
 
     TextView mUserLevel;
     TextView mRadicalPercentage;
@@ -56,7 +58,6 @@ public class ProgressCard extends Fragment {
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        apiMan = new ApiManager(getActivity());
         prefMan = new PrefManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
@@ -70,6 +71,8 @@ public class ProgressCard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_progress, null);
+
+        context = getActivity();
 
         mUserLevel = (TextView) rootView.findViewById(R.id.card_progress_level);
         mRadicalPercentage = (TextView) rootView.findViewById(R.id.card_progress_radicals_percentage);
@@ -102,6 +105,8 @@ public class ProgressCard extends Fragment {
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {
+        User user;
+        LevelProgression progression;
         int userLevel;
         int radicalPercentage;
         int radicalProgress;
@@ -113,13 +118,16 @@ public class ProgressCard extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                userLevel = apiMan.getLevel();
-                radicalProgress = apiMan.getRadicalsProgress();
-                radicalTotal = apiMan.getRadicalsTotal();
-                kanjiProgress = apiMan.getKanjiProgress();
-                kanjiTotal = apiMan.getKanjiTotal();
-                radicalPercentage = apiMan.getRadicalsPercentage();
-                kanjiPercentage = apiMan.getKanjiPercentage();
+                user = api.getUser();
+                progression = api.getLevelProgression();
+
+                userLevel = user.getLevel(context);
+                radicalProgress = progression.getRadicalsProgress(context);
+                radicalTotal = progression.getRadicalsTotal(context);
+                kanjiProgress = progression.getKanjiProgress(context);
+                kanjiTotal = progression.getKanjiTotal(context);
+                radicalPercentage = progression.getRadicalsPercentage(context);
+                kanjiPercentage = progression.getKanjiPercentage(context);
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();

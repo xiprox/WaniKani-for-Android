@@ -18,7 +18,7 @@ import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.Webview;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.managers.ApiManager;
+import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.utils.Utils;
 
@@ -28,11 +28,12 @@ import tr.xip.wanikani.utils.Utils;
 public class AvailableCard extends Fragment {
 
     WaniKaniApi api;
-    ApiManager apiMan;
     OfflineDataManager dataMan;
     Utils utils;
 
     View rootView;
+
+    Context context;
 
     LinearLayout mLessonsParent;
     LinearLayout mReviewsParent;
@@ -50,7 +51,6 @@ public class AvailableCard extends Fragment {
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        apiMan = new ApiManager(getActivity());
         utils = new Utils(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         super.onCreate(state);
@@ -63,6 +63,8 @@ public class AvailableCard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_available, null);
+
+        context = getActivity();
 
         mLessonsParent = (LinearLayout) rootView.findViewById(R.id.card_available_lessons_parent);
         mReviewsParent = (LinearLayout) rootView.findViewById(R.id.card_available_reviews_parent);
@@ -104,14 +106,17 @@ public class AvailableCard extends Fragment {
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {
+        StudyQueue studyQueue;
         int lessonsAvailable;
         int reviewsAvailable;
 
         @Override
         protected String doInBackground(String... strings) {
             try {
-                lessonsAvailable = apiMan.getLessonsAvailable();
-                reviewsAvailable = apiMan.getReviewsAvailable();
+                studyQueue = api.getStudyQueue();
+
+                lessonsAvailable = studyQueue.getLessonsAvailable(context);
+                reviewsAvailable = studyQueue.getReviewsAvailable(context);
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -124,6 +129,7 @@ public class AvailableCard extends Fragment {
             if (result.equals("success")) {
                 mLessonsAvailable.setText(lessonsAvailable + "");
                 mReviewsAvailable.setText(reviewsAvailable + "");
+
                 Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD());
                 intent.putExtra("action", "show");
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);

@@ -25,7 +25,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.managers.ApiManager;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
@@ -37,7 +37,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  */
 public class ProfileFragment extends Fragment implements OnRefreshListener, UndoBarController.UndoListener {
 
-    Activity activity;
+    Context context;
 
     ImageView mAvatar;
     TextView mUsername;
@@ -57,7 +57,6 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     ViewFlipper mViewFlipper;
 
     WaniKaniApi api;
-    ApiManager apiMan;
     OfflineDataManager dataMan;
     PrefManager prefMan;
 
@@ -105,10 +104,9 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         View rootView = inflater.inflate(R.layout.fragment_profile, container,
                 false);
 
-        activity = getActivity();
+        context = getActivity();
 
         api = new WaniKaniApi(getActivity());
-        apiMan = new ApiManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         prefMan = new PrefManager(getActivity());
 
@@ -154,18 +152,18 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     }
 
     private void registerReceivers() {
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
+        LocalBroadcastManager.getInstance(context).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionErorReceiver,
+        LocalBroadcastManager.getInstance(context).registerReceiver(mRetrofitConnectionErorReceiver,
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitUnknownErrorReceiver,
+        LocalBroadcastManager.getInstance(context).registerReceiver(mRetrofitUnknownErrorReceiver,
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_UNKNOWN()));
     }
 
     private void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionErorReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitConnectionErorReceiver);
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitUnknownErrorReceiver);
     }
 
     private void setOldValues() {
@@ -203,17 +201,17 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
     private void showConnectionError(String error) {
         if (error.equals("timeout")) {
-            UndoBarController.show(activity, getString(R.string.error_connection_timeout),
+            UndoBarController.show((Activity)context, getString(R.string.error_connection_timeout),
                     this, UndoBarController.RETRYSTYLE);
         }
 
         if (error.equals("connection")) {
-            UndoBarController.show(activity, getString(R.string.error_connection_error),
+            UndoBarController.show((Activity)context, getString(R.string.error_connection_error),
                     this, UndoBarController.RETRYSTYLE);
         }
 
         if (error.equals("unknown")) {
-            UndoBarController.show(activity, getString(R.string.error_connection_error),
+            UndoBarController.show((Activity)context, getString(R.string.error_connection_error),
                     this, UndoBarController.RETRYSTYLE);
         }
     }
@@ -230,6 +228,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     }
 
     public class LoadTask extends AsyncTask<Void, Void, String> {
+        User user;
         String gravatar = dataMan.getGravatar();
         String username;
         String title;
@@ -244,19 +243,20 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                gravatar = apiMan.getGravatar();
-                username = apiMan.getUsername();
-                title = apiMan.getTitle();
-                level = apiMan.getLevel();
-                topicsCount = apiMan.getTopicsCount();
-                postsCount = apiMan.getPostsCount();
-                website = apiMan.getWebsite();
-                twitter = apiMan.getTwitter();
+                user = api.getUser();
+                gravatar = user.getGravatar(context);
+                username = user.getUsername(context);
+                title = user.getTitle(context);
+                level = user.getLevel(context);
+                topicsCount = user.getTopicsCount(context);
+                postsCount = user.getPostsCount(context);
+                website = user.getWebsite(context);
+                twitter = user.getTwitter(context);
 
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
-                creationDate = sdf.format(apiMan.getCreationDate());
+                creationDate = sdf.format(user.getCreationDate(context));
 
-                about = apiMan.getAbout();
+                about = user.getAbout(context);
 
                 return "success";
             } catch (Exception e) {

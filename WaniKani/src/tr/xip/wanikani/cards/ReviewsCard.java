@@ -21,7 +21,8 @@ import java.text.SimpleDateFormat;
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.managers.ApiManager;
+import tr.xip.wanikani.api.response.StudyQueue;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.utils.Utils;
 
@@ -30,8 +31,9 @@ import tr.xip.wanikani.utils.Utils;
  */
 public class ReviewsCard extends Fragment {
 
+    Context context;
+
     WaniKaniApi api;
-    ApiManager apiMan;
     OfflineDataManager dataMan;
     Utils utils;
 
@@ -54,7 +56,6 @@ public class ReviewsCard extends Fragment {
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        apiMan = new ApiManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
@@ -67,6 +68,8 @@ public class ReviewsCard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_reviews, null);
+
+        context = getActivity();
 
         mNextReview = (TextView) rootView.findViewById(R.id.card_reviews_next_review);
         mNextHour = (TextView) rootView.findViewById(R.id.card_reviews_next_hour);
@@ -90,6 +93,7 @@ public class ReviewsCard extends Fragment {
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {
+        StudyQueue studyQueue;
         long nextReview;
         int nextHour;
         int nextDay;
@@ -99,11 +103,12 @@ public class ReviewsCard extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                nextReview = apiMan.getNextReviewDate();
-                nextHour = apiMan.getReviewsAvailableNextHour();
-                nextDay = apiMan.getReviewsAvailableNextDay();
-                isVacationModeActive = apiMan.isVacationModeActive();
-                reviewsAvailable = apiMan.getReviewsAvailable();
+                studyQueue = api.getStudyQueue();
+                nextReview = studyQueue.getNextReviewDate(context);
+                nextHour = studyQueue.getReviewsAvailableNextHour(context);
+                nextDay = studyQueue.getReviewsAvailableNextDay(context);
+                reviewsAvailable = studyQueue.getReviewsAvailable(context);
+                isVacationModeActive = api.isVacationModeActive();
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();

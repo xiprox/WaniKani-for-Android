@@ -19,7 +19,7 @@ import android.widget.ViewFlipper;
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.managers.ApiManager;
+import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Utils;
@@ -30,12 +30,13 @@ import tr.xip.wanikani.utils.Utils;
 public class StatusCard extends Fragment {
 
     WaniKaniApi api;
-    ApiManager apiMan;
     PrefManager prefMan;
     OfflineDataManager dataMan;
     Utils utils;
 
     View rootView;
+
+    Context context;
 
     RelativeLayout mApprenticeParent;
     RelativeLayout mGuruParent;
@@ -62,6 +63,8 @@ public class StatusCard extends Fragment {
 
     RelativeLayout mDetailsUp;
 
+    SRSDistribution srs;
+
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -78,7 +81,6 @@ public class StatusCard extends Fragment {
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        apiMan = new ApiManager(getActivity());
         prefMan = new PrefManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
@@ -92,6 +94,8 @@ public class StatusCard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.card_status, null);
+
+        context = getActivity();
 
         mApprenticeParent = (RelativeLayout) rootView.findViewById(R.id.card_status_apprentice_parent);
         mGuruParent = (RelativeLayout) rootView.findViewById(R.id.card_status_guru_parent);
@@ -210,11 +214,12 @@ public class StatusCard extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             try {
-                apprentice = apiMan.getApprenticeTotalCount();
-                guru = apiMan.getGuruTotalCount();
-                master = apiMan.getMasterTotalCount();
-                enlightened = apiMan.getEnlightenTotalCount();
-                burned = apiMan.getBurnedTotalCount();
+                srs = api.getSRSDistribution();
+                apprentice = srs.getApprenticeTotalCount(context);
+                guru = srs.getGuruTotalCount(context);
+                master = srs.getMasterTotalCount(context);
+                enlightened = srs.getEnlightenTotalCount(context);
+                burned = srs.getBurnedTotalCount(context);
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -251,34 +256,34 @@ public class StatusCard extends Fragment {
 
             try {
                 if (strings[0].equals("apprentice")) {
-                    radicals = apiMan.getApprenticeRadicalsCount();
-                    kanji = apiMan.getApprenticeKanjiCount();
-                    vocabulary = apiMan.getApprenticeVocabularyCount();
-                    total = apiMan.getApprenticeTotalCount();
+                    radicals = srs.getApprenticeRadicalsCount(context);
+                    kanji = srs.getApprenticeKanjiCount(context);
+                    vocabulary = srs.getApprenticeVocabularyCount(context);
+                    total = srs.getApprenticeTotalCount(context);
                 }
                 if (strings[0].equals("guru")) {
-                    radicals = apiMan.getGuruRadicalsCount();
-                    kanji = apiMan.getGuruKanjiCount();
-                    vocabulary = apiMan.getGuruVocabularyCount();
-                    total = apiMan.getGuruTotalCount();
+                    radicals = srs.getGuruRadicalsCount(context);
+                    kanji = srs.getGuruKanjiCount(context);
+                    vocabulary = srs.getGuruVocabularyCount(context);
+                    total = srs.getGuruTotalCount(context);
                 }
                 if (strings[0].equals("master")) {
-                    radicals = apiMan.getMasterRadicalsCount();
-                    kanji = apiMan.getMasterKanjiCount();
-                    vocabulary = apiMan.getMasterVocabularyCount();
-                    total = apiMan.getMasterTotalCount();
+                    radicals = srs.getMasterRadicalsCount(context);
+                    kanji = srs.getMasterKanjiCount(context);
+                    vocabulary = srs.getMasterVocabularyCount(context);
+                    total = srs.getMasterTotalCount(context);
                 }
                 if (strings[0].equals("enlighten")) {
-                    radicals = apiMan.getEnlightenRadicalsCount();
-                    kanji = apiMan.getEnlightenKanjiCount();
-                    vocabulary = apiMan.getEnlightenVocabularyCount();
-                    total = apiMan.getEnlightenTotalCount();
+                    radicals = srs.getEnlightenRadicalsCount(context);
+                    kanji = srs.getEnlightenKanjiCount(context);
+                    vocabulary = srs.getEnlightenVocabularyCount(context);
+                    total = srs.getEnlightenTotalCount(context);
                 }
                 if (strings[0].equals("burned")) {
-                    radicals = apiMan.getBurnedRadicalsCount();
-                    kanji = apiMan.getBurnedKanjiCount();
-                    vocabulary = apiMan.getBurnedVocabularyCount();
-                    total = apiMan.getBurnedTotalCount();
+                    radicals = srs.getBurnedRadicalsCount(context);
+                    kanji = srs.getBurnedKanjiCount(context);
+                    vocabulary = srs.getBurnedVocabularyCount(context);
+                    total = srs.getBurnedTotalCount(context);
                 }
                 return "success";
             } catch (Exception e) {
