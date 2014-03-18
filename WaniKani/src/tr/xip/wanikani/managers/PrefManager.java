@@ -3,24 +3,24 @@ package tr.xip.wanikani.managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.preference.PreferenceManager;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by xihsa_000 on 3/11/14.
  */
 public class PrefManager {
     private static SharedPreferences prefs;
-    private static SharedPreferences offlineData;
     private static SharedPreferences.Editor prefeditor;
-    private static SharedPreferences.Editor offlineDataEditor;
     private static Context context;
 
-    public PrefManager(Context mContext) {
-        context = mContext;
+    public PrefManager(Context context) {
+        this.context = context;
         prefs = context.getSharedPreferences("prefs", 0);
-        offlineData = context.getSharedPreferences("offline_data", 0);
         prefeditor = prefs.edit();
-        offlineDataEditor = offlineData.edit();
     }
 
     public String getApiKey() {
@@ -49,7 +49,19 @@ public class PrefManager {
 
     public void logout() {
         prefeditor.clear().commit();
-        offlineDataEditor.clear().commit();
-    }
 
+        File offlineData = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/shared_prefs/offline_data.xml");
+        File cacheDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/cache");
+        File webviewCacheDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/app_webview");
+
+        try {
+            if (offlineData.exists()) {
+                offlineData.delete();
+            }
+            FileUtils.deleteDirectory(cacheDir);
+            FileUtils.deleteDirectory(webviewCacheDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
