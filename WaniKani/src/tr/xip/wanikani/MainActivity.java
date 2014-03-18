@@ -68,14 +68,14 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         prefMan = new PrefManager(getApplicationContext());
 
         if(prefMan.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
             finish();
         }
+
+        setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
