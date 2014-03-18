@@ -1,5 +1,6 @@
 package tr.xip.wanikani;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * Created by xihsa_000 on 3/11/14.
  */
 public class ProfileFragment extends Fragment implements OnRefreshListener {
+
+    Activity activity;
 
     ImageView mAvatar;
     TextView mUsername;
@@ -65,6 +68,8 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
         View rootView = inflater.inflate(R.layout.fragment_profile, container,
                 false);
 
+        activity = getActivity();
+
         api = new WaniKaniApi(getActivity());
         apiMan = new ApiManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
@@ -96,8 +101,8 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
                 .listener(this)
                 .setup(mPullToRefreshLayout);
 
-        if(prefMan.isProfileFirstTime()) {
-            if(mViewFlipper.getDisplayedChild() == 0) {
+        if (prefMan.isProfileFirstTime()) {
+            if (mViewFlipper.getDisplayedChild() == 0) {
                 mViewFlipper.showNext();
             }
         }
@@ -121,21 +126,21 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
         mCreationDate.setText(sdf.format(dataMan.getCreationDate()));
 
-        if(dataMan.getAbout().length() != 0) {
+        if (dataMan.getAbout().length() != 0) {
             mAbout.setText(dataMan.getAbout());
             mAboutHolder.setVisibility(View.VISIBLE);
         } else {
             mAboutHolder.setVisibility(View.GONE);
         }
 
-        if(dataMan.getWebsite().length() != 0) {
+        if (dataMan.getWebsite().length() != 0) {
             mWebsite.setText(dataMan.getWebsite());
             mWebsiteHolder.setVisibility(View.VISIBLE);
         } else {
             mWebsiteHolder.setVisibility(View.GONE);
         }
 
-        if(dataMan.getTwitter().length() != 0) {
+        if (dataMan.getTwitter().length() != 0) {
             mTwitter.setText(dataMan.getTwitter());
             mTwitterHolder.setVisibility(View.VISIBLE);
         } else {
@@ -150,6 +155,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
     }
 
     public class LoadTask extends AsyncTask<Void, Void, String> {
+        String gravatar = dataMan.getGravatar();
         String username;
         String title;
         int level;
@@ -163,13 +169,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                Picasso.with(getActivity())
-                        .load("http://www.gravatar.com/avatar/" + apiMan.getGravatar() + "?s=200")
-                        .placeholder(R.drawable.profile_loading)
-                        .error(R.drawable.profile_error)
-                        .fit()
-                        .into(mAvatar);
-
+                gravatar = apiMan.getGravatar();
                 username = apiMan.getUsername();
                 title = apiMan.getTitle();
                 level = apiMan.getLevel();
@@ -188,12 +188,18 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
                 e.printStackTrace();
                 return "failure";
             }
-
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            Picasso.with(getActivity())
+                    .load("http://www.gravatar.com/avatar/" + gravatar + "?s=200")
+                    .placeholder(R.drawable.profile_loading)
+                    .error(R.drawable.profile_error)
+                    .fit()
+                    .into(mAvatar);
+
             if (result.equals("success")) {
                 mUsername.setText(username);
                 mTitle.setText(title);
@@ -202,32 +208,32 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
                 mPostsCount.setText(postsCount + "");
                 mCreationDate.setText(creationDate + "");
 
-                if(about.length() != 0) {
+                if (about.length() != 0) {
                     mAbout.setText(about);
                     mAboutHolder.setVisibility(View.VISIBLE);
                 } else {
                     mAboutHolder.setVisibility(View.GONE);
                 }
 
-                if(website != null && website.length() != 0) {
+                if (website != null && website.length() != 0) {
                     mWebsite.setText(website);
                     mWebsiteHolder.setVisibility(View.VISIBLE);
                 } else {
                     mWebsiteHolder.setVisibility(View.GONE);
                 }
 
-                if(twitter != null && twitter.length() != 0) {
+                if (twitter != null && twitter.length() != 0) {
                     mTwitter.setText(twitter);
                     mTwitterHolder.setVisibility(View.VISIBLE);
                 } else {
                     mTwitterHolder.setVisibility(View.GONE);
                 }
 
-                if(mViewFlipper.getDisplayedChild() == 1) {
+                if (mViewFlipper.getDisplayedChild() == 1) {
                     mViewFlipper.showPrevious();
                 }
 
-                if(prefMan.isProfileFirstTime()) {
+                if (prefMan.isProfileFirstTime()) {
                     prefMan.setProfileFirstTime(false);
                 }
             }
