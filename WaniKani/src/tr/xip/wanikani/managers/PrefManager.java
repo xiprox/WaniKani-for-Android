@@ -10,13 +10,17 @@ import android.preference.PreferenceManager;
  */
 public class PrefManager {
     private static SharedPreferences prefs;
+    private static SharedPreferences offlineData;
     private static SharedPreferences.Editor prefeditor;
+    private static SharedPreferences.Editor offlineDataEditor;
     private static Context context;
 
     public PrefManager(Context mContext) {
         context = mContext;
         prefs = context.getSharedPreferences("prefs", 0);
+        offlineData = context.getSharedPreferences("offline_data", 0);
         prefeditor = prefs.edit();
+        offlineDataEditor = offlineData.edit();
     }
 
     public String getApiKey() {
@@ -45,6 +49,7 @@ public class PrefManager {
 
     public void logout() {
         prefeditor.clear().commit();
+        offlineDataEditor.clear().commit();
     }
 
 }
