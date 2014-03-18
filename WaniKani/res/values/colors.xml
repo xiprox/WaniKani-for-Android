@@ -10,6 +10,8 @@
 
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>
+    <color name="tint_white_30">#30ffffff</color>
+    <color name="tint_white_cc">#ccffffff</color>
 
     <!-- Background Colors -->
     <color name="apptheme_background">#ffdddddd</color>

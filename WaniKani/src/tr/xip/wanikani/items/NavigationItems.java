@@ -13,7 +13,6 @@ public class NavigationItems {
 
     public NavigationItems() {
         addItem(new NavItem(R.drawable.ic_dashboard, R.string.title_dashboard));
-        addItem(new NavItem(R.drawable.ic_profile, R.string.title_profile));
     }
 
     public static class NavItem {

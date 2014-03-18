@@ -34,8 +34,6 @@ public class MainActivity extends ActionBarActivity
 
     PrefManager prefMan;
 
-
-
     @Override
     public void onResume() {
         super.onResume();

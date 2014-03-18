@@ -3,10 +3,12 @@ package tr.xip.wanikani;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -18,12 +20,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import tr.xip.wanikani.adapters.NavigationItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.items.NavigationItems;
+import tr.xip.wanikani.managers.ApiManager;
+import tr.xip.wanikani.managers.OfflineDataManager;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -31,16 +40,16 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     View rootView;
+    Activity activity;
 
     WaniKaniApi api;
+    ApiManager apiMan;
+    OfflineDataManager dataMan;
 
-   /* ImageView mAvatar;
-    ImageView mFieldBackground;
+    ImageView mAvatar;
     TextView mUsername;
-    TextView mLessonCount;
-    TextView mReviewCount;
-    ViewFlipper mLessonsFlipper;
-    ViewFlipper mReviewsFlipper;*/
+
+    FrameLayout mProfile;
 
     private NavigationDrawerCallbacks mCallbacks;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -55,14 +64,15 @@ public class NavigationDrawerFragment extends Fragment {
 
     NavigationItemsAdapter mNavigationItemsAdapter;
 
-    public NavigationDrawerFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         api = new WaniKaniApi(getActivity());
+        apiMan = new ApiManager(getActivity());
+        dataMan = new OfflineDataManager(getActivity());
+
+        activity = getActivity();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
@@ -87,21 +97,9 @@ public class NavigationDrawerFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
 
         mDrawerListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_view);
-        /*mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
-        mFieldBackground = (ImageView) rootView.findViewById(R.id.navigation_drawer_field_bg);
+        mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
-        mLessonCount = (TextView) rootView.findViewById(R.id.navigation_drawer_lesson_count);
-        mReviewCount = (TextView) rootView.findViewById(R.id.navigation_drawer_review_count);
 
-        mLessonsFlipper = (ViewFlipper) rootView.findViewById(R.id.navigation_drawer_lessons_flipper);
-        mReviewsFlipper = (ViewFlipper) rootView.findViewById(R.id.navigation_drawer_reviews_flipper);
-
-        mLessonsFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
-        mLessonsFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
-
-        mReviewsFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
-        mReviewsFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
-*/
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -117,13 +115,28 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
-//        new LoadTask().execute();
+        mProfile = (FrameLayout) rootView.findViewById(R.id.navigation_drawer_profile);
 
-        /*Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.art_00_500);
-        Bitmap blurredBmp = Blur.fastblur(getActivity(), image, 20);
-        mFieldBackground.setImageBitmap(blurredBmp);*/
+        mProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                Fragment fragment = new ProfileFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
+            }
+        });
+
+        setOldValues();
+        new LoadTask().execute();
 
         return rootView;
+    }
+
+    public void setOldValues() {
+        mUsername.setText(dataMan.getUsername());
     }
 
     public boolean isDrawerOpen() {
@@ -257,38 +270,35 @@ public class NavigationDrawerFragment extends Fragment {
         void onNavigationDrawerItemSelected(int position);
     }
 
-   /* public class LoadTask extends AsyncTask<Void, Void, Void> {
-        String gravatar;
+    public class LoadTask extends AsyncTask<Void, Void, String> {
+        String gravatar = dataMan.getGravatar();
         String username;
-        int lessons;
-        int reviews;
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            gravatar = api.getGravatar();
-            username = api.getUsername();
-            lessons = api.getLessonsAvailable();
-            reviews = api.getReviewsAvailable();
-
-            return null;
+        protected String doInBackground(Void... voids) {
+            try {
+                gravatar = apiMan.getGravatar();
+                username = apiMan.getUsername();
+                return "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "failure";
+            }
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Picasso.with(activity)
+                    .load("http://www.gravatar.com/avatar/" + gravatar + "?s=100")
+                    .placeholder(R.drawable.profile_loading)
+                    .error(R.drawable.profile_error)
+                    .fit()
+                    .into(mAvatar);
 
-            Picasso.with(getActivity()).load("http://www.gravatar.com/avatar/" + gravatar + "?s=100").fit().into(mAvatar);
-            mUsername.setText(username);
-
-            if(lessons != 0) {
-                mLessonCount.setText(lessons + "");
-                mLessonsFlipper.showNext();
-            }
-
-            if(reviews != 0) {
-                mReviewCount.setText(reviews + "");
-                mReviewsFlipper.showNext();
+            if (result.equals("success")) {
+                mUsername.setText(username);
             }
         }
-    }*/
+    }
 }

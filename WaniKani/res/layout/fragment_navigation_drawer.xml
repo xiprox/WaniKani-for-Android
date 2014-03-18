@@ -5,121 +5,47 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <!--<RelativeLayout
+    <FrameLayout
+        android:id="@+id/navigation_drawer_profile"
         android:layout_width="match_parent"
+        android:foreground="@drawable/simple_item_background"
         android:layout_height="70dp">
 
-        <ImageView
-            android:id="@+id/navigation_drawer_field_bg"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/apptheme_background"
-            android:scaleType="centerCrop"
-            android:src="@drawable/art_00_500"
-            android:tint="@color/tint_black_30" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/navigation_drawer_avatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp" />
+            <ImageView
+                android:id="@+id/navigation_drawer_field_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/art_00_small"
+                android:tint="@color/tint_white_cc" />
 
-        <TextView
-            android:id="@+id/navigation_drawer_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/navigation_drawer_avatar"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="2"
-            android:text=""
-            android:textAppearance="@android:style/TextAppearance.Large"
-            android:textColor="@color/text_white" />
+            <ImageView
+                android:id="@+id/navigation_drawer_avatar"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:src="@drawable/profile_default"
+                android:scaleType="fitXY"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="6dp" />
 
-        <LinearLayout
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <ViewFlipper
-                android:id="@+id/navigation_drawer_lessons_flipper"
+            <TextView
+                android:id="@+id/navigation_drawer_username"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/navigation_drawer_avatar"
+                android:text=""
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/text_gray" />
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+        </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/nav_draw_lesson_review_bg"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="L: "
-                        android:textColor="@color/wanikani_kanji"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/navigation_drawer_lesson_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/wanikani_kanji"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </ViewFlipper>
-
-
-            <ViewFlipper
-                android:id="@+id/navigation_drawer_reviews_flipper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <LinearLayout
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/nav_draw_lesson_review_bg"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="3dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="R: "
-                        android:textColor="@color/wanikani_kanji"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/navigation_drawer_review_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/wanikani_kanji"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </ViewFlipper>
-        </LinearLayout>
-
-    </RelativeLayout>-->
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"
