@@ -1,12 +1,16 @@
 package tr.xip.wanikani.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -18,8 +22,11 @@ import tr.xip.wanikani.api.response.CriticalItemsList;
  */
 public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.CriticalItem> {
 
+    Context context;
+
     View mItemType;
     TextView mItemCharacter;
+    ImageView mItemCharacterImage;
     TextView mItemPercentage;
 
     private List<CriticalItemsList.CriticalItem> items;
@@ -27,7 +34,7 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
     public CriticalItemsAdapter(Context context, int textViewResourceId, List<CriticalItemsList.CriticalItem> objects) {
         super(context, textViewResourceId, objects);
         this.items = objects;
-        Log.d("ADAPTER CALLED", "!!!");
+        this.context = context;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -41,6 +48,7 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
 
             mItemType = v.findViewById(R.id.item_critical_type);
             mItemCharacter = (TextView) v.findViewById(R.id.item_critical_character);
+            mItemCharacterImage = (ImageView) v.findViewById(R.id.item_critical_character_image);
             mItemPercentage = (TextView) v.findViewById(R.id.item_critical_percentage);
 
             if (item.type.equals("radical")) {
@@ -53,6 +61,19 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
 
             if (item.type.equals("vocabulary")) {
                 mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
+            }
+
+            if (item.image == null) {
+                mItemCharacter.setVisibility(View.VISIBLE);
+                mItemCharacterImage.setVisibility(View.GONE);
+                mItemCharacter.setText(item.character);
+            } else {
+                mItemCharacter.setVisibility(View.GONE);
+                mItemCharacterImage.setVisibility(View.VISIBLE);
+                Picasso.with(context)
+                        .load(item.image)
+                        .into(mItemCharacterImage);
+                mItemCharacterImage.setColorFilter(context.getResources().getColor(R.color.text_gray), PorterDuff.Mode.SRC_ATOP);
             }
 
             mItemCharacter.setText(item.character);
