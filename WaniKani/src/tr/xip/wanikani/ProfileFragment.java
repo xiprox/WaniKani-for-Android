@@ -144,9 +144,11 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
         setOldValues();
 
-        mPullToRefreshLayout.setRefreshing(true);
-        new LoadTask().execute();
-
+        if (!MainActivity.isFirstSyncProfileDone) {
+            mPullToRefreshLayout.setRefreshing(true);
+            new LoadTask().execute();
+            MainActivity.isFirstSyncProfileDone = true;
+        }
 
         return rootView;
     }
@@ -201,17 +203,17 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
     private void showConnectionError(String error) {
         if (error.equals("timeout")) {
-            UndoBarController.show((Activity)context, getString(R.string.error_connection_timeout),
+            UndoBarController.show((Activity) context, getString(R.string.error_connection_timeout),
                     this, UndoBarController.RETRYSTYLE);
         }
 
         if (error.equals("connection")) {
-            UndoBarController.show((Activity)context, getString(R.string.error_connection_error),
+            UndoBarController.show((Activity) context, getString(R.string.error_connection_error),
                     this, UndoBarController.RETRYSTYLE);
         }
 
         if (error.equals("unknown")) {
-            UndoBarController.show((Activity)context, getString(R.string.error_connection_error),
+            UndoBarController.show((Activity) context, getString(R.string.error_connection_error),
                     this, UndoBarController.RETRYSTYLE);
         }
     }

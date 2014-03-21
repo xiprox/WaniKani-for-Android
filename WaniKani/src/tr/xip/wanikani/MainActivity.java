@@ -27,6 +27,9 @@ import tr.xip.wanikani.managers.PrefManager;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    public static boolean isFirstSyncDashboardDone = false;
+    public static boolean isFirstSyncProfileDone = false;
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
 

@@ -46,10 +46,4 @@ public class Webview extends ActionBarActivity {
         getSupportActionBar().setTitle(action);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return true;
-    }
 }

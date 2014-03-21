@@ -51,10 +51,10 @@ public class DashboardFragment extends Fragment
     private BroadcastReceiver mAvailableCardSyncFinishedReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
-            if(intent.getStringExtra("action").equals("hide")) {
+            if (intent.getStringExtra("action").equals("hide")) {
                 mAvailableHolder.setVisibility(View.GONE);
             }
-            if(intent.getStringExtra("action").equals("show")) {
+            if (intent.getStringExtra("action").equals("show")) {
                 mAvailableHolder.setVisibility(View.VISIBLE);
             }
 
@@ -66,10 +66,10 @@ public class DashboardFragment extends Fragment
     private BroadcastReceiver mReviewsCardSyncFinishedReceiver = new BroadcastReceiver() {
 
         public void onReceive(Context context, Intent intent) {
-            if(intent.getStringExtra("action").equals("hide")) {
+            if (intent.getStringExtra("action").equals("hide")) {
                 mReviewsHolder.setVisibility(View.GONE);
             }
-            if(intent.getStringExtra("action").equals("show")) {
+            if (intent.getStringExtra("action").equals("show")) {
                 mReviewsHolder.setVisibility(View.VISIBLE);
             }
 
@@ -166,11 +166,15 @@ public class DashboardFragment extends Fragment
         mRecentUnlocksFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_recent_unlocks_holder);
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
 
-        mPullToRefreshLayout.setRefreshing(true);
-        Intent intent = new Intent(BroadcastIntents.SYNC());
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+        if (!MainActivity.isFirstSyncDashboardDone) {
+            mPullToRefreshLayout.setRefreshing(true);
+            Intent intent = new Intent(BroadcastIntents.SYNC());
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            MainActivity.isFirstSyncDashboardDone = true;
+        }
 
         return rootView;
+
     }
 
     private void updateSyncStatus() {
