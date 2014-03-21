@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.R;
@@ -41,10 +42,12 @@ public class AvailableCard extends Fragment {
     TextView mLessonsAvailable;
     TextView mReviewsAvailable;
 
+    public static final int BROWSER_REQUEST = 1;
+
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-                new LoadTask().execute();
+            new LoadTask().execute();
         }
     };
 
@@ -91,7 +94,7 @@ public class AvailableCard extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Webview.class);
                 intent.putExtra("action", "Lesson");
-                getActivity().startActivity(intent);
+                getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });
 
@@ -100,7 +103,7 @@ public class AvailableCard extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Webview.class);
                 intent.putExtra("action", "Review");
-                getActivity().startActivity(intent);
+                getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });
     }

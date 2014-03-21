@@ -18,10 +18,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.cocosw.undobar.UndoBarController;
 import com.cocosw.undobar.UndoBarStyle;
 
+import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.managers.PrefManager;
 
 public class MainActivity extends ActionBarActivity
@@ -119,5 +121,15 @@ public class MainActivity extends ActionBarActivity
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == AvailableCard.BROWSER_REQUEST) {
+            Intent intent = new Intent(BroadcastIntents.SYNC());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
     }
 }

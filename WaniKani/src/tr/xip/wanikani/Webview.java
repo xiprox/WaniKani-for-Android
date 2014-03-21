@@ -16,8 +16,8 @@ public class Webview extends ActionBarActivity {
 
     String action;
 
-    String lessonUrl = "https://www.wanikani.com/lesson";
-    String reviewUrl = "https://www.wanikani.com/review";
+    static final String LESSON_URL = "https://www.wanikani.com/lesson";
+    static final String REVIEW_URL = "https://www.wanikani.com/review";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +37,25 @@ public class Webview extends ActionBarActivity {
         action = intent.getStringExtra("action");
 
         if (action.equals("Lesson")) {
-            mWebview.loadUrl(lessonUrl);
+            mWebview.loadUrl(LESSON_URL);
         }
         if (action.equals("Review")) {
-            mWebview.loadUrl(reviewUrl);
+            mWebview.loadUrl(REVIEW_URL);
         }
 
         getSupportActionBar().setTitle(action);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }
