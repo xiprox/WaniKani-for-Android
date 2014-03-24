@@ -17,7 +17,7 @@ public class KanjiList {
         public String kunyomi;
         public String important_reading;
         public int level;
-        public List<UserSpecific> user_specific;
+        public UserSpecific user_specific;
 
         public class UserSpecific {
             public String srs;

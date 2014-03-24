@@ -15,7 +15,7 @@ public class RadicalsList {
         public String meaning;
         public String image;
         public int level;
-        public List<UserSpecific> user_specific;
+        public UserSpecific user_specific;
 
         public class UserSpecific {
             public String srs;

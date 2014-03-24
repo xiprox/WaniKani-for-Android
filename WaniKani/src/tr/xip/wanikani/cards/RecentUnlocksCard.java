@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import android.widget.ViewFlipper;
 import java.util.List;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
@@ -44,6 +46,8 @@ public class RecentUnlocksCard extends Fragment {
 
     ViewFlipper mViewFlipper;
     ViewFlipper mConnectionViewFlipper;
+
+    List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -78,6 +82,8 @@ public class RecentUnlocksCard extends Fragment {
         mConnectionViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_recent_unlocks_connection_view_flipper);
         mConnectionViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
+
+        mRecentUnlocksList.setOnItemClickListener(new recentUnlocksListItemClickListener());
 
         return rootView;
     }
@@ -114,13 +120,12 @@ public class RecentUnlocksCard extends Fragment {
 
         @Override
         protected List<RecentUnlocksList.UnlockItem> doInBackground(String... strings) {
-            List<RecentUnlocksList.UnlockItem> list = null;
             try {
-                list = api.getRecentUnlocksList(10);
+                recentUnlocksList = api.getRecentUnlocksList(100); // TODO - Change this back
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return list;
+            return recentUnlocksList;
         }
 
         @Override
@@ -154,4 +159,18 @@ public class RecentUnlocksCard extends Fragment {
         }
     }
 
+    private class recentUnlocksListItemClickListener implements android.widget.AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            RecentUnlocksList.UnlockItem item = recentUnlocksList.get(position);
+
+            Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
+            intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.type);
+            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.character);
+            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.image);
+            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.level);
+            getActivity().startActivity(intent);
+        }
+    }
 }

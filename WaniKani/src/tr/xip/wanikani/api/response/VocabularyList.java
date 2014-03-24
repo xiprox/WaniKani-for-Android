@@ -13,8 +13,9 @@ public class VocabularyList {
     public class VocabularyItem {
         public String character;
         public String kana;
+        public String meaning;
         public int level;
-        public List<UserSpecific> user_specific;
+        public UserSpecific user_specific;
 
         public class UserSpecific {
             public String srs;

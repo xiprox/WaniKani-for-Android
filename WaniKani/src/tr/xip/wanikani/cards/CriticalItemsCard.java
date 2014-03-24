@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,10 +20,12 @@ import android.widget.ViewFlipper;
 import java.util.List;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.adapters.CriticalItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.CriticalItemsList;
+import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -44,6 +47,8 @@ public class CriticalItemsCard extends Fragment {
 
     ViewFlipper mViewFlipper;
     ViewFlipper mConnectionViewFlipper;
+
+    List<CriticalItemsList.CriticalItem> criticalItemsList = null;
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -78,6 +83,8 @@ public class CriticalItemsCard extends Fragment {
         mConnectionViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_critical_items_connection_view_flipper);
         mConnectionViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
+
+        mCriticalItemsList.setOnItemClickListener(new criticalItemListItemClickListener());
 
         return rootView;
     }
@@ -114,15 +121,13 @@ public class CriticalItemsCard extends Fragment {
 
         @Override
         protected List<CriticalItemsList.CriticalItem> doInBackground(String... strings) {
-            List<CriticalItemsList.CriticalItem> list = null;
-
             try {
-                list = api.getCriticalItemsList(85); // TODO - Revert to 75
+                criticalItemsList = api.getCriticalItemsList(85); // TODO - Revert to 75
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return list;
+            return criticalItemsList;
         }
 
         @Override
@@ -156,4 +161,17 @@ public class CriticalItemsCard extends Fragment {
         }
     }
 
+    private class criticalItemListItemClickListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            CriticalItemsList.CriticalItem item = criticalItemsList.get(position);
+
+            Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
+            intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.type);
+            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.character);
+            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.image);
+            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.level);
+            getActivity().startActivity(intent);
+        }
+    }
 }

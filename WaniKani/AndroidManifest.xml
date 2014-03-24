@@ -26,6 +26,9 @@
         <activity
             android:name="tr.xip.wanikani.Webview"
             android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
+        <activity
+            android:name="tr.xip.wanikani.ItemDetailsActivity"
+            android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
         <activity android:name="tr.xip.wanikani.FirstTimeActivity"></activity>
     </application>
 

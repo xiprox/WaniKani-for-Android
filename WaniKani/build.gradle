@@ -40,7 +40,7 @@ android {
             aidl.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
-            assets.srcDirs = ['assets'] \
+            assets.srcDirs = ['assets']  \
 
         }
 
@@ -67,4 +67,7 @@ android {
         compile files('libs/joda-time-2.3.jar')
         compile files('libs/commons-io-2.4.jar')
     }
+}
+dependencies {
+    compile files('libs/commons-lang3-3.3.1.jar')
 }

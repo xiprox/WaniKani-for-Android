@@ -64,6 +64,30 @@
     <string name="error_enter_api_key">API Key can\'t be left empty!</string>
     <string name="wanikani_hungers">WaniKani Hungers</string>
 
+    <!-- Details View Strings -->
+    <string name="card_title_details_reading">Reading</string>
+    <string name="card_title_details_alternative_meanings">Alternative Meanings</string>
+    <string name="card_title_details_user_synonyms">User Synonyms</string>
+    <string name="card_title_details_reading_onyomi">On\'yomi</string>
+    <string name="card_title_details_reading_kunyomi">Kun\'yomi</string>
+    <string name="card_title_details_reading_note">Reading Note</string>
+    <string name="card_title_details_meaning_note">Meaning Note</string>
+    <string name="card_title_details_progress">Progress</string>
+    <string name="card_content_details_burned">Burned!</string>
+    <string name="card_content_details_progress_unlocked">Unlocked</string>
+    <string name="card_content_details_progress_next_available">Next Available</string>
+    <string name="card_content_details_progress_meaning_correct">Meaning Correct</string>
+    <string name="card_content_details_progress_meaning_incorrect">Meaning Incorrect</string>
+    <string name="card_content_details_progress_meaning_max_streak">Meaning Max Streak</string>
+    <string name="card_content_details_progress_meaning_current_streak">Meaning Current Streak</string>
+    <string name="card_content_details_progress_reading_correct">Reading Correct</string>
+    <string name="card_content_details_progress_reading_incorrect">Reading Incorrect</string>
+    <string name="card_content_details_progress_reading_max_streak">Reading Max Streak</string>
+    <string name="card_content_details_progress_reading_current_streak">Reading Current Streak</string>
+    <string name="card_content_details_progress_locked">Item Locked</string>
+    <string name="card_content_details_progress_or_not_learned">or not learned yet</string>
+    <string name="card_content_details_progress_on">on</string>
+
     <!-- Pull To Refresh Strings -->
     <string name="ptr_pull">Pull to refresh...</string>
     <string name="ptr_refreshing">Loading...</string>
@@ -75,8 +99,10 @@
     <string name="error_connection_timeout">Connection timeout</string>
     <string name="error_connection_error">Connection error</string>
     <string name="error_unknown_error">Unknown error</string>
+    <string name="error_couldnt_load_data">Couldn\'t load data</string>
     <string name="retry">RETRY</string>
 
     <!-- Info Strings -->
     <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
+    <string name="info_loading">Loading</string>
 </resources>
