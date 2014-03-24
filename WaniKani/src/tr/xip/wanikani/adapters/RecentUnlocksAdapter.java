@@ -2,6 +2,7 @@ package tr.xip.wanikani.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by xihsa_000 on 3/14/14.
@@ -23,6 +25,7 @@ import tr.xip.wanikani.api.response.RecentUnlocksList;
 public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockItem> {
 
     Context context;
+    Typeface typeface;
 
     View mUnlockType;
     TextView mUnlockCharacter;
@@ -31,10 +34,11 @@ public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockI
 
     private List<RecentUnlocksList.UnlockItem> items;
 
-    public RecentUnlocksAdapter(Context context, int textViewResourceId, List<RecentUnlocksList.UnlockItem> objects) {
+    public RecentUnlocksAdapter(Context context, int textViewResourceId, List<RecentUnlocksList.UnlockItem> objects, Typeface typeface) {
         super(context, textViewResourceId, objects);
         this.items = objects;
         this.context = context;
+        this.typeface = typeface;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,6 +54,8 @@ public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockI
             mUnlockCharacter = (TextView) v.findViewById(R.id.item_recent_unlock_character);
             mUnlockCharacterImage = (ImageView) v.findViewById(R.id.item_recent_unlock_character_image);
             mUnlockDate = (TextView) v.findViewById(R.id.item_recent_unlock_date);
+
+            mUnlockCharacter.setTypeface(typeface);
 
             if (item.type.equals("radical")) {
                 mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));

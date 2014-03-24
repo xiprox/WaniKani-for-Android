@@ -2,6 +2,7 @@ package tr.xip.wanikani.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.CriticalItemsList;
+import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by xihsa_000 on 3/14/14.
@@ -23,6 +25,7 @@ import tr.xip.wanikani.api.response.CriticalItemsList;
 public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.CriticalItem> {
 
     Context context;
+    Typeface typeface;
 
     View mItemType;
     TextView mItemCharacter;
@@ -31,10 +34,11 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
 
     private List<CriticalItemsList.CriticalItem> items;
 
-    public CriticalItemsAdapter(Context context, int textViewResourceId, List<CriticalItemsList.CriticalItem> objects) {
+    public CriticalItemsAdapter(Context context, int textViewResourceId, List<CriticalItemsList.CriticalItem> objects, Typeface typeface) {
         super(context, textViewResourceId, objects);
         this.items = objects;
         this.context = context;
+        this.typeface = typeface;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,6 +54,8 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
             mItemCharacter = (TextView) v.findViewById(R.id.item_critical_character);
             mItemCharacterImage = (ImageView) v.findViewById(R.id.item_critical_character_image);
             mItemPercentage = (TextView) v.findViewById(R.id.item_critical_percentage);
+
+            mItemCharacter.setTypeface(typeface);
 
             if (item.type.equals("radical")) {
                 mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));

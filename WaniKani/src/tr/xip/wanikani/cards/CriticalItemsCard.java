@@ -26,6 +26,7 @@ import tr.xip.wanikani.adapters.CriticalItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.CriticalItemsList;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -136,7 +137,7 @@ public class CriticalItemsCard extends Fragment {
 
             if (result != null) {
                 mCriticalItemsAdapter = new CriticalItemsAdapter(mContext,
-                        R.layout.item_critical, result);
+                        R.layout.item_critical, result, new Fonts().getKanjiFont(mContext));
                 mCriticalItemsList.setAdapter(mCriticalItemsAdapter);
                 if (mConnectionViewFlipper.getDisplayedChild() == 1) {
                     mConnectionViewFlipper.showPrevious();

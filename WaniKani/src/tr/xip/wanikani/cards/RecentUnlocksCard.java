@@ -25,6 +25,7 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -134,7 +135,7 @@ public class RecentUnlocksCard extends Fragment {
 
             if (result != null) {
                 mRecentUnlocksAdapter = new RecentUnlocksAdapter(mContext,
-                        R.layout.item_recent_unlock, result);
+                        R.layout.item_recent_unlock, result, new Fonts().getKanjiFont(mContext));
                 mRecentUnlocksList.setAdapter(mRecentUnlocksAdapter);
                 if (mConnectionViewFlipper.getDisplayedChild() == 1) {
                     mConnectionViewFlipper.showPrevious();
