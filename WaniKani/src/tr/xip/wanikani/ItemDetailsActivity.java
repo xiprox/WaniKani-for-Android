@@ -418,7 +418,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                 mSRSLevel.setText(R.string.srs_title_burned);
                             }
 
-                            SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMM d, yyyy");
+                            SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMMM d, yyyy");
                             SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
                             mUnlocked.setText(unlockDateFormat.format(radicalItem.user_specific.unlocked_date * 1000) + "");
@@ -525,7 +525,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                 mSRSLevel.setText(R.string.srs_title_burned);
                             }
 
-                            SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMM d, yyyy");
+                            SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMMM d, yyyy");
                             SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
                             mUnlocked.setText(unlockDateFormat.format(kanjiItem.user_specific.unlocked_date * 1000) + "");
@@ -630,7 +630,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                 mSRSLevel.setText(R.string.srs_title_burned);
                             }
 
-                            SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMM d, yyyy");
+                            SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMMM d, yyyy");
                             SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
                             mUnlocked.setText(unlockDateFormat.format(vocabularyItem.user_specific.unlocked_date * 1000) + "");
