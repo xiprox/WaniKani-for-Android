@@ -34,7 +34,7 @@ public class KanjiList {
             public int reading_max_streak;
             public int reading_current_streak;
             public String meaning_note;
-            public String user_synonyms;
+            public String[] user_synonyms;
             public String reading_note;
         }
     }

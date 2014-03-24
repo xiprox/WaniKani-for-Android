@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
@@ -376,7 +377,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                     if (radicalItem.user_specific != null) {
                         if (radicalItem.user_specific.user_synonyms != null) {
-                            mUserSynonyms.setText(radicalItem.user_specific.user_synonyms);
+                            String synonyms = WordUtils.capitalize(Arrays.toString(radicalItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
+                            mUserSynonyms.setText(synonyms);
                         } else {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         }
@@ -476,7 +478,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                     if (kanjiItem.user_specific != null) {
                         if (kanjiItem.user_specific.user_synonyms != null) {
-                            mUserSynonyms.setText(kanjiItem.user_specific.user_synonyms);
+                            String synonyms = WordUtils.capitalize(Arrays.toString(kanjiItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
+                            mUserSynonyms.setText(synonyms);
                         } else {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         }
@@ -580,7 +583,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                     if (vocabularyItem.user_specific != null) {
                         if (vocabularyItem.user_specific.user_synonyms != null) {
-                            mUserSynonyms.setText(vocabularyItem.user_specific.user_synonyms);
+                            String synonyms = WordUtils.capitalize(Arrays.toString(vocabularyItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
+                            mUserSynonyms.setText(synonyms);
                         } else {
                             mUserSynonymsHolder.setVisibility(View.GONE);
                         }
