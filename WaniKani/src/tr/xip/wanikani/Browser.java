@@ -18,7 +18,7 @@ import tr.xip.wanikani.utils.Fonts;
 /**
  * Created by xihsa_000 on 3/15/14.
  */
-public class Webview extends ActionBarActivity {
+public class Browser extends ActionBarActivity {
 
     WebView mWebview;
 

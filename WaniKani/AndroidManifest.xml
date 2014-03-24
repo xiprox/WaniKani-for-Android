@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="tr.xip.wanikani.Webview"
+            android:name=".Browser"
             android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
         <activity
             android:name="tr.xip.wanikani.ItemDetailsActivity"

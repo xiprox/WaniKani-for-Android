@@ -13,11 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.Browser;
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.Webview;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
@@ -92,8 +91,8 @@ public class AvailableCard extends Fragment {
         mLessonsParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Webview.class);
-                intent.putExtra(Webview.ARG_ACTION, Webview.ACTION_LESSON);
+                Intent intent = new Intent(getActivity(), Browser.class);
+                intent.putExtra(Browser.ARG_ACTION, Browser.ACTION_LESSON);
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });
@@ -101,8 +100,8 @@ public class AvailableCard extends Fragment {
         mReviewsParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Webview.class);
-                intent.putExtra(Webview.ARG_ACTION, Webview.ACTION_REVIEW);
+                Intent intent = new Intent(getActivity(), Browser.class);
+                intent.putExtra(Browser.ARG_ACTION, Browser.ACTION_REVIEW);
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });

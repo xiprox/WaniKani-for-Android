@@ -243,20 +243,20 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_details_view_on_web:
-                Intent intent = new Intent(this, Webview.class);
-                intent.putExtra(Webview.ARG_ACTION, Webview.ACTION_ITEM_DETAILS);
+                Intent intent = new Intent(this, Browser.class);
+                intent.putExtra(Browser.ARG_ACTION, Browser.ACTION_ITEM_DETAILS);
 
                 if (got_type.equals(TYPE_RADICAL)) {
-                    intent.putExtra(Webview.ARG_ITEM_TYPE, TYPE_RADICAL);
-                    intent.putExtra(Webview.ARG_ITEM, mMeaning.getText().toString());
+                    intent.putExtra(Browser.ARG_ITEM_TYPE, TYPE_RADICAL);
+                    intent.putExtra(Browser.ARG_ITEM, mMeaning.getText().toString());
                 }
                 if (got_type.equals(TYPE_KANJI)) {
-                    intent.putExtra(Webview.ARG_ITEM_TYPE, TYPE_KANJI);
-                    intent.putExtra(Webview.ARG_ITEM, mCharacter.getText().toString());
+                    intent.putExtra(Browser.ARG_ITEM_TYPE, TYPE_KANJI);
+                    intent.putExtra(Browser.ARG_ITEM, mCharacter.getText().toString());
                 }
                 if (got_type.equals(TYPE_VOCABULARY)) {
-                    intent.putExtra(Webview.ARG_ITEM_TYPE, TYPE_VOCABULARY);
-                    intent.putExtra(Webview.ARG_ITEM, mCharacter.getText().toString());
+                    intent.putExtra(Browser.ARG_ITEM_TYPE, TYPE_VOCABULARY);
+                    intent.putExtra(Browser.ARG_ITEM, mCharacter.getText().toString());
                 }
 
                 startActivity(intent);
