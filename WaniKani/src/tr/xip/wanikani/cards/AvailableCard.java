@@ -93,7 +93,7 @@ public class AvailableCard extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Webview.class);
-                intent.putExtra("action", "Lesson");
+                intent.putExtra(Webview.ARG_ACTION, Webview.ACTION_LESSON);
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });
@@ -102,7 +102,7 @@ public class AvailableCard extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Webview.class);
-                intent.putExtra("action", "Review");
+                intent.putExtra(Webview.ARG_ACTION, Webview.ACTION_REVIEW);
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });

@@ -10,11 +10,16 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Action Bar Title Strings -->
+    <string name="ab_title_reviews">Reviews</string>
+    <string name="ab_title_lessons">Lessons</string>
+
     <!-- Menu Strings -->
     <string name="action_profile">Profile</string>
     <string name="action_settings">Settings</string>
     <string name="action_back">Back</string>
     <string name="action_logout">Logout</string>
+    <string name="action_view_on_web">View on Web</string>
 
     <!-- Profile Strings -->
     <string name="content_profile_sect">Sect</string>

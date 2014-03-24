@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -226,6 +228,39 @@ public class ItemDetailsActivity extends ActionBarActivity {
     public boolean onNavigateUp() {
         super.onBackPressed();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.item_details, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_details_view_on_web:
+                Intent intent = new Intent(this, Webview.class);
+                intent.putExtra(Webview.ARG_ACTION, Webview.ACTION_ITEM_DETAILS);
+
+                if (got_type.equals(TYPE_RADICAL)) {
+                    intent.putExtra(Webview.ARG_ITEM_TYPE, TYPE_RADICAL);
+                    intent.putExtra(Webview.ARG_ITEM, mMeaning.getText().toString());
+                }
+                if (got_type.equals(TYPE_KANJI)) {
+                    intent.putExtra(Webview.ARG_ITEM_TYPE, TYPE_KANJI);
+                    intent.putExtra(Webview.ARG_ITEM, mCharacter.getText().toString());
+                }
+                if (got_type.equals(TYPE_VOCABULARY)) {
+                    intent.putExtra(Webview.ARG_ITEM_TYPE, TYPE_VOCABULARY);
+                    intent.putExtra(Webview.ARG_ITEM, mCharacter.getText().toString());
+                }
+
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void switchToRadicalMode() {
