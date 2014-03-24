@@ -130,6 +130,13 @@ public class ItemDetailsActivity extends ActionBarActivity {
         TextView mActionBarTitleText = (TextView) mActionBarView.findViewById(R.id.actionbar_item_details_title_text);
         final ImageView mActionBarTitleImage = (ImageView) mActionBarView.findViewById(R.id.actionbar_item_details_title_image);
 
+        mActionBarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         if (got_image != null) {
             mActionBarTitleImage.setVisibility(View.VISIBLE);
 
