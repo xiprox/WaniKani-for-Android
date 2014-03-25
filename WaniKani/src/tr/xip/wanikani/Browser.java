@@ -45,7 +45,7 @@ public class Browser extends ActionBarActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View mActionBarView = inflater.inflate(R.layout.actionbar_custom, null);
 
-        TextView mActionBarTitleText = (TextView) mActionBarView.findViewById(R.id.actionbar_custom_title);
+        TextView mActionBarTitleText = (TextView) mActionBarView.findViewById(R.id.actionbar_custom_title_text);
 
         mActionBarView.setOnClickListener(new View.OnClickListener() {
             @Override

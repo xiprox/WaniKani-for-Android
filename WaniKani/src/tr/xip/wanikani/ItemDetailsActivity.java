@@ -128,10 +128,10 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mActionBarView = inflater.inflate(R.layout.actionbar_item_details, null);
+        View mActionBarView = inflater.inflate(R.layout.actionbar_custom, null);
 
-        TextView mActionBarTitleText = (TextView) mActionBarView.findViewById(R.id.actionbar_item_details_title_text);
-        final ImageView mActionBarTitleImage = (ImageView) mActionBarView.findViewById(R.id.actionbar_item_details_title_image);
+        TextView mActionBarTitleText = (TextView) mActionBarView.findViewById(R.id.actionbar_custom_title_text);
+        final ImageView mActionBarTitleImage = (ImageView) mActionBarView.findViewById(R.id.actionbar_custom_title_image);
 
         mActionBarView.setOnClickListener(new View.OnClickListener() {
             @Override
