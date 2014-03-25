@@ -481,7 +481,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             String synonyms = WordUtils.capitalize(Arrays.toString(kanjiItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
                             mUserSynonyms.setText(synonyms);
                         } else {
-                            mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
+                            mUserSynonymsHolder.setVisibility(View.GONE);
                         }
 
                         if (kanjiItem.user_specific.reading_note != null) {
