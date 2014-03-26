@@ -173,6 +173,9 @@ public class DashboardFragment extends Fragment
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             MainActivity.isFirstSyncDashboardDone = true;
+        } else {
+            Intent intent = new Intent(BroadcastIntents.SYNC());
+            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
         }
 
         return rootView;

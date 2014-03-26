@@ -148,6 +148,8 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
             mPullToRefreshLayout.setRefreshing(true);
             new LoadTask().execute();
             MainActivity.isFirstSyncProfileDone = true;
+        } else {
+            new LoadTask().execute();
         }
 
         return rootView;
