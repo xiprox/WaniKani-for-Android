@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -22,6 +23,7 @@ import java.util.List;
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.RecentUnlocksActivity;
 import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
@@ -42,6 +44,8 @@ public class RecentUnlocksCard extends Fragment {
 
     TextView mCardTitle;
     ListView mRecentUnlocksList;
+    RelativeLayout mMoreItemsButton;
+
 
     RecentUnlocksAdapter mRecentUnlocksAdapter;
 
@@ -76,6 +80,8 @@ public class RecentUnlocksCard extends Fragment {
         mCardTitle = (TextView) rootView.findViewById(R.id.card_recent_unlocks_title);
         mRecentUnlocksList = (ListView) rootView.findViewById(R.id.card_recent_unlocks_list);
 
+        mMoreItemsButton = (RelativeLayout) rootView.findViewById(R.id.card_recent_unlocks_more_button);
+
         mViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_recent_unlocks_view_flipper);
         mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
@@ -85,6 +91,13 @@ public class RecentUnlocksCard extends Fragment {
         mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
         mRecentUnlocksList.setOnItemClickListener(new recentUnlocksListItemClickListener());
+
+        mMoreItemsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, RecentUnlocksActivity.class));
+            }
+        });
 
         return rootView;
     }
@@ -108,6 +121,7 @@ public class RecentUnlocksCard extends Fragment {
 
             totalHeight += mCardTitle.getMeasuredHeight();
             totalHeight += pxFromDp(16); // Add the paddings as well
+            totalHeight += pxFromDp(48); // Add the more items button
 
             return totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }

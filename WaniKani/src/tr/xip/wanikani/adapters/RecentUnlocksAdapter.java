@@ -3,6 +3,7 @@ package tr.xip.wanikani.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockI
                 mUnlockCharacter.setVisibility(View.VISIBLE);
                 mUnlockCharacterImage.setVisibility(View.GONE);
                 mUnlockCharacter.setText(item.character);
+                Log.d("ADAPTER", "SETTING CHAR AT " + position + " TO " + item.character);
             } else {
                 mUnlockCharacter.setVisibility(View.GONE);
                 mUnlockCharacterImage.setVisibility(View.VISIBLE);
