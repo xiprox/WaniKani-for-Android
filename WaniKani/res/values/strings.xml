@@ -95,7 +95,7 @@
     <string name="card_content_details_progress_on">on</string>
 
     <!-- Pull To Refresh Strings -->
-    <string name="ptr_pull">Pull to refresh...</string>
+    <string name="ptr_pull">Swipe down to refresh...</string>
     <string name="ptr_refreshing">Loading...</string>
     <string name="ptr_release">Release to refresh...</string>
 
