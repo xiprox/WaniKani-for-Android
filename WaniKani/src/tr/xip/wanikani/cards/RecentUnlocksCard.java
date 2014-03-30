@@ -121,7 +121,9 @@ public class RecentUnlocksCard extends Fragment {
 
             totalHeight += mCardTitle.getMeasuredHeight();
             totalHeight += pxFromDp(16); // Add the paddings as well
-            totalHeight += pxFromDp(48); // Add the more items button
+
+            // Disable for now
+            // totalHeight += pxFromDp(48); // Add the more items button
 
             return totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }
