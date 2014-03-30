@@ -31,8 +31,8 @@
                 android:paddingRight="8dp">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_lesson" />
 
@@ -81,8 +81,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_review" />
 
