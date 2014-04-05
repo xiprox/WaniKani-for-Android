@@ -26,6 +26,7 @@ import tr.xip.wanikani.adapters.CriticalItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.CriticalItemsList;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
@@ -38,6 +39,7 @@ public class CriticalItemsCard extends Fragment {
 
     WaniKaniApi api;
     Utils utils;
+    PrefManager prefMan;
 
     Context mContext;
 
@@ -63,6 +65,7 @@ public class CriticalItemsCard extends Fragment {
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
+        prefMan = new PrefManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -123,7 +126,7 @@ public class CriticalItemsCard extends Fragment {
         @Override
         protected List<CriticalItemsList.CriticalItem> doInBackground(String... strings) {
             try {
-                criticalItemsList = api.getCriticalItemsList(85); // TODO - Revert to 75
+                criticalItemsList = api.getCriticalItemsList(prefMan.getDashboardCriticalItemsPercentage());
             } catch (Exception e) {
                 e.printStackTrace();
             }

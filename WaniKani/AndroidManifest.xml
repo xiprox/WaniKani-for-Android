@@ -25,14 +25,17 @@
         </activity>
         <activity
             android:name=".Browser"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
+            android:parentActivityName="tr.xip.wanikani.MainActivity" />
         <activity
-            android:name="tr.xip.wanikani.ItemDetailsActivity"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
+            android:name=".ItemDetailsActivity"
+            android:parentActivityName="tr.xip.wanikani.MainActivity" />
         <activity
-            android:name="tr.xip.wanikani.RecentUnlocksActivity"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"></activity>
-        <activity android:name="tr.xip.wanikani.FirstTimeActivity"></activity>
+            android:name=".RecentUnlocksActivity"
+            android:parentActivityName="tr.xip.wanikani.MainActivity" />
+        <activity android:name="tr.xip.wanikani.FirstTimeActivity" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:parentActivityName="tr.xip.wanikani.MainActivity" />
     </application>
 
 </manifest>

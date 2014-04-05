@@ -27,6 +27,7 @@ import tr.xip.wanikani.RecentUnlocksActivity;
 import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
@@ -39,6 +40,7 @@ public class RecentUnlocksCard extends Fragment {
 
     WaniKaniApi api;
     Utils utils;
+    PrefManager prefMan;
 
     Context mContext;
 
@@ -66,6 +68,7 @@ public class RecentUnlocksCard extends Fragment {
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
+        prefMan = new PrefManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -138,7 +141,7 @@ public class RecentUnlocksCard extends Fragment {
         @Override
         protected List<RecentUnlocksList.UnlockItem> doInBackground(String... strings) {
             try {
-                recentUnlocksList = api.getRecentUnlocksList(100); // TODO - Change this back
+                recentUnlocksList = api.getRecentUnlocksList(prefMan.getDashboardRecentUnlocksNumber());
             } catch (Exception e) {
                 e.printStackTrace();
             }

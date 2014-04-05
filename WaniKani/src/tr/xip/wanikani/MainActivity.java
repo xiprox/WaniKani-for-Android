@@ -1,30 +1,21 @@
 package tr.xip.wanikani;
 
 import android.annotation.TargetApi;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
-
-import com.cocosw.undobar.UndoBarController;
-import com.cocosw.undobar.UndoBarStyle;
 
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -119,6 +110,10 @@ public class MainActivity extends ActionBarActivity
                 prefMan.logout();
                 startActivity(new Intent(this, FirstTimeActivity.class));
                 finish();
+                break;
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

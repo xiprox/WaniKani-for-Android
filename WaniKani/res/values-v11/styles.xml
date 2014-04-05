@@ -5,6 +5,8 @@
         <item name="android:titleTextStyle">@style/AppTheme.ActionBar.Light.Title</item>
     </style>
 
+    <style name="AlertDialog" parent="@android:style/Theme.Holo.Light.Dialog"></style>
+
     <style name="ProgressBarRadical" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/radical_progress_horizontal_holo_light
         </item>
