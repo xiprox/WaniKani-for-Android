@@ -307,7 +307,6 @@ public class NavigationDrawerFragment extends Fragment {
             super.onPostExecute(result);
             Picasso.with(context)
                     .load("http://www.gravatar.com/avatar/" + gravatar + "?s=100")
-                    .placeholder(R.drawable.profile_loading)
                     .error(R.drawable.profile_error)
                     .fit()
                     .transform(new CircleTransformation())
