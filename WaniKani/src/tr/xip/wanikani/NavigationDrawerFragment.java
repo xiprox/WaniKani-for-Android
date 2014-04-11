@@ -280,6 +280,16 @@ public class NavigationDrawerFragment extends Fragment {
         String username;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Picasso.with(context)
+                    .load(R.drawable.profile_loading)
+                    .fit()
+                    .transform(new CircleTransformation())
+                    .into(mAvatar);
+        }
+
+        @Override
         protected String doInBackground(Void... voids) {
             try {
                 user = api.getUser();

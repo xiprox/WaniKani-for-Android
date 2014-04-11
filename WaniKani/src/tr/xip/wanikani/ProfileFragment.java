@@ -29,6 +29,7 @@ import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.utils.CircleTransformation;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -256,6 +257,15 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         String about;
         String website;
         String twitter;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Picasso.with(context)
+                    .load(R.drawable.profile_loading)
+                    .fit()
+                    .into(mAvatar);
+        }
 
         @Override
         protected String doInBackground(Void... voids) {
