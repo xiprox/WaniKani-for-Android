@@ -134,7 +134,12 @@
     <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
     <string name="info_loading">Loading</string>
 
+    <!-- Dialog Strings -->
+   <string name="dialog_logout">Are you sure you\'d like to logout?</string>
+
     <!-- Other Strings -->
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

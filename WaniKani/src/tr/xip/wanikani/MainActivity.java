@@ -1,6 +1,8 @@
 package tr.xip.wanikani;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -115,9 +117,7 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.action_logout:
-                prefMan.logout();
-                startActivity(new Intent(this, FirstTimeActivity.class));
-                finish();
+                showlogoutDialog();
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -134,5 +134,24 @@ public class MainActivity extends ActionBarActivity
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+    }
+
+    private void showlogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_logout)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        prefMan.logout();
+                        startActivity(new Intent(getApplicationContext(), FirstTimeActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        builder.create().show();
     }
 }
