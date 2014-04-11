@@ -16,6 +16,7 @@ import java.util.List;
 import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
@@ -24,6 +25,8 @@ import tr.xip.wanikani.utils.Fonts;
 public class RecentUnlocksActivity extends ActionBarActivity {
 
     WaniKaniApi api;
+    ThemeManager themeMan;
+
     Context context;
 
     ListView mRecentUnlocksList;
@@ -36,10 +39,14 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        api = new WaniKaniApi(this);
+        themeMan = new ThemeManager(this);
+        context = this;
+
+        setTheme(themeMan.getTheme());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_unlocks);
-        api = new WaniKaniApi(this);
-        context = this;
 
         mRecentUnlocksList = (ListView) findViewById(R.id.activity_recent_unlocks_list);
 

@@ -4,6 +4,13 @@
     <Preference
         android:key="pref_api_key"
         android:title="@string/pref_title_apikey" />
+    <ListPreference
+        android:key="pref_theme"
+        android:title="@string/pref_title_theme"
+        android:summary="@string/pref_summary_theme"
+        android:entryValues="@array/pref_values_theme"
+        android:entries="@array/pref_entries_theme"
+        android:defaultValue="light" />
 
     <PreferenceCategory android:title="@string/pref_category_dashboard">
         <tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference

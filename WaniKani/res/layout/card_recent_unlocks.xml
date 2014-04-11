@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_recent_unlocks_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card"
+    android:background="@drawable/card_light"
     android:orientation="vertical"
     android:paddingTop="8dp"
     android:paddingBottom="2dp">
@@ -43,7 +44,9 @@
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:padding="12dp"
-                    android:scrollbarStyle="outsideOverlay" />
+                    android:scrollbarStyle="outsideOverlay"
+                    android:divider="@color/separator"
+                    android:dividerHeight="1px"/>
                 <!--android:layout_marginBottom="48dp"-->
 
                 <RelativeLayout
@@ -59,7 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentTop="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                     <ImageView
                         android:id="@+id/card_recent_unlocks_more_icon"

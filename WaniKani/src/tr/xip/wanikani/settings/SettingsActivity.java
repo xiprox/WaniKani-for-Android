@@ -24,4 +24,9 @@ public class SettingsActivity extends PreferenceActivity {
         Preference mApiKey = findPreference(PrefManager.PREF_API_KEY);
         mApiKey.setSummary(prefMan.getApiKey());
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onNavigateUp();
+    }
 }

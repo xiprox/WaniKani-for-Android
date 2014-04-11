@@ -1,5 +1,9 @@
 <resources>
 
+    <style name="ThemeLightDarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
+    </style>
+
     <style name="AppTheme.ActionBar.Light" parent="Widget.AppCompat.Light.ActionBar.Solid"></style>
 
     <style name="AlertDialog" parent="@android:style/Theme.Dialog"></style>
@@ -23,8 +27,8 @@
         <item name="android:maxHeight">16dip</item>
     </style>
 
-    <style name="Widget.PtrHeader" parent="android:Widget">
-        <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh</item>
+    <style name="Widget.PtrHeader.wanikanilight" parent="android:Widget">
+        <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanilight</item>
         <item name="ptrProgressBarColor">@color/color_apptheme</item>
         <item name="ptrProgressBarStyle">inside</item>
         <item name="ptrPullText">@string/ptr_pull</item>
@@ -32,7 +36,24 @@
         <item name="ptrReleaseText">@string/ptr_release</item>
     </style>
 
-    <style name="TextApparance.PullToRefresh" parent="android:TextAppearance.Medium">
+    <style name="Widget.PtrHeader.wanikanidark" parent="android:Widget">
+        <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanidark</item>
+        <item name="ptrProgressBarColor">@color/color_apptheme</item>
+        <item name="ptrProgressBarStyle">inside</item>
+        <item name="ptrPullText">@string/ptr_pull</item>
+        <item name="ptrRefreshingText">@string/ptr_refreshing</item>
+        <item name="ptrReleaseText">@string/ptr_release</item>
+    </style>
+
+    <style name="TextApparance.PullToRefresh.wanikanilight" parent="android:TextAppearance.Medium">
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+    <style name="TextApparance.PullToRefresh.wanikanidark" parent="android:TextAppearance.Medium">
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
+
+    <style name="TextApparance.ActionBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/text_gray</item>
     </style>
 

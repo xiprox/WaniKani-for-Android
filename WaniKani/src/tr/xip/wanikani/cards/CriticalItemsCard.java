@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.CriticalItemsList;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
@@ -40,6 +42,7 @@ public class CriticalItemsCard extends Fragment {
     WaniKaniApi api;
     Utils utils;
     PrefManager prefMan;
+    ThemeManager themeMan;
 
     Context mContext;
 
@@ -50,6 +53,8 @@ public class CriticalItemsCard extends Fragment {
 
     ViewFlipper mViewFlipper;
     ViewFlipper mConnectionViewFlipper;
+
+    LinearLayout mCard;
 
     List<CriticalItemsList.CriticalItem> criticalItemsList = null;
 
@@ -66,6 +71,7 @@ public class CriticalItemsCard extends Fragment {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         prefMan = new PrefManager(getActivity());
+        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -87,6 +93,9 @@ public class CriticalItemsCard extends Fragment {
         mConnectionViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_critical_items_connection_view_flipper);
         mConnectionViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
+
+        mCard = (LinearLayout) rootView.findViewById(R.id.card_critical_items_card);
+        mCard.setBackgroundResource(themeMan.getCard());
 
         mCriticalItemsList.setOnItemClickListener(new criticalItemListItemClickListener());
 

@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joda.time.Period;
@@ -24,6 +25,7 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -36,12 +38,15 @@ public class ReviewsCard extends Fragment {
     WaniKaniApi api;
     OfflineDataManager dataMan;
     Utils utils;
+    ThemeManager themeMan;
 
     View rootView;
 
     TextView mNextReview;
     TextView mNextHour;
     TextView mNextDay;
+
+    LinearLayout mCard;
 
     Period period;
     PeriodFormatter formatter;
@@ -58,6 +63,7 @@ public class ReviewsCard extends Fragment {
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
+        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -74,6 +80,9 @@ public class ReviewsCard extends Fragment {
         mNextReview = (TextView) rootView.findViewById(R.id.card_reviews_next_review);
         mNextHour = (TextView) rootView.findViewById(R.id.card_reviews_next_hour);
         mNextDay = (TextView) rootView.findViewById(R.id.card_reviews_next_day);
+
+        mCard = (LinearLayout) rootView.findViewById(R.id.card_reviews_card);
+        mCard.setBackgroundResource(themeMan.getCard());
 
         setOldValues();
 

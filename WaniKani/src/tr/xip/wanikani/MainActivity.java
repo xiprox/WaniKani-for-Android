@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity
@@ -29,6 +30,7 @@ public class MainActivity extends ActionBarActivity
     public String TAG = "WANIKANI";
 
     PrefManager prefMan;
+    ThemeManager themeMan;
 
     @Override
     public void onResume() {
@@ -43,8 +45,12 @@ public class MainActivity extends ActionBarActivity
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        prefMan = new PrefManager(this);
+        themeMan = new ThemeManager(this);
+
+        setTheme(themeMan.getTheme());
+
         super.onCreate(savedInstanceState);
-        prefMan = new PrefManager(getApplicationContext());
 
         if(prefMan.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
@@ -52,6 +58,8 @@ public class MainActivity extends ActionBarActivity
         }
 
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setIcon(R.drawable.ic_wanikani_stamp);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

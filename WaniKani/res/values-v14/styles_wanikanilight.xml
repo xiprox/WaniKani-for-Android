@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2011 The Android Open Source Project
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <style name="ThemeWanikanilight" parent="@style/Theme.AppCompat.Light">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_wanikanilight</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Wanikanilight</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Wanikanilight</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Wanikanilight</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Wanikanilight</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Wanikanilight</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_wanikanilight</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_wanikanilight</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Wanikanilight</item>
+        <item name="android:windowBackground">@color/window_background_light</item>
+        <item name="ptrHeaderStyle">@style/Widget.PtrHeader.wanikanilight</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:editTextStyle">@style/EditText.AppTheme</item>
+        <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
+
+    </style>
+
+    <style name="ActionBar.Solid.Wanikanilight" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_solid_wanikanilight</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_wanikanilight</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_wanikanilight</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Wanikanilight</item>
+        <item name="android:titleTextStyle">@style/TextApparance.ActionBar</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Wanikanilight" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_wanikanilight</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Wanikanilight</item>
+        <item name="android:titleTextStyle">@style/TextApparance.ActionBar</item>
+    </style>
+    
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Wanikanilight.Widget" parent="@style/Theme.AppCompat">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Wanikanilight</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Wanikanilight</item>
+    </style>
+
+</resources>

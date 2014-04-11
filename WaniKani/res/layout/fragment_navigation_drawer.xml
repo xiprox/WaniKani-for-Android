@@ -2,37 +2,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@color/window_background_light"
     android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/navigation_drawer_profile"
         android:layout_width="match_parent"
         android:foreground="@drawable/simple_item_background"
-        android:layout_height="70dp">
+        android:layout_height="60dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:background="@color/tint_black_10"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/navigation_drawer_field_bg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/art_00_small"
-                android:tint="@color/tint_white_cc" />
-
-            <ImageView
                 android:id="@+id/navigation_drawer_avatar"
-                android:layout_width="58dp"
-                android:layout_height="58dp"
-                android:src="@drawable/profile_default"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/oval_gray"
                 android:scaleType="fitXY"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="6dp" />
+                android:layout_marginLeft="6dp"
+                android:padding="2dp"/>
 
             <TextView
+                style="@style/Widget.TextView.Light"
                 android:id="@+id/navigation_drawer_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +35,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/navigation_drawer_avatar"
                 android:text=""
-                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textSize="26sp"
                 android:textColor="@color/text_gray" />
 
         </RelativeLayout>
@@ -49,15 +44,15 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/card_shadow" />
+        android:layout_height="1px"
+        android:background="@color/separator" />
 
     <ListView
         android:id="@+id/navigation_drawer_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:choiceMode="singleChoice"
-        android:divider="@color/separator_light"
+        android:divider="@color/separator"
         android:dividerHeight="1px"
         tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
 </LinearLayout>

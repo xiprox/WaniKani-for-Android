@@ -20,6 +20,7 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -30,6 +31,7 @@ public class AvailableCard extends Fragment {
     WaniKaniApi api;
     OfflineDataManager dataMan;
     Utils utils;
+    ThemeManager themeMan;
 
     View rootView;
 
@@ -40,6 +42,8 @@ public class AvailableCard extends Fragment {
 
     TextView mLessonsAvailable;
     TextView mReviewsAvailable;
+
+    LinearLayout mCard;
 
     public static final int BROWSER_REQUEST = 1;
 
@@ -55,6 +59,7 @@ public class AvailableCard extends Fragment {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         dataMan = new OfflineDataManager(getActivity());
+        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -73,6 +78,9 @@ public class AvailableCard extends Fragment {
 
         mLessonsAvailable = (TextView) rootView.findViewById(R.id.card_available_lessons);
         mReviewsAvailable = (TextView) rootView.findViewById(R.id.card_available_reviews);
+
+        mCard = (LinearLayout) rootView.findViewById(R.id.card_available_card);
+        mCard.setBackgroundResource(themeMan.getCard());
 
         setUpParentOnClicks();
 

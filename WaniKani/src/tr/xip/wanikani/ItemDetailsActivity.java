@@ -29,6 +29,7 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.KanjiList;
 import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.api.response.VocabularyList;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
@@ -37,6 +38,7 @@ import tr.xip.wanikani.utils.Fonts;
 public class ItemDetailsActivity extends ActionBarActivity {
 
     WaniKaniApi api;
+    ThemeManager themeMan;
 
     public static final String ARG_TYPE = "type";
     public static final String ARG_CHARACTER = "character";
@@ -47,10 +49,10 @@ public class ItemDetailsActivity extends ActionBarActivity {
     public static final String TYPE_KANJI = "kanji";
     public static final String TYPE_VOCABULARY = "vocabulary";
 
-    String got_type;
-    String got_character;
-    String got_image;
-    int got_level;
+    String gotType;
+    String gotCharacter;
+    String gotImage;
+    int gotLevel;
 
     TextView mLevel;
     TextView mCharacter;
@@ -108,19 +110,21 @@ public class ItemDetailsActivity extends ActionBarActivity {
     RelativeLayout mReadingCurrentStreakHolder;
     TextView mReadingCurrentStreak;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        api = new WaniKaniApi(this);
+        themeMan = new ThemeManager(this);
+
+        setTheme(themeMan.getTheme());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
-        api = new WaniKaniApi(this);
-
         Intent intent = getIntent();
-        got_type = intent.getStringExtra(ARG_TYPE);
-        got_character = intent.getStringExtra(ARG_CHARACTER);
-        got_image = intent.getStringExtra(ARG_IMAGE);
-        got_level = intent.getIntExtra(ARG_LEVEL, 0);
+        gotType = intent.getStringExtra(ARG_TYPE);
+        gotCharacter = intent.getStringExtra(ARG_CHARACTER);
+        gotImage = intent.getStringExtra(ARG_IMAGE);
+        gotLevel = intent.getIntExtra(ARG_LEVEL, 0);
 
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -140,13 +144,13 @@ public class ItemDetailsActivity extends ActionBarActivity {
             }
         });
 
-        if (got_image != null) {
+        if (gotImage != null) {
             mActionBarTitleImage.setVisibility(View.VISIBLE);
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Picasso.with(getApplicationContext()).load(got_image).into(mActionBarTitleImage);
+                    Picasso.with(getApplicationContext()).load(gotImage).into(mActionBarTitleImage);
                 }
             }).start();
             mActionBarTitleImage.setColorFilter(getResources().getColor(R.color.text_gray), PorterDuff.Mode.SRC_ATOP);
@@ -154,7 +158,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         } else {
             mActionBarTitleImage.setVisibility(View.GONE);
-            mActionBarTitleText.setText(got_character);
+            mActionBarTitleText.setText(gotCharacter);
             mActionBarTitleText.setTypeface(new Fonts().getKanjiFont(this));
             mActionBarTitleText.setVisibility(View.VISIBLE);
         }
@@ -168,12 +172,16 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mMeaning = (TextView) findViewById(R.id.details_meaning);
 
         mAlternativeMeaningsAndUserSynonymsCard = (LinearLayout) findViewById(R.id.details_aternative_meanings_and_user_synonyms_card);
+        mAlternativeMeaningsAndUserSynonymsCard.setBackgroundResource(themeMan.getCard());
+
         mAlternativeMeanings = (TextView) findViewById(R.id.details_alternative_meanings);
         mAlternativeMeaningsHolder = (LinearLayout) findViewById(R.id.details_alternative_meanings_holder);
         mUserSynonyms = (TextView) findViewById(R.id.details_user_synonyms);
         mUserSynonymsHolder = (LinearLayout) findViewById(R.id.details_user_synonyms_holder);
 
         mReadingsCard = (LinearLayout) findViewById(R.id.details_readings_card);
+        mReadingsCard.setBackgroundResource(themeMan.getCard());
+
         mReading = (TextView) findViewById(R.id.details_reading);
         mReadingHolder = (LinearLayout) findViewById(R.id.details_readings_reading_holder);
         mOnyomi = (TextView) findViewById(R.id.details_readings_onyomi);
@@ -183,9 +191,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         mReadingNote = (TextView) findViewById(R.id.details_reading_note);
         mReadingNoteCard = (LinearLayout) findViewById(R.id.details_reading_note_card);
+        mReadingNoteCard.setBackgroundResource(themeMan.getCard());
 
         mMeaningNote = (TextView) findViewById(R.id.details_meaning_note);
         mMeaningNoteCard = (LinearLayout) findViewById(R.id.details_meaning_note_card);
+        mMeaningNoteCard.setBackgroundResource(themeMan.getCard());
 
         mLocked = (LinearLayout) findViewById(R.id.details_progress_locked);
         mBurned = (LinearLayout) findViewById(R.id.details_progress_burned);
@@ -193,6 +203,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mProgressContent = (LinearLayout) findViewById(R.id.details_progress_content);
 
         mProgressCard = (LinearLayout) findViewById(R.id.details_progress_card);
+        mProgressCard.setBackgroundResource(themeMan.getCard());
+
         mProgressTitle = (TextView) findViewById(R.id.details_progress_title);
         mSRSLogo = (ImageView) findViewById(R.id.details_progress_srs_logo);
         mSRSLevel = (TextView) findViewById(R.id.details_progress_srs_level);
@@ -246,15 +258,15 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 Intent intent = new Intent(this, Browser.class);
                 intent.putExtra(Browser.ARG_ACTION, Browser.ACTION_ITEM_DETAILS);
 
-                if (got_type.equals(TYPE_RADICAL)) {
+                if (gotType.equals(TYPE_RADICAL)) {
                     intent.putExtra(Browser.ARG_ITEM_TYPE, TYPE_RADICAL);
                     intent.putExtra(Browser.ARG_ITEM, mMeaning.getText().toString());
                 }
-                if (got_type.equals(TYPE_KANJI)) {
+                if (gotType.equals(TYPE_KANJI)) {
                     intent.putExtra(Browser.ARG_ITEM_TYPE, TYPE_KANJI);
                     intent.putExtra(Browser.ARG_ITEM, mCharacter.getText().toString());
                 }
-                if (got_type.equals(TYPE_VOCABULARY)) {
+                if (gotType.equals(TYPE_VOCABULARY)) {
                     intent.putExtra(Browser.ARG_ITEM_TYPE, TYPE_VOCABULARY);
                     intent.putExtra(Browser.ARG_ITEM, mCharacter.getText().toString());
                 }
@@ -295,13 +307,13 @@ public class ItemDetailsActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                if (got_type.equals(TYPE_RADICAL)) {
-                    List<RadicalsList.RadicalItem> list = api.getRadicalsList(got_level + "");
+                if (gotType.equals(TYPE_RADICAL)) {
+                    List<RadicalsList.RadicalItem> list = api.getRadicalsList(gotLevel + "");
 
-                    if (got_character != null) {
+                    if (gotCharacter != null) {
                         for (int i = 0; i < list.size(); i++) {
                             if (list.get(i).character != null) {
-                                if (list.get(i).character.equals(got_character)) {
+                                if (list.get(i).character.equals(gotCharacter)) {
                                     radicalItem = list.get(i);
                                     break;
                                 }
@@ -310,7 +322,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                     } else {
                         for (int i = 0; i < list.size(); i++) {
                             if (list.get(i).image != null) {
-                                if (list.get(i).image.equals(got_image)) {
+                                if (list.get(i).image.equals(gotImage)) {
                                     radicalItem = list.get(i);
                                     break;
                                 }
@@ -319,22 +331,22 @@ public class ItemDetailsActivity extends ActionBarActivity {
                     }
                 }
 
-                if (got_type.equals(TYPE_KANJI)) {
-                    List<KanjiList.KanjiItem> list = api.getKanjiList(got_level + "");
+                if (gotType.equals(TYPE_KANJI)) {
+                    List<KanjiList.KanjiItem> list = api.getKanjiList(gotLevel + "");
 
                     for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).character.equals(got_character)) {
+                        if (list.get(i).character.equals(gotCharacter)) {
                             kanjiItem = list.get(i);
                             break;
                         }
                     }
                 }
 
-                if (got_type.equals(TYPE_VOCABULARY)) {
-                    List<VocabularyList.VocabularyItem> list = api.getVocabularyList(got_level + "");
+                if (gotType.equals(TYPE_VOCABULARY)) {
+                    List<VocabularyList.VocabularyItem> list = api.getVocabularyList(gotLevel + "");
 
                     for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).character.equals(got_character)) {
+                        if (list.get(i).character.equals(gotCharacter)) {
                             vocabularyItem = list.get(i);
                             break;
                         }
@@ -352,7 +364,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
             super.onPostExecute(result);
 
             if (result.equals("success")) {
-                if (got_type.equals(TYPE_RADICAL)) {
+                if (gotType.equals(TYPE_RADICAL)) {
                     switchToRadicalMode();
 
                     mLevel.setText(radicalItem.level + "");
@@ -434,7 +446,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         mLocked.setVisibility(View.VISIBLE);
                     }
                 }
-                if (got_type.equals(TYPE_KANJI)) {
+                if (gotType.equals(TYPE_KANJI)) {
                     switchToKanjiMode();
 
                     mLevel.setText(kanjiItem.level + "");
@@ -542,7 +554,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             mReadingCurrentStreak.setText(kanjiItem.user_specific.reading_current_streak + "");
                         }
                     } else {
-                        mProgressCard.setBackgroundResource(R.drawable.card_pressed);
+                        mProgressCard.setBackgroundResource(R.drawable.card_light_pressed);
                         if (mAlternativeMeaningsHolder.getVisibility() == View.GONE) {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         } else {
@@ -555,7 +567,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         mProgressTitle.setVisibility(View.GONE);
                     }
                 }
-                if (got_type.equals(TYPE_VOCABULARY)) {
+                if (gotType.equals(TYPE_VOCABULARY)) {
                     switchToVocabularyMode();
 
                     mLevel.setText(vocabularyItem.level + "");
@@ -647,7 +659,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             mReadingCurrentStreak.setText(vocabularyItem.user_specific.reading_current_streak + "");
                         }
                     } else {
-                        mProgressCard.setBackgroundResource(R.drawable.card_pressed);
+                        mProgressCard.setBackgroundResource(R.drawable.card_light_pressed);
                         if (mAlternativeMeaningsHolder.getVisibility() == View.GONE) {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         } else {

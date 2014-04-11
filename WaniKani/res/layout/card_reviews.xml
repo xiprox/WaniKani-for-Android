@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_reviews_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card"
+    android:background="@drawable/card_light"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -71,7 +72,7 @@
             android:layout_height="1px"
             android:layout_centerHorizontal="true"
             android:layout_margin="8dp"
-            android:background="@color/separator_light"
+            android:background="@color/separator"
             android:padding="8dp" />
 
         <RelativeLayout
@@ -130,7 +131,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="8dp"
-                android:background="@color/separator_light"
+                android:background="@color/separator"
                 android:padding="8dp" />
 
             <RelativeLayout
