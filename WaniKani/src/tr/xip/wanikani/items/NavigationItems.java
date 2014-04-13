@@ -13,6 +13,9 @@ public class NavigationItems {
 
     public NavigationItems() {
         addItem(new NavItem(R.drawable.ic_dashboard, R.string.title_dashboard));
+        addItem(new NavItem(R.drawable.ic_radicals, R.string.title_radicals));
+        addItem(new NavItem(R.drawable.ic_kanji, R.string.title_kanji));
+        addItem(new NavItem(R.drawable.ic_vocabulary, R.string.title_vocabulary));
     }
 
     public static class NavItem {

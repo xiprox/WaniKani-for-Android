@@ -8,6 +8,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
     <string name="title_settings">Settings</string>
+    <string name="title_radicals">Radicals</string>
+    <string name="title_kanji">Kanji</string>
+    <string name="title_vocabulary">Vocabulary</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
