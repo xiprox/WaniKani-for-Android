@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_critical_items_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card"
+    android:background="@drawable/card_light"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -75,7 +76,9 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="8dp"
-                        android:textColor="@color/text_gray" />
+                        android:textColor="@color/text_gray"
+                        android:divider="@color/separator"
+                        android:dividerHeight="1px" />
                 </LinearLayout>
 
             </LinearLayout>

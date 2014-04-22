@@ -16,10 +16,12 @@ import android.widget.ViewSwitcher;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
 
 public class FirstTimeActivity extends ActionBarActivity {
 
     WaniKaniApi api;
+    ThemeManager themeMan;
     PrefManager prefMan;
 
     EditText mApiKey;
@@ -32,13 +34,16 @@ public class FirstTimeActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_time);
-
-        context = getApplicationContext();
+        context = this;
 
         api = new WaniKaniApi(getApplicationContext());
         prefMan = new PrefManager(getApplicationContext());
+        themeMan = new ThemeManager(this);
+
+        setTheme(themeMan.getTheme());
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_first_time);
 
         mApiKey = (EditText) findViewById(R.id.first_time_api_key);
         mHowTo = (Button) findViewById(R.id.first_time_how_to_api_key);

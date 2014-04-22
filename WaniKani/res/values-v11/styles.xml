@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.ActionBar.Light" parent="Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.Light.Title</item>
-    </style>
+    <style name="AlertDialog" parent="@android:style/Theme.Holo.Light.Dialog"></style>
 
     <style name="ProgressBarRadical" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/radical_progress_horizontal_holo_light
@@ -18,10 +16,6 @@
         <item name="android:indeterminateDrawable">
             @drawable/kanji_progress_indeterminate_horizontal_holo_light
         </item>
-    </style>
-
-    <style name="AppTheme.ActionBar.Light.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/text_gray</item>
     </style>
 
 </resources>

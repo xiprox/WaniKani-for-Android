@@ -23,9 +23,10 @@
                 android:padding="16dp">
 
                 <LinearLayout
+                    android:id="@+id/profile_avatar_card"
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
-                    android:background="@drawable/card"
+                    android:background="@drawable/card_light"
                     android:paddingBottom="2dp"
                     android:orientation="horizontal">
 
@@ -146,10 +147,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/profile_about_holder"
+                    android:id="@+id/profile_about_card"
                     android:layout_width="match_parent"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/card"
+                    android:background="@drawable/card_light"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
@@ -163,13 +164,14 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/profile_details_card"
                     android:layout_width="match_parent"
                     android:layout_marginTop="12dp"
                     android:paddingRight="12dp"
                     android:paddingLeft="12dp"
                     android:paddingBottom="2dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/card"
+                    android:background="@drawable/card_light"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -201,7 +203,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1px"
                             android:layout_alignParentBottom="true"
-                            android:background="@color/separator_light" />
+                            android:background="@color/separator" />
 
                     </RelativeLayout>
 
@@ -241,7 +243,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1px"
                             android:layout_alignParentTop="true"
-                            android:background="@color/separator_light" />
+                            android:background="@color/separator" />
 
                         <TextView
                             style="@style/Widget.TextView.Light"
@@ -276,7 +278,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1px"
                             android:layout_alignParentTop="true"
-                            android:background="@color/separator_light" />
+                            android:background="@color/separator" />
 
                         <TextView
                             style="@style/Widget.TextView.Light"

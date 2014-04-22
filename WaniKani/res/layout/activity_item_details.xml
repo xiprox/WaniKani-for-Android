@@ -101,7 +101,7 @@
             android:id="@+id/details_aternative_meanings_and_user_synonyms_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card"
+            android:background="@drawable/card_light"
             android:orientation="vertical"
             android:layout_marginBottom="12dp"
             android:padding="8dp">
@@ -164,7 +164,7 @@
             android:id="@+id/details_readings_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card"
+            android:background="@drawable/card_light"
             android:orientation="vertical"
             android:padding="8dp"
             android:layout_marginBottom="12dp">
@@ -257,7 +257,7 @@
             android:id="@+id/details_reading_note_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card"
+            android:background="@drawable/card_light"
             android:orientation="vertical"
             android:padding="8dp"
             android:layout_marginBottom="12dp">
@@ -285,7 +285,7 @@
             android:id="@+id/details_meaning_note_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card"
+            android:background="@drawable/card_light"
             android:orientation="vertical"
             android:padding="8dp"
             android:layout_marginBottom="12dp">
@@ -313,7 +313,7 @@
             android:id="@+id/details_progress_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/card"
+            android:background="@drawable/card_light"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -475,7 +475,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -509,7 +509,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -543,7 +543,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -577,7 +577,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -611,7 +611,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -652,7 +652,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentTop="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                     <TextView
                         style="@style/Widget.TextView.Light"
@@ -679,7 +679,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -713,7 +713,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 
@@ -747,7 +747,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/separator_light" />
+                        android:background="@color/separator" />
 
                 </RelativeLayout>
 

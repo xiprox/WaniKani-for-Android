@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -22,6 +23,7 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -33,6 +35,7 @@ public class StatusCard extends Fragment {
     PrefManager prefMan;
     OfflineDataManager dataMan;
     Utils utils;
+    ThemeManager themeMan;
 
     View rootView;
 
@@ -63,6 +66,8 @@ public class StatusCard extends Fragment {
 
     RelativeLayout mDetailsUp;
 
+    LinearLayout mCard;
+
     SRSDistribution srs;
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -84,6 +89,7 @@ public class StatusCard extends Fragment {
         prefMan = new PrefManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
+        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -124,6 +130,9 @@ public class StatusCard extends Fragment {
         mDetailsSRSLogo = (ImageView) rootView.findViewById(R.id.card_status_details_srs_logo);
         mDetailsSRSLevel = (TextView) rootView.findViewById(R.id.card_status_details_srs_level);
         mDetailsUp = (RelativeLayout) rootView.findViewById(R.id.card_status_details_up_button);
+
+        mCard = (LinearLayout) rootView.findViewById(R.id.card_status_card);
+        mCard.setBackgroundResource(themeMan.getCard());
 
         setOnClickListeners();
 

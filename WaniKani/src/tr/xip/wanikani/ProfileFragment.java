@@ -28,6 +28,8 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.utils.CircleTransformation;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -50,7 +52,10 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     TextView mWebsite;
     TextView mTwitter;
 
-    LinearLayout mAboutHolder;
+    LinearLayout mAvatarCard;
+    LinearLayout mAboutCard;
+    LinearLayout mDetailsCard;
+
     RelativeLayout mWebsiteHolder;
     RelativeLayout mTwitterHolder;
 
@@ -59,6 +64,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     WaniKaniApi api;
     OfflineDataManager dataMan;
     PrefManager prefMan;
+    ThemeManager themeMan;
 
     private PullToRefreshLayout mPullToRefreshLayout;
 
@@ -109,6 +115,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         prefMan = new PrefManager(getActivity());
+        themeMan = new ThemeManager(getActivity());
 
         mAvatar = (ImageView) rootView.findViewById(R.id.profile_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.profile_username);
@@ -121,7 +128,14 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         mWebsite = (TextView) rootView.findViewById(R.id.profile_website);
         mTwitter = (TextView) rootView.findViewById(R.id.profile_twitter);
 
-        mAboutHolder = (LinearLayout) rootView.findViewById(R.id.profile_about_holder);
+        mAvatarCard = (LinearLayout) rootView.findViewById(R.id.profile_avatar_card);
+        mAboutCard = (LinearLayout) rootView.findViewById(R.id.profile_about_card);
+        mDetailsCard = (LinearLayout) rootView.findViewById(R.id.profile_details_card);
+
+        mAvatarCard.setBackgroundResource(themeMan.getCard());
+        mAboutCard.setBackgroundResource(themeMan.getCard());
+        mDetailsCard.setBackgroundResource(themeMan.getCard());
+
         mWebsiteHolder = (RelativeLayout) rootView.findViewById(R.id.profile_website_holder);
         mTwitterHolder = (RelativeLayout) rootView.findViewById(R.id.profile_twitter_holder);
 
@@ -182,9 +196,9 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
         if (dataMan.getAbout().length() != 0) {
             mAbout.setText(dataMan.getAbout());
-            mAboutHolder.setVisibility(View.VISIBLE);
+            mAboutCard.setVisibility(View.VISIBLE);
         } else {
-            mAboutHolder.setVisibility(View.GONE);
+            mAboutCard.setVisibility(View.GONE);
         }
 
         if (dataMan.getWebsite().length() != 0) {
@@ -245,6 +259,15 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         String twitter;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Picasso.with(context)
+                    .load(R.drawable.profile_loading)
+                    .fit()
+                    .into(mAvatar);
+        }
+
+        @Override
         protected String doInBackground(Void... voids) {
             try {
                 user = api.getUser();
@@ -289,9 +312,9 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
                 if (about.length() != 0) {
                     mAbout.setText(about);
-                    mAboutHolder.setVisibility(View.VISIBLE);
+                    mAboutCard.setVisibility(View.VISIBLE);
                 } else {
-                    mAboutHolder.setVisibility(View.GONE);
+                    mAboutCard.setVisibility(View.GONE);
                 }
 
                 if (website != null && website.length() != 0) {

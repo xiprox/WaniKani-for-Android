@@ -33,6 +33,8 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.items.NavigationItems;
 import tr.xip.wanikani.managers.OfflineDataManager;
+import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.utils.CircleTransformation;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -44,6 +46,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     WaniKaniApi api;
     OfflineDataManager dataMan;
+    ThemeManager themeMan;
 
     ImageView mAvatar;
     TextView mUsername;
@@ -69,6 +72,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
+        themeMan = new ThemeManager(getActivity());
 
         context = getActivity();
 
@@ -93,6 +97,8 @@ public class NavigationDrawerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
+
+        rootView.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
 
         mDrawerListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_view);
         mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
@@ -274,6 +280,16 @@ public class NavigationDrawerFragment extends Fragment {
         String username;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Picasso.with(context)
+                    .load(R.drawable.profile_loading)
+                    .fit()
+                    .transform(new CircleTransformation())
+                    .into(mAvatar);
+        }
+
+        @Override
         protected String doInBackground(Void... voids) {
             try {
                 user = api.getUser();
@@ -291,9 +307,9 @@ public class NavigationDrawerFragment extends Fragment {
             super.onPostExecute(result);
             Picasso.with(context)
                     .load("http://www.gravatar.com/avatar/" + gravatar + "?s=100")
-                    .placeholder(R.drawable.profile_loading)
                     .error(R.drawable.profile_error)
                     .fit()
+                    .transform(new CircleTransformation())
                     .into(mAvatar);
 
             if (result.equals("success")) {

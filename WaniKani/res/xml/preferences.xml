@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="pref_api_key"
+        android:title="@string/pref_title_apikey" />
+    <ListPreference
+        android:key="pref_theme"
+        android:title="@string/pref_title_theme"
+        android:summary="@string/pref_summary_theme"
+        android:entryValues="@array/pref_values_theme"
+        android:entries="@array/pref_entries_theme"
+        android:defaultValue="light" />
+
+    <PreferenceCategory android:title="@string/pref_category_dashboard">
+        <tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference
+            android:key="pref_dashboard_recent_unlock_number"
+            android:title="@string/pref_title_recent_unlocks"
+            android:summary="@string/pref_summary_recent_unlocks"
+            android:defaultValue="10"/>
+        <tr.xip.wanikani.settings.preferences.CriticalItemsPercentagePreference
+            android:key="pref_dashboard_critical_items_percentage"
+            android:title="@string/pref_title_critical_items_percentage"
+            android:summary="@string/pref_summary_critical_items_percentage"
+            android:defaultValue="75" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

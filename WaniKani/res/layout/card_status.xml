@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_status_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card"
+    android:background="@drawable/card_light"
     android:orientation="vertical">
 
     <TextView
@@ -88,7 +89,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="8dp"
-                    android:background="@color/separator_light"
+                    android:background="@color/separator"
                     android:padding="8dp" />
 
                 <RelativeLayout
@@ -146,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_centerHorizontal="true"
-                android:background="@color/separator_light" />
+                android:background="@color/separator" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -206,7 +207,7 @@
                     android:layout_width="1px"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/separator_light"
+                    android:background="@color/separator"
                     android:padding="8dp" />
 
                 <RelativeLayout
@@ -264,7 +265,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_centerHorizontal="true"
-                android:background="@color/separator_light" />
+                android:background="@color/separator" />
 
             <RelativeLayout
                 android:id="@+id/card_status_burned_parent"
@@ -396,7 +397,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:background="@color/separator_light" />
+                            android:background="@color/separator" />
 
                     </RelativeLayout>
 
@@ -432,7 +433,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:background="@color/separator_light" />
+                            android:background="@color/separator" />
 
                     </RelativeLayout>
 
@@ -468,7 +469,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:background="@color/separator_dark" />
+                            android:background="@color/separator" />
 
                     </RelativeLayout>
 
@@ -529,7 +530,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1px"
                             android:layout_alignParentTop="true"
-                            android:background="@color/separator_light" />
+                            android:background="@color/separator" />
 
                     </RelativeLayout>
                 </LinearLayout>

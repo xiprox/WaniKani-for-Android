@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -27,6 +28,8 @@ import tr.xip.wanikani.RecentUnlocksActivity;
 import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
@@ -39,6 +42,8 @@ public class RecentUnlocksCard extends Fragment {
 
     WaniKaniApi api;
     Utils utils;
+    PrefManager prefMan;
+    ThemeManager themeMan;
 
     Context mContext;
 
@@ -51,6 +56,8 @@ public class RecentUnlocksCard extends Fragment {
 
     ViewFlipper mViewFlipper;
     ViewFlipper mConnectionViewFlipper;
+
+    LinearLayout mCard;
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
 
@@ -66,6 +73,8 @@ public class RecentUnlocksCard extends Fragment {
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
+        prefMan = new PrefManager(getActivity());
+        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
@@ -91,6 +100,9 @@ public class RecentUnlocksCard extends Fragment {
         mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
         mRecentUnlocksList.setOnItemClickListener(new recentUnlocksListItemClickListener());
+
+        mCard = (LinearLayout) rootView.findViewById(R.id.card_recent_unlocks_card);
+        mCard.setBackgroundResource(themeMan.getCard());
 
         mMoreItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +150,7 @@ public class RecentUnlocksCard extends Fragment {
         @Override
         protected List<RecentUnlocksList.UnlockItem> doInBackground(String... strings) {
             try {
-                recentUnlocksList = api.getRecentUnlocksList(100); // TODO - Change this back
+                recentUnlocksList = api.getRecentUnlocksList(prefMan.getDashboardRecentUnlocksNumber());
             } catch (Exception e) {
                 e.printStackTrace();
             }

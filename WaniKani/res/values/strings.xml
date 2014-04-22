@@ -7,6 +7,10 @@
     <!-- Navigation drawer Strings -->
     <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_radicals">Radicals</string>
+    <string name="title_kanji">Kanji</string>
+    <string name="title_vocabulary">Vocabulary</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -99,6 +103,27 @@
     <string name="ptr_refreshing">Loading...</string>
     <string name="ptr_release">Release to refresh...</string>
 
+    <!-- Preferences Strings -->
+    <string name="pref_title_apikey">API Key</string>
+    <string name="pref_category_dashboard">Dashboard</string>
+    <string name="pref_title_recent_unlocks">Recent Unlocks</string>
+    <string name="pref_summary_recent_unlocks">Number of recent unlock items to display in dashboard</string>
+    <string name="pref_title_critical_items_percentage">Critical Items</string>
+    <string name="pref_summary_critical_items_percentage">All items with percentage correct below the specified percentage will be displayed</string>
+    <string name="pref_title_theme">Theme</string>
+    <string name="pref_summary_theme">Application theme</string>
+
+    <string-array name="pref_entries_theme">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="pref_values_theme">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+
     <!-- Error Strings -->
     <string name="error_no_connection">No connection!</string>
     <string name="error_items_cant_be_displayed">Items can\'t be displayed as there is no reachable internet connection</string>
@@ -111,4 +136,13 @@
     <!-- Info Strings -->
     <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
     <string name="info_loading">Loading</string>
+
+    <!-- Dialog Strings -->
+   <string name="dialog_logout">Are you sure you\'d like to logout?</string>
+
+    <!-- Other Strings -->
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

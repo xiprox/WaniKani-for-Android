@@ -13,6 +13,7 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
@@ -21,6 +22,8 @@ import tr.xip.wanikani.utils.Fonts;
 public class Browser extends ActionBarActivity {
 
     WebView mWebview;
+
+    ThemeManager themeMan;
 
     public static final String ARG_ACTION = "action";
     public static final String ARG_ITEM = "item";
@@ -38,9 +41,13 @@ public class Browser extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mWebview = new WebView(this);
+        themeMan = new ThemeManager(this);
+
+        super.onCreate(savedInstanceState);
         setContentView(mWebview);
+
+        getSupportActionBar().setIcon(R.drawable.ic_wanikani_stamp);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View mActionBarView = inflater.inflate(R.layout.actionbar_custom, null);

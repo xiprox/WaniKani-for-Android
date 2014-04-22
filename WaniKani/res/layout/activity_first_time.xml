@@ -58,7 +58,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/separator_mid"
+                android:background="@color/separator_login"
                 android:layout_above="@+id/first_time_sign_in" />
 
             <Button

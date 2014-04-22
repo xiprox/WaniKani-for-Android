@@ -1,30 +1,24 @@
 package tr.xip.wanikani;
 
 import android.annotation.TargetApi;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
-
-import com.cocosw.undobar.UndoBarController;
-import com.cocosw.undobar.UndoBarStyle;
 
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -38,6 +32,7 @@ public class MainActivity extends ActionBarActivity
     public String TAG = "WANIKANI";
 
     PrefManager prefMan;
+    ThemeManager themeMan;
 
     @Override
     public void onResume() {
@@ -52,8 +47,12 @@ public class MainActivity extends ActionBarActivity
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        prefMan = new PrefManager(this);
+        themeMan = new ThemeManager(this);
+
+        setTheme(themeMan.getTheme());
+
         super.onCreate(savedInstanceState);
-        prefMan = new PrefManager(getApplicationContext());
 
         if(prefMan.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
@@ -61,6 +60,8 @@ public class MainActivity extends ActionBarActivity
         }
 
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setIcon(R.drawable.ic_wanikani_stamp);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -116,9 +117,11 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.action_logout:
-                prefMan.logout();
-                startActivity(new Intent(this, FirstTimeActivity.class));
-                finish();
+                showlogoutDialog();
+                break;
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -131,5 +134,24 @@ public class MainActivity extends ActionBarActivity
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+    }
+
+    private void showlogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_logout)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        prefMan.logout();
+                        startActivity(new Intent(getApplicationContext(), FirstTimeActivity.class));
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        builder.create().show();
     }
 }
