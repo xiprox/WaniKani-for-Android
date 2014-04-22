@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WaniKani.iml" filepath="$PROJECT_DIR$/WaniKani.iml" />
-      <module fileurl="file://$PROJECT_DIR$/WaniKani/WaniKani-WaniKani.iml" filepath="$PROJECT_DIR$/WaniKani/WaniKani-WaniKani.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WaniKani/WaniKani.iml" filepath="$PROJECT_DIR$/WaniKani/WaniKani.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wanikani.iml" filepath="$PROJECT_DIR$/wanikani.iml" />
     </modules>
   </component>
 </project>

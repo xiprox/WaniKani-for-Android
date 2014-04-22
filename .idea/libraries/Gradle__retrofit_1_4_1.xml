@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: retrofit-1.4.1">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/WaniKani/libs/retrofit-1.4.1.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
