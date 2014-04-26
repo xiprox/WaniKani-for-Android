@@ -26,6 +26,7 @@
         <activity
             android:name=".Browser"
             android:theme="@style/ThemeWanikanilight"
+            android:screenOrientation="portrait"
             android:parentActivityName="tr.xip.wanikani.MainActivity" />
         <activity
             android:name=".ItemDetailsActivity"
