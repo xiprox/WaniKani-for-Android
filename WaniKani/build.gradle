@@ -62,7 +62,7 @@ android {
         compile 'com.android.support:support-v4:19.0.1'
         compile 'com.android.support:appcompat-v7:19.0.1'
         compile 'com.android.support:gridlayout-v7:18.0.+'
-        compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
+        compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:0.9.9'
         compile 'net.simonvt.numberpicker:android-numberpicker:1.0.0'
         compile 'com.cocosw:undobar:1.+@aar'
         compile files('libs/retrofit-1.4.1.jar')
