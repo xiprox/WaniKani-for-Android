@@ -1,5 +1,6 @@
 package tr.xip.wanikani.settings;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -27,6 +28,10 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     public void onBackPressed() {
-        super.onNavigateUp();
+        if (Build.VERSION.SDK_INT >= 16) {
+            super.onNavigateUp();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

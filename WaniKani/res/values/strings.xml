@@ -119,7 +119,7 @@
     <string name="pref_title_critical_items_percentage">Critical Items</string>
     <string name="pref_summary_critical_items_percentage">All items with percentage correct below the specified percentage will be displayed</string>
     <string name="pref_title_theme">Theme</string>
-    <string name="pref_summary_theme">Application theme</string>
+    <string name="pref_summary_theme">Application theme. May require restart to take effect.</string>
 
     <string-array name="pref_entries_theme">
         <item>Light</item>
