@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 
@@ -109,6 +110,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
     TextView mReadingMaxStreak;
     RelativeLayout mReadingCurrentStreakHolder;
     TextView mReadingCurrentStreak;
+
+    ViewFlipper mViewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +231,10 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mReadingMaxStreak = (TextView) findViewById(R.id.details_progress_reading_max_streak);
         mReadingCurrentStreakHolder = (RelativeLayout) findViewById(R.id.details_progress_reading_current_streak_holder);
         mReadingCurrentStreak = (TextView) findViewById(R.id.details_progress_reading_current_streak);
+
+        mViewFlipper = (ViewFlipper) findViewById(R.id.details_view_flipper);
+        mViewFlipper.setInAnimation(this, R.anim.abc_fade_in);
+        mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);
 
         mCharacter.setTypeface(new Fonts().getKanjiFont(this));
         mReading.setTypeface(new Fonts().getKanjiFont(this));
@@ -671,6 +678,10 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         mLocked.setVisibility(View.VISIBLE);
                         mProgressTitle.setVisibility(View.GONE);
                     }
+                }
+
+                if(mViewFlipper.getDisplayedChild() == 0) {
+                    mViewFlipper.showNext();
                 }
             } else {
                 Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
