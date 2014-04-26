@@ -51,28 +51,28 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/card_critical_items_message_icon"
                         android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_action_warning"
                         android:layout_gravity="center_horizontal" />
 
                     <TextView
                         style="@style/Widget.TextView.Light"
+                        android:id="@+id/card_critical_items_message_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/error_no_connection"
                         android:layout_marginBottom="8dp"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/text_gray" />
 
                     <TextView
                         style="@style/Widget.TextView.Light"
+                        android:id="@+id/card_critical_items_message_summary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/error_items_cant_be_displayed"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="8dp"

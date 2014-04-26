@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -52,9 +53,13 @@ public class CriticalItemsCard extends Fragment {
     CriticalItemsAdapter mCriticalItemsAdapter;
 
     ViewFlipper mViewFlipper;
-    ViewFlipper mConnectionViewFlipper;
+    ViewFlipper mMessageViewFlipper;
 
     LinearLayout mCard;
+
+    ImageView mMessageIcon;
+    TextView mMessageTitle;
+    TextView mMessageSummary;
 
     List<CriticalItemsList.CriticalItem> criticalItemsList = null;
 
@@ -90,12 +95,16 @@ public class CriticalItemsCard extends Fragment {
         mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
-        mConnectionViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_critical_items_connection_view_flipper);
-        mConnectionViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
-        mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
+        mMessageViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_critical_items_connection_view_flipper);
+        mMessageViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
+        mMessageViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_critical_items_card);
         mCard.setBackgroundResource(themeMan.getCard());
+
+        mMessageIcon = (ImageView) rootView.findViewById(R.id.card_critical_items_message_icon);
+        mMessageTitle = (TextView) rootView.findViewById(R.id.card_critical_items_message_title);
+        mMessageSummary = (TextView) rootView.findViewById(R.id.card_critical_items_message_summary);
 
         mCriticalItemsList.setOnItemClickListener(new criticalItemListItemClickListener());
 
@@ -150,18 +159,36 @@ public class CriticalItemsCard extends Fragment {
             if (result != null) {
                 mCriticalItemsAdapter = new CriticalItemsAdapter(mContext,
                         R.layout.item_critical, result, new Fonts().getKanjiFont(mContext));
-                mCriticalItemsList.setAdapter(mCriticalItemsAdapter);
-                if (mConnectionViewFlipper.getDisplayedChild() == 1) {
-                    mConnectionViewFlipper.showPrevious();
-                }
 
-                height = setCriticalItemsHeightBasedOnListView(mCriticalItemsList);
+                if (mCriticalItemsAdapter.getCount() != 0) {
+                    mCriticalItemsList.setAdapter(mCriticalItemsAdapter);
+
+                    if (mMessageViewFlipper.getDisplayedChild() == 1) {
+                        mMessageViewFlipper.showPrevious();
+                    }
+
+                    height = setCriticalItemsHeightBasedOnListView(mCriticalItemsList);
+                } else {
+                    mMessageIcon.setImageResource(R.drawable.ic_action_good);
+                    mMessageTitle.setText(R.string.card_content_critical_no_items_title);
+                    mMessageSummary.setText(R.string.card_content_critical_no_items_summary);
+
+                    if (mMessageViewFlipper.getDisplayedChild() == 0) {
+                        mMessageViewFlipper.showNext();
+                    }
+
+                    height = (int) pxFromDp(158);
+                }
             } else {
-                height = (int) pxFromDp(158);
+                mMessageIcon.setImageResource(R.drawable.ic_action_warning);
+                mMessageTitle.setText(R.string.error_oops);
+                mMessageSummary.setText(R.string.error_display_items);
 
-                if (mConnectionViewFlipper.getDisplayedChild() == 0) {
-                    mConnectionViewFlipper.showNext();
+                if (mMessageViewFlipper.getDisplayedChild() == 0) {
+                    mMessageViewFlipper.showNext();
                 }
+
+                height = (int) pxFromDp(158);
             }
 
             if (mViewFlipper.getDisplayedChild() == 0) {

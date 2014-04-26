@@ -59,6 +59,14 @@
     <string name="card_content_reviews_next_hour">Next Hour</string>
     <string name="card_content_reviews_next_day">Next Day</string>
 
+    <!-- Card Content (Critical Items) Strings -->
+    <string name="card_content_critical_no_items_title">You\'re good!</string>
+    <string name="card_content_critical_no_items_summary">Looks like you are good in your studies. All items are healthy. Well, for now...</string>
+
+    <!-- Card Content (Recent Unlocks) Strings -->
+    <string name="card_content_unlocks_no_items_title">Work harder!</string>
+    <string name="card_content_unlocks_no_items_summary">Nothing unlocked recently. You might want to get done with your current studies in order to unlock more...</string>
+
     <!-- SRS Levels -->
     <string name="srs_title_apprentice">Apprentice</string>
     <string name="srs_title_guru">Guru</string>
@@ -123,10 +131,10 @@
         <item>dark</item>
     </string-array>
 
-
     <!-- Error Strings -->
+    <string name="error_oops">Oops!</string>
     <string name="error_no_connection">No connection!</string>
-    <string name="error_items_cant_be_displayed">Items can\'t be displayed as there is no reachable internet connection</string>
+    <string name="error_display_items">There was an error displaying items. Crabigator is very sorry...</string>
     <string name="error_connection_timeout">Connection timeout</string>
     <string name="error_connection_error">Connection error</string>
     <string name="error_unknown_error">Unknown error</string>

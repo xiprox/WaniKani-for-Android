@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -55,9 +56,13 @@ public class RecentUnlocksCard extends Fragment {
     RecentUnlocksAdapter mRecentUnlocksAdapter;
 
     ViewFlipper mViewFlipper;
-    ViewFlipper mConnectionViewFlipper;
+    ViewFlipper mMessageViewFlipper;
 
     LinearLayout mCard;
+
+    ImageView mMessageIcon;
+    TextView mMessageTitle;
+    TextView mMessageSummary;
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
 
@@ -95,14 +100,18 @@ public class RecentUnlocksCard extends Fragment {
         mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
-        mConnectionViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_recent_unlocks_connection_view_flipper);
-        mConnectionViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
-        mConnectionViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
+        mMessageViewFlipper = (ViewFlipper) rootView.findViewById(R.id.card_recent_unlocks_connection_view_flipper);
+        mMessageViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
+        mMessageViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
         mRecentUnlocksList.setOnItemClickListener(new recentUnlocksListItemClickListener());
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_recent_unlocks_card);
         mCard.setBackgroundResource(themeMan.getCard());
+
+        mMessageIcon = (ImageView) rootView.findViewById(R.id.card_recent_unlocks_message_icon);
+        mMessageTitle = (TextView) rootView.findViewById(R.id.card_recent_unlocks_message_title);
+        mMessageSummary = (TextView) rootView.findViewById(R.id.card_recent_unlocks_message_summary);
 
         mMoreItemsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,15 +173,33 @@ public class RecentUnlocksCard extends Fragment {
             if (result != null) {
                 mRecentUnlocksAdapter = new RecentUnlocksAdapter(mContext,
                         R.layout.item_recent_unlock, result, new Fonts().getKanjiFont(mContext));
-                mRecentUnlocksList.setAdapter(mRecentUnlocksAdapter);
-                if (mConnectionViewFlipper.getDisplayedChild() == 1) {
-                    mConnectionViewFlipper.showPrevious();
-                }
 
-                height = setRecentUnlocksHeightBasedOnListView(mRecentUnlocksList);
+                if (mRecentUnlocksAdapter.getCount() != 0) {
+                    mRecentUnlocksList.setAdapter(mRecentUnlocksAdapter);
+
+                    if (mMessageViewFlipper.getDisplayedChild() == 1) {
+                        mMessageViewFlipper.showPrevious();
+                    }
+
+                    height = setRecentUnlocksHeightBasedOnListView(mRecentUnlocksList);
+                } else {
+                    mMessageIcon.setImageResource(R.drawable.ic_review_box);
+                    mMessageTitle.setText(R.string.card_content_unlocks_no_items_title);
+                    mMessageSummary.setText(R.string.card_content_unlocks_no_items_summary);
+
+                    if (mMessageViewFlipper.getDisplayedChild() == 0) {
+                        mMessageViewFlipper.showNext();
+                    }
+                    
+                    height = (int) pxFromDp(158);
+                }
             } else {
-                if (mConnectionViewFlipper.getDisplayedChild() == 0) {
-                    mConnectionViewFlipper.showNext();
+                mMessageIcon.setImageResource(R.drawable.ic_action_warning);
+                mMessageTitle.setText(R.string.error_oops);
+                mMessageSummary.setText(R.string.error_display_items);
+
+                if (mMessageViewFlipper.getDisplayedChild() == 0) {
+                    mMessageViewFlipper.showNext();
                 }
 
                 height = (int) pxFromDp(158);
