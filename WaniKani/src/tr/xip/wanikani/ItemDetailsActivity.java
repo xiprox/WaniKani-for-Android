@@ -495,7 +495,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             }
                         }
                     } else {
-                        mAlternativeMeaningsHolder.setVisibility(View.GONE);
+                        if (kanjiItem.user_specific == null || kanjiItem.user_specific.user_synonyms == null) {
+                            mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
+                        } else {
+                            mAlternativeMeaningsHolder.setVisibility(View.GONE);
+                        }
                     }
 
                     if (kanjiItem.onyomi != null) {
@@ -632,7 +636,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             }
                         }
                     } else {
-                        mAlternativeMeaningsHolder.setVisibility(View.GONE);
+                        if (vocabularyItem.user_specific == null || vocabularyItem.user_specific.user_synonyms == null) {
+                            mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
+                        } else {
+                            mAlternativeMeaningsHolder.setVisibility(View.GONE);
+                        }
                     }
 
                     if (vocabularyItem.user_specific != null) {
