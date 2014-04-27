@@ -7,12 +7,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,23 +97,28 @@ public class ItemDetailsActivity extends ActionBarActivity {
     RelativeLayout mNextAvailableHolder;
     TextView mNextAvailable;
     RelativeLayout mMeaningCorrectHolder;
-    TextView mMeaningCorrect;
+    TextView mMeaningCorrectPercentage;
     RelativeLayout mMeaningIncorrectHolder;
-    TextView mMeaningIncorrect;
+    TextView mMeaningIncorrectPercentage;
     RelativeLayout mMeaningMaxStreakHolder;
     TextView mMeaningMaxStreak;
     RelativeLayout mMeaningCurrentStreakHolder;
     TextView mMeaningCurrentStreak;
     RelativeLayout mReadingCorrectHolder;
-    TextView mReadingCorrect;
+    TextView mReadingCorrectPercentage;
     RelativeLayout mReadingIncorrectHolder;
-    TextView mReadingIncorrect;
+    TextView mReadingIncorrectPercentage;
     RelativeLayout mReadingMaxStreakHolder;
     TextView mReadingMaxStreak;
     RelativeLayout mReadingCurrentStreakHolder;
     TextView mReadingCurrentStreak;
 
-    ViewFlipper mViewFlipper;
+    ProgressBar mMeaningCorrectProgressBar;
+    ProgressBar mMeaningIncorrectProgressBar;
+    ProgressBar mReadingCorrectProgressBar;
+    ProgressBar mReadingIncorrectProgressBar;
+
+//    ViewFlipper mViewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,25 +223,30 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mNextAvailableHolder = (RelativeLayout) findViewById(R.id.details_progress_next_available_holder);
         mNextAvailable = (TextView) findViewById(R.id.details_progress_next_available);
         mMeaningCorrectHolder = (RelativeLayout) findViewById(R.id.details_progress_meaning_correct_holder);
-        mMeaningCorrect = (TextView) findViewById(R.id.details_progress_meaning_correct);
+        mMeaningCorrectPercentage = (TextView) findViewById(R.id.details_progress_meaning_correct_percentage);
         mMeaningIncorrectHolder = (RelativeLayout) findViewById(R.id.details_progress_meaning_incorrect_holder);
-        mMeaningIncorrect = (TextView) findViewById(R.id.details_progress_meaning_incorrect);
+        mMeaningIncorrectPercentage = (TextView) findViewById(R.id.details_progress_meaning_incorrect_percentage);
         mMeaningMaxStreakHolder = (RelativeLayout) findViewById(R.id.details_progress_meaning_max_streak_holder);
         mMeaningMaxStreak = (TextView) findViewById(R.id.details_progress_meaning_max_streak);
         mMeaningCurrentStreakHolder = (RelativeLayout) findViewById(R.id.details_progress_meaning_current_streak_holder);
         mMeaningCurrentStreak = (TextView) findViewById(R.id.details_progress_meaning_current_streak);
         mReadingCorrectHolder = (RelativeLayout) findViewById(R.id.details_progress_reading_correct_holder);
-        mReadingCorrect = (TextView) findViewById(R.id.details_progress_reading_correct);
+        mReadingCorrectPercentage = (TextView) findViewById(R.id.details_progress_reading_correct_percentage);
         mReadingIncorrectHolder = (RelativeLayout) findViewById(R.id.details_progress_reading_incorrect_holder);
-        mReadingIncorrect = (TextView) findViewById(R.id.details_progress_reading_incorrect);
+        mReadingIncorrectPercentage = (TextView) findViewById(R.id.details_progress_reading_incorrect_percentage);
         mReadingMaxStreakHolder = (RelativeLayout) findViewById(R.id.details_progress_reading_max_streak_holder);
         mReadingMaxStreak = (TextView) findViewById(R.id.details_progress_reading_max_streak);
         mReadingCurrentStreakHolder = (RelativeLayout) findViewById(R.id.details_progress_reading_current_streak_holder);
         mReadingCurrentStreak = (TextView) findViewById(R.id.details_progress_reading_current_streak);
 
-        mViewFlipper = (ViewFlipper) findViewById(R.id.details_view_flipper);
+        mMeaningCorrectProgressBar = (ProgressBar) findViewById(R.id.details_progress_meaning_correct_progress);
+        mMeaningIncorrectProgressBar = (ProgressBar) findViewById(R.id.details_progress_meaning_incorrect_progress);
+        mReadingCorrectProgressBar = (ProgressBar) findViewById(R.id.details_progress_reading_correct_progress);
+        mReadingIncorrectProgressBar = (ProgressBar) findViewById(R.id.details_progress_reading_incorrect_progress);
+
+        /*mViewFlipper = (ViewFlipper) findViewById(R.id.details_view_flipper);
         mViewFlipper.setInAnimation(this, R.anim.abc_fade_in);
-        mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);
+        mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);*/
 
         mCharacter.setTypeface(new Fonts().getKanjiFont(this));
         mReading.setTypeface(new Fonts().getKanjiFont(this));
@@ -443,8 +455,17 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             mUnlocked.setText(unlockDateFormat.format(radicalItem.user_specific.unlocked_date * 1000) + "");
                             mNextAvailable.setText(availableDateFormat.format(radicalItem.user_specific.available_date * 1000) + "");
 
-                            mMeaningCorrect.setText(radicalItem.user_specific.meaning_correct + "");
-                            mMeaningIncorrect.setText(radicalItem.user_specific.meaning_incorrect + "");
+                            int totalMeaningAnswers = radicalItem.user_specific.meaning_correct + radicalItem.user_specific.meaning_incorrect;
+
+                            double meaningCorrectPercentage = (double) radicalItem.user_specific.meaning_correct / totalMeaningAnswers * 100;
+                            double meaningIncorrectPercentage = (double) radicalItem.user_specific.meaning_incorrect / totalMeaningAnswers * 100;
+
+                            mMeaningCorrectPercentage.setText(meaningCorrectPercentage + "");
+                            mMeaningIncorrectPercentage.setText(meaningIncorrectPercentage + "");
+
+                            mMeaningCorrectProgressBar.setProgress((int) meaningCorrectPercentage);
+                            mMeaningIncorrectProgressBar.setProgress((int) meaningIncorrectPercentage);
+
                             mMeaningMaxStreak.setText(radicalItem.user_specific.meaning_max_streak + "");
                             mMeaningCurrentStreak.setText(radicalItem.user_specific.meaning_current_streak + "");
                         }
@@ -550,15 +571,29 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             mUnlocked.setText(unlockDateFormat.format(kanjiItem.user_specific.unlocked_date * 1000) + "");
                             mNextAvailable.setText(availableDateFormat.format(kanjiItem.user_specific.available_date * 1000) + "");
 
-                            mMeaningCorrect.setText(kanjiItem.user_specific.meaning_correct + "");
-                            mMeaningIncorrect.setText(kanjiItem.user_specific.meaning_incorrect + "");
+                            int totalMeaningAnswers = kanjiItem.user_specific.meaning_correct + kanjiItem.user_specific.meaning_incorrect;
+                            double meaningCorrectPercentage = (double) kanjiItem.user_specific.meaning_correct / totalMeaningAnswers * 100;
+                            double meaningIncorrectPercentage = (double) kanjiItem.user_specific.meaning_incorrect / totalMeaningAnswers * 100;
+
+                            int totalReadingAnswers = kanjiItem.user_specific.reading_correct + kanjiItem.user_specific.reading_incorrect;
+                            double readingCorrectPercentage = (double) kanjiItem.user_specific.reading_correct / totalReadingAnswers * 100;
+                            double readingIncorrectPercentage = (double) kanjiItem.user_specific.reading_incorrect / totalReadingAnswers * 100;
+
+                            mMeaningCorrectPercentage.setText(meaningCorrectPercentage + "");
+                            mMeaningIncorrectPercentage.setText(meaningIncorrectPercentage + "");
                             mMeaningMaxStreak.setText(kanjiItem.user_specific.meaning_max_streak + "");
                             mMeaningCurrentStreak.setText(kanjiItem.user_specific.meaning_current_streak + "");
 
-                            mReadingCorrect.setText(kanjiItem.user_specific.reading_correct + "");
-                            mReadingIncorrect.setText(kanjiItem.user_specific.reading_incorrect + "");
+                            mMeaningCorrectProgressBar.setProgress((int) meaningCorrectPercentage);
+                            mMeaningIncorrectProgressBar.setProgress((int) meaningIncorrectPercentage);
+
+                            mReadingCorrectPercentage.setText(readingCorrectPercentage + "");
+                            mReadingIncorrectPercentage.setText(readingIncorrectPercentage + "");
                             mReadingMaxStreak.setText(kanjiItem.user_specific.reading_max_streak + "");
                             mReadingCurrentStreak.setText(kanjiItem.user_specific.reading_current_streak + "");
+
+                            mReadingCorrectProgressBar.setProgress((int) readingCorrectPercentage);
+                            mReadingIncorrectProgressBar.setProgress((int) readingIncorrectPercentage);
                         }
                     } else {
                         mProgressCard.setBackgroundResource(R.drawable.card_light_pressed);
@@ -655,15 +690,29 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             mUnlocked.setText(unlockDateFormat.format(vocabularyItem.user_specific.unlocked_date * 1000) + "");
                             mNextAvailable.setText(availableDateFormat.format(vocabularyItem.user_specific.available_date * 1000) + "");
 
-                            mMeaningCorrect.setText(vocabularyItem.user_specific.meaning_correct + "");
-                            mMeaningIncorrect.setText(vocabularyItem.user_specific.meaning_incorrect + "");
+                            int totalMeaningAnswers = vocabularyItem.user_specific.meaning_correct + vocabularyItem.user_specific.meaning_incorrect;
+                            double meaningCorrectPercentage = (double) vocabularyItem.user_specific.meaning_correct / totalMeaningAnswers * 100;
+                            double meaningIncorrectPercentage = (double) vocabularyItem.user_specific.meaning_incorrect / totalMeaningAnswers * 100;
+
+                            int totalReadingAnswers = vocabularyItem.user_specific.reading_correct + vocabularyItem.user_specific.reading_incorrect;
+                            double readingCorrectPercentage = (double) vocabularyItem.user_specific.reading_correct / totalReadingAnswers * 100;
+                            double readingIncorrectPercentage = (double) vocabularyItem.user_specific.reading_incorrect / totalReadingAnswers * 100;
+
+                            mMeaningCorrectPercentage.setText(meaningCorrectPercentage + "");
+                            mMeaningIncorrectPercentage.setText(meaningIncorrectPercentage + "");
                             mMeaningMaxStreak.setText(vocabularyItem.user_specific.meaning_max_streak + "");
                             mMeaningCurrentStreak.setText(vocabularyItem.user_specific.meaning_current_streak + "");
 
-                            mReadingCorrect.setText(vocabularyItem.user_specific.reading_correct + "");
-                            mReadingIncorrect.setText(vocabularyItem.user_specific.reading_incorrect + "");
+                            mMeaningCorrectProgressBar.setProgress((int) meaningCorrectPercentage);
+                            mMeaningIncorrectProgressBar.setProgress((int) meaningIncorrectPercentage);
+
+                            mReadingCorrectPercentage.setText(readingCorrectPercentage + "");
+                            mReadingIncorrectPercentage.setText(readingIncorrectPercentage + "");
                             mReadingMaxStreak.setText(vocabularyItem.user_specific.reading_max_streak + "");
                             mReadingCurrentStreak.setText(vocabularyItem.user_specific.reading_current_streak + "");
+
+                            mReadingCorrectProgressBar.setProgress((int) readingCorrectPercentage);
+                            mReadingIncorrectProgressBar.setProgress((int) readingIncorrectPercentage);
                         }
                     } else {
                         mProgressCard.setBackgroundResource(R.drawable.card_light_pressed);
@@ -680,9 +729,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                     }
                 }
 
-                if(mViewFlipper.getDisplayedChild() == 0) {
+                /*if(mViewFlipper.getDisplayedChild() == 0) {
                     mViewFlipper.showNext();
-                }
+                }*/
             } else {
                 Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
                 finish();

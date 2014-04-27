@@ -27,6 +27,20 @@
         <item name="android:maxHeight">16dip</item>
     </style>
 
+    <style name="ProgressBarCorrect" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progressbarcorrect_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbarcorrect_progress_indeterminate_horizontal_holo_light</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
+    <style name="ProgressBarIncorrect" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progressbarincorrect_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbarincorrect_progress_indeterminate_horizontal_holo_light</item>
+        <item name="android:minHeight">16dip</item>
+        <item name="android:maxHeight">16dip</item>
+    </style>
+
     <style name="Widget.PtrHeader.wanikanilight" parent="android:Widget">
         <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanilight</item>
         <item name="ptrProgressBarColor">@color/color_apptheme</item>

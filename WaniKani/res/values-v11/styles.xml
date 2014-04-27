@@ -18,4 +18,14 @@
         </item>
     </style>
 
+    <style name="ProgressBarCorrect" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progressbarcorrect_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbarcorrect_progress_indeterminate_horizontal_holo_light</item>
+    </style>
+
+    <style name="ProgressBarIncorrect" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progressbarincorrect_progress_horizontal_holo_light</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbarincorrect_progress_indeterminate_horizontal_holo_light</item>
+    </style>
+
 </resources>
