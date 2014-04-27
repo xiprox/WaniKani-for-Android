@@ -488,9 +488,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         for (int i = 0; i < meanings.length; i++) {
                             if (i != 0) {
                                 if (i == 1) {
-                                    mAlternativeMeanings.setText(meanings[i]);
+                                    mAlternativeMeanings.setText(WordUtils.capitalize(meanings[i]));
                                 } else {
-                                    mAlternativeMeanings.setText(mAlternativeMeanings.getText().toString() + ", " + meanings[i]);
+                                    mAlternativeMeanings.setText(mAlternativeMeanings.getText().toString() + ", " + WordUtils.capitalize(meanings[i]));
                                 }
                             }
                         }
@@ -629,9 +629,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         for (int i = 0; i < meanings.length; i++) {
                             if (i != 0) {
                                 if (i == 1) {
-                                    mAlternativeMeanings.setText(meanings[i]);
+                                    mAlternativeMeanings.setText(WordUtils.capitalize(meanings[i]));
                                 } else {
-                                    mAlternativeMeanings.setText(mAlternativeMeanings.getText().toString() + ", " + meanings[i]);
+                                    mAlternativeMeanings.setText(mAlternativeMeanings.getText().toString() + ", " + WordUtils.capitalize(meanings[i]));
                                 }
                             }
                         }
