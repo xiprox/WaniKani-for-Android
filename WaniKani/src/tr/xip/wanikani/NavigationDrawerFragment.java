@@ -2,8 +2,10 @@ package tr.xip.wanikani;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,11 +32,14 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import tr.xip.wanikani.adapters.NavigationItemsAdapter;
+import tr.xip.wanikani.adapters.NavigationSecondaryItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.items.NavigationItems;
+import tr.xip.wanikani.items.NavigationSecondaryItems;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.settings.SettingsActivity;
 import tr.xip.wanikani.utils.CircleTransformation;
 
 public class NavigationDrawerFragment extends Fragment {
@@ -50,13 +56,17 @@ public class NavigationDrawerFragment extends Fragment {
 
     ImageView mAvatar;
     TextView mUsername;
+    TextView mProfileTitle;
 
     FrameLayout mProfile;
 
     private NavigationDrawerCallbacks mCallbacks;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerListView;
+
+    private ListView mMainListView;
+    private ListView mSecondaryListView;
+
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
@@ -98,16 +108,25 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
 
-        rootView.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
+        rootView.setBackgroundColor(getResources().getColor(themeMan.getNavDrawerBackgroundColor()));
 
-        mDrawerListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_view);
+
         mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
+        mProfileTitle = (TextView) rootView.findViewById(R.id.navigation_drawer_profile_title);
 
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mMainListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_main);
+        mSecondaryListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_secondary);
+
+        mMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
+                mProfileTitle.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+
+                if (mMainListView.getAdapter() != null) {
+                    ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(position);
+                }
             }
         });
 
@@ -115,9 +134,17 @@ public class NavigationDrawerFragment extends Fragment {
         mNavigationItemsAdapter = new NavigationItemsAdapter(getActivity(),
                 R.layout.item_recent_unlock, mNavigationContent.ITEMS);
 
-        mDrawerListView.setAdapter(mNavigationItemsAdapter);
+        mMainListView.setAdapter(mNavigationItemsAdapter);
 
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        mMainListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        NavigationSecondaryItems mNavSecondaryContent = new NavigationSecondaryItems();
+        NavigationSecondaryItemsAdapter mNavSecondaryItemsAdapter = new NavigationSecondaryItemsAdapter(getActivity(),
+                R.layout.item_navigation_secondary, mNavSecondaryContent.ITEMS);
+
+        mSecondaryListView.setAdapter(mNavSecondaryItemsAdapter);
+
+        mSecondaryListView.setOnItemClickListener(new SecondaryNavigationItemClickListener());
 
         mProfile = (FrameLayout) rootView.findViewById(R.id.navigation_drawer_profile);
 
@@ -129,6 +156,15 @@ public class NavigationDrawerFragment extends Fragment {
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, fragment)
                         .commit();
+
+                MainActivity.mTitle = NavigationDrawerFragment.this.getString(R.string.title_profile);
+
+                if (mMainListView.getAdapter() != null) {
+                    ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(100);
+                }
+
+                mProfileTitle.setTypeface(null, Typeface.BOLD);
+
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
             }
         });
@@ -203,8 +239,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
+        if (mMainListView != null) {
+            mMainListView.setItemChecked(position, true);
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
@@ -314,6 +350,25 @@ public class NavigationDrawerFragment extends Fragment {
 
             if (result.equals("success")) {
                 mUsername.setText(username);
+            }
+        }
+    }
+
+    private class SecondaryNavigationItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+            switch (position) {
+                case 0:
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    break;
+                case 1:
+                    // TODO - About
+                    break;
+            }
+
+            if (mDrawerLayout != null) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
             }
         }
     }

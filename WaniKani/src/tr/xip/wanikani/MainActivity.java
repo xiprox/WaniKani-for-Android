@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity
     public static boolean isFirstSyncProfileDone = false;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private CharSequence mTitle;
+    public static CharSequence mTitle;
 
     public String TAG = "WANIKANI";
 
@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity
 
         super.onCreate(savedInstanceState);
 
-        if(prefMan.isFirstLaunch()) {
+        if (prefMan.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
             finish();
         }
@@ -79,20 +79,28 @@ public class MainActivity extends ActionBarActivity
         Fragment fragment = null;
 
         switch (position) {
-            case 0: {
+            case 0:
                 fragment = new DashboardFragment();
-                getSupportActionBar().setTitle(R.string.title_dashboard);
+                mTitle = getString(R.string.title_dashboard);
                 break;
-            }
-            case 1: {
-                fragment = new ProfileFragment();
-                getSupportActionBar().setTitle(R.string.title_profile);
+            case 1:
+                fragment = null;
+                mTitle = getString(R.string.title_radicals);
                 break;
-            }
+            case 2:
+                fragment = null;
+                mTitle = getString(R.string.title_kanji);
+                break;
+            case 3:
+                fragment = null;
+                mTitle = getString(R.string.title_vocabulary);
+                break;
         }
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
+
+        if (fragment != null)
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
     }
 
     public void restoreActionBar() {
@@ -118,9 +126,6 @@ public class MainActivity extends ActionBarActivity
         switch (id) {
             case R.id.action_logout:
                 showlogoutDialog();
-                break;
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

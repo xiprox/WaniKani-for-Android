@@ -11,6 +11,7 @@
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>
     <color name="tint_black_10">#10000000</color>
+    <color name="tint_black_05">#05000000</color>
     <color name="tint_black_cc">#cc000000</color>
     <color name="tint_white_30">#30ffffff</color>
     <color name="tint_white_cc">#ccffffff</color>
@@ -18,6 +19,8 @@
     <!-- Background Colors -->
     <color name="window_background_light">#dddddd</color>
     <color name="window_background_dark">#353535</color>
+    <color name="nav_drawer_background_light">#eeeeee</color>
+    <color name="nav_drawer_background_dark">#353535</color>
     <color name="background_gray">#7a7a7a</color>
     <color name="background_disabled">#7a7a7a</color>
     <color name="background_nav_draw_lesson_review">#ffffffff</color>

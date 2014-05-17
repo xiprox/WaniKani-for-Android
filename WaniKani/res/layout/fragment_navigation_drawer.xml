@@ -1,58 +1,99 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/window_background_light"
-    android:orientation="vertical">
+    android:fadingEdge="none">
 
-    <FrameLayout
-        android:id="@+id/navigation_drawer_profile"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:foreground="@drawable/simple_item_background"
-        android:layout_height="60dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/navigation_drawer_profile"
             android:layout_width="match_parent"
-            android:background="@color/tint_black_10"
-            android:layout_height="match_parent">
+            android:foreground="@drawable/simple_item_background"
+            android:layout_height="64dp">
 
-            <ImageView
-                android:id="@+id/navigation_drawer_avatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/oval_gray"
-                android:scaleType="fitXY"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="6dp"
-                android:padding="2dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/tint_black_05"
+                android:layout_height="match_parent">
 
-            <TextView
-                style="@style/Widget.TextView.Light"
-                android:id="@+id/navigation_drawer_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/navigation_drawer_avatar"
-                android:text=""
-                android:textSize="26sp"
-                android:textColor="@color/text_gray" />
+                <ImageView
+                    android:id="@+id/navigation_drawer_avatar"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/oval_gray"
+                    android:scaleType="fitXY"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="6dp"
+                    android:padding="2dp" />
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@+id/navigation_drawer_avatar"
+                    android:layout_centerVertical="true">
 
-    </FrameLayout>
+                    <TextView
+                        android:id="@+id/navigation_drawer_profile_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/title_profile"
+                        android:fontFamily="sans-serif-light"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/text_gray" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/separator" />
+                    <TextView
+                        style="@style/Widget.TextView.Light"
+                        android:id="@+id/navigation_drawer_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/text_gray"
+                        android:textSize="16sp"
+                        android:text="username"
+                        android:maxLines="1" />
+                </LinearLayout>
+            </RelativeLayout>
+        </FrameLayout>
 
-    <ListView
-        android:id="@+id/navigation_drawer_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:choiceMode="singleChoice"
-        android:divider="@color/separator"
-        android:dividerHeight="1px"
-        tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
-</LinearLayout>
+        <ListView
+            android:id="@+id/navigation_drawer_list_main"
+            android:layout_width="match_parent"
+            android:layout_height="216dp"
+            android:choiceMode="singleChoice"
+            android:divider="@color/separator"
+            android:dividerHeight="0px"
+            tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/tint_black_05"
+            android:clickable="true">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/separator" />
+
+            <ListView
+                android:id="@+id/navigation_drawer_list_secondary"
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:choiceMode="singleChoice"
+                android:divider="@color/separator"
+                android:dividerHeight="1dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/separator" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

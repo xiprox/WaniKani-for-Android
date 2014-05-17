@@ -32,32 +32,18 @@ public class ThemeManager {
     }
 
     public int getTheme() {
-        if (getThemeName().equals(THEME_LIGHT)) {
-            return R.style.ThemeWanikanilight;
-        } else if (getThemeName().equals(THEME_DARK)) {
-            return R.style.ThemeWanikanidark;
-        } else {
-            return R.style.ThemeWanikanilight;
-        }
+        return getThemeName().equals(THEME_LIGHT) ? R.style.ThemeWanikanilight : R.style.ThemeWanikanidark;
     }
 
     public int getCard() {
-        if (getThemeName().equals(THEME_LIGHT)) {
-            return R.drawable.card_light;
-        } else if (getThemeName().equals(THEME_DARK)) {
-            return R.drawable.card_dark;
-        } else {
-            return R.drawable.card_light;
-        }
+        return getThemeName().equals(THEME_LIGHT) ? R.drawable.card_light : R.drawable.card_dark;
     }
 
     public int getWindowBackgroundColor() {
-        if (getThemeName().equals(THEME_LIGHT)) {
-            return R.color.window_background_light;
-        } else if (getThemeName().equals(THEME_DARK)) {
-            return R.color.window_background_dark;
-        } else {
-            return R.color.window_background_light;
-        }
+        return getThemeName().equals(THEME_LIGHT) ? R.color.window_background_light : R.color.window_background_dark;
+    }
+
+    public int getNavDrawerBackgroundColor() {
+        return getThemeName().equals(THEME_LIGHT) ? R.color.nav_drawer_background_light : R.color.nav_drawer_background_dark;
     }
 }

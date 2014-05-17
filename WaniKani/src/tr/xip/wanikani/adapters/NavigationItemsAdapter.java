@@ -1,6 +1,7 @@
 package tr.xip.wanikani.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,17 @@ public class NavigationItemsAdapter extends ArrayAdapter<NavigationItems.NavItem
 
     private ArrayList<NavigationItems.NavItem> items;
 
+    private int selectedItem;
+
     public NavigationItemsAdapter(Context context, int textViewResourceId,
                                   ArrayList<NavigationItems.NavItem> objects) {
         super(context, textViewResourceId, objects);
         this.items = objects;
+    }
+
+    public void selectItem(int n) {
+        this.selectedItem = n;
+        notifyDataSetChanged();
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -37,13 +45,18 @@ public class NavigationItemsAdapter extends ArrayAdapter<NavigationItems.NavItem
         NavigationItems.NavItem item = items.get(position);
 
         if (item != null) {
-            ImageView mIcon = (ImageView) v
-                    .findViewById(R.id.navigation_item_icon);
-            TextView mTitle = (TextView) v
-                    .findViewById(R.id.navigation_item_title);
+            ImageView mIcon = (ImageView) v.findViewById(R.id.navigation_item_icon);
+            TextView mTitle = (TextView) v.findViewById(R.id.navigation_item_title);
 
-            mIcon.setImageResource(item.icon);
             mTitle.setText(item.title);
+
+            if (position == selectedItem) {
+                mIcon.setImageResource(item.iconSelected);
+                mTitle.setTypeface(null, Typeface.BOLD);
+            } else {
+                mIcon.setImageResource(item.icon);
+                mTitle.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+            }
         }
 
         return v;
