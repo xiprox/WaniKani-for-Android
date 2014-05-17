@@ -1,99 +1,111 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fadingEdge="none">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/navigation_drawer_profile"
-            android:layout_width="match_parent"
-            android:foreground="@drawable/simple_item_background"
-            android:layout_height="64dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@color/tint_black_05"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/navigation_drawer_avatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/oval_gray"
-                    android:scaleType="fitXY"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="6dp"
-                    android:padding="2dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_toRightOf="@+id/navigation_drawer_avatar"
-                    android:layout_centerVertical="true">
-
-                    <TextView
-                        android:id="@+id/navigation_drawer_profile_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/title_profile"
-                        android:fontFamily="sans-serif-light"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:id="@+id/navigation_drawer_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/text_gray"
-                        android:textSize="16sp"
-                        android:text="username"
-                        android:maxLines="1" />
-                </LinearLayout>
-            </RelativeLayout>
-        </FrameLayout>
-
-        <ListView
-            android:id="@+id/navigation_drawer_list_main"
-            android:layout_width="match_parent"
-            android:layout_height="216dp"
-            android:choiceMode="singleChoice"
-            android:divider="@color/separator"
-            android:dividerHeight="0px"
-            tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
+        android:fadingEdge="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/tint_black_05"
-            android:clickable="true">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <View
+            <FrameLayout
+                android:id="@+id/navigation_drawer_profile"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/separator" />
+                android:foreground="@drawable/simple_item_background"
+                android:layout_height="64dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@color/tint_black_05"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/navigation_drawer_avatar"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/oval_gray"
+                        android:scaleType="fitXY"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="6dp"
+                        android:padding="2dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_toRightOf="@+id/navigation_drawer_avatar"
+                        android:layout_centerVertical="true">
+
+                        <TextView
+                            android:id="@+id/navigation_drawer_profile_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/title_profile"
+                            android:fontFamily="sans-serif-light"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/text_gray" />
+
+                        <TextView
+                            style="@style/Widget.TextView.Light"
+                            android:id="@+id/navigation_drawer_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/text_gray"
+                            android:textSize="16sp"
+                            android:text="username"
+                            android:maxLines="1" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </FrameLayout>
 
             <ListView
-                android:id="@+id/navigation_drawer_list_secondary"
+                android:id="@+id/navigation_drawer_list_main"
                 android:layout_width="match_parent"
-                android:layout_height="93dp"
+                android:layout_height="215dp"
                 android:choiceMode="singleChoice"
                 android:divider="@color/separator"
-                android:dividerHeight="1dp" />
+                android:dividerHeight="0px"
+                tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/separator" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/tint_black_05"
+                android:clickable="true">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/separator" />
+
+                <ListView
+                    android:id="@+id/navigation_drawer_list_secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="93dp"
+                    android:choiceMode="singleChoice"
+                    android:divider="@color/separator"
+                    android:dividerHeight="1dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/separator" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/tint_black_05" />
+
+</LinearLayout>
