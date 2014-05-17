@@ -1,0 +1,193 @@
+<?xml version="1" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@+id/radicals_list_card"
+        android:background="@drawable/card_light"
+        android:paddingBottom="2dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="12dp"
+        android:animateLayoutChanges="true">
+
+        <ViewFlipper
+            android:id="@+id/radicals_list_flipper"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inAnimation="@anim/abc_fade_in"
+            android:outAnimation="@anim/abc_fade_out">
+
+            <ProgressBar
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ViewFlipper
+                android:id="@+id/radicals_message_flipper"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inAnimation="@anim/abc_fade_in"
+                android:outAnimation="@anim/abc_fade_out">
+
+                <ListView
+                    android:scrollbarStyle="outsideOverlay"
+                    android:id="@+id/radicals_list"
+                    android:padding="8dp"
+                    android:fadingEdge="none"
+                    android:clipToPadding="false"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fastScrollEnabled="true" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/radicals_message_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp" />
+
+                        <TextView
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="@color/text_gray"
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/radicals_message_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.TextView.Light" />
+
+                        <TextView
+                            android:textColor="@color/text_gray"
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/radicals_message_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.TextView.Light" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ViewFlipper>
+        </ViewFlipper>
+    </FrameLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/radicals_legend"
+        android:background="@color/tint_black_dd"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@android:color/white"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/content_radicals_legend"
+            android:fontFamily="sans-serif-condensed" />
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+            <!-- android:src="@drawable/legend_locked" /> -->
+
+            <TextView
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/content_radicals_legend_locked"
+                android:fontFamily="sans-serif-light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+            <!--android:src="@drawable/legend_active_radical" />-->
+
+            <TextView
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/content_radicals_legend_active"
+                android:fontFamily="sans-serif-light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp" />
+            <!--android:src="@drawable/legend_burned" />-->
+
+            <TextView
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/content_radicals_legend_burned"
+                android:fontFamily="sans-serif-light" />
+        </LinearLayout>
+
+        <Button
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/radicals_legend_ok"
+            android:background="@drawable/simple_item_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/ok"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif-condensed" />
+    </LinearLayout>
+</RelativeLayout>

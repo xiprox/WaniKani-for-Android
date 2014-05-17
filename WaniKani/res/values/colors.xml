@@ -4,6 +4,7 @@
     <color name="color_apptheme">#ffb4673c</color>
 
     <!-- WaniKani Colors -->
+    <color name="wanikani_burned">#ff555555</color>
     <color name="wanikani_radical">#009ce9</color>
     <color name="wanikani_kanji">#f500a3</color>
     <color name="wanikani_vocabulary">#9d33b7</color>
@@ -13,6 +14,7 @@
     <color name="tint_black_10">#10000000</color>
     <color name="tint_black_05">#05000000</color>
     <color name="tint_black_cc">#cc000000</color>
+    <color name="tint_black_dd">#dd000000</color>
     <color name="tint_white_30">#30ffffff</color>
     <color name="tint_white_cc">#ccffffff</color>
 

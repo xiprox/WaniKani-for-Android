@@ -70,6 +70,14 @@ public class PrefManager {
         prefeditor.putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
     }
 
+    public void setLegendLearnt(boolean value) {
+        PrefManager.prefeditor.putBoolean("pref_legend_learned", value).commit();
+    }
+
+    public boolean isLegendLearnt() {
+        return PrefManager.prefs.getBoolean("pref_legend_learned", false);
+    }
+
     public void logout() {
         prefeditor.clear().commit();
 

@@ -28,6 +28,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_view_on_web">View on Web</string>
     <string name="action_more_items">More Items</string>
+    <string name="action_level">Level</string>
 
     <!-- Profile Strings -->
     <string name="content_profile_sect">Sect</string>
@@ -69,6 +70,14 @@
     <!-- Card Content (Recent Unlocks) Strings -->
     <string name="card_content_unlocks_no_items_title">Work harder!</string>
     <string name="card_content_unlocks_no_items_summary">Nothing unlocked recently. You might want to get done with your current studies in order to unlock more...</string>
+
+    <!-- Radicals Fragment Strings -->
+    <string name="content_radicals_legend">Legend</string>
+    <string name="content_radicals_legend_active">Active</string>
+    <string name="content_radicals_legend_burned">Burned</string>
+    <string name="content_radicals_legend_locked">Locked</string>
+    <string name="no_items_summary">"No items available. You probably haven't reached this level or there is a connection issue."</string>
+    <string name="no_items_title">No items!</string>
 
     <!-- SRS Levels -->
     <string name="srs_title_apprentice">Apprentice</string>
@@ -137,10 +146,11 @@
     <!-- Error Strings -->
     <string name="error_oops">Oops!</string>
     <string name="error_no_connection">No connection!</string>
-    <string name="error_display_items">There was an error displaying items. Crabigator is very sorry...</string>
+    <string name="error_display_items">There was an error displaying items</string>
     <string name="error_connection_timeout">Connection timeout</string>
     <string name="error_connection_error">Connection error</string>
     <string name="error_unknown_error">Unknown error</string>
+    <string name="error_no_levels_selected">You should select at least one level</string>
     <string name="error_couldnt_load_data">Couldn\'t load data</string>
     <string name="retry">RETRY</string>
 
@@ -149,11 +159,13 @@
     <string name="info_loading">Loading</string>
 
     <!-- Dialog Strings -->
-   <string name="dialog_logout">Are you sure you\'d like to logout?</string>
+    <string name="dialog_logout">Are you sure you\'d like to logout?</string>
+    <string name="dialog_level_level">Level</string>
 
     <!-- Other Strings -->
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="reset">Reset</string>
 </resources>

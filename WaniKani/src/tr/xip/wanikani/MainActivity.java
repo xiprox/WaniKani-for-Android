@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_dashboard);
                 break;
             case 1:
-                fragment = null;
+                fragment = new RadicalsFragment();
                 mTitle = getString(R.string.title_radicals);
                 break;
             case 2:
