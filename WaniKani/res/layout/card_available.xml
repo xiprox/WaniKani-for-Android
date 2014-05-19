@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/card_light"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <TextView
         style="@style/Widget.TextView.Light"
@@ -14,104 +13,109 @@
         android:layout_height="wrap_content"
         android:text="@string/card_title_available"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/text_gray" />
+        android:textColor="@color/text_gray"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp" />
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp">
+
+        <LinearLayout
+            android:id="@+id/card_available_lessons_parent"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/card_available_separator"
+            android:background="@drawable/simple_item_background"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingRight="8dp">
 
-            <LinearLayout
-                android:id="@+id/card_available_lessons_parent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/card_available_separator"
-                android:background="@drawable/simple_item_background"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingRight="8dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_lesson" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_lesson" />
+            <TextView
+                android:id="@+id/card_available_lessons"
+                style="@style/Widget.TextView.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:text="0"
+                android:textColor="@color/text_gray"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/card_available_lessons"
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="20sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" "
-                    android:textSize="20sp" />
+            <TextView
+                style="@style/Widget.TextView.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/card_content_available_lessons"
+                android:textColor="@color/text_gray"
+                android:textSize="20sp" />
+        </LinearLayout>
 
-                <TextView
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/card_content_available_lessons"
-                    android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
-            </LinearLayout>
+        <View
+            android:id="@+id/card_available_separator"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/separator"
+            android:padding="8dp" />
 
-            <View
-                android:id="@+id/card_available_separator"
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/separator"
-                android:padding="8dp" />
+        <LinearLayout
+            android:id="@+id/card_available_reviews_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/card_available_separator"
+            android:background="@drawable/simple_item_background"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/card_available_reviews_parent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/card_available_separator"
-                android:background="@drawable/simple_item_background"
-                android:gravity="center"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_review" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_review" />
+            <TextView
+                android:id="@+id/card_available_reviews"
+                style="@style/Widget.TextView.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:text="0"
+                android:textColor="@color/text_gray"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/card_available_reviews"
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" "
+                android:textSize="20sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" "
-                    android:textSize="20sp" />
+            <TextView
+                style="@style/Widget.TextView.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/card_content_available_reviews"
+                android:textColor="@color/text_gray"
+                android:textSize="20sp" />
+        </LinearLayout>
 
-                <TextView
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/card_content_available_reviews"
-                    android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

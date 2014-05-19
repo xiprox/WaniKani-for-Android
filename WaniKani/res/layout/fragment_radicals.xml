@@ -8,7 +8,6 @@
     <FrameLayout
         android:id="@+id/radicals_list_card"
         android:background="@drawable/card_light"
-        android:paddingBottom="2dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -34,7 +33,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inAnimation="@anim/abc_fade_in"
-                android:outAnimation="@anim/abc_fade_out">
+                android:outAnimation="@anim/abc_fade_out"
+                android:paddingBottom="2dp">
 
                 <ListView
                     android:scrollbarStyle="outsideOverlay"

@@ -27,14 +27,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
                     android:background="@drawable/card_light"
-                    android:paddingBottom="2dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/profile_avatar"
                         android:layout_width="128dp"
                         android:src="@drawable/profile_default"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="2dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -167,16 +167,15 @@
                     android:id="@+id/profile_details_card"
                     android:layout_width="match_parent"
                     android:layout_marginTop="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingLeft="12dp"
-                    android:paddingBottom="2dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/card_light"
                     android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp">
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp">
 
                         <TextView
                             style="@style/Widget.TextView.Light"
@@ -210,7 +209,9 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp">
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp">
 
                         <TextView
                             style="@style/Widget.TextView.Light"
@@ -237,7 +238,9 @@
                     <RelativeLayout
                         android:id="@+id/profile_website_holder"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp">
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp">
 
                         <View
                             android:layout_width="match_parent"
@@ -272,7 +275,9 @@
                     <RelativeLayout
                         android:id="@+id/profile_twitter_holder"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp">
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp">
 
                         <View
                             android:layout_width="match_parent"

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/card_light"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/card_critical_items_title"
@@ -15,7 +14,9 @@
         android:layout_height="wrap_content"
         android:text="@string/card_title_critical_items"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/text_gray" />
+        android:textColor="@color/text_gray"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp" />
 
     <ViewFlipper
         android:id="@+id/card_critical_items_view_flipper"

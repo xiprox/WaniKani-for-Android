@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/card_light"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <TextView
         style="@style/Widget.TextView.Light"
@@ -14,17 +13,21 @@
         android:layout_height="wrap_content"
         android:text="@string/card_title_reviews"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/text_gray" />
+        android:textColor="@color/text_gray"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/card_reviews_separator">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -70,7 +73,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_centerHorizontal="true"
             android:layout_margin="8dp"
             android:background="@color/separator"
             android:padding="8dp" />
