@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -33,6 +34,8 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
     ViewFlipper mViewFlipper;
 
+    LinearLayout mCard;
+
     RecentUnlocksAdapter mRecentUnlocksAdapter;
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
@@ -47,6 +50,9 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_unlocks);
+
+        mCard = (LinearLayout) findViewById(R.id.activity_recent_unlocks_card);
+        mCard.setBackgroundResource(themeMan.getCard());
 
         mRecentUnlocksList = (ListView) findViewById(R.id.activity_recent_unlocks_list);
 

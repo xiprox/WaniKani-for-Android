@@ -142,9 +142,7 @@ public class RecentUnlocksCard extends Fragment {
 
             totalHeight += mCardTitle.getMeasuredHeight();
             totalHeight += pxFromDp(16); // Add the paddings as well
-
-            // Disable for now
-            // totalHeight += pxFromDp(48); // Add the more items button
+            totalHeight += pxFromDp(48); // Add the more items button
 
             return totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }
@@ -190,7 +188,7 @@ public class RecentUnlocksCard extends Fragment {
                     if (mMessageViewFlipper.getDisplayedChild() == 0) {
                         mMessageViewFlipper.showNext();
                     }
-                    
+
                     height = (int) pxFromDp(158);
                 }
             } else {

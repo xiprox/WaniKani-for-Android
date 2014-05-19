@@ -50,43 +50,43 @@ public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockI
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(R.layout.item_recent_unlock, null);
-
-            mUnlockType = v.findViewById(R.id.item_recent_unlock_type);
-            mUnlockCharacter = (TextView) v.findViewById(R.id.item_recent_unlock_character);
-            mUnlockCharacterImage = (ImageView) v.findViewById(R.id.item_recent_unlock_character_image);
-            mUnlockDate = (TextView) v.findViewById(R.id.item_recent_unlock_date);
-
-            mUnlockCharacter.setTypeface(typeface);
-
-            if (item.type.equals("radical")) {
-                mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
-            }
-
-            if (item.type.equals("kanji")) {
-                mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
-            }
-
-            if (item.type.equals("vocabulary")) {
-                mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
-            }
-
-            if (item.image == null) {
-                mUnlockCharacter.setVisibility(View.VISIBLE);
-                mUnlockCharacterImage.setVisibility(View.GONE);
-                mUnlockCharacter.setText(item.character);
-                Log.d("ADAPTER", "SETTING CHAR AT " + position + " TO " + item.character);
-            } else {
-                mUnlockCharacter.setVisibility(View.GONE);
-                mUnlockCharacterImage.setVisibility(View.VISIBLE);
-                Picasso.with(context)
-                        .load(item.image)
-                        .into(mUnlockCharacterImage);
-                mUnlockCharacterImage.setColorFilter(context.getResources().getColor(R.color.text_gray), Mode.SRC_ATOP);
-            }
-
-            SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
-            mUnlockDate.setText(sdf.format(item.unlocked_date * 1000));
         }
+
+        mUnlockType = v.findViewById(R.id.item_recent_unlock_type);
+        mUnlockCharacter = (TextView) v.findViewById(R.id.item_recent_unlock_character);
+        mUnlockCharacterImage = (ImageView) v.findViewById(R.id.item_recent_unlock_character_image);
+        mUnlockDate = (TextView) v.findViewById(R.id.item_recent_unlock_date);
+
+        mUnlockCharacter.setTypeface(typeface);
+
+        if (item.type.equals("radical")) {
+            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
+        }
+
+        if (item.type.equals("kanji")) {
+            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
+        }
+
+        if (item.type.equals("vocabulary")) {
+            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
+        }
+
+        if (item.image == null) {
+            mUnlockCharacter.setVisibility(View.VISIBLE);
+            mUnlockCharacterImage.setVisibility(View.GONE);
+            mUnlockCharacter.setText(item.character);
+            Log.d("ADAPTER", "SETTING CHAR AT " + position + " TO " + item.character);
+        } else {
+            mUnlockCharacter.setVisibility(View.GONE);
+            mUnlockCharacterImage.setVisibility(View.VISIBLE);
+            Picasso.with(context)
+                    .load(item.image)
+                    .into(mUnlockCharacterImage);
+            mUnlockCharacterImage.setColorFilter(context.getResources().getColor(R.color.text_gray), Mode.SRC_ATOP);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
+        mUnlockDate.setText(sdf.format(item.unlocked_date * 1000));
 
         return v;
     }

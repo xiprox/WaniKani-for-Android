@@ -3,8 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
 
     <ViewFlipper
         android:id="@+id/activity_recent_unlocks_view_flipper"
@@ -16,12 +15,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <ListView
-            android:id="@+id/activity_recent_unlocks_list"
+        <LinearLayout
+            android:id="@+id/activity_recent_unlocks_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:clipToPadding="false" />
+            android:orientation="vertical"
+            android:background="@drawable/card_light"
+            android:layout_margin="16dp">
+
+            <ListView
+                android:id="@+id/activity_recent_unlocks_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:scrollbarStyle="outsideOverlay"
+                android:clipToPadding="false"
+                android:layout_marginBottom="2dp" />
+        </LinearLayout>
     </ViewFlipper>
 </LinearLayout>

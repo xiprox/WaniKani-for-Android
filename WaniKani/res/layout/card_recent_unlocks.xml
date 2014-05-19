@@ -16,7 +16,7 @@
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:textColor="@color/text_gray"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
     <ViewFlipper
         android:id="@+id/card_recent_unlocks_view_flipper"
@@ -45,8 +45,8 @@
                     android:padding="12dp"
                     android:scrollbarStyle="outsideOverlay"
                     android:divider="@color/separator"
-                    android:dividerHeight="1px"/>
-                <!--android:layout_marginBottom="48dp"-->
+                    android:dividerHeight="1px"
+                    android:layout_marginBottom="48dp" />
 
                 <RelativeLayout
                     android:id="@+id/card_recent_unlocks_more_button"
@@ -54,8 +54,7 @@
                     android:layout_height="48dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="2dp"
-                    android:background="@drawable/simple_item_background"
-                    android:visibility="gone">
+                    android:background="@drawable/simple_item_background">
 
                     <View
                         android:layout_width="match_parent"
