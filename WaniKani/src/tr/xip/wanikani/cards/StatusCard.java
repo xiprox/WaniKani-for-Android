@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -74,7 +75,10 @@ public class StatusCard extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (utils.isNetworkAvailable()) {
-                new LoadTask().execute();
+                if (Build.VERSION.SDK_INT >= 11)
+                    new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                else
+                    new LoadTask().execute();
             } else {
                 Intent broadcastIntent = new Intent(BroadcastIntents.FINISHED_SYNC_STATUS_CARD());
                 broadcastIntent.putExtra("action", "hide");
@@ -153,7 +157,11 @@ public class StatusCard extends Fragment {
         mApprenticeParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DetailsLoadTask().execute("apprentice");
+                if (Build.VERSION.SDK_INT >= 11)
+                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "apprentice");
+                else
+                    new DetailsLoadTask().execute("apprentice");
+
                 if (mDetailsFlipper.getDisplayedChild() == 0) {
                     mDetailsFlipper.showNext();
                 }
@@ -163,7 +171,11 @@ public class StatusCard extends Fragment {
         mGuruParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DetailsLoadTask().execute("guru");
+                if (Build.VERSION.SDK_INT >= 11)
+                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "guru");
+                else
+                    new DetailsLoadTask().execute("guru");
+
                 if (mDetailsFlipper.getDisplayedChild() == 0) {
                     mDetailsFlipper.showNext();
                 }
@@ -173,7 +185,11 @@ public class StatusCard extends Fragment {
         mMasterParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DetailsLoadTask().execute("master");
+                if (Build.VERSION.SDK_INT >= 11)
+                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "master");
+                else
+                    new DetailsLoadTask().execute("master");
+
                 if (mDetailsFlipper.getDisplayedChild() == 0) {
                     mDetailsFlipper.showNext();
                 }
@@ -183,7 +199,11 @@ public class StatusCard extends Fragment {
         mEnlightenedParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DetailsLoadTask().execute("enlighten");
+                if (Build.VERSION.SDK_INT >= 11)
+                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "enlighten");
+                else
+                    new DetailsLoadTask().execute("enlighten");
+
                 if (mDetailsFlipper.getDisplayedChild() == 0) {
                     mDetailsFlipper.showNext();
                 }
@@ -193,7 +213,11 @@ public class StatusCard extends Fragment {
         mBurnedParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DetailsLoadTask().execute("burned");
+                if (Build.VERSION.SDK_INT >= 11)
+                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "burned");
+                else
+                    new DetailsLoadTask().execute("burned");
+
                 if (mDetailsFlipper.getDisplayedChild() == 0) {
                     mDetailsFlipper.showNext();
                 }

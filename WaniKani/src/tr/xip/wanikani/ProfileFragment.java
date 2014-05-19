@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -160,10 +161,18 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
         if (!MainActivity.isFirstSyncProfileDone) {
             mPullToRefreshLayout.setRefreshing(true);
-            new LoadTask().execute();
+
+            if (Build.VERSION.SDK_INT >= 11)
+                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                new LoadTask().execute();
+
             MainActivity.isFirstSyncProfileDone = true;
         } else {
-            new LoadTask().execute();
+            if (Build.VERSION.SDK_INT >= 11)
+                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                new LoadTask().execute();
         }
 
         return rootView;
@@ -236,13 +245,20 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
     @Override
     public void onRefreshStarted(View view) {
-        new LoadTask().execute();
+        if (Build.VERSION.SDK_INT >= 11)
+            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new LoadTask().execute();
     }
 
     @Override
     public void onUndo(Parcelable parcelable) {
         mPullToRefreshLayout.setRefreshing(true);
-        new LoadTask().execute();
+
+        if (Build.VERSION.SDK_INT >= 11)
+            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new LoadTask().execute();
     }
 
     public class LoadTask extends AsyncTask<Void, Void, String> {

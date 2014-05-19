@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -56,7 +57,10 @@ public class ProgressCard extends Fragment {
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new LoadTask().execute();
+            if (Build.VERSION.SDK_INT >= 11)
+                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                new LoadTask().execute();
         }
     };
 

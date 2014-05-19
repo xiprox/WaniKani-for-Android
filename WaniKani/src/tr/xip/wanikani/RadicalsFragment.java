@@ -3,6 +3,7 @@ package tr.xip.wanikani;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -110,7 +111,10 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             }
         });
 
-        new UserLevelTask().execute();
+        if (Build.VERSION.SDK_INT >= 11)
+            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new UserLevelTask().execute();
 
         setHasOptionsMenu(true);
 
@@ -119,11 +123,17 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     public void onLevelDialogPositiveClick(DialogFragment dialog, String level) {
         LEVEL = level;
-        new FetchTask().execute();
+        if (Build.VERSION.SDK_INT >= 11)
+            new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new FetchTask().execute();
     }
 
     public void onLevelDialogResetClick(DialogFragment dialogFragment, String level) {
-        new UserLevelTask().execute();
+        if (Build.VERSION.SDK_INT >= 11)
+            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new UserLevelTask().execute();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -201,7 +211,11 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             super.onPostExecute(success);
 
             if (success) {
-                new FetchTask().execute();
+                if (Build.VERSION.SDK_INT >= 11)
+                    new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                else
+                    new FetchTask().execute();
+
                 mLevelPickerDialog = new LevelPickerDialogFragment(RadicalsFragment.this, LEVEL);
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);

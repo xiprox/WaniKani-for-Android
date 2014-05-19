@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -253,7 +254,10 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mOnyomi.setTypeface(new Fonts().getKanjiFont(this));
         mKunyomi.setTypeface(new Fonts().getKanjiFont(this));
 
-        new LoadTask().execute();
+        if (Build.VERSION.SDK_INT >= 11)
+            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new LoadTask().execute();
     }
 
     @Override
