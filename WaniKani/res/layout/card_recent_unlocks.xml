@@ -64,12 +64,12 @@
 
                     <ImageView
                         android:id="@+id/card_recent_unlocks_more_icon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_action_back" />
+                        android:layout_marginRight="12dp"
+                        android:src="@drawable/ic_more" />
 
                     <TextView
                         style="@style/Widget.TextView.Light"
