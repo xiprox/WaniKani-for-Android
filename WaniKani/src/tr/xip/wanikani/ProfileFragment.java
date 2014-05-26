@@ -287,19 +287,19 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         protected String doInBackground(Void... voids) {
             try {
                 user = api.getUser();
-                gravatar = user.getGravatar(context);
-                username = user.getUsername(context);
-                title = user.getTitle(context);
-                level = user.getLevel(context);
-                topicsCount = user.getTopicsCount(context);
-                postsCount = user.getPostsCount(context);
-                website = user.getWebsite(context);
-                twitter = user.getTwitter(context);
+                gravatar = user.getGravatar();
+                username = user.getUsername();
+                title = user.getTitle();
+                level = user.getLevel();
+                topicsCount = user.getTopicsCount();
+                postsCount = user.getPostsCount();
+                website = user.getWebsite();
+                twitter = user.getTwitter();
 
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
-                creationDate = sdf.format(user.getCreationDate(context));
+                creationDate = sdf.format(user.getCreationDate());
 
-                about = user.getAbout(context);
+                about = user.getAbout();
 
                 return "success";
             } catch (Exception e) {

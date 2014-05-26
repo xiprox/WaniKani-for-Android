@@ -6,19 +6,67 @@ import java.util.List;
  * Created by xihsa_000 on 3/12/14.
  */
 public class CriticalItemsList {
-    public UserInfo user_information;
-    public List<CriticalItem> requested_information;
+    private UserInfo user_information;
+    private List<CriticalItem> requested_information;
+
+    public UserInfo getUserInfo() {
+        return user_information;
+    }
+
+    public List<CriticalItem> getList() {
+        return requested_information;
+    }
 
     public class CriticalItem {
-        public String type;
-        public String character;
-        public String kana;
-        public String meaning;
-        public String onyomi;
-        public String kunyomi;
-        public String important_reading;
-        public String image;
-        public int level;
-        public int percentage;
+        private String type;
+        private String character;
+        private String kana;
+        private String meaning;
+        private String onyomi;
+        private String kunyomi;
+        private String important_reading;
+        private String image;
+        private int level;
+        private int percentage;
+
+        public String getType() {
+            return type;
+        }
+
+        public String getCharacter() {
+            return character;
+        }
+
+        public String getKana() {
+            return kana;
+        }
+
+        public String getMeaning() {
+            return meaning;
+        }
+
+        public String getOnyomi() {
+            return onyomi;
+        }
+
+        public String getKunyomi() {
+            return kunyomi;
+        }
+
+        public String getImportantReading() {
+            return important_reading;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        public int getPercentage() {
+            return percentage;
+        }
     }
 }

@@ -1,54 +1,44 @@
 package tr.xip.wanikani.api.response;
 
-import android.content.Context;
-
-import tr.xip.wanikani.managers.OfflineDataManager;
-
 /**
  * Created by xihsa_000 on 3/12/14.
  */
 public class LevelProgression {
-    public UserInfo user_information;
-    public RequestedInformation requested_information;
+    private UserInfo user_information;
+    private RequestedInformation requested_information;
 
-    public class RequestedInformation {
-        public int radicals_progress;
-        public int radicals_total;
-        public int kanji_progress;
-        public int kanji_total;
+    public UserInfo getUserInfo() {
+        return user_information;
     }
 
-    public int getRadicalsProgress(Context context) {
-        new OfflineDataManager(context).setRadicalsProgress(requested_information.radicals_progress);
+    private class RequestedInformation {
+        private int radicals_progress;
+        private int radicals_total;
+        private int kanji_progress;
+        private int kanji_total;
+    }
+
+    public int getRadicalsProgress() {
         return requested_information.radicals_progress;
     }
 
-    public int getRadicalsTotal(Context context) {
-        new OfflineDataManager(context).setRadicalsTotal(requested_information.radicals_total);
+    public int getRadicalsTotal() {
         return requested_information.radicals_total;
     }
 
-    public int getRadicalsPercentage(Context context) {
-        double percentage;
-        percentage = ((double) getRadicalsProgress(context) / getRadicalsTotal(context)) * 100;
-        new OfflineDataManager(context).setRadicalsPercentage((int) percentage);
-        return (int) percentage;
+    public int getRadicalsPercentage() {
+        return (int) ((double) requested_information.radicals_progress / requested_information.radicals_total * 100);
     }
 
-    public int getKanjiProgress(Context context) {
-        new OfflineDataManager(context).setKanjiProgress(requested_information.kanji_progress);
+    public int getKanjiProgress() {
         return requested_information.kanji_progress;
     }
 
-    public int getKanjiTotal(Context context) {
-        new OfflineDataManager(context).setKanjiTotal(requested_information.kanji_total);
+    public int getKanjiTotal() {
         return requested_information.kanji_total;
     }
 
-    public int getKanjiPercentage(Context context) {
-        double percentage;
-        percentage = ((double) getKanjiProgress(context) / getKanjiTotal(context)) * 100;
-        new OfflineDataManager(context).setKanjiPercentage((int) percentage);
-        return (int) percentage;
+    public int getKanjiPercentage() {
+        return (int) ((double) requested_information.kanji_progress / requested_information.kanji_total * 100);
     }
 }

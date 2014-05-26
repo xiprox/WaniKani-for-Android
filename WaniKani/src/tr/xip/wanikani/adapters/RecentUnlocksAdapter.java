@@ -59,34 +59,34 @@ public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockI
 
         mUnlockCharacter.setTypeface(typeface);
 
-        if (item.type.equals("radical")) {
+        if (item.getType().equals("radical")) {
             mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
         }
 
-        if (item.type.equals("kanji")) {
+        if (item.getType().equals("kanji")) {
             mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
         }
 
-        if (item.type.equals("vocabulary")) {
+        if (item.getType().equals("vocabulary")) {
             mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
         }
 
-        if (item.image == null) {
+        if (item.getImage() == null) {
             mUnlockCharacter.setVisibility(View.VISIBLE);
             mUnlockCharacterImage.setVisibility(View.GONE);
-            mUnlockCharacter.setText(item.character);
-            Log.d("ADAPTER", "SETTING CHAR AT " + position + " TO " + item.character);
+            mUnlockCharacter.setText(item.getCharacter());
+            Log.d("ADAPTER", "SETTING CHAR AT " + position + " TO " + item.getCharacter());
         } else {
             mUnlockCharacter.setVisibility(View.GONE);
             mUnlockCharacterImage.setVisibility(View.VISIBLE);
             Picasso.with(context)
-                    .load(item.image)
+                    .load(item.getImage())
                     .into(mUnlockCharacterImage);
             mUnlockCharacterImage.setColorFilter(context.getResources().getColor(R.color.text_gray), Mode.SRC_ATOP);
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
-        mUnlockDate.setText(sdf.format(item.unlocked_date * 1000));
+        mUnlockDate.setText(sdf.format(item.getUnlockDate()));
 
         return v;
     }

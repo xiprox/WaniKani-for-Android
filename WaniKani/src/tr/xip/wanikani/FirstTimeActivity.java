@@ -76,7 +76,7 @@ public class FirstTimeActivity extends ActionBarActivity {
             key = params[0];
 
             try {
-                if (api.checkAPIKey(key).user_information != null) {
+                if (api.isApiKeyValid(key)) {
                     return "success";
                 } else {
                     return "no_user";

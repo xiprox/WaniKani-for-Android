@@ -335,8 +335,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                     if (gotCharacter != null) {
                         for (int i = 0; i < list.size(); i++) {
-                            if (list.get(i).character != null) {
-                                if (list.get(i).character.equals(gotCharacter)) {
+                            if (list.get(i).getCharacter() != null) {
+                                if (list.get(i).getCharacter().equals(gotCharacter)) {
                                     radicalItem = list.get(i);
                                     break;
                                 }
@@ -344,8 +344,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         }
                     } else {
                         for (int i = 0; i < list.size(); i++) {
-                            if (list.get(i).image != null) {
-                                if (list.get(i).image.equals(gotImage)) {
+                            if (list.get(i).getImage() != null) {
+                                if (list.get(i).getImage().equals(gotImage)) {
                                     radicalItem = list.get(i);
                                     break;
                                 }
@@ -358,7 +358,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                     List<KanjiList.KanjiItem> list = api.getKanjiList(gotLevel + "");
 
                     for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).character.equals(gotCharacter)) {
+                        if (list.get(i).getCharacter().equals(gotCharacter)) {
                             kanjiItem = list.get(i);
                             break;
                         }
@@ -369,7 +369,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                     List<VocabularyList.VocabularyItem> list = api.getVocabularyList(gotLevel + "");
 
                     for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).character.equals(gotCharacter)) {
+                        if (list.get(i).getCharacter().equals(gotCharacter)) {
                             vocabularyItem = list.get(i);
                             break;
                         }
@@ -390,65 +390,65 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 if (gotType.equals(TYPE_RADICAL)) {
                     switchToRadicalMode();
 
-                    mLevel.setText(radicalItem.level + "");
+                    mLevel.setText(radicalItem.getLevel() + "");
 
-                    if (radicalItem.image != null) {
+                    if (radicalItem.getImage() != null) {
                         mImage.setVisibility(View.VISIBLE);
                         mCharacter.setVisibility(View.GONE);
 
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Picasso.with(getApplicationContext()).load(radicalItem.image).into(mImage);
+                                Picasso.with(getApplicationContext()).load(radicalItem.getImage()).into(mImage);
                             }
                         }).start();
                     } else {
                         mImage.setVisibility(View.GONE);
                         mCharacter.setVisibility(View.VISIBLE);
-                        mCharacter.setText(radicalItem.character);
+                        mCharacter.setText(radicalItem.getCharacter());
                     }
 
-                    mMeaning.setText(WordUtils.capitalize(radicalItem.meaning));
+                    mMeaning.setText(WordUtils.capitalize(radicalItem.getMeaning()));
 
-                    if (radicalItem.user_specific != null) {
-                        if (radicalItem.user_specific.user_synonyms != null) {
-                            String synonyms = WordUtils.capitalize(Arrays.toString(radicalItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
+                    if (radicalItem.isUnlocked()) {
+                        if (radicalItem.getUserSynonyms() != null) {
+                            String synonyms = WordUtils.capitalize(Arrays.toString(radicalItem.getUserSynonyms()).replace("[", "").replace("]", ""));
                             mUserSynonyms.setText(synonyms);
                         } else {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         }
 
-                        if (radicalItem.user_specific.meaning_note != null) {
-                            mMeaningNote.setText(radicalItem.user_specific.meaning_note);
+                        if (radicalItem.getMeaningNote() != null) {
+                            mMeaningNote.setText(radicalItem.getMeaningNote());
                         } else {
                             mMeaningNoteCard.setVisibility(View.GONE);
                         }
 
-                        if (radicalItem.user_specific.burned) {
+                        if (radicalItem.isBurned()) {
                             mProgressContent.setVisibility(View.GONE);
                             mBurned.setVisibility(View.VISIBLE);
 
                             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
-                            mBurnedDate.setText(sdf.format(radicalItem.user_specific.burned_date * 1000));
+                            mBurnedDate.setText(sdf.format(radicalItem.getBurnedDate()));
                         } else {
 
-                            if (radicalItem.user_specific.srs.equals("apprentice")) {
+                            if (radicalItem.getSrsLevel().equals("apprentice")) {
                                 mSRSLogo.setImageResource(R.drawable.apprentice);
                                 mSRSLevel.setText(R.string.srs_title_apprentice);
                             }
-                            if (radicalItem.user_specific.srs.equals("guru")) {
+                            if (radicalItem.getSrsLevel().equals("guru")) {
                                 mSRSLogo.setImageResource(R.drawable.guru);
                                 mSRSLevel.setText(R.string.srs_title_guru);
                             }
-                            if (radicalItem.user_specific.srs.equals("master")) {
+                            if (radicalItem.getSrsLevel().equals("master")) {
                                 mSRSLogo.setImageResource(R.drawable.master);
                                 mSRSLevel.setText(R.string.srs_title_master);
                             }
-                            if (radicalItem.user_specific.srs.equals("enlighten")) {
+                            if (radicalItem.getSrsLevel().equals("enlighten")) {
                                 mSRSLogo.setImageResource(R.drawable.enlighten);
                                 mSRSLevel.setText(R.string.srs_title_enlightened);
                             }
-                            if (radicalItem.user_specific.srs.equals("burned")) {
+                            if (radicalItem.getSrsLevel().equals("burned")) {
                                 mSRSLogo.setImageResource(R.drawable.burned);
                                 mSRSLevel.setText(R.string.srs_title_burned);
                             }
@@ -456,22 +456,17 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMMM d, yyyy");
                             SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
-                            mUnlocked.setText(unlockDateFormat.format(radicalItem.user_specific.unlocked_date * 1000) + "");
-                            mNextAvailable.setText(availableDateFormat.format(radicalItem.user_specific.available_date * 1000) + "");
+                            mUnlocked.setText(unlockDateFormat.format(radicalItem.getUnlockDate()) + "");
+                            mNextAvailable.setText(availableDateFormat.format(radicalItem.getAvailableDate()) + "");
 
-                            int totalMeaningAnswers = radicalItem.user_specific.meaning_correct + radicalItem.user_specific.meaning_incorrect;
+                            mMeaningCorrectPercentage.setText(radicalItem.getMeaningCorrectPercentage() + "");
+                            mMeaningIncorrectPercentage.setText(radicalItem.getMeaningIncorrectPercentage() + "");
 
-                            double meaningCorrectPercentage = (double) radicalItem.user_specific.meaning_correct / totalMeaningAnswers * 100;
-                            double meaningIncorrectPercentage = (double) radicalItem.user_specific.meaning_incorrect / totalMeaningAnswers * 100;
+                            mMeaningCorrectProgressBar.setProgress(radicalItem.getMeaningCorrectPercentage());
+                            mMeaningIncorrectProgressBar.setProgress(radicalItem.getMeaningIncorrectPercentage());
 
-                            mMeaningCorrectPercentage.setText(meaningCorrectPercentage + "");
-                            mMeaningIncorrectPercentage.setText(meaningIncorrectPercentage + "");
-
-                            mMeaningCorrectProgressBar.setProgress((int) meaningCorrectPercentage);
-                            mMeaningIncorrectProgressBar.setProgress((int) meaningIncorrectPercentage);
-
-                            mMeaningMaxStreak.setText(radicalItem.user_specific.meaning_max_streak + "");
-                            mMeaningCurrentStreak.setText(radicalItem.user_specific.meaning_current_streak + "");
+                            mMeaningMaxStreak.setText(radicalItem.getMeaningMaxStreak() + "");
+                            mMeaningCurrentStreak.setText(radicalItem.getMeaningCurrentStreak() + "");
                         }
                     } else {
                         mProgressContent.setVisibility(View.GONE);
@@ -481,10 +476,10 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 if (gotType.equals(TYPE_KANJI)) {
                     switchToKanjiMode();
 
-                    mLevel.setText(kanjiItem.level + "");
-                    mCharacter.setText(kanjiItem.character);
+                    mLevel.setText(kanjiItem.getLevel() + "");
+                    mCharacter.setText(kanjiItem.getCharacter());
 
-                    String[] meanings = kanjiItem.meaning.split(", ");
+                    String[] meanings = kanjiItem.getMeaning().split(", ");
                     mMeaning.setText(WordUtils.capitalize(meanings[0]));
 
                     if (meanings.length > 1) {
@@ -499,76 +494,76 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             }
                         }
                     } else {
-                        if (kanjiItem.user_specific == null || kanjiItem.user_specific.user_synonyms == null) {
+                        if (!kanjiItem.isUnlocked() || kanjiItem.getUserSynonyms() == null) {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         } else {
                             mAlternativeMeaningsHolder.setVisibility(View.GONE);
                         }
                     }
 
-                    if (kanjiItem.onyomi != null) {
-                        mOnyomi.setText(kanjiItem.onyomi);
+                    if (kanjiItem.getOnyomi() != null) {
+                        mOnyomi.setText(kanjiItem.getOnyomi());
                     } else {
                         mOnyomiHolder.setVisibility(View.GONE);
                     }
 
-                    if (kanjiItem.kunyomi != null) {
-                        mKunyomi.setText(kanjiItem.kunyomi);
+                    if (kanjiItem.getKunyomi() != null) {
+                        mKunyomi.setText(kanjiItem.getKunyomi());
                     } else {
                         mKunyomiHolder.setVisibility(View.GONE);
                     }
 
-                    if (kanjiItem.important_reading.equals("onyomi")) {
+                    if (kanjiItem.getImportantReading().equals("onyomi")) {
                         mKunyomi.setTextColor(getResources().getColor(R.color.text_gray_light));
                     } else {
                         mOnyomi.setTextColor(getResources().getColor(R.color.text_gray_light));
                     }
 
-                    if (kanjiItem.user_specific != null) {
-                        if (kanjiItem.user_specific.user_synonyms != null) {
-                            String synonyms = WordUtils.capitalize(Arrays.toString(kanjiItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
+                    if (kanjiItem.isUnlocked()) {
+                        if (kanjiItem.getUserSynonyms() != null) {
+                            String synonyms = WordUtils.capitalize(Arrays.toString(kanjiItem.getUserSynonyms()).replace("[", "").replace("]", ""));
                             mUserSynonyms.setText(synonyms);
                         } else {
                             mUserSynonymsHolder.setVisibility(View.GONE);
                         }
 
-                        if (kanjiItem.user_specific.reading_note != null) {
-                            mReadingNote.setText(kanjiItem.user_specific.reading_note);
+                        if (kanjiItem.getReadingNote() != null) {
+                            mReadingNote.setText(kanjiItem.getReadingNote());
                         } else {
                             mReadingNoteCard.setVisibility(View.GONE);
                         }
 
-                        if (kanjiItem.user_specific.meaning_note != null) {
-                            mMeaningNote.setText(kanjiItem.user_specific.meaning_note);
+                        if (kanjiItem.getMeaningNote() != null) {
+                            mMeaningNote.setText(kanjiItem.getMeaningNote());
                         } else {
                             mMeaningNoteCard.setVisibility(View.GONE);
                         }
 
-                        if (kanjiItem.user_specific.burned) {
+                        if (kanjiItem.isBurned()) {
                             mProgressContent.setVisibility(View.GONE);
                             mBurned.setVisibility(View.VISIBLE);
 
                             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
-                            mBurnedDate.setText(sdf.format(kanjiItem.user_specific.burned_date * 1000));
+                            mBurnedDate.setText(sdf.format(kanjiItem.getBurnedDate()));
                         } else {
 
-                            if (kanjiItem.user_specific.srs.equals("apprentice")) {
+                            if (kanjiItem.getSrsLevel().equals("apprentice")) {
                                 mSRSLogo.setImageResource(R.drawable.apprentice);
                                 mSRSLevel.setText(R.string.srs_title_apprentice);
                             }
-                            if (kanjiItem.user_specific.srs.equals("guru")) {
+                            if (kanjiItem.getSrsLevel().equals("guru")) {
                                 mSRSLogo.setImageResource(R.drawable.guru);
                                 mSRSLevel.setText(R.string.srs_title_guru);
                             }
-                            if (kanjiItem.user_specific.srs.equals("master")) {
+                            if (kanjiItem.getSrsLevel().equals("master")) {
                                 mSRSLogo.setImageResource(R.drawable.master);
                                 mSRSLevel.setText(R.string.srs_title_master);
                             }
-                            if (kanjiItem.user_specific.srs.equals("enlighten")) {
+                            if (kanjiItem.getSrsLevel().equals("enlighten")) {
                                 mSRSLogo.setImageResource(R.drawable.enlighten);
                                 mSRSLevel.setText(R.string.srs_title_enlightened);
                             }
-                            if (kanjiItem.user_specific.srs.equals("burned")) {
+                            if (kanjiItem.getSrsLevel().equals("burned")) {
                                 mSRSLogo.setImageResource(R.drawable.burned);
                                 mSRSLevel.setText(R.string.srs_title_burned);
                             }
@@ -576,32 +571,24 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMMM d, yyyy");
                             SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
-                            mUnlocked.setText(unlockDateFormat.format(kanjiItem.user_specific.unlocked_date * 1000) + "");
-                            mNextAvailable.setText(availableDateFormat.format(kanjiItem.user_specific.available_date * 1000) + "");
+                            mUnlocked.setText(unlockDateFormat.format(kanjiItem.getUnlockDate()) + "");
+                            mNextAvailable.setText(availableDateFormat.format(kanjiItem.getAvailableDate()) + "");
 
-                            int totalMeaningAnswers = kanjiItem.user_specific.meaning_correct + kanjiItem.user_specific.meaning_incorrect;
-                            double meaningCorrectPercentage = (double) kanjiItem.user_specific.meaning_correct / totalMeaningAnswers * 100;
-                            double meaningIncorrectPercentage = (double) kanjiItem.user_specific.meaning_incorrect / totalMeaningAnswers * 100;
+                            mMeaningCorrectPercentage.setText(kanjiItem.getMeaningCorrectPercentage() + "");
+                            mMeaningIncorrectPercentage.setText(kanjiItem.getMeaningIncorrectPercentage() + "");
+                            mMeaningMaxStreak.setText(kanjiItem.getMeaningMaxStreak() + "");
+                            mMeaningCurrentStreak.setText(kanjiItem.getMeaningCurrentStreak() + "");
 
-                            int totalReadingAnswers = kanjiItem.user_specific.reading_correct + kanjiItem.user_specific.reading_incorrect;
-                            double readingCorrectPercentage = (double) kanjiItem.user_specific.reading_correct / totalReadingAnswers * 100;
-                            double readingIncorrectPercentage = (double) kanjiItem.user_specific.reading_incorrect / totalReadingAnswers * 100;
+                            mMeaningCorrectProgressBar.setProgress(kanjiItem.getMeaningCorrectPercentage());
+                            mMeaningIncorrectProgressBar.setProgress(kanjiItem.getMeaningIncorrectPercentage());
 
-                            mMeaningCorrectPercentage.setText(meaningCorrectPercentage + "");
-                            mMeaningIncorrectPercentage.setText(meaningIncorrectPercentage + "");
-                            mMeaningMaxStreak.setText(kanjiItem.user_specific.meaning_max_streak + "");
-                            mMeaningCurrentStreak.setText(kanjiItem.user_specific.meaning_current_streak + "");
+                            mReadingCorrectPercentage.setText(kanjiItem.getReadingCorrectPercentage() + "");
+                            mReadingIncorrectPercentage.setText(kanjiItem.getReadingIncorrectPercentage() + "");
+                            mReadingMaxStreak.setText(kanjiItem.getReadingMaxStreak() + "");
+                            mReadingCurrentStreak.setText(kanjiItem.getReadingCurrentStreak() + "");
 
-                            mMeaningCorrectProgressBar.setProgress((int) meaningCorrectPercentage);
-                            mMeaningIncorrectProgressBar.setProgress((int) meaningIncorrectPercentage);
-
-                            mReadingCorrectPercentage.setText(readingCorrectPercentage + "");
-                            mReadingIncorrectPercentage.setText(readingIncorrectPercentage + "");
-                            mReadingMaxStreak.setText(kanjiItem.user_specific.reading_max_streak + "");
-                            mReadingCurrentStreak.setText(kanjiItem.user_specific.reading_current_streak + "");
-
-                            mReadingCorrectProgressBar.setProgress((int) readingCorrectPercentage);
-                            mReadingIncorrectProgressBar.setProgress((int) readingIncorrectPercentage);
+                            mReadingCorrectProgressBar.setProgress(kanjiItem.getReadingCorrectPercentage());
+                            mReadingIncorrectProgressBar.setProgress(kanjiItem.getReadingIncorrectPercentage());
                         }
                     } else {
                         mProgressCard.setBackgroundResource(R.drawable.card_light_pressed);
@@ -620,12 +607,12 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 if (gotType.equals(TYPE_VOCABULARY)) {
                     switchToVocabularyMode();
 
-                    mLevel.setText(vocabularyItem.level + "");
-                    mCharacter.setText(vocabularyItem.character);
+                    mLevel.setText(vocabularyItem.getLevel() + "");
+                    mCharacter.setText(vocabularyItem.getCharacter());
 
-                    mReading.setText(vocabularyItem.kana);
+                    mReading.setText(vocabularyItem.getKana());
 
-                    String[] meanings = vocabularyItem.meaning.split(", ");
+                    String[] meanings = vocabularyItem.getMeaning().split(", ");
                     mMeaning.setText(WordUtils.capitalize(meanings[0]));
 
                     if (meanings.length > 1) {
@@ -640,58 +627,58 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             }
                         }
                     } else {
-                        if (vocabularyItem.user_specific == null || vocabularyItem.user_specific.user_synonyms == null) {
+                        if (!vocabularyItem.isUnlocked() || vocabularyItem.getUserSynonyms() == null) {
                             mAlternativeMeaningsAndUserSynonymsCard.setVisibility(View.GONE);
                         } else {
                             mAlternativeMeaningsHolder.setVisibility(View.GONE);
                         }
                     }
 
-                    if (vocabularyItem.user_specific != null) {
-                        if (vocabularyItem.user_specific.user_synonyms != null) {
-                            String synonyms = WordUtils.capitalize(Arrays.toString(vocabularyItem.user_specific.user_synonyms).replace("[", "").replace("]", ""));
+                    if (vocabularyItem.isUnlocked()) {
+                        if (vocabularyItem.getUserSynonyms() != null) {
+                            String synonyms = WordUtils.capitalize(Arrays.toString(vocabularyItem.getUserSynonyms()).replace("[", "").replace("]", ""));
                             mUserSynonyms.setText(synonyms);
                         } else {
                             mUserSynonymsHolder.setVisibility(View.GONE);
                         }
 
-                        if (vocabularyItem.user_specific.reading_note != null) {
-                            mReadingNote.setText(vocabularyItem.user_specific.reading_note);
+                        if (vocabularyItem.getReadingNote() != null) {
+                            mReadingNote.setText(vocabularyItem.getReadingNote());
                         } else {
                             mReadingNoteCard.setVisibility(View.GONE);
                         }
 
-                        if (vocabularyItem.user_specific.meaning_note != null) {
-                            mMeaningNote.setText(vocabularyItem.user_specific.meaning_note);
+                        if (vocabularyItem.getMeaningNote() != null) {
+                            mMeaningNote.setText(vocabularyItem.getMeaningNote());
                         } else {
                             mMeaningNoteCard.setVisibility(View.GONE);
                         }
 
-                        if (vocabularyItem.user_specific.burned) {
+                        if (vocabularyItem.isBurned()) {
                             mProgressContent.setVisibility(View.GONE);
                             mBurned.setVisibility(View.VISIBLE);
 
                             SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
-                            mBurnedDate.setText(sdf.format(vocabularyItem.user_specific.burned_date * 1000));
+                            mBurnedDate.setText(sdf.format(vocabularyItem.getBurnedDate()));
                         } else {
 
-                            if (vocabularyItem.user_specific.srs.equals("apprentice")) {
+                            if (vocabularyItem.getSrsLevel().equals("apprentice")) {
                                 mSRSLogo.setImageResource(R.drawable.apprentice);
                                 mSRSLevel.setText(R.string.srs_title_apprentice);
                             }
-                            if (vocabularyItem.user_specific.srs.equals("guru")) {
+                            if (vocabularyItem.getSrsLevel().equals("guru")) {
                                 mSRSLogo.setImageResource(R.drawable.guru);
                                 mSRSLevel.setText(R.string.srs_title_guru);
                             }
-                            if (vocabularyItem.user_specific.srs.equals("master")) {
+                            if (vocabularyItem.getSrsLevel().equals("master")) {
                                 mSRSLogo.setImageResource(R.drawable.master);
                                 mSRSLevel.setText(R.string.srs_title_master);
                             }
-                            if (vocabularyItem.user_specific.srs.equals("enlighten")) {
+                            if (vocabularyItem.getSrsLevel().equals("enlighten")) {
                                 mSRSLogo.setImageResource(R.drawable.enlighten);
                                 mSRSLevel.setText(R.string.srs_title_enlightened);
                             }
-                            if (vocabularyItem.user_specific.srs.equals("burned")) {
+                            if (vocabularyItem.getSrsLevel().equals("burned")) {
                                 mSRSLogo.setImageResource(R.drawable.burned);
                                 mSRSLevel.setText(R.string.srs_title_burned);
                             }
@@ -699,32 +686,24 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             SimpleDateFormat unlockDateFormat = new SimpleDateFormat("MMMM d, yyyy");
                             SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
-                            mUnlocked.setText(unlockDateFormat.format(vocabularyItem.user_specific.unlocked_date * 1000) + "");
-                            mNextAvailable.setText(availableDateFormat.format(vocabularyItem.user_specific.available_date * 1000) + "");
+                            mUnlocked.setText(unlockDateFormat.format(vocabularyItem.getUnlockDate()) + "");
+                            mNextAvailable.setText(availableDateFormat.format(vocabularyItem.getAvailableDate()) + "");
 
-                            int totalMeaningAnswers = vocabularyItem.user_specific.meaning_correct + vocabularyItem.user_specific.meaning_incorrect;
-                            double meaningCorrectPercentage = (double) vocabularyItem.user_specific.meaning_correct / totalMeaningAnswers * 100;
-                            double meaningIncorrectPercentage = (double) vocabularyItem.user_specific.meaning_incorrect / totalMeaningAnswers * 100;
+                            mMeaningCorrectPercentage.setText(vocabularyItem.getMeaningCorrectPercentage() + "");
+                            mMeaningIncorrectPercentage.setText(vocabularyItem.getMeaningIncorrectPercentage() + "");
+                            mMeaningMaxStreak.setText(vocabularyItem.getMeaningMaxStreak() + "");
+                            mMeaningCurrentStreak.setText(vocabularyItem.getMeaningCurrentStreak() + "");
 
-                            int totalReadingAnswers = vocabularyItem.user_specific.reading_correct + vocabularyItem.user_specific.reading_incorrect;
-                            double readingCorrectPercentage = (double) vocabularyItem.user_specific.reading_correct / totalReadingAnswers * 100;
-                            double readingIncorrectPercentage = (double) vocabularyItem.user_specific.reading_incorrect / totalReadingAnswers * 100;
+                            mMeaningCorrectProgressBar.setProgress(vocabularyItem.getMeaningCorrectPercentage());
+                            mMeaningIncorrectProgressBar.setProgress(vocabularyItem.getMeaningIncorrectPercentage());
 
-                            mMeaningCorrectPercentage.setText(meaningCorrectPercentage + "");
-                            mMeaningIncorrectPercentage.setText(meaningIncorrectPercentage + "");
-                            mMeaningMaxStreak.setText(vocabularyItem.user_specific.meaning_max_streak + "");
-                            mMeaningCurrentStreak.setText(vocabularyItem.user_specific.meaning_current_streak + "");
+                            mReadingCorrectPercentage.setText(vocabularyItem.getReadingCorrectPercentage() + "");
+                            mReadingIncorrectPercentage.setText(vocabularyItem.getReadingIncorrectPercentage() + "");
+                            mReadingMaxStreak.setText(vocabularyItem.getReadingMaxStreak() + "");
+                            mReadingCurrentStreak.setText(vocabularyItem.getReadingCurrentStreak() + "");
 
-                            mMeaningCorrectProgressBar.setProgress((int) meaningCorrectPercentage);
-                            mMeaningIncorrectProgressBar.setProgress((int) meaningIncorrectPercentage);
-
-                            mReadingCorrectPercentage.setText(readingCorrectPercentage + "");
-                            mReadingIncorrectPercentage.setText(readingIncorrectPercentage + "");
-                            mReadingMaxStreak.setText(vocabularyItem.user_specific.reading_max_streak + "");
-                            mReadingCurrentStreak.setText(vocabularyItem.user_specific.reading_current_streak + "");
-
-                            mReadingCorrectProgressBar.setProgress((int) readingCorrectPercentage);
-                            mReadingIncorrectProgressBar.setProgress((int) readingIncorrectPercentage);
+                            mReadingCorrectProgressBar.setProgress(vocabularyItem.getReadingCorrectPercentage());
+                            mReadingIncorrectProgressBar.setProgress(vocabularyItem.getReadingIncorrectPercentage());
                         }
                     } else {
                         mProgressCard.setBackgroundResource(R.drawable.card_light_pressed);

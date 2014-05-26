@@ -117,10 +117,10 @@ public class ReviewsCard extends Fragment {
         protected String doInBackground(String... strings) {
             try {
                 studyQueue = api.getStudyQueue();
-                nextReview = studyQueue.getNextReviewDate(context);
-                nextHour = studyQueue.getReviewsAvailableNextHour(context);
-                nextDay = studyQueue.getReviewsAvailableNextDay(context);
-                reviewsAvailable = studyQueue.getReviewsAvailable(context);
+                nextReview = studyQueue.getNextReviewDate();
+                nextHour = studyQueue.getAvailableReviewsNextHourCount();
+                nextDay = studyQueue.getAvailableReviewsNextDayCount();
+                reviewsAvailable = studyQueue.getAvailableReviewsCount();
                 isVacationModeActive = api.isVacationModeActive();
                 return "success";
             } catch (Exception e) {
@@ -151,6 +151,8 @@ public class ReviewsCard extends Fragment {
                     intent.putExtra("action", "hide");
                     LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                 }
+            } else {
+                // TODO - Vacation mode
             }
         }
     }

@@ -129,8 +129,8 @@ public class AvailableCard extends Fragment {
             try {
                 studyQueue = api.getStudyQueue();
 
-                lessonsAvailable = studyQueue.getLessonsAvailable(context);
-                reviewsAvailable = studyQueue.getReviewsAvailable(context);
+                lessonsAvailable = studyQueue.getAvailableLesonsCount();
+                reviewsAvailable = studyQueue.getAvailableReviewsCount();
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();

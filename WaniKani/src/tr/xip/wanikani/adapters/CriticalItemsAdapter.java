@@ -57,33 +57,33 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
 
             mItemCharacter.setTypeface(typeface);
 
-            if (item.type.equals("radical")) {
+            if (item.getType().equals("radical")) {
                 mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
             }
 
-            if (item.type.equals("kanji")) {
+            if (item.getType().equals("kanji")) {
                 mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
             }
 
-            if (item.type.equals("vocabulary")) {
+            if (item.getType().equals("vocabulary")) {
                 mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
             }
 
-            if (item.image == null) {
+            if (item.getType() == null) {
                 mItemCharacter.setVisibility(View.VISIBLE);
                 mItemCharacterImage.setVisibility(View.GONE);
-                mItemCharacter.setText(item.character);
+                mItemCharacter.setText(item.getCharacter());
             } else {
                 mItemCharacter.setVisibility(View.GONE);
                 mItemCharacterImage.setVisibility(View.VISIBLE);
                 Picasso.with(context)
-                        .load(item.image)
+                        .load(item.getImage())
                         .into(mItemCharacterImage);
                 mItemCharacterImage.setColorFilter(context.getResources().getColor(R.color.text_gray), PorterDuff.Mode.SRC_ATOP);
             }
 
-            mItemCharacter.setText(item.character);
-            mItemPercentage.setText(item.percentage + "");
+            mItemCharacter.setText(item.getCharacter());
+            mItemPercentage.setText(item.getPercentage() + "");
         }
 
         return v;

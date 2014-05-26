@@ -224,10 +224,10 @@ public class RecentUnlocksCard extends Fragment {
             RecentUnlocksList.UnlockItem item = recentUnlocksList.get(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.type);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.character);
-            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.image);
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.level);
+            intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());
+            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.getCharacter());
+            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.getImage());
+            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
             getActivity().startActivity(intent);
         }
     }

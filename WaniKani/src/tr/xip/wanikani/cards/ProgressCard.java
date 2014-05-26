@@ -134,13 +134,13 @@ public class ProgressCard extends Fragment {
                 user = api.getUser();
                 progression = api.getLevelProgression();
 
-                userLevel = user.getLevel(context);
-                radicalProgress = progression.getRadicalsProgress(context);
-                radicalTotal = progression.getRadicalsTotal(context);
-                kanjiProgress = progression.getKanjiProgress(context);
-                kanjiTotal = progression.getKanjiTotal(context);
-                radicalPercentage = progression.getRadicalsPercentage(context);
-                kanjiPercentage = progression.getKanjiPercentage(context);
+                userLevel = user.getLevel();
+                radicalProgress = progression.getRadicalsProgress();
+                radicalTotal = progression.getRadicalsTotal();
+                kanjiProgress = progression.getKanjiProgress();
+                kanjiTotal = progression.getKanjiTotal();
+                radicalPercentage = progression.getRadicalsPercentage();
+                kanjiPercentage = progression.getKanjiPercentage();
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();

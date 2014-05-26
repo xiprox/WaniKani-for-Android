@@ -199,7 +199,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
         protected Boolean doInBackground(Void[] voids) {
             try {
-                LEVEL = apiMan.getUser().getLevel(context) + "";
+                LEVEL = apiMan.getUser().getLevel() + "";
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -239,9 +239,9 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra("type", ItemDetailsActivity.TYPE_RADICAL);
-            intent.putExtra("character", radicalItem.character);
-            intent.putExtra("image", radicalItem.image);
-            intent.putExtra("level", radicalItem.level);
+            intent.putExtra("character", radicalItem.getCharacter());
+            intent.putExtra("image", radicalItem.getImage());
+            intent.putExtra("level", radicalItem.getLevel());
             getActivity().startActivity(intent);
         }
     }

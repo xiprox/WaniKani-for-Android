@@ -15,7 +15,6 @@ import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.api.response.VocabularyList;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 
 /**
@@ -28,13 +27,11 @@ public class WaniKaniApi {
     WaniKaniService service;
     String API_KEY;
 
-    OfflineDataManager offlineMan;
 
     public WaniKaniApi(Context context) {
         PrefManager prefManager = new PrefManager(context);
         API_KEY = prefManager.getApiKey();
         this.context = context;
-        offlineMan = new OfflineDataManager(context);
         setupService();
     }
 
@@ -47,8 +44,8 @@ public class WaniKaniApi {
         service = restAdapter.create(WaniKaniService.class);
     }
 
-    public User checkAPIKey(String key) {
-        return service.getUser(key);
+    public boolean isApiKeyValid(String key) {
+        return service.getUser(key).user_information != null;
     }
 
     public User getUser() {
@@ -56,14 +53,7 @@ public class WaniKaniApi {
     }
 
     public boolean isVacationModeActive() {
-        String date = getUser().getVacationDate(context) + "";
-        if (date.equals(null)) {
-            offlineMan.setVacationModeActive(true);
-            return true;
-        } else {
-            offlineMan.setVacationModeActive(false);
-            return false;
-        }
+        return (getUser().getVacationDate() + "").equals(null);
     }
 
     public StudyQueue getStudyQueue() {
@@ -79,23 +69,23 @@ public class WaniKaniApi {
     }
 
     public List<RecentUnlocksList.UnlockItem> getRecentUnlocksList(int limit) {
-        return service.getRecentUnlocksList(API_KEY, limit).requested_information;
+        return service.getRecentUnlocksList(API_KEY, limit).getList();
     }
 
     public List<CriticalItemsList.CriticalItem> getCriticalItemsList(int percentage) {
-        return service.getCriticalItemsList(API_KEY, percentage).requested_information;
+        return service.getCriticalItemsList(API_KEY, percentage).getList();
     }
 
     public List<RadicalsList.RadicalItem> getRadicalsList(String level) {
-        return service.getRadicalsList(API_KEY, level).requested_information;
+        return service.getRadicalsList(API_KEY, level).getList();
     }
 
     public List<KanjiList.KanjiItem> getKanjiList(String level) {
-        return service.getKanjiList(API_KEY, level).requested_information;
+        return service.getKanjiList(API_KEY, level).getList();
     }
 
     public List<VocabularyList.VocabularyItem> getVocabularyList(String level) {
-        return service.getVocabularyList(API_KEY, level).requested_information;
+        return service.getVocabularyList(API_KEY, level).getList();
     }
 }
 

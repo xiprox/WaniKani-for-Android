@@ -59,29 +59,29 @@ public class RadicalsAdapter
 
         viewHolder.character.setTypeface(this.typeface);
 
-        if (radicalItem.image == null) {
+        if (radicalItem.getImage() == null) {
             viewHolder.character.setVisibility(View.VISIBLE);
             viewHolder.image.setVisibility(View.GONE);
-            viewHolder.character.setText(radicalItem.character);
+            viewHolder.character.setText(radicalItem.getCharacter());
         } else {
             viewHolder.character.setVisibility(View.GONE);
             viewHolder.image.setVisibility(View.VISIBLE);
 
             Picasso.with(context)
-                    .load(radicalItem.image)
+                    .load(radicalItem.getImage())
                     .into(viewHolder.image);
 
             viewHolder.image.setColorFilter(context.getResources().getColor(R.color.text_gray), PorterDuff.Mode.SRC_ATOP);
         }
 
-        if (radicalItem.user_specific == null) {
+        if (!radicalItem.isUnlocked()) {
             viewHolder.status.setBackgroundColor(this.context.getResources().getColor(R.color.background_disabled));
-        } else if (radicalItem.user_specific.burned) {
+        } else if (radicalItem.isBurned()) {
             viewHolder.status.setBackgroundColor(this.context.getResources().getColor(R.color.wanikani_burned));
         }
 
-        viewHolder.meaning.setText(WordUtils.capitalize((radicalItem.meaning)));
-        viewHolder.level.setText(radicalItem.level + "");
+        viewHolder.meaning.setText(WordUtils.capitalize((radicalItem.getMeaning())));
+        viewHolder.level.setText(radicalItem.getLevel() + "");
 
         return converView;
     }

@@ -329,8 +329,8 @@ public class NavigationDrawerFragment extends Fragment {
         protected String doInBackground(Void... voids) {
             try {
                 user = api.getUser();
-                gravatar = user.getGravatar(context);
-                username = user.getUsername(context);
+                gravatar = user.getGravatar();
+                username = user.getUsername();
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();

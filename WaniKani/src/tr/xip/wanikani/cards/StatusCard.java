@@ -248,11 +248,11 @@ public class StatusCard extends Fragment {
         protected String doInBackground(String... strings) {
             try {
                 srs = api.getSRSDistribution();
-                apprentice = srs.getApprenticeTotalCount(context);
-                guru = srs.getGuruTotalCount(context);
-                master = srs.getMasterTotalCount(context);
-                enlightened = srs.getEnlightenTotalCount(context);
-                burned = srs.getBurnedTotalCount(context);
+                apprentice = srs.getAprentice().getTotalCount();
+                guru = srs.getGuru().getTotalCount();
+                master = srs.getMaster().getTotalCount();
+                enlightened = srs.getEnlighten().getTotalCount();
+                burned = srs.getBurned().getTotalCount();
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -289,34 +289,34 @@ public class StatusCard extends Fragment {
 
             try {
                 if (strings[0].equals("apprentice")) {
-                    radicals = srs.getApprenticeRadicalsCount(context);
-                    kanji = srs.getApprenticeKanjiCount(context);
-                    vocabulary = srs.getApprenticeVocabularyCount(context);
-                    total = srs.getApprenticeTotalCount(context);
+                    radicals = srs.getAprentice().getRadicalsCount();
+                    kanji = srs.getAprentice().getKanjiCount();
+                    vocabulary = srs.getAprentice().getVocabularyCount();
+                    total = srs.getAprentice().getTotalCount();
                 }
                 if (strings[0].equals("guru")) {
-                    radicals = srs.getGuruRadicalsCount(context);
-                    kanji = srs.getGuruKanjiCount(context);
-                    vocabulary = srs.getGuruVocabularyCount(context);
-                    total = srs.getGuruTotalCount(context);
+                    radicals = srs.getGuru().getRadicalsCount();
+                    kanji = srs.getGuru().getKanjiCount();
+                    vocabulary = srs.getGuru().getVocabularyCount();
+                    total = srs.getGuru().getTotalCount();
                 }
                 if (strings[0].equals("master")) {
-                    radicals = srs.getMasterRadicalsCount(context);
-                    kanji = srs.getMasterKanjiCount(context);
-                    vocabulary = srs.getMasterVocabularyCount(context);
-                    total = srs.getMasterTotalCount(context);
+                    radicals = srs.getMaster().getRadicalsCount();
+                    kanji = srs.getMaster().getKanjiCount();
+                    vocabulary = srs.getMaster().getVocabularyCount();
+                    total = srs.getMaster().getTotalCount();
                 }
                 if (strings[0].equals("enlighten")) {
-                    radicals = srs.getEnlightenRadicalsCount(context);
-                    kanji = srs.getEnlightenKanjiCount(context);
-                    vocabulary = srs.getEnlightenVocabularyCount(context);
-                    total = srs.getEnlightenTotalCount(context);
+                    radicals = srs.getEnlighten().getRadicalsCount();
+                    kanji = srs.getEnlighten().getKanjiCount();
+                    vocabulary = srs.getEnlighten().getVocabularyCount();
+                    total = srs.getEnlighten().getTotalCount();
                 }
                 if (strings[0].equals("burned")) {
-                    radicals = srs.getBurnedRadicalsCount(context);
-                    kanji = srs.getBurnedKanjiCount(context);
-                    vocabulary = srs.getBurnedVocabularyCount(context);
-                    total = srs.getBurnedTotalCount(context);
+                    radicals = srs.getBurned().getRadicalsCount();
+                    kanji = srs.getBurned().getKanjiCount();
+                    vocabulary = srs.getBurned().getVocabularyCount();
+                    total = srs.getBurned().getTotalCount();
                 }
                 return "success";
             } catch (Exception e) {
