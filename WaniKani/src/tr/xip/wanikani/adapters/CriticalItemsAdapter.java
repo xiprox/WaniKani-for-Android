@@ -69,7 +69,7 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
                 mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
             }
 
-            if (item.getType() == null) {
+            if (item.getImage() == null) {
                 mItemCharacter.setVisibility(View.VISIBLE);
                 mItemCharacterImage.setVisibility(View.GONE);
                 mItemCharacter.setText(item.getCharacter());
