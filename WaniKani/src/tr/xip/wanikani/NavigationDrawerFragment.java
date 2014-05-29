@@ -380,7 +380,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void showlogoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.dialog_logout)
+        builder.setTitle(R.string.dialog_logout_title)
+                .setMessage(R.string.dialog_logout_message)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         prefMan.logout();

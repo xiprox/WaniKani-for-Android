@@ -160,7 +160,8 @@
     <string name="info_loading">Loading</string>
 
     <!-- Dialog Strings -->
-    <string name="dialog_logout">Are you sure you\'d like to logout?</string>
+    <string name="dialog_logout_title">Confirm Logout</string>
+    <string name="dialog_logout_message">Are you sure you wish to logout? This will erase all stored data!</string>
     <string name="dialog_level_level">Level</string>
 
     <!-- Other Strings -->
