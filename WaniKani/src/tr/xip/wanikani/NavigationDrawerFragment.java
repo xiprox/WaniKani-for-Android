@@ -321,16 +321,6 @@ public class NavigationDrawerFragment extends Fragment {
         String username;
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Picasso.with(context)
-                    .load(R.drawable.profile_loading)
-                    .fit()
-                    .transform(new CircleTransformation())
-                    .into(mAvatar);
-        }
-
-        @Override
         protected String doInBackground(Void... voids) {
             try {
                 user = api.getUser();
@@ -348,7 +338,6 @@ public class NavigationDrawerFragment extends Fragment {
             super.onPostExecute(result);
             Picasso.with(context)
                     .load("http://www.gravatar.com/avatar/" + gravatar + "?s=100")
-                    .error(R.drawable.profile_error)
                     .fit()
                     .transform(new CircleTransformation())
                     .into(mAvatar);
