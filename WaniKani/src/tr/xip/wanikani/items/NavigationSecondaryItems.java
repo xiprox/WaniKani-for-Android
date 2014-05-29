@@ -13,7 +13,7 @@ public class NavigationSecondaryItems {
 
     public NavigationSecondaryItems() {
         addItem(new ListItem(R.drawable.ic_action_settings, R.string.title_settings_allcaps));
-        addItem(new ListItem(R.drawable.ic_action_about, R.string.title_about_allcaps));
+        addItem(new ListItem(R.drawable.ic_action_logout, R.string.title_logout_allcaps));
     }
 
     public static class ListItem {

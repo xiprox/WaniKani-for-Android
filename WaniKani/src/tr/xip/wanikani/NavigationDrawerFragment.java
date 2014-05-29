@@ -1,7 +1,9 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -38,6 +40,7 @@ import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.items.NavigationItems;
 import tr.xip.wanikani.items.NavigationSecondaryItems;
 import tr.xip.wanikani.managers.OfflineDataManager;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.settings.SettingsActivity;
 import tr.xip.wanikani.utils.CircleTransformation;
@@ -53,6 +56,7 @@ public class NavigationDrawerFragment extends Fragment {
     WaniKaniApi api;
     OfflineDataManager dataMan;
     ThemeManager themeMan;
+    PrefManager prefMan;
 
     ImageView mAvatar;
     TextView mUsername;
@@ -83,6 +87,7 @@ public class NavigationDrawerFragment extends Fragment {
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         themeMan = new ThemeManager(getActivity());
+        prefMan = new PrefManager(getActivity());
 
         context = getActivity();
 
@@ -363,7 +368,7 @@ public class NavigationDrawerFragment extends Fragment {
                     startActivity(new Intent(getActivity(), SettingsActivity.class));
                     break;
                 case 1:
-                    // TODO - About
+                    showlogoutDialog();
                     break;
             }
 
@@ -371,5 +376,24 @@ public class NavigationDrawerFragment extends Fragment {
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
             }
         }
+    }
+
+    private void showlogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(R.string.dialog_logout)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        prefMan.logout();
+                        startActivity(new Intent(getActivity(), FirstTimeActivity.class));
+                        getActivity().finish();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        builder.create().show();
     }
 }
