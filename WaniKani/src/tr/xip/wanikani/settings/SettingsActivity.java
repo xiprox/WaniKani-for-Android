@@ -23,7 +23,15 @@ public class SettingsActivity extends PreferenceActivity {
         prefMan = new PrefManager(this);
 
         Preference mApiKey = findPreference(PrefManager.PREF_API_KEY);
-        mApiKey.setSummary(prefMan.getApiKey());
+
+        String apiKey = prefMan.getApiKey();
+        String maskedApiKey = "************************";
+
+        for (int i = 25; i < apiKey.length(); i++) {
+            maskedApiKey += apiKey.charAt(i);
+        }
+
+        mApiKey.setSummary(maskedApiKey);
     }
 
     @Override
