@@ -76,7 +76,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="@string/info_loading"
                         android:textAppearance="@android:style/TextAppearance.Large"
                         android:textColor="@color/text_white" />
 
@@ -101,7 +100,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginBottom="2dp"
-                        android:text="@string/info_loading"
                         android:textAppearance="@android:style/TextAppearance.Large"
                         android:textColor="@color/text_white" />
 
@@ -142,7 +140,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/info_loading"
                     android:textColor="@color/text_gray" />
             </LinearLayout>
 
@@ -169,7 +166,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/info_loading"
                     android:textColor="@color/text_gray" />
 
             </LinearLayout>
@@ -208,7 +204,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/info_loading"
                     android:textColor="@color/text_gray"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -236,7 +231,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/info_loading"
                     android:textColor="@color/text_gray"
                     android:textSize="18sp" />
 
@@ -265,7 +259,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/info_loading"
                     android:textColor="@color/text_gray"
                     android:textSize="18sp" />
 
@@ -298,7 +291,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="4dp"
-                android:text="@string/info_loading"
                 android:textColor="@color/text_gray"
                 android:layout_marginBottom="8dp" />
         </LinearLayout>
@@ -329,7 +321,6 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/info_loading"
                 android:textColor="@color/text_gray" />
         </LinearLayout>
 
@@ -456,8 +447,7 @@
                     <ImageView
                         android:id="@+id/details_progress_srs_logo"
                         android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/apprentice" />
+                        android:layout_height="48dp" />
 
                     <TextView
                         android:id="@+id/details_progress_srs_level"
@@ -466,7 +456,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="8dp"
-                        android:text="@string/info_loading"
                         android:textAppearance="@android:style/TextAppearance.Medium"
                         android:textColor="@color/text_gray" />
                 </LinearLayout>
