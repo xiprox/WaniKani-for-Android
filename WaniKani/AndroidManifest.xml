@@ -27,22 +27,41 @@
             android:name=".Browser"
             android:theme="@style/ThemeWanikanilight"
             android:screenOrientation="portrait"
-            android:parentActivityName="tr.xip.wanikani.MainActivity" />
+            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
         <activity
             android:name=".ItemDetailsActivity"
-            android:parentActivityName="tr.xip.wanikani.MainActivity" />
+            android:parentActivityName="tr.xip.wanikani.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
         <activity
             android:name=".RecentUnlocksActivity"
             android:label="@string/card_title_recent_unlocks"
             android:icon="@drawable/ic_recent_unlock"
-            android:parentActivityName="tr.xip.wanikani.MainActivity" />
+            android:parentActivityName="tr.xip.wanikani.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
         <activity android:name="tr.xip.wanikani.FirstTimeActivity" />
         <activity
             android:name=".settings.SettingsActivity"
             android:theme="@style/ThemeLightDarkActionBar"
             android:label="@string/title_settings"
             android:icon="@drawable/ic_gear"
-            android:parentActivityName="tr.xip.wanikani.MainActivity" />
+            android:parentActivityName="tr.xip.wanikani.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
