@@ -1,6 +1,8 @@
 package tr.xip.wanikani;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,9 +10,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
@@ -52,6 +58,30 @@ public class FirstTimeActivity extends ActionBarActivity {
         mViewSwitcher = (ViewSwitcher) findViewById(R.id.firt_time_view_switcher);
         mViewSwitcher.setInAnimation(context, R.anim.abc_fade_in);
         mViewSwitcher.setOutAnimation(context, R.anim.abc_fade_out);
+
+        mHowTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = LayoutInflater.from(FirstTimeActivity.this);
+                View dialogView = inflater.inflate(R.layout.dialog_how_to_get_key, null);
+
+                TextView linkTextView = (TextView) dialogView.findViewById(R.id.wanikani_go_link_text);
+                linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(FirstTimeActivity.this);
+                builder.setTitle(R.string.action_how_to_api_key)
+                        .setView(dialogView)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+
+                builder.create();
+                builder.show();
+            }
+        });
 
         mSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

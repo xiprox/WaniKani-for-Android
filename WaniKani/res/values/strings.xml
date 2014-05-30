@@ -170,4 +170,11 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset">Reset</string>
+
+    <!-- How To Get API Key Guide Strings -->
+    <string name="guide_how_to_get_key_step_1">Go to <a href="https://www.wanikani.com">wanikani.com</a>.</string>
+    <string name="guide_how_to_get_key_step_2_part_1">Click your profile picture on the top right corner of the page.</string>
+    <string name="guide_how_to_get_key_step_2_part_2">A menu will appear, click settings.</string>
+    <string name="guide_how_to_get_key_step_3">In the settings page scroll towards the bottom of the page until you see \"Public API Key\".</string>
+    <string name="guide_how_to_get_key_step_4">Select the key, copy it and paste it here. That\'s it!</string>
 </resources>

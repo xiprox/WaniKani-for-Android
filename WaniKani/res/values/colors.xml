@@ -9,6 +9,18 @@
     <color name="wanikani_kanji">#f500a3</color>
     <color name="wanikani_vocabulary">#9d33b7</color>
 
+    <!-- Holo Colors -->
+    <color name="holo_blue_light">#33B5E5</color>
+    <color name="holo_blue_dark">#0099CC</color>
+    <color name="holo_purple_light">#AA66CC</color>
+    <color name="holo_purple_dark">#9933CC</color>
+    <color name="holo_green_light">#99CC00</color>
+    <color name="holo_green_dark">#669900</color>
+    <color name="holo_orange_light">#FFBB33</color>
+    <color name="holo_orange_dark">#FF8800</color>
+    <color name="holo_red_light">#FF4444</color>
+    <color name="holo_red_dark">#CC0000</color>
+    
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>
     <color name="tint_black_10">#10000000</color>
