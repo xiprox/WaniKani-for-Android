@@ -64,8 +64,10 @@ public class ProgressCard extends Fragment {
     int kanjiProgress;
     int kanjiTotal;
 
-    public void setListener(ProgressCardListener listener) {
+    public ProgressCard(ProgressCardListener listener, Context context) {
         mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -86,9 +88,6 @@ public class ProgressCard extends Fragment {
         utils = new Utils(getActivity());
         themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     @Override

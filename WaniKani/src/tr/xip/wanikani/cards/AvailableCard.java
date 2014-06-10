@@ -54,8 +54,10 @@ public class AvailableCard extends Fragment {
 
     public static final int BROWSER_REQUEST = 1;
 
-    public void setListener(AvailableCardListener listener) {
+    public AvailableCard(AvailableCardListener listener, Context context) {
         mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -75,9 +77,6 @@ public class AvailableCard extends Fragment {
         dataMan = new OfflineDataManager(getActivity());
         themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     @Override

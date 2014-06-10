@@ -25,12 +25,10 @@
                 android:layout_marginBottom="12dp"
                 android:orientation="vertical">
 
-                <fragment
+                <FrameLayout
                     android:id="@+id/fragment_dashboard_available_card"
-                    android:name="tr.xip.wanikani.cards.AvailableCard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:layout="@layout/card_available" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
@@ -40,29 +38,23 @@
                 android:layout_marginBottom="12dp"
                 android:orientation="vertical">
 
-                <fragment
+                <FrameLayout
                     android:id="@+id/fragment_dashboard_reviews_card"
-                    android:name="tr.xip.wanikani.cards.ReviewsCard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:layout="@layout/card_reviews" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <fragment
+            <FrameLayout
                 android:id="@+id/fragment_dashboard_status_card"
-                android:name="tr.xip.wanikani.cards.StatusCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                tools:layout="@layout/card_status" />
+                android:layout_marginBottom="12dp" />
 
-            <fragment
+            <FrameLayout
                 android:id="@+id/fragment_dashboard_progress_card"
-                android:name="tr.xip.wanikani.cards.ProgressCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                tools:layout="@layout/card_progress" />
+                android:layout_marginBottom="12dp" />
 
             <LinearLayout
                 android:id="@+id/fragment_dashboard_recent_unlocks_holder"
@@ -71,12 +63,10 @@
                 android:layout_marginBottom="12dp"
                 android:orientation="vertical">
 
-                <fragment
+                <FrameLayout
                     android:id="@+id/fragment_dashboard_recent_unlocks_card"
-                    android:name="tr.xip.wanikani.cards.RecentUnlocksCard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout="@layout/card_recent_unlocks" />
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
@@ -85,12 +75,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <fragment
+                <FrameLayout
                     android:id="@+id/fragment_dashboard_critical_items_card"
-                    android:name="tr.xip.wanikani.cards.CriticalItemsCard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout="@layout/card_critical_items" />
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
 

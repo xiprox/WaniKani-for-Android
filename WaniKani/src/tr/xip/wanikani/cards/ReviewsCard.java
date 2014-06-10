@@ -61,8 +61,10 @@ public class ReviewsCard extends Fragment {
     boolean isVacationModeActive;
     int reviewsAvailable;
 
-    public void setListener(ReviewsCardListener listener) {
+    public ReviewsCard(ReviewsCardListener listener, Context context) {
         mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -82,9 +84,6 @@ public class ReviewsCard extends Fragment {
         utils = new Utils(getActivity());
         themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     @Override

@@ -66,8 +66,10 @@ public class CriticalItemsCard extends Fragment {
 
     List<CriticalItemsList.CriticalItem> criticalItemsList = null;
 
-    public void setListener(CriticalItemsCardListener listener) {
+    public CriticalItemsCard(CriticalItemsCardListener listener, Context context) {
         mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -88,9 +90,6 @@ public class CriticalItemsCard extends Fragment {
         prefMan = new PrefManager(getActivity());
         themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     @Override

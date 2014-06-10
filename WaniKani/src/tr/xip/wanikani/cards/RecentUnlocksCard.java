@@ -68,8 +68,10 @@ public class RecentUnlocksCard extends Fragment {
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
 
-    public void setListener(RecentUnlocksCardListener listener) {
+    public RecentUnlocksCard(RecentUnlocksCardListener listener, Context context) {
         mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -90,9 +92,6 @@ public class RecentUnlocksCard extends Fragment {
         prefMan = new PrefManager(getActivity());
         themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     @Override
@@ -216,7 +215,7 @@ public class RecentUnlocksCard extends Fragment {
                 mViewFlipper.showNext();
             }
 
-            mListener.onREcentUnlocksCardSyncFinishedListener(height);
+            mListener.onRecentUnlocksCardSyncFinishedListener(height);
         }
     }
 
@@ -236,6 +235,6 @@ public class RecentUnlocksCard extends Fragment {
     }
 
     public interface RecentUnlocksCardListener {
-        public void onREcentUnlocksCardSyncFinishedListener(int height);
+        public void onRecentUnlocksCardSyncFinishedListener(int height);
     }
 }

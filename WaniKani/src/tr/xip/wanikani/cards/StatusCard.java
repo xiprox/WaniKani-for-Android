@@ -79,23 +79,19 @@ public class StatusCard extends Fragment {
     int enlightened;
     int burned;
 
-    public void setListener(StatusCardListener listener) {
+    public StatusCard(StatusCardListener listener, Context context) {
         mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (utils.isNetworkAvailable()) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else
-                    new LoadTask().execute();
-            } else {
-                Intent broadcastIntent = new Intent(BroadcastIntents.FINISHED_SYNC_STATUS_CARD());
-                broadcastIntent.putExtra("action", "hide");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(broadcastIntent);
-            }
+            if (Build.VERSION.SDK_INT >= 11)
+                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            else
+                new LoadTask().execute();
         }
     };
 
@@ -107,9 +103,6 @@ public class StatusCard extends Fragment {
         utils = new Utils(getActivity());
         themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
     }
 
     @Override

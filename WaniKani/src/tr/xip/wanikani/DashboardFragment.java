@@ -1,7 +1,6 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +8,14 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -51,13 +54,6 @@ public class DashboardFragment extends Fragment
     LinearLayout mReviewsHolder;
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
-
-    AvailableCard availableCard;
-    ReviewsCard reviewsCard;
-    StatusCard statusCard;
-    ProgressCard progressCard;
-    RecentUnlocksCard recentUnlocksCard;
-    CriticalItemsCard criticalItemsCard;
 
     private PullToRefreshLayout mPullToRefreshLayout;
 
@@ -122,20 +118,23 @@ public class DashboardFragment extends Fragment
         mRecentUnlocksFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_recent_unlocks_holder);
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
 
-        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
-        availableCard = (AvailableCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_available_card);
-        reviewsCard = (ReviewsCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_reviews_card);
-        statusCard = (StatusCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_status_card);
-        progressCard = (ProgressCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_progress_card);
-        recentUnlocksCard = (RecentUnlocksCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_recent_unlocks_card);
-        criticalItemsCard = (CriticalItemsCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_critical_items_card);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        availableCard.setListener(this);
-        reviewsCard.setListener(this);
-        statusCard.setListener(this);
-        progressCard.setListener(this);
-        recentUnlocksCard.setListener(this);
-        criticalItemsCard.setListener(this);
+        AvailableCard availableCard = new AvailableCard(this, getActivity());
+        ReviewsCard reviewsCard = new ReviewsCard(this, getActivity());
+        StatusCard statusCard = new StatusCard(this, getActivity());
+        ProgressCard progressCard = new ProgressCard(this, getActivity());
+        RecentUnlocksCard recentUnlocksCard = new RecentUnlocksCard(this, getActivity());
+        CriticalItemsCard criticalItemsCard = new CriticalItemsCard(this, getActivity());
+
+        transaction.replace(R.id.fragment_dashboard_available_card, availableCard);
+        transaction.replace(R.id.fragment_dashboard_reviews_card, reviewsCard);
+        transaction.replace(R.id.fragment_dashboard_status_card, statusCard);
+        transaction.replace(R.id.fragment_dashboard_progress_card, progressCard);
+        transaction.replace(R.id.fragment_dashboard_recent_unlocks_card, recentUnlocksCard);
+        transaction.replace(R.id.fragment_dashboard_critical_items_card, criticalItemsCard);
+        transaction.commit();
 
         if (!MainActivity.isFirstSyncDashboardDone) {
             mPullToRefreshLayout.setRefreshing(true);
@@ -257,7 +256,7 @@ public class DashboardFragment extends Fragment
     }
 
     @Override
-    public void onREcentUnlocksCardSyncFinishedListener(int height) {
+    public void onRecentUnlocksCardSyncFinishedListener(int height) {
         setRecentUnlocksFragmentHeight(height);
         isRecentUnlocksCardSynced = true;
         updateSyncStatus();
