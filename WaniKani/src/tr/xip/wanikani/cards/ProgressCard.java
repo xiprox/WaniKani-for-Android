@@ -54,6 +54,14 @@ public class ProgressCard extends Fragment {
 
     LinearLayout mCard;
 
+    int userLevel;
+    int radicalPercentage;
+    int radicalProgress;
+    int radicalTotal;
+    int kanjiPercentage;
+    int kanjiProgress;
+    int kanjiTotal;
+
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -98,12 +106,12 @@ public class ProgressCard extends Fragment {
         mCard = (LinearLayout) rootView.findViewById(R.id.card_progress_card);
         mCard.setBackgroundResource(themeMan.getCard());
 
-        setOldValues();
+        loadOfflineValues();
 
         return rootView;
     }
 
-    private void setOldValues() {
+    private void loadOfflineValues() {
         mUserLevel.setText(dataMan.getLevel() + "");
         mRadicalsProgress.setText(dataMan.getRadicalsProgress() + "");
         mRadicalsTotal.setText(dataMan.getRadicalsProgress() + "");
@@ -117,16 +125,19 @@ public class ProgressCard extends Fragment {
         mKanjiProgressBar.setProgress(dataMan.getKanjiPercentage());
     }
 
+    private void saveOfflineValues() {
+        dataMan.setLevel(userLevel);
+        dataMan.setRadicalsPercentage(radicalPercentage);
+        dataMan.setRadicalsProgress(radicalProgress);
+        dataMan.setRadicalsTotal(radicalTotal);
+        dataMan.setKanjiPercentage(kanjiPercentage);
+        dataMan.setKanjiProgress(kanjiProgress);
+        dataMan.setKanjiTotal(kanjiTotal);
+    }
+
     private class LoadTask extends AsyncTask<String, Void, String> {
         User user;
         LevelProgression progression;
-        int userLevel;
-        int radicalPercentage;
-        int radicalProgress;
-        int radicalTotal;
-        int kanjiPercentage;
-        int kanjiProgress;
-        int kanjiTotal;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -161,6 +172,8 @@ public class ProgressCard extends Fragment {
 
                 mRadicalProgressBar.setProgress(radicalPercentage);
                 mKanjiProgressBar.setProgress(kanjiPercentage);
+
+                saveOfflineValues();
             }
 
             Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_PROGRESS_CARD());

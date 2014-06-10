@@ -46,6 +46,9 @@ public class AvailableCard extends Fragment {
 
     LinearLayout mCard;
 
+    int lessonsAvailable;
+    int reviewsAvailable;
+
     public static final int BROWSER_REQUEST = 1;
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
@@ -88,14 +91,19 @@ public class AvailableCard extends Fragment {
 
         setUpParentOnClicks();
 
-        setOldValues();
+        loadOfflineValues();
 
         return rootView;
     }
 
-    private void setOldValues() {
+    private void loadOfflineValues() {
         mLessonsAvailable.setText(dataMan.getLessonsAvailable() + "");
         mReviewsAvailable.setText(dataMan.getReviewsAvailable() + "");
+    }
+
+    private void saveOfflineValues() {
+        dataMan.setLessonsAvailable(lessonsAvailable);
+        dataMan.setReviewsAvailable(reviewsAvailable);
     }
 
     private void setUpParentOnClicks() {
@@ -121,8 +129,6 @@ public class AvailableCard extends Fragment {
 
     private class LoadTask extends AsyncTask<String, Void, String> {
         StudyQueue studyQueue;
-        int lessonsAvailable;
-        int reviewsAvailable;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -147,6 +153,8 @@ public class AvailableCard extends Fragment {
                 Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD());
                 intent.putExtra("action", "show");
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                saveOfflineValues();
             } else {
                 Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD());
                 intent.putExtra("action", "hide");

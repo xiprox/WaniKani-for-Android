@@ -71,6 +71,12 @@ public class StatusCard extends Fragment {
 
     SRSDistribution srs;
 
+    int apprentice;
+    int guru;
+    int master;
+    int enlightened;
+    int burned;
+
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -140,17 +146,31 @@ public class StatusCard extends Fragment {
 
         setOnClickListeners();
 
-        setOldValues();
+        loadOfflineValues();
 
         return rootView;
     }
 
-    private void setOldValues() {
+    @Override
+    public void onStop() {
+        saveOfflineValues();
+        super.onStop();
+    }
+
+    private void loadOfflineValues() {
         mApprentice.setText(dataMan.getApprenticeTotalCount() + "");
         mGuru.setText(dataMan.getGuruTotalCount() + "");
         mMaster.setText(dataMan.getMasterTotalCount() + "");
         mEnlightened.setText(dataMan.getEnlightenTotalCount() + "");
         mBurned.setText(dataMan.getBurnedTotalCount() + "");
+    }
+
+    private void saveOfflineValues() {
+        dataMan.setApprenticeTotalCount(apprentice);
+        dataMan.setGuruTotalCount(guru);
+        dataMan.setMasterTotalCount(master);
+        dataMan.setEnlightenTotalCount(enlightened);
+        dataMan.setBurnedTotalCount(burned);
     }
 
     private void setOnClickListeners() {
@@ -238,11 +258,6 @@ public class StatusCard extends Fragment {
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {
-        int apprentice;
-        int guru;
-        int master;
-        int enlightened;
-        int burned;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -268,6 +283,8 @@ public class StatusCard extends Fragment {
                 mMaster.setText(master + "");
                 mEnlightened.setText(enlightened + "");
                 mBurned.setText(burned + "");
+
+                saveOfflineValues();
             }
 
             Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_STATUS_CARD());
@@ -293,74 +310,119 @@ public class StatusCard extends Fragment {
                     kanji = srs.getAprentice().getKanjiCount();
                     vocabulary = srs.getAprentice().getVocabularyCount();
                     total = srs.getAprentice().getTotalCount();
+
+                    dataMan.setApprenticeRadicalsCount(radicals);
+                    dataMan.setApprenticeKanjiCount(kanji);
+                    dataMan.setApprentiveVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("guru")) {
                     radicals = srs.getGuru().getRadicalsCount();
                     kanji = srs.getGuru().getKanjiCount();
                     vocabulary = srs.getGuru().getVocabularyCount();
                     total = srs.getGuru().getTotalCount();
+
+                    dataMan.setGuruRadicalsCount(radicals);
+                    dataMan.setGuruKanjiCount(kanji);
+                    dataMan.setGuruVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("master")) {
                     radicals = srs.getMaster().getRadicalsCount();
                     kanji = srs.getMaster().getKanjiCount();
                     vocabulary = srs.getMaster().getVocabularyCount();
                     total = srs.getMaster().getTotalCount();
+
+                    dataMan.setMasterRadicalsCount(radicals);
+                    dataMan.setMasterKanjiCount(kanji);
+                    dataMan.setMasterVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("enlighten")) {
                     radicals = srs.getEnlighten().getRadicalsCount();
                     kanji = srs.getEnlighten().getKanjiCount();
                     vocabulary = srs.getEnlighten().getVocabularyCount();
                     total = srs.getEnlighten().getTotalCount();
+
+                    dataMan.setEnlightenRadicalsCount(radicals);
+                    dataMan.setEnlightenKanjiCount(kanji);
+                    dataMan.setMasterVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("burned")) {
                     radicals = srs.getBurned().getRadicalsCount();
                     kanji = srs.getBurned().getKanjiCount();
                     vocabulary = srs.getBurned().getVocabularyCount();
                     total = srs.getBurned().getTotalCount();
+
+                    dataMan.setBurnedRadicalsCount(radicals);
+                    dataMan.setBurnedKanjiCount(kanji);
+                    dataMan.setBurnedVocabularyCount(vocabulary);
                 }
-                return "success";
             } catch (Exception e) {
                 e.printStackTrace();
-                return "failure";
+
+                if (strings[0].equals("apprentice")) {
+                    radicals = dataMan.getApprenticeRadicalsCount();
+                    kanji = dataMan.getApprenticeKanjiCount();
+                    vocabulary = dataMan.getApprenticeVocabularyCount();
+                    total = dataMan.getApprenticeTotalCount();
+                }
+                if (strings[0].equals("guru")) {
+                    radicals = dataMan.getGuruRadicalsCount();
+                    kanji = dataMan.getGuruKanjiCount();
+                    vocabulary = dataMan.getGuruVocabularyCount();
+                    total = dataMan.getGuruTotalCount();
+                }
+                if (strings[0].equals("master")) {
+                    radicals = dataMan.getMasterRadicalsCount();
+                    kanji = dataMan.getMasterKanjiCount();
+                    vocabulary = dataMan.getMasterVocabularyCount();
+                    total = dataMan.getMasterTotalCount();
+                }
+                if (strings[0].equals("enlighten")) {
+                    radicals = dataMan.getEnlightenRadicalsCount();
+                    kanji = dataMan.getEnlightenKanjiCount();
+                    vocabulary = dataMan.getEnlightenVocabularyCount();
+                    total = dataMan.getEnlightenTotalCount();
+                }
+                if (strings[0].equals("burned")) {
+                    radicals = dataMan.getBurnedRadicalsCount();
+                    kanji = dataMan.getBurnedKanjiCount();
+                    vocabulary = dataMan.getBurnedVocabularyCount();
+                    total = dataMan.getBurnedTotalCount();
+                }
             }
+
+            return null;
         }
 
         @Override
         protected void onPostExecute(String result) {
-            if (result.equals("success")) {
-                mDetailsRadicals.setText(radicals + "");
-                mDetailsKanji.setText(kanji + "");
-                mDetailsVocabulary.setText(vocabulary + "");
-                mDetailsTotal.setText(total + "");
+            mDetailsRadicals.setText(radicals + "");
+            mDetailsKanji.setText(kanji + "");
+            mDetailsVocabulary.setText(vocabulary + "");
+            mDetailsTotal.setText(total + "");
 
-                if (srsLevel.equals("apprentice")) {
-                    mDetailsSRSLogo.setImageResource(R.drawable.apprentice);
-                    mDetailsSRSLevel.setText(R.string.srs_title_apprentice);
-                }
-                if (srsLevel.equals("guru")) {
-                    mDetailsSRSLogo.setImageResource(R.drawable.guru);
-                    mDetailsSRSLevel.setText(R.string.srs_title_guru);
-                }
-                if (srsLevel.equals("master")) {
-                    mDetailsSRSLogo.setImageResource(R.drawable.master);
-                    mDetailsSRSLevel.setText(R.string.srs_title_master);
-                }
-                if (srsLevel.equals("enlighten")) {
-                    mDetailsSRSLogo.setImageResource(R.drawable.enlighten);
-                    mDetailsSRSLevel.setText(R.string.srs_title_enlightened);
-                }
-                if (srsLevel.equals("burned")) {
-                    mDetailsSRSLogo.setImageResource(R.drawable.burned);
-                    mDetailsSRSLevel.setText(R.string.srs_title_burned);
-                }
+            if (srsLevel.equals("apprentice")) {
+                mDetailsSRSLogo.setImageResource(R.drawable.apprentice);
+                mDetailsSRSLevel.setText(R.string.srs_title_apprentice);
+            }
+            if (srsLevel.equals("guru")) {
+                mDetailsSRSLogo.setImageResource(R.drawable.guru);
+                mDetailsSRSLevel.setText(R.string.srs_title_guru);
+            }
+            if (srsLevel.equals("master")) {
+                mDetailsSRSLogo.setImageResource(R.drawable.master);
+                mDetailsSRSLevel.setText(R.string.srs_title_master);
+            }
+            if (srsLevel.equals("enlighten")) {
+                mDetailsSRSLogo.setImageResource(R.drawable.enlighten);
+                mDetailsSRSLevel.setText(R.string.srs_title_enlightened);
+            }
+            if (srsLevel.equals("burned")) {
+                mDetailsSRSLogo.setImageResource(R.drawable.burned);
+                mDetailsSRSLevel.setText(R.string.srs_title_burned);
+            }
 
-                if (mDetailsSuperFlipper.getDisplayedChild() == 0) {
-                    mDetailsSuperFlipper.showNext();
-                }
-            } else {
-                if (mDetailsFlipper.getDisplayedChild() == 1) {
-                    mDetailsFlipper.showPrevious();
-                }
+            if (mDetailsSuperFlipper.getDisplayedChild() == 0) {
+                mDetailsSuperFlipper.showNext();
             }
         }
     }

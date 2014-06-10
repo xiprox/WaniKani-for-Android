@@ -52,6 +52,12 @@ public class ReviewsCard extends Fragment {
     Period period;
     PeriodFormatter formatter;
 
+    long nextReview;
+    int nextHour;
+    int nextDay;
+    boolean isVacationModeActive;
+    int reviewsAvailable;
+
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -88,12 +94,12 @@ public class ReviewsCard extends Fragment {
         mCard = (LinearLayout) rootView.findViewById(R.id.card_reviews_card);
         mCard.setBackgroundResource(themeMan.getCard());
 
-        setOldValues();
+        loadOfflineValues();
 
         return rootView;
     }
 
-    private void setOldValues() {
+    private void loadOfflineValues() {
         mNextHour.setText(dataMan.getReviewsAvailableNextHour() + "");
         mNextDay.setText(dataMan.getReviewsAvailableNextDay() + "");
 
@@ -105,13 +111,14 @@ public class ReviewsCard extends Fragment {
         }
     }
 
+    private void saveOfflineValues() {
+        dataMan.setNextReviewDate(nextReview);
+        dataMan.setReviewsAvailableNextHour(nextHour);
+        dataMan.setReviewsAvailableNextDay(nextDay);
+    }
+
     private class LoadTask extends AsyncTask<String, Void, String> {
         StudyQueue studyQueue;
-        long nextReview;
-        int nextHour;
-        int nextDay;
-        boolean isVacationModeActive;
-        int reviewsAvailable;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -146,6 +153,8 @@ public class ReviewsCard extends Fragment {
                     Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_REVIEWS_CARD());
                     intent.putExtra("action", "show");
                     LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+
+                    saveOfflineValues();
                 } else {
                     Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_REVIEWS_CARD());
                     intent.putExtra("action", "hide");
