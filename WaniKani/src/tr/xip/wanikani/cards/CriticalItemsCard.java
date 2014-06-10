@@ -48,6 +48,8 @@ public class CriticalItemsCard extends Fragment {
 
     Context mContext;
 
+    CriticalItemsCardListener mListener;
+
     TextView mCardTitle;
     ListView mCriticalItemsList;
 
@@ -63,6 +65,10 @@ public class CriticalItemsCard extends Fragment {
     TextView mMessageSummary;
 
     List<CriticalItemsList.CriticalItem> criticalItemsList = null;
+
+    public void setListener(CriticalItemsCardListener listener) {
+        mListener = listener;
+    }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -199,9 +205,7 @@ public class CriticalItemsCard extends Fragment {
                 mViewFlipper.showNext();
             }
 
-            Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_CRITICAL_ITEMS_CARD());
-            intent.putExtra("height", height);
-            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+            mListener.onCriticalItemsCardSyncFinishedListener(height);
         }
     }
 
@@ -217,5 +221,9 @@ public class CriticalItemsCard extends Fragment {
             intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
             getActivity().startActivity(intent);
         }
+    }
+
+    public interface CriticalItemsCardListener {
+        public void onCriticalItemsCardSyncFinishedListener(int height);
     }
 }

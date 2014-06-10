@@ -41,6 +41,8 @@ public class ProgressCard extends Fragment {
 
     Context context;
 
+    ProgressCardListener mListener;
+
     TextView mUserLevel;
     TextView mRadicalPercentage;
     TextView mRadicalsProgress;
@@ -61,6 +63,10 @@ public class ProgressCard extends Fragment {
     int kanjiPercentage;
     int kanjiProgress;
     int kanjiTotal;
+
+    public void setListener(ProgressCardListener listener) {
+        mListener = listener;
+    }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -176,8 +182,11 @@ public class ProgressCard extends Fragment {
                 saveOfflineValues();
             }
 
-            Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_PROGRESS_CARD());
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            mListener.onProgressCardSyncFinishedListener();
         }
+    }
+
+    public interface ProgressCardListener {
+        public void onProgressCardSyncFinishedListener();
     }
 }

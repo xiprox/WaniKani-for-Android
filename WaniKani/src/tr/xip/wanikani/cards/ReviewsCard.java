@@ -21,6 +21,7 @@ import org.joda.time.format.PeriodFormatter;
 import java.text.SimpleDateFormat;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
@@ -43,6 +44,8 @@ public class ReviewsCard extends Fragment {
 
     View rootView;
 
+    ReviewsCardListener mListener;
+
     TextView mNextReview;
     TextView mNextHour;
     TextView mNextDay;
@@ -57,6 +60,10 @@ public class ReviewsCard extends Fragment {
     int nextDay;
     boolean isVacationModeActive;
     int reviewsAvailable;
+
+    public void setListener(ReviewsCardListener listener) {
+        mListener = listener;
+    }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -150,19 +157,19 @@ public class ReviewsCard extends Fragment {
                         mNextReview.setText(sdf.format(nextReview));
                     }
 
-                    Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_REVIEWS_CARD());
-                    intent.putExtra("action", "show");
-                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                    mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
 
                     saveOfflineValues();
                 } else {
-                    Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_REVIEWS_CARD());
-                    intent.putExtra("action", "hide");
-                    LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                    mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
                 }
             } else {
                 // TODO - Vacation mode
             }
         }
+    }
+
+    public interface ReviewsCardListener {
+        public void onReviewsCardSyncFinishedListener(String result);
     }
 }

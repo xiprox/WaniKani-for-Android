@@ -42,6 +42,8 @@ public class StatusCard extends Fragment {
 
     Context context;
 
+    StatusCardListener mListener;
+
     RelativeLayout mApprenticeParent;
     RelativeLayout mGuruParent;
     RelativeLayout mMasterParent;
@@ -76,6 +78,10 @@ public class StatusCard extends Fragment {
     int master;
     int enlightened;
     int burned;
+
+    public void setListener(StatusCardListener listener) {
+        mListener = listener;
+    }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -287,8 +293,7 @@ public class StatusCard extends Fragment {
                 saveOfflineValues();
             }
 
-            Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_STATUS_CARD());
-            LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            mListener.onStatusCardSyncFinishedListener();
         }
     }
 
@@ -425,5 +430,9 @@ public class StatusCard extends Fragment {
                 mDetailsSuperFlipper.showNext();
             }
         }
+    }
+
+    public interface StatusCardListener {
+        public void onStatusCardSyncFinishedListener();
     }
 }

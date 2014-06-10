@@ -1,6 +1,7 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,16 +19,26 @@ import android.widget.Toast;
 import com.cocosw.undobar.UndoBarController;
 
 import tr.xip.wanikani.cards.AvailableCard;
+import tr.xip.wanikani.cards.CriticalItemsCard;
+import tr.xip.wanikani.cards.ProgressCard;
+import tr.xip.wanikani.cards.RecentUnlocksCard;
+import tr.xip.wanikani.cards.ReviewsCard;
+import tr.xip.wanikani.cards.StatusCard;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class DashboardFragment extends Fragment
-        implements OnRefreshListener, UndoBarController.UndoListener {
+        implements OnRefreshListener, UndoBarController.UndoListener, AvailableCard.AvailableCardListener,
+        ReviewsCard.ReviewsCardListener, StatusCard.StatusCardListener, ProgressCard.ProgressCardListener,
+        RecentUnlocksCard.RecentUnlocksCardListener, CriticalItemsCard.CriticalItemsCardListener {
 
     View rootView;
 
     Activity activity;
+
+    public static final String SYNC_RESULT_SUCCESS = "success";
+    public static final String SYNC_RESULT_FAILED = "failed";
 
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
@@ -41,76 +52,19 @@ public class DashboardFragment extends Fragment
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
 
+    AvailableCard availableCard;
+    ReviewsCard reviewsCard;
+    StatusCard statusCard;
+    ProgressCard progressCard;
+    RecentUnlocksCard recentUnlocksCard;
+    CriticalItemsCard criticalItemsCard;
+
     private PullToRefreshLayout mPullToRefreshLayout;
 
     private BroadcastReceiver mSyncCalled = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mPullToRefreshLayout.setRefreshing(true);
-        }
-    };
-
-    private BroadcastReceiver mAvailableCardSyncFinishedReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getStringExtra("action").equals("hide")) {
-                mAvailableHolder.setVisibility(View.GONE);
-            }
-            if (intent.getStringExtra("action").equals("show")) {
-                mAvailableHolder.setVisibility(View.VISIBLE);
-            }
-
-            isAvailableCardSynced = true;
-            updateSyncStatus();
-        }
-    };
-
-    private BroadcastReceiver mReviewsCardSyncFinishedReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getStringExtra("action").equals("hide")) {
-                mReviewsHolder.setVisibility(View.GONE);
-            }
-            if (intent.getStringExtra("action").equals("show")) {
-                mReviewsHolder.setVisibility(View.VISIBLE);
-            }
-
-            isReviewsCardSynced = true;
-            updateSyncStatus();
-        }
-    };
-
-    private BroadcastReceiver mStatusCardSyncFinishedReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            isStatusCardSynced = true;
-            updateSyncStatus();
-        }
-    };
-
-    private BroadcastReceiver mProgressCardSyncFinishedReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            isProgressCardSynced = true;
-            updateSyncStatus();
-        }
-    };
-
-    private BroadcastReceiver mRecentUnlocksCardSyncFinishedReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            setRecentUnlocksFragmentHeight(intent.getIntExtra("height", 1010));
-            isRecentUnlocksCardSynced = true;
-            updateSyncStatus();
-        }
-    };
-
-    private BroadcastReceiver mCriticalItemsCardSyncFinishedReceiver = new BroadcastReceiver() {
-
-        public void onReceive(Context context, Intent intent) {
-            setCriticalItemsFragmentHeight(intent.getIntExtra("height", 1010));
-            isCriticalItemsCardSynced = true;
-            updateSyncStatus();
         }
     };
 
@@ -168,6 +122,21 @@ public class DashboardFragment extends Fragment
         mRecentUnlocksFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_recent_unlocks_holder);
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
 
+        android.support.v4.app.FragmentManager fragmentManager = getFragmentManager();
+        availableCard = (AvailableCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_available_card);
+        reviewsCard = (ReviewsCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_reviews_card);
+        statusCard = (StatusCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_status_card);
+        progressCard = (ProgressCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_progress_card);
+        recentUnlocksCard = (RecentUnlocksCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_recent_unlocks_card);
+        criticalItemsCard = (CriticalItemsCard) fragmentManager.findFragmentById(R.id.fragment_dashboard_critical_items_card);
+
+        availableCard.setListener(this);
+        reviewsCard.setListener(this);
+        statusCard.setListener(this);
+        progressCard.setListener(this);
+        recentUnlocksCard.setListener(this);
+        criticalItemsCard.setListener(this);
+
         if (!MainActivity.isFirstSyncDashboardDone) {
             mPullToRefreshLayout.setRefreshing(true);
             Intent intent = new Intent(BroadcastIntents.SYNC());
@@ -190,18 +159,6 @@ public class DashboardFragment extends Fragment
     private void registerReceivers() {
         LocalBroadcastManager.getInstance(activity).registerReceiver(mSyncCalled,
                 new IntentFilter(BroadcastIntents.SYNC()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mAvailableCardSyncFinishedReceiver,
-                new IntentFilter(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mReviewsCardSyncFinishedReceiver,
-                new IntentFilter(BroadcastIntents.FINISHED_SYNC_REVIEWS_CARD()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mStatusCardSyncFinishedReceiver,
-                new IntentFilter(BroadcastIntents.FINISHED_SYNC_STATUS_CARD()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mProgressCardSyncFinishedReceiver,
-                new IntentFilter(BroadcastIntents.FINISHED_SYNC_PROGRESS_CARD()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mRecentUnlocksCardSyncFinishedReceiver,
-                new IntentFilter(BroadcastIntents.FINISHED_SYNC_RECENT_UNLOCKS_CARD()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mCriticalItemsCardSyncFinishedReceiver,
-                new IntentFilter(BroadcastIntents.FINISHED_SYNC_CRITICAL_ITEMS_CARD()));
         LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
         LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionErorReceiver,
@@ -212,12 +169,6 @@ public class DashboardFragment extends Fragment
 
     private void unregisterReceivers() {
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mSyncCalled);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mAvailableCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mReviewsCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mStatusCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mProgressCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRecentUnlocksCardSyncFinishedReceiver);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mCriticalItemsCardSyncFinishedReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionErorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
@@ -269,5 +220,53 @@ public class DashboardFragment extends Fragment
     public void onUndo(Parcelable parcelable) {
         Intent intent = new Intent(BroadcastIntents.SYNC());
         LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+    }
+
+    @Override
+    public void onAvailableCardSyncFinishedListener(String result) {
+        if (result.equals(SYNC_RESULT_SUCCESS))
+            mAvailableHolder.setVisibility(View.VISIBLE);
+        if (result.equals(SYNC_RESULT_FAILED))
+            mAvailableHolder.setVisibility(View.GONE);
+
+        isAvailableCardSynced = true;
+        updateSyncStatus();
+    }
+
+    @Override
+    public void onReviewsCardSyncFinishedListener(String result) {
+        if (result.equals(SYNC_RESULT_SUCCESS))
+            mReviewsHolder.setVisibility(View.VISIBLE);
+        if (result.equals(SYNC_RESULT_FAILED))
+            mReviewsHolder.setVisibility(View.GONE);
+
+        isReviewsCardSynced = true;
+        updateSyncStatus();
+    }
+
+    @Override
+    public void onStatusCardSyncFinishedListener() {
+        isStatusCardSynced = true;
+        updateSyncStatus();
+    }
+
+    @Override
+    public void onProgressCardSyncFinishedListener() {
+        isProgressCardSynced = true;
+        updateSyncStatus();
+    }
+
+    @Override
+    public void onREcentUnlocksCardSyncFinishedListener(int height) {
+        setRecentUnlocksFragmentHeight(height);
+        isRecentUnlocksCardSynced = true;
+        updateSyncStatus();
+    }
+
+    @Override
+    public void onCriticalItemsCardSyncFinishedListener(int height) {
+        setCriticalItemsFragmentHeight(height);
+        isCriticalItemsCardSynced = true;
+        updateSyncStatus();
     }
 }

@@ -49,10 +49,11 @@ public class RecentUnlocksCard extends Fragment {
 
     Context mContext;
 
+    RecentUnlocksCardListener mListener;
+
     TextView mCardTitle;
     ListView mRecentUnlocksList;
     RelativeLayout mMoreItemsButton;
-
 
     RecentUnlocksAdapter mRecentUnlocksAdapter;
 
@@ -66,6 +67,10 @@ public class RecentUnlocksCard extends Fragment {
     TextView mMessageSummary;
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
+
+    public void setListener(RecentUnlocksCardListener listener) {
+        mListener = listener;
+    }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -211,9 +216,7 @@ public class RecentUnlocksCard extends Fragment {
                 mViewFlipper.showNext();
             }
 
-            Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_RECENT_UNLOCKS_CARD());
-            intent.putExtra("height", height);
-            LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+            mListener.onREcentUnlocksCardSyncFinishedListener(height);
         }
     }
 
@@ -230,5 +233,9 @@ public class RecentUnlocksCard extends Fragment {
             intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
             getActivity().startActivity(intent);
         }
+    }
+
+    public interface RecentUnlocksCardListener {
+        public void onREcentUnlocksCardSyncFinishedListener(int height);
     }
 }

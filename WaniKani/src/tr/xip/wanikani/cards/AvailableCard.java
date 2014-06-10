@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.Browser;
+import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
@@ -38,6 +39,8 @@ public class AvailableCard extends Fragment {
 
     Context context;
 
+    AvailableCardListener mListener;
+
     LinearLayout mLessonsParent;
     LinearLayout mReviewsParent;
 
@@ -50,6 +53,10 @@ public class AvailableCard extends Fragment {
     int reviewsAvailable;
 
     public static final int BROWSER_REQUEST = 1;
+
+    public void setListener(AvailableCardListener listener) {
+        mListener = listener;
+    }
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -150,18 +157,16 @@ public class AvailableCard extends Fragment {
                 mLessonsAvailable.setText(lessonsAvailable + "");
                 mReviewsAvailable.setText(reviewsAvailable + "");
 
-                Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD());
-                intent.putExtra("action", "show");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
 
                 saveOfflineValues();
             } else {
-                Intent intent = new Intent(BroadcastIntents.FINISHED_SYNC_AVAILABLE_CARD());
-                intent.putExtra("action", "hide");
-                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
             }
-
-
         }
+    }
+
+    public interface AvailableCardListener {
+        public void onAvailableCardSyncFinishedListener(String result);
     }
 }
