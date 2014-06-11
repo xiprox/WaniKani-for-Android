@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
+import tr.xip.wanikani.R;
 import tr.xip.wanikani.settings.SettingsActivity;
 
 /**
@@ -76,6 +79,36 @@ public class PrefManager {
 
     public boolean isLegendLearnt() {
         return PrefManager.prefs.getBoolean("pref_legend_learned", false);
+    }
+
+    public void setDashboardLastUpdateDate(long date) {
+        prefeditor.putLong("pref_update_date_dashboard", date).commit();
+    }
+
+    public String getDashboardLastUpdateTime() {
+        String updateTime;
+
+        Date currentTime = new Date(System.currentTimeMillis());
+        Date updateDate = new Date(prefs.getLong("pref_update_date_dashboard", 0));
+
+        long differenceInMilliseconds = currentTime.getTime() - updateDate.getTime();
+        long differenceInMinutes = differenceInMilliseconds / 60000;
+        long differenceInHours = differenceInMinutes / 60;
+        long differenceInDays = differenceInHours / 24;
+
+        if (differenceInMinutes == 0) {
+            return context.getString(R.string.less_than_a_minute_ago);
+        } else if (differenceInMinutes >= 60) {
+            if (differenceInHours >= 24)
+                return differenceInDays + " " + context.getString(R.string.days_ago);
+            else
+                return differenceInHours + " " + context.getString(R.string.hours_ago);
+        } else {
+            if (differenceInMinutes == 1)
+                return differenceInMinutes + " " + context.getString(R.string.minute_ago);
+            else
+                return differenceInMinutes + " " + context.getString(R.string.minutes_ago);
+        }
     }
 
     public void logout() {

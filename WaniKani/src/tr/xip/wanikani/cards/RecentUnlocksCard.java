@@ -24,6 +24,7 @@ import android.widget.ViewFlipper;
 import java.util.List;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.RecentUnlocksActivity;
@@ -199,6 +200,8 @@ public class RecentUnlocksCard extends Fragment {
 
                     height = (int) pxFromDp(158);
                 }
+
+                mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.error_oops);
@@ -209,13 +212,13 @@ public class RecentUnlocksCard extends Fragment {
                 }
 
                 height = (int) pxFromDp(158);
+
+                mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_FAILED);
             }
 
             if (mViewFlipper.getDisplayedChild() == 0) {
                 mViewFlipper.showNext();
             }
-
-            mListener.onRecentUnlocksCardSyncFinishedListener(height);
         }
     }
 
@@ -235,6 +238,6 @@ public class RecentUnlocksCard extends Fragment {
     }
 
     public interface RecentUnlocksCardListener {
-        public void onRecentUnlocksCardSyncFinishedListener(int height);
+        public void onRecentUnlocksCardSyncFinishedListener(int height, String result);
     }
 }

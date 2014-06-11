@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.LevelProgression;
@@ -178,14 +179,15 @@ public class ProgressCard extends Fragment {
                 mRadicalProgressBar.setProgress(radicalPercentage);
                 mKanjiProgressBar.setProgress(kanjiPercentage);
 
-                saveOfflineValues();
-            }
+                mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
 
-            mListener.onProgressCardSyncFinishedListener();
+                saveOfflineValues();
+            } else
+                mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
         }
     }
 
     public interface ProgressCardListener {
-        public void onProgressCardSyncFinishedListener();
+        public void onProgressCardSyncFinishedListener(String result);
     }
 }

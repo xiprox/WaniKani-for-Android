@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.SRSDistribution;
@@ -284,9 +285,10 @@ public class StatusCard extends Fragment {
                 mBurned.setText(burned + "");
 
                 saveOfflineValues();
-            }
 
-            mListener.onStatusCardSyncFinishedListener();
+                mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
+            } else
+                mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
         }
     }
 
@@ -426,6 +428,6 @@ public class StatusCard extends Fragment {
     }
 
     public interface StatusCardListener {
-        public void onStatusCardSyncFinishedListener();
+        public void onStatusCardSyncFinishedListener(String result);
     }
 }

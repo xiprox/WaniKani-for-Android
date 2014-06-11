@@ -18,12 +18,20 @@
             android:orientation="vertical"
             android:animateLayoutChanges="true">
 
+            <FrameLayout
+                android:id="@+id/fragment_dashboard_message_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/fragment_dashboard_available_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:id="@+id/fragment_dashboard_available_card"
@@ -36,7 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:id="@+id/fragment_dashboard_reviews_card"

@@ -158,14 +158,22 @@
     <!-- Info Strings -->
     <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
     <string name="info_loading">Loading</string>
+    <string name="content_last_updated">Content was last updated</string>
 
     <!-- Dialog Strings -->
     <string name="dialog_logout_title">Confirm Logout</string>
     <string name="dialog_logout_message">Are you sure you wish to logout? This will erase all stored data!</string>
     <string name="dialog_level_level">Level</string>
 
+    <!-- Time Strings -->
+    <string name="less_than_a_minute_ago">less than a minute ago</string>
+    <string name="minute_ago">minute ago</string>
+    <string name="minutes_ago">minutes ago</string>
+    <string name="hours_ago">hours ago</string>
+    <string name="days_ago">days ago</string>
+
     <!-- Other Strings -->
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>

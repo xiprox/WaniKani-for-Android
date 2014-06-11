@@ -23,6 +23,7 @@ import android.widget.ViewFlipper;
 import java.util.List;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.adapters.CriticalItemsAdapter;
@@ -188,6 +189,8 @@ public class CriticalItemsCard extends Fragment {
 
                     height = (int) pxFromDp(158);
                 }
+
+                mListener.onCriticalItemsCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.error_oops);
@@ -198,13 +201,13 @@ public class CriticalItemsCard extends Fragment {
                 }
 
                 height = (int) pxFromDp(158);
+
+                mListener.onCriticalItemsCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_FAILED);
             }
 
             if (mViewFlipper.getDisplayedChild() == 0) {
                 mViewFlipper.showNext();
             }
-
-            mListener.onCriticalItemsCardSyncFinishedListener(height);
         }
     }
 
@@ -223,6 +226,6 @@ public class CriticalItemsCard extends Fragment {
     }
 
     public interface CriticalItemsCardListener {
-        public void onCriticalItemsCardSyncFinishedListener(int height);
+        public void onCriticalItemsCardSyncFinishedListener(int height, String result);
     }
 }

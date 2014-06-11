@@ -18,6 +18,10 @@ public class RetrofitErrorHandler implements ErrorHandler {
     Context context;
     String TAG = "WANIKANI API";
 
+    public static final String RETROFIT_ERROR_TIMEOUT = "timeout";
+    public static final String RETROFIT_ERROR_CONNECTION = "connection";
+    public static final String RETROFIT_ERROR_UNKNOWN = "unknown";
+
     public RetrofitErrorHandler(Context context) {
         this.context = context;
     }
