@@ -67,6 +67,8 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     PrefManager prefMan;
     ThemeManager themeMan;
 
+    User user;
+
     private PullToRefreshLayout mPullToRefreshLayout;
 
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
@@ -157,7 +159,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
             }
         }
 
-        setOldValues();
+        loadOfflineValues();
 
         if (!MainActivity.isFirstSyncProfileDone) {
             mPullToRefreshLayout.setRefreshing(true);
@@ -193,7 +195,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitUnknownErrorReceiver);
     }
 
-    private void setOldValues() {
+    private void loadOfflineValues() {
         mUsername.setText(dataMan.getUsername());
         mTitle.setText(dataMan.getTitle());
         mLevel.setText(dataMan.getLevel() + "");
@@ -223,7 +225,18 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         } else {
             mTwitterHolder.setVisibility(View.GONE);
         }
+    }
 
+    private void saveOfflineValues() {
+        dataMan.setUsername(user.getUsername());
+        dataMan.setTitle(user.getTitle());
+        dataMan.setLevel(user.getLevel());
+        dataMan.setTopicsCount(user.getTopicsCount());
+        dataMan.setPostsCount(user.getPostsCount());
+        dataMan.setCreationDate(user.getCreationDate());
+        dataMan.setAbout(user.getAbout());
+        dataMan.setWebsite(user.getAbout());
+        dataMan.setTwitter(user.getTwitter());
     }
 
     private void showConnectionError(String error) {
@@ -262,7 +275,6 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
     }
 
     public class LoadTask extends AsyncTask<Void, Void, String> {
-        User user;
         String gravatar = dataMan.getGravatar();
         String username;
         String title;
@@ -354,6 +366,8 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
                 if (prefMan.isProfileFirstTime()) {
                     prefMan.setProfileFirstTime(false);
                 }
+
+                saveOfflineValues();
             }
 
             mPullToRefreshLayout.setRefreshComplete();
