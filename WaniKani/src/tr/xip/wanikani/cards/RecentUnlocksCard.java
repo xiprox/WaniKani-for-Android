@@ -69,7 +69,7 @@ public class RecentUnlocksCard extends Fragment {
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
 
-    public RecentUnlocksCard(RecentUnlocksCardListener listener, Context context) {
+    public void setListener(RecentUnlocksCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
                 new IntentFilter(BroadcastIntents.SYNC()));

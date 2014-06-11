@@ -80,7 +80,7 @@ public class StatusCard extends Fragment {
     int enlightened;
     int burned;
 
-    public StatusCard(StatusCardListener listener, Context context) {
+    public void setListener(StatusCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
                 new IntentFilter(BroadcastIntents.SYNC()));

@@ -65,7 +65,7 @@ public class ProgressCard extends Fragment {
     int kanjiProgress;
     int kanjiTotal;
 
-    public ProgressCard(ProgressCardListener listener, Context context) {
+    public void setListener(ProgressCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
                 new IntentFilter(BroadcastIntents.SYNC()));

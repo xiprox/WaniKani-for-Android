@@ -54,7 +54,7 @@ public class AvailableCard extends Fragment {
 
     public static final int BROWSER_REQUEST = 1;
 
-    public AvailableCard(AvailableCardListener listener, Context context) {
+    public void setListener(AvailableCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
                 new IntentFilter(BroadcastIntents.SYNC()));

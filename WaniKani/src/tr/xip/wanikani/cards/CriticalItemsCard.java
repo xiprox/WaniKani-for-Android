@@ -67,7 +67,7 @@ public class CriticalItemsCard extends Fragment {
 
     List<CriticalItemsList.CriticalItem> criticalItemsList = null;
 
-    public CriticalItemsCard(CriticalItemsCardListener listener, Context context) {
+    public void setListener(CriticalItemsCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
                 new IntentFilter(BroadcastIntents.SYNC()));

@@ -142,12 +142,19 @@ public class DashboardFragment extends Fragment
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        AvailableCard availableCard = new AvailableCard(this, getActivity());
-        ReviewsCard reviewsCard = new ReviewsCard(this, getActivity());
-        StatusCard statusCard = new StatusCard(this, getActivity());
-        ProgressCard progressCard = new ProgressCard(this, getActivity());
-        RecentUnlocksCard recentUnlocksCard = new RecentUnlocksCard(this, getActivity());
-        CriticalItemsCard criticalItemsCard = new CriticalItemsCard(this, getActivity());
+        AvailableCard availableCard = new AvailableCard();
+        ReviewsCard reviewsCard = new ReviewsCard();
+        StatusCard statusCard = new StatusCard();
+        ProgressCard progressCard = new ProgressCard();
+        RecentUnlocksCard recentUnlocksCard = new RecentUnlocksCard();
+        CriticalItemsCard criticalItemsCard = new CriticalItemsCard();
+
+        availableCard.setListener(this, getActivity());
+        reviewsCard.setListener(this, getActivity());
+        statusCard.setListener(this, getActivity());
+        progressCard.setListener(this, getActivity());
+        recentUnlocksCard.setListener(this, getActivity());
+        criticalItemsCard.setListener(this, getActivity());
 
         transaction.replace(R.id.fragment_dashboard_available_card, availableCard);
         transaction.replace(R.id.fragment_dashboard_reviews_card, reviewsCard);

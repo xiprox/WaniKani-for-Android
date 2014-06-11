@@ -61,7 +61,7 @@ public class ReviewsCard extends Fragment {
     boolean isVacationModeActive;
     int reviewsAvailable;
 
-    public ReviewsCard(ReviewsCardListener listener, Context context) {
+    public void setListener(ReviewsCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
                 new IntentFilter(BroadcastIntents.SYNC()));
