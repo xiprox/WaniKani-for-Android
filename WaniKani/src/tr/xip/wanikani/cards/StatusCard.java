@@ -153,7 +153,6 @@ public class StatusCard extends Fragment {
 
     @Override
     public void onStop() {
-        saveOfflineValues();
         super.onStop();
     }
 
