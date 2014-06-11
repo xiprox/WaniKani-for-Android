@@ -19,9 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.cocosw.undobar.UndoBarController;
-import com.cocosw.undobar.UndoBarStyle;
-
 import java.util.Calendar;
 import java.util.Date;
 
@@ -39,10 +36,9 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class DashboardFragment extends Fragment
-        implements OnRefreshListener, UndoBarController.UndoListener, AvailableCard.AvailableCardListener,
-        ReviewsCard.ReviewsCardListener, StatusCard.StatusCardListener, ProgressCard.ProgressCardListener,
-        RecentUnlocksCard.RecentUnlocksCardListener, CriticalItemsCard.CriticalItemsCardListener,
-        MessageCard.MessageCardListener {
+        implements OnRefreshListener, AvailableCard.AvailableCardListener, ReviewsCard.ReviewsCardListener,
+        StatusCard.StatusCardListener, ProgressCard.ProgressCardListener, RecentUnlocksCard.RecentUnlocksCardListener,
+        CriticalItemsCard.CriticalItemsCardListener, MessageCard.MessageCardListener {
 
     View rootView;
 
@@ -256,12 +252,6 @@ public class DashboardFragment extends Fragment
 
         Intent intent = new Intent(BroadcastIntents.SYNC());
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-    }
-
-    @Override
-    public void onUndo(Parcelable parcelable) {
-        Intent intent = new Intent(BroadcastIntents.SYNC());
-        LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
     }
 
     @Override

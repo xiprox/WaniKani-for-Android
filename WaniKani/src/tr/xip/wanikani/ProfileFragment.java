@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.cocosw.undobar.UndoBarController;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -38,7 +37,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-public class ProfileFragment extends Fragment implements OnRefreshListener, UndoBarController.UndoListener {
+public class ProfileFragment extends Fragment implements OnRefreshListener {
 
     Context context;
 
@@ -73,19 +72,16 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
 
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showConnectionError("timeout");
         }
     };
 
     private BroadcastReceiver mRetrofitConnectionErorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showConnectionError("connection");
         }
     };
 
     private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showConnectionError("unknown");
         }
     };
 
@@ -239,35 +235,8 @@ public class ProfileFragment extends Fragment implements OnRefreshListener, Undo
         dataMan.setTwitter(user.getTwitter());
     }
 
-    private void showConnectionError(String error) {
-        if (error.equals("timeout")) {
-            UndoBarController.show((Activity) context, getString(R.string.error_connection_timeout),
-                    this, UndoBarController.RETRYSTYLE);
-        }
-
-        if (error.equals("connection")) {
-            UndoBarController.show((Activity) context, getString(R.string.error_connection_error),
-                    this, UndoBarController.RETRYSTYLE);
-        }
-
-        if (error.equals("unknown")) {
-            UndoBarController.show((Activity) context, getString(R.string.error_connection_error),
-                    this, UndoBarController.RETRYSTYLE);
-        }
-    }
-
     @Override
     public void onRefreshStarted(View view) {
-        if (Build.VERSION.SDK_INT >= 11)
-            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new LoadTask().execute();
-    }
-
-    @Override
-    public void onUndo(Parcelable parcelable) {
-        mPullToRefreshLayout.setRefreshing(true);
-
         if (Build.VERSION.SDK_INT >= 11)
             new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
