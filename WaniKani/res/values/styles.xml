@@ -43,7 +43,7 @@
 
     <style name="Widget.PtrHeader.wanikanilight" parent="android:Widget">
         <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanilight</item>
-        <item name="ptrProgressBarColor">@color/color_apptheme</item>
+        <item name="ptrProgressBarColor">@color/holo_blue_dark</item>
         <item name="ptrProgressBarStyle">inside</item>
         <item name="ptrPullText">@string/ptr_pull</item>
         <item name="ptrRefreshingText">@string/ptr_refreshing</item>
@@ -52,7 +52,7 @@
 
     <style name="Widget.PtrHeader.wanikanidark" parent="android:Widget">
         <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanidark</item>
-        <item name="ptrProgressBarColor">@color/color_apptheme</item>
+        <item name="ptrProgressBarColor">@color/holo_blue_dark</item>
         <item name="ptrProgressBarStyle">inside</item>
         <item name="ptrPullText">@string/ptr_pull</item>
         <item name="ptrRefreshingText">@string/ptr_refreshing</item>
