@@ -34,6 +34,7 @@
         </activity>
         <activity
             android:name=".ItemDetailsActivity"
+            android:icon="@drawable/ic_wanikani_stamp"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
 
             <meta-data
@@ -43,7 +44,7 @@
         <activity
             android:name=".RecentUnlocksActivity"
             android:label="@string/card_title_recent_unlocks"
-            android:icon="@drawable/ic_recent_unlock"
+            android:icon="@drawable/ic_wanikani_stamp"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
 
             <meta-data
