@@ -322,11 +322,15 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onRecentUnlocksCardSyncFinishedListener(int height, String result) {
-        if (result.equals(SYNC_RESULT_SUCCESS))
+        if (result.equals(SYNC_RESULT_SUCCESS)) {
             isRecentUnlocksCardSyncedSuccess = true;
+            mRecentUnlocksFragmentHolder.setVisibility(View.VISIBLE);
+        }
 
-        if (result.equals(SYNC_RESULT_FAILED))
+            if (result.equals(SYNC_RESULT_FAILED)) {
             isRecentUnlocksCardSyncedSuccess = false;
+            mRecentUnlocksFragmentHolder.setVisibility(View.GONE);
+        }
 
         setRecentUnlocksFragmentHeight(height);
         isRecentUnlocksCardSynced = true;
@@ -335,11 +339,15 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onCriticalItemsCardSyncFinishedListener(int height, String result) {
-        if (result.equals(SYNC_RESULT_SUCCESS))
+        if (result.equals(SYNC_RESULT_SUCCESS)) {
             isCriticalItemsCardSyncedSuccess = true;
+            mCriticalItemsFragmentHolder.setVisibility(View.VISIBLE);
+        }
 
-        if (result.equals(SYNC_RESULT_FAILED))
+        if (result.equals(SYNC_RESULT_FAILED)) {
             isCriticalItemsCardSyncedSuccess = false;
+            mCriticalItemsFragmentHolder.setVisibility(View.GONE);
+        }
 
         setCriticalItemsFragmentHeight(height);
         isCriticalItemsCardSynced = true;
