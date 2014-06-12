@@ -59,6 +59,8 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     String LEVEL = "";
 
+    MenuItem mLevelItem;
+
     private void hideLegend() {
         mLegend.setVisibility(View.GONE);
     }
@@ -77,6 +79,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_radicals, menu);
+        mLevelItem = menu.findItem(R.id.action_level);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
@@ -175,6 +178,9 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
                 if (mMessageFlipper.getDisplayedChild() == 1)
                     mMessageFlipper.showPrevious();
+
+                if (mLevelItem != null)
+                    mLevelItem.setVisible(true);
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.no_items_title);
@@ -185,6 +191,9 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();
                 }
+
+                if (mLevelItem != null)
+                    mLevelItem.setVisible(false);
             }
 
             if (mListFlipper.getDisplayedChild() == 0)
