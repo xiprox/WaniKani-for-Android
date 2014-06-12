@@ -2,13 +2,17 @@ package tr.xip.wanikani;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class LevelPickerDialogFragment extends DialogFragment {
+
+    Context context;
 
     LevelDialogListener mListener;
 
@@ -21,6 +25,8 @@ public class LevelPickerDialogFragment extends DialogFragment {
     String userLevel;
     int fragmentId;
 
+    String selectedLevel = "0";
+
     private static final String ARG_USER_LEVEL = "user_level";
     private static final String ARG_FRAGMENT_ID = "fragment_id";
     private static final String ARG_SELECTED_ITEMS_STORAGE = "selected_items_storage";
@@ -32,6 +38,8 @@ public class LevelPickerDialogFragment extends DialogFragment {
     }
 
     public Dialog onCreateDialog(Bundle bundle) {
+
+        context = getActivity();
 
         if (bundle != null) {
             userLevel = bundle.getString(ARG_USER_LEVEL);
@@ -79,17 +87,19 @@ public class LevelPickerDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String level = "0";
-
-                        for (int i = 0; i < mSelectedItems.size(); i++) {
-                            if (mSelectedItems.get(i) == null)
-                                if (level.equals("0")) {
-                                    level = mSelectedItems.get(i) + ",";
+                        for (Integer item : mSelectedItems) {
+                            if (item != null) {
+                                if (selectedLevel.equals("0")) {
+                                    selectedLevel = item + ",";
                                 }
-                            level += mSelectedItems.get(i) + ",";
+                                selectedLevel += item + ",";
+                            }
                         }
 
-                        mListener.onLevelDialogPositiveClick(LevelPickerDialogFragment.this, level);
+                        if (!selectedLevel.equals("0"))
+                            mListener.onLevelDialogPositiveClick(LevelPickerDialogFragment.this, selectedLevel);
+                        else
+                            Toast.makeText(context, R.string.error_no_levels_selected, Toast.LENGTH_LONG).show();
 
                         if (mSelectedItemsStorage == null)
                             mSelectedItemsStorage = new ArrayList();
