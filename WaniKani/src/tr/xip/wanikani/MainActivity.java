@@ -88,7 +88,7 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_radicals);
                 break;
             case 2:
-                fragment = null;
+                fragment = new KanjiFragment();
                 mTitle = getString(R.string.title_kanji);
                 break;
             case 3:

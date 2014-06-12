@@ -81,6 +81,14 @@ public class PrefManager {
         return PrefManager.prefs.getBoolean("pref_legend_learned", false);
     }
 
+    public void setKanjiLegendLearnt(boolean value) {
+        prefeditor.putBoolean("pref_legend_kanji_leant", value).commit();
+    }
+
+    public boolean isKanjiLegendLearnt() {
+        return prefs.getBoolean("pref_legend_kanji_leant", false);
+    }
+
     public void setDashboardLastUpdateDate(long date) {
         prefeditor.putLong("pref_update_date_dashboard", date).commit();
     }
