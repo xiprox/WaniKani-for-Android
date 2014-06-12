@@ -48,7 +48,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     LinearLayout mLegend;
     LinearLayout mLegendOk;
 
-    DialogFragment mLevelPickerDialog;
+    LevelPickerDialogFragment mLevelPickerDialog;
 
     KanjiAdapter mKanjiAdapter;
     List<KanjiList.KanjiItem> kanjiList = null;
@@ -149,8 +149,10 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     }
 
     public void showLevelDialog() {
-        if (mLevelPickerDialog != null)
+        if (mLevelPickerDialog != null) {
+            mLevelPickerDialog.init(this.getId(), LEVEL);
             mLevelPickerDialog.show(getActivity().getSupportFragmentManager(), "LevelPickerDialogFragment");
+        }
     }
 
     private class FetchTask extends AsyncTask<Void, Void, List<KanjiList.KanjiItem>> {
@@ -222,7 +224,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
                 else
                     new FetchTask().execute();
 
-                mLevelPickerDialog = new LevelPickerDialogFragment(KanjiFragment.this, LEVEL);
+                mLevelPickerDialog = new LevelPickerDialogFragment();
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.no_items_title);

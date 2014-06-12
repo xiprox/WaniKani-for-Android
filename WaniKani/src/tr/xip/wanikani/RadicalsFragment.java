@@ -50,7 +50,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     LinearLayout mLegend;
     Button mLegendOk;
 
-    DialogFragment mLevelPickerDialog;
+    LevelPickerDialogFragment mLevelPickerDialog;
 
     RadicalsAdapter mRadicalsAdapter;
     List<RadicalsList.RadicalItem> radicalsList = null;
@@ -147,8 +147,10 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     }
 
     public void showLevelDialog() {
-        if (mLevelPickerDialog != null)
+        if (mLevelPickerDialog != null) {
+            mLevelPickerDialog.init(this.getId(), LEVEL);
             mLevelPickerDialog.show(getActivity().getSupportFragmentManager(), "LevelPickerDialogFragment");
+        }
     }
 
     private class FetchTask extends AsyncTask<Void, Void, List<RadicalsList.RadicalItem>> {
@@ -216,7 +218,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 else
                     new FetchTask().execute();
 
-                mLevelPickerDialog = new LevelPickerDialogFragment(RadicalsFragment.this, LEVEL);
+                mLevelPickerDialog = new LevelPickerDialogFragment();
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.no_items_title);

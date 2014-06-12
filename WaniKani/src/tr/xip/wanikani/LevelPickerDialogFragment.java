@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,13 +19,29 @@ public class LevelPickerDialogFragment extends DialogFragment {
     private boolean[] mSelectionStorage;
 
     String userLevel;
+    int fragmentId;
 
-    public LevelPickerDialogFragment(LevelDialogListener levelDialogListener, String userLevel) {
-        mListener = levelDialogListener;
+    private static final String ARG_USER_LEVEL = "user_level";
+    private static final String ARG_FRAGMENT_ID = "fragment_id";
+    private static final String ARG_SELECTED_ITEMS_STORAGE = "selected_items_storage";
+    private static final String ARG_SELECTION_STORAGE = "selection_storage";
+
+    public void init(int fragmentId, String userLevel) {
         this.userLevel = userLevel;
+        this.fragmentId = fragmentId;
     }
 
     public Dialog onCreateDialog(Bundle bundle) {
+
+        if (bundle != null) {
+            userLevel = bundle.getString(ARG_USER_LEVEL);
+            fragmentId = bundle.getInt(ARG_FRAGMENT_ID);
+            mSelectedItemsStorage = bundle.getIntegerArrayList(ARG_SELECTED_ITEMS_STORAGE);
+            mSelectionStorage = bundle.getBooleanArray(ARG_SELECTION_STORAGE);
+        }
+
+        mListener = (LevelDialogListener) getFragmentManager().findFragmentById(fragmentId);
+
         mSelectedItems = new ArrayList();
         mSelection = new boolean[getResources().getStringArray(R.array.wanikani_levels).length];
 
@@ -116,6 +131,15 @@ public class LevelPickerDialogFragment extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(ARG_USER_LEVEL, userLevel);
+        outState.putInt(ARG_FRAGMENT_ID, fragmentId);
+        outState.putIntegerArrayList(ARG_SELECTED_ITEMS_STORAGE, mSelectedItemsStorage);
+        outState.putBooleanArray(ARG_SELECTION_STORAGE, mSelectionStorage);
+        super.onSaveInstanceState(outState);
     }
 
     public interface LevelDialogListener {
