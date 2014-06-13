@@ -3,3 +3,4 @@ local.properties
 .DS_Store
 .idea
 *.iml
+/build
