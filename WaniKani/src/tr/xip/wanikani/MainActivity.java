@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_kanji);
                 break;
             case 3:
-                fragment = null;
+                fragment = new VocabularyFragment();
                 mTitle = getString(R.string.title_vocabulary);
                 break;
         }

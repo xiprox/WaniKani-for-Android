@@ -73,20 +73,28 @@ public class PrefManager {
         prefeditor.putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
     }
 
-    public void setRadicalsLegendLearnt(boolean value) {
+    public void setRadicalsLegendLearned(boolean value) {
         PrefManager.prefeditor.putBoolean("pref_legend_radicals_learned", value).commit();
     }
 
-    public boolean isRadicalsLegendLearnt() {
+    public boolean isRadicalsLegendLearned() {
         return PrefManager.prefs.getBoolean("pref_legend_radicals_learned", false);
     }
 
-    public void setKanjiLegendLearnt(boolean value) {
-        prefeditor.putBoolean("pref_legend_kanji_leant", value).commit();
+    public void setKanjiLegendLearned(boolean value) {
+        prefeditor.putBoolean("pref_legend_kanji_learned", value).commit();
     }
 
-    public boolean isKanjiLegendLearnt() {
-        return prefs.getBoolean("pref_legend_kanji_leant", false);
+    public boolean isKanjiLegendLearned() {
+        return prefs.getBoolean("pref_legend_kanji_learned", false);
+    }
+
+    public void setVocabularyLegendLearned(boolean value) {
+        prefeditor.putBoolean("pref_legend_vocabulary_learned", value).commit();
+    }
+
+    public boolean isVocabularyLegendLearned() {
+        return prefs.getBoolean("pref_legend_vocabulary_learned", false);
     }
 
     public void setDashboardLastUpdateDate(long date) {

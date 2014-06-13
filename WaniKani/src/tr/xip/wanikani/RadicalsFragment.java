@@ -116,7 +116,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mMessageTitle = (TextView) rootView.findViewById(R.id.radicals_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.radicals_message_summary);
 
-        if (!prefMan.isRadicalsLegendLearnt()) {
+        if (!prefMan.isRadicalsLegendLearned()) {
             showLegend();
         }
 
@@ -124,7 +124,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             @Override
             public void onClick(View view) {
                 hideLegend();
-                prefMan.setRadicalsLegendLearnt(true);
+                prefMan.setRadicalsLegendLearned(true);
             }
         });
 

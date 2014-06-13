@@ -23,13 +23,14 @@ import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
 import java.util.List;
 
-import tr.xip.wanikani.adapters.KanjiAdapter;
+import tr.xip.wanikani.adapters.VocabularyAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 
-public class KanjiFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener {
+public class VocabularyFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener {
 
     Context context;
 
@@ -50,8 +51,8 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
     LevelPickerDialogFragment mLevelPickerDialog;
 
-    KanjiAdapter mKanjiAdapter;
-    List<KanjiList.KanjiItem> kanjiList = null;
+    VocabularyAdapter mVocabularyAdapter;
+    List<VocabularyList.VocabularyItem> vocabularyList = null;
 
     View rootView;
 
@@ -95,23 +96,23 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
-        rootView = layoutInflater.inflate(R.layout.fragment_kanji, viewGroup, false);
+        rootView = layoutInflater.inflate(R.layout.fragment_vocabulary, viewGroup, false);
 
-        mLegend = (LinearLayout) rootView.findViewById(R.id.kanji_legend);
+        mLegend = (LinearLayout) rootView.findViewById(R.id.vocabulary_legend);
         mLegend.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
-        mLegendOk = (LinearLayout) rootView.findViewById(R.id.kanji_legend_ok);
+        mLegendOk = (LinearLayout) rootView.findViewById(R.id.vocabulary_legend_ok);
 
-        mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.kanji_grid);
+        mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.vocabulary_grid);
         mGrid.setOnItemClickListener(new gridItemClickListener());
 
-        mListFlipper = (ViewFlipper) rootView.findViewById(R.id.kanji_list_flipper);
-        mMessageFlipper = (ViewFlipper) rootView.findViewById(R.id.kanji_message_flipper);
+        mListFlipper = (ViewFlipper) rootView.findViewById(R.id.vocabulary_list_flipper);
+        mMessageFlipper = (ViewFlipper) rootView.findViewById(R.id.vocabulary_message_flipper);
 
-        mMessageIcon = (ImageView) rootView.findViewById(R.id.kanji_message_icon);
-        mMessageTitle = (TextView) rootView.findViewById(R.id.kanji_message_title);
-        mMessageSummary = (TextView) rootView.findViewById(R.id.kanji_message_summary);
+        mMessageIcon = (ImageView) rootView.findViewById(R.id.vocabulary_message_icon);
+        mMessageTitle = (TextView) rootView.findViewById(R.id.vocabulary_message_title);
+        mMessageSummary = (TextView) rootView.findViewById(R.id.vocabulary_message_summary);
 
-        if (!prefMan.isKanjiLegendLearned()) {
+        if (!prefMan.isVocabularyLegendLearned()) {
             showLegend();
         }
 
@@ -119,7 +120,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
             @Override
             public void onClick(View view) {
                 hideLegend();
-                prefMan.setKanjiLegendLearned(true);
+                prefMan.setVocabularyLegendLearned(true);
             }
         });
 
@@ -168,25 +169,25 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         }
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, List<KanjiList.KanjiItem>> {
+    private class FetchTask extends AsyncTask<Void, Void, List<VocabularyList.VocabularyItem>> {
 
-        protected List<KanjiList.KanjiItem> doInBackground(Void... voids) {
+        protected List<VocabularyList.VocabularyItem> doInBackground(Void... voids) {
             try {
-                kanjiList = apiMan.getKanjiList(LEVEL);
-                return kanjiList;
+                vocabularyList = apiMan.getVocabularyList(LEVEL);
+                return vocabularyList;
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            return kanjiList;
+            return vocabularyList;
         }
 
-        protected void onPostExecute(List<KanjiList.KanjiItem> list) {
+        protected void onPostExecute(List<VocabularyList.VocabularyItem> list) {
             super.onPostExecute(list);
 
             if (list != null) {
-                mKanjiAdapter = new KanjiAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
-                mGrid.setAdapter(mKanjiAdapter);
+                mVocabularyAdapter = new VocabularyAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
+                mGrid.setAdapter(mVocabularyAdapter);
 
                 if (!prefMan.isKanjiLegendLearned()) {
                     showLegend();
@@ -256,12 +257,12 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            KanjiList.KanjiItem kanjiItem = mKanjiAdapter.getItem(position);
+            VocabularyList.VocabularyItem vocabularyItem = mVocabularyAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_KANJI);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, kanjiItem.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, kanjiItem.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_VOCABULARY);
+            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, vocabularyItem.getCharacter());
+            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, vocabularyItem.getLevel());
             getActivity().startActivity(intent);
         }
     }

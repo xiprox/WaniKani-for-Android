@@ -1,0 +1,60 @@
+<?xml version="1" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="60dp"
+    android:minHeight="60dp"
+    android:minWidth="250dp"
+    android:background="@drawable/card_light"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/item_vocabulary_status"
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="@color/wanikani_vocabulary"
+        android:layout_marginBottom="2dp" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_vocabulary_character"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="大した"
+            android:textColor="@color/text_gray"
+            android:textSize="26sp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="2dp"
+            android:layout_centerVertical="true"
+            android:gravity="right">
+
+            <TextView
+                android:id="@+id/item_vocabulary_kana"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="たいした"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/item_vocabulary_meaning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Considerable"
+                android:textColor="@color/text_gray"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
