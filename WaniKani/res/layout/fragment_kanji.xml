@@ -107,7 +107,7 @@
                                 android:layout_width="37dp"
                                 android:layout_height="37dp"
                                 android:background="@drawable/oval_gray"
-                                android:src="@drawable/legend_kanji_locked"
+                                android:src="@drawable/legend_locked"
                                 android:padding="1dp"/>
 
                             <TextView
@@ -130,7 +130,7 @@
                                 android:layout_width="37dp"
                                 android:layout_height="37dp"
                                 android:background="@drawable/oval_gray"
-                                android:src="@drawable/legend_kanji_burned"
+                                android:src="@drawable/legend_burned"
                                 android:padding="1dp"/>
 
                             <TextView

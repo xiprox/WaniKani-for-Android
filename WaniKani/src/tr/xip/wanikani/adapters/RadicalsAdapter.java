@@ -6,11 +6,11 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -18,44 +18,51 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.RadicalsList;
+import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 
-public class RadicalsAdapter
-        extends ArrayAdapter<RadicalsList.RadicalItem> {
+public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<RadicalsList.RadicalItem> {
     Context context;
+
+    int headerResourceId;
+
+    ThemeManager themeMan;
 
     private List<RadicalsList.RadicalItem> items;
 
     Typeface typeface;
 
-    public RadicalsAdapter(Context context, int position, List<RadicalsList.RadicalItem> list) {
-        super(context, position, list);
+    public RadicalsAdapter(Context context, List<RadicalsList.RadicalItem> list, int headerResId, int itemResId) {
+        super(context, list, headerResId, itemResId);
         this.items = list;
         this.context = context;
+        this.headerResourceId = headerResId;
         this.typeface = new Fonts().getKanjiFont(context);
+        this.themeMan = new ThemeManager(context);
     }
 
-    public View getView(int position, View converView, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
         RadicalsList.RadicalItem radicalItem = items.get(position);
 
-        if (converView == null) {
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            converView = inflater.inflate(R.layout.item_radical, null);
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_radical, null);
 
             viewHolder = new ViewHolder();
 
-            viewHolder.status = converView.findViewById(R.id.item_radical_status);
-            viewHolder.character = (TextView) (converView.findViewById(R.id.item_radical_character));
-            viewHolder.image = (ImageView) (converView.findViewById(R.id.item_radical_character_image));
-            viewHolder.meaning = (TextView) (converView.findViewById(R.id.item_radical_meaning));
-            viewHolder.level = (TextView) (converView.findViewById(R.id.item_radical_level));
+            viewHolder.status = convertView.findViewById(R.id.item_radical_status);
+            viewHolder.character = (TextView) (convertView.findViewById(R.id.item_radical_character));
+            viewHolder.image = (ImageView) (convertView.findViewById(R.id.item_radical_character_image));
+            viewHolder.meaning = (TextView) (convertView.findViewById(R.id.item_radical_meaning));
 
-            converView.setTag(viewHolder);
+            convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) (converView.getTag());
+            viewHolder = (ViewHolder) (convertView.getTag());
         }
+
+        convertView.setBackgroundResource(themeMan.getCard());
 
         viewHolder.character.setTypeface(this.typeface);
 
@@ -81,22 +88,45 @@ public class RadicalsAdapter
         }
 
         viewHolder.meaning.setText(WordUtils.capitalize((radicalItem.getMeaning())));
-        viewHolder.level.setText(radicalItem.getLevel() + "");
 
-        return converView;
+        return convertView;
     }
 
-    static class ViewHolder {
+    @Override
+    public long getHeaderId(int position) {
+        return getItem(position).getLevel();
+    }
+
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        HeaderViewHolder holder;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (convertView == null) {
+            convertView = inflater.inflate(headerResourceId, parent, false);
+            holder = new HeaderViewHolder();
+            holder.textView = (TextView) convertView.findViewById(R.id.header_level);
+            convertView.setTag(holder);
+        } else {
+            holder = (HeaderViewHolder) convertView.getTag();
+        }
+
+        RadicalsList.RadicalItem item = getItem(position);
+
+        holder.textView.setText(item.getLevel() + "");
+
+        return convertView;
+    }
+
+    protected class ViewHolder {
         public TextView character;
         public ImageView image;
-        public TextView level;
         public TextView meaning;
         public View status;
-
-        private ViewHolder() {
-
-        }
     }
 
+    protected class HeaderViewHolder {
+        public TextView textView;
+    }
 }
 

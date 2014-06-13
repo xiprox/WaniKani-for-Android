@@ -19,8 +19,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
 import java.util.List;
 
@@ -43,12 +46,12 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     ImageView mMessageIcon;
     ViewFlipper mMessageFlipper;
 
-    ListView mList;
-    FrameLayout mListCard;
+    StickyGridHeadersGridView mGrid;
+
     ViewFlipper mListFlipper;
 
     LinearLayout mLegend;
-    Button mLegendOk;
+    LinearLayout mLegendOk;
 
     LevelPickerDialogFragment mLevelPickerDialog;
 
@@ -87,13 +90,11 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         rootView = layoutInflater.inflate(R.layout.fragment_radicals, viewGroup, false);
 
         mLegend = (LinearLayout) rootView.findViewById(R.id.radicals_legend);
-        mLegendOk = (Button) rootView.findViewById(R.id.radicals_legend_ok);
+        mLegend.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
+        mLegendOk = (LinearLayout) rootView.findViewById(R.id.radicals_legend_ok);
 
-        mListCard = (FrameLayout) rootView.findViewById(R.id.radicals_list_card);
-        mListCard.setBackgroundResource(themeMan.getCard());
-
-        mList = (ListView) rootView.findViewById(R.id.radicals_list);
-        mList.setOnItemClickListener(new listItemClickListener());
+        mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.radicals_grid);
+        mGrid.setOnItemClickListener(new gridItemClickListener());
 
         mListFlipper = (ViewFlipper) rootView.findViewById(R.id.radicals_list_flipper);
         mMessageFlipper = (ViewFlipper) rootView.findViewById(R.id.radicals_message_flipper);
@@ -102,7 +103,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mMessageTitle = (TextView) rootView.findViewById(R.id.radicals_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.radicals_message_summary);
 
-        if (!(prefMan.isLegendLearnt())) {
+        if (!prefMan.isRadicalsLegendLearnt()) {
             showLegend();
         }
 
@@ -110,7 +111,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             @Override
             public void onClick(View view) {
                 hideLegend();
-                prefMan.setLegendLearnt(true);
+                prefMan.setRadicalsLegendLearnt(true);
             }
         });
 
@@ -173,8 +174,8 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             super.onPostExecute(list);
 
             if (list != null) {
-                mRadicalsAdapter = new RadicalsAdapter(context, R.layout.item_radical, list);
-                mList.setAdapter(mRadicalsAdapter);
+                mRadicalsAdapter = new RadicalsAdapter(context, list, R.layout.header_level, R.layout.item_radical);
+                mGrid.setAdapter(mRadicalsAdapter);
 
                 if (mMessageFlipper.getDisplayedChild() == 1)
                     mMessageFlipper.showPrevious();
@@ -186,7 +187,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 mMessageTitle.setText(R.string.no_items_title);
                 mMessageSummary.setText(R.string.no_items_summary);
 
-                mList.setAdapter(null);
+                mGrid.setAdapter(null);
 
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();
@@ -242,17 +243,17 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         }
     }
 
-    private class listItemClickListener implements AdapterView.OnItemClickListener {
+    private class gridItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
             RadicalsList.RadicalItem radicalItem = mRadicalsAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
-            intent.putExtra("type", ItemDetailsActivity.TYPE_RADICAL);
-            intent.putExtra("character", radicalItem.getCharacter());
-            intent.putExtra("image", radicalItem.getImage());
-            intent.putExtra("level", radicalItem.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_RADICAL);
+            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, radicalItem.getCharacter());
+            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, radicalItem.getImage());
+            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, radicalItem.getLevel());
             getActivity().startActivity(intent);
         }
     }

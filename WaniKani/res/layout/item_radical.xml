@@ -1,83 +1,60 @@
 <?xml version="1" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="48dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="130dp"
+    android:minHeight="130dp"
+    android:minWidth="100dp"
+    android:background="@drawable/card_light">
 
     <View
         android:id="@+id/item_radical_status"
-        android:background="@color/wanikani_radical"
-        android:layout_width="4dp"
-        android:layout_height="48dp"
-        android:layout_alignParentLeft="true" />
-
-    <TextView
-        android:textSize="26sp"
-        android:textColor="@color/text_gray"
-        android:id="@+id/item_radical_character"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="サ"
-        android:layout_toRightOf="@id/item_radical_status"
-        android:layout_centerVertical="true" />
-
-    <ImageView
-        android:id="@+id/item_radical_character_image"
-        android:paddingLeft="2dp"
-        android:paddingTop="10dp"
-        android:paddingRight="14dp"
-        android:paddingBottom="10dp"
-        android:layout_width="58dp"
-        android:layout_height="48dp"
-        android:layout_toRightOf="@id/item_radical_status"
-        android:layout_centerVertical="true" />
+        android:background="@drawable/oval_radical"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp" />
 
     <LinearLayout
-        android:gravity="right"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="36dp"
+            android:layout_height="36dp">
+
+            <TextView
+                android:id="@+id/item_radical_character"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="木"
+                android:textSize="36sp"
+                android:textColor="@color/text_gray"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/item_radical_character_image"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="fitCenter"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
 
         <TextView
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray"
             android:id="@+id/item_radical_meaning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Meaning"
-            style="@style/Widget.TextView.Light" />
+            android:text="Tree"
+            android:textColor="@color/text_gray"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="16dp"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:textSize="12sp"
-                android:textColor="@color/text_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_level_level"
-                android:fontFamily="sans-serif-light" />
-
-            <TextView
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" " />
-
-            <TextView
-                android:textSize="12sp"
-                android:textColor="@color/text_gray"
-                android:id="@+id/item_radical_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:fontFamily="sans-serif-light" />
-        </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>
