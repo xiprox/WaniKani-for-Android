@@ -77,6 +77,16 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        if (mLevelPickerDialog == null)
+            mLevelItem.setVisible(false);
+        else
+            mLevelItem.setVisible(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_radicals, menu);
         mLevelItem = menu.findItem(R.id.action_level);
@@ -184,9 +194,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
                 if (mMessageFlipper.getDisplayedChild() == 1)
                     mMessageFlipper.showPrevious();
-
-                if (mLevelItem != null)
-                    mLevelItem.setVisible(true);
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.no_items_title);
@@ -197,9 +204,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();
                 }
-
-                if (mLevelItem != null)
-                    mLevelItem.setVisible(false);
             }
 
             if (mListFlipper.getDisplayedChild() == 0)

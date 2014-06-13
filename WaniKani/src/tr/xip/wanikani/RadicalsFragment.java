@@ -72,6 +72,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mLegend.setVisibility(View.VISIBLE);
     }
 
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         context = getActivity();
@@ -80,12 +81,24 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         themeMan = new ThemeManager(getActivity());
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        if (mLevelPickerDialog == null)
+            mLevelItem.setVisible(false);
+        else
+            mLevelItem.setVisible(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_radicals, menu);
         mLevelItem = menu.findItem(R.id.action_level);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
 
+    @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         rootView = layoutInflater.inflate(R.layout.fragment_radicals, viewGroup, false);
 
@@ -125,6 +138,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         return rootView;
     }
 
+    @Override
     public void onLevelDialogPositiveClick(DialogFragment dialog, String level) {
         LEVEL = level;
         if (Build.VERSION.SDK_INT >= 11)
@@ -133,6 +147,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             new FetchTask().execute();
     }
 
+    @Override
     public void onLevelDialogResetClick(DialogFragment dialogFragment, String level) {
         if (Build.VERSION.SDK_INT >= 11)
             new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -140,6 +155,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             new UserLevelTask().execute();
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_level:
@@ -159,6 +175,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     private class FetchTask extends AsyncTask<Void, Void, List<RadicalsList.RadicalItem>> {
 
+        @Override
         protected List<RadicalsList.RadicalItem> doInBackground(Void... voids) {
             try {
                 radicalsList = apiMan.getRadicalsList(LEVEL);
@@ -170,6 +187,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             return radicalsList;
         }
 
+        @Override
         protected void onPostExecute(List<RadicalsList.RadicalItem> list) {
             super.onPostExecute(list);
 
@@ -179,9 +197,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
                 if (mMessageFlipper.getDisplayedChild() == 1)
                     mMessageFlipper.showPrevious();
-
-                if (mLevelItem != null)
-                    mLevelItem.setVisible(true);
             } else {
                 mMessageIcon.setImageResource(R.drawable.ic_action_warning);
                 mMessageTitle.setText(R.string.no_items_title);
@@ -192,15 +207,13 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();
                 }
-
-                if (mLevelItem != null)
-                    mLevelItem.setVisible(false);
             }
 
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();
         }
 
+        @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
@@ -209,6 +222,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     private class UserLevelTask extends AsyncTask<Void, Void, Boolean> {
 
+        @Override
         protected Boolean doInBackground(Void[] voids) {
             try {
                 LEVEL = apiMan.getUser().getLevel() + "";
@@ -219,6 +233,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             }
         }
 
+        @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
 
