@@ -98,8 +98,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -115,7 +113,6 @@ public class NavigationDrawerFragment extends Fragment {
 
         rootView.setBackgroundColor(getResources().getColor(themeMan.getNavDrawerBackgroundColor()));
 
-
         mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
         mProfileTitle = (TextView) rootView.findViewById(R.id.navigation_drawer_profile_title);
@@ -127,11 +124,6 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
-                mProfileTitle.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
-
-                if (mMainListView.getAdapter() != null) {
-                    ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(position);
-                }
             }
         });
 
@@ -157,25 +149,19 @@ public class NavigationDrawerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                Fragment fragment = new ProfileFragment();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
+                        .replace(R.id.container, new ProfileFragment())
                         .commit();
 
-                MainActivity.mTitle = NavigationDrawerFragment.this.getString(R.string.title_profile);
-
-                if (mMainListView.getAdapter() != null) {
-                    ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(100);
-                }
-
-                mProfileTitle.setTypeface(null, Typeface.BOLD);
-
-                mDrawerLayout.closeDrawer(mFragmentContainerView);
+                // We dedicate 100 for profile
+                selectItem(100);
             }
         });
 
         setOldValues();
         new LoadTask().execute();
+
+        selectItem(mCurrentSelectedPosition);
 
         return rootView;
     }
@@ -244,6 +230,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
+
         if (mMainListView != null) {
             mMainListView.setItemChecked(position, true);
         }
@@ -252,6 +239,24 @@ public class NavigationDrawerFragment extends Fragment {
         }
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
+        }
+
+        if (position == 100) {
+            // Profile was selected
+            if (MainActivity.mTitle != null)
+                MainActivity.mTitle = getString(R.string.title_profile);
+
+            if (mMainListView != null && mMainListView.getAdapter() != null)
+                ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(100);
+
+            if (mProfileTitle != null)
+                mProfileTitle.setTypeface(null, Typeface.BOLD);
+        } else {
+            if (mProfileTitle != null)
+                mProfileTitle.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+
+            if (mMainListView != null && mMainListView.getAdapter() != null)
+                ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(position);
         }
     }
 

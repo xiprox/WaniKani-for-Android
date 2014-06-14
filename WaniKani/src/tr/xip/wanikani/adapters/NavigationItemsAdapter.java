@@ -34,6 +34,7 @@ public class NavigationItemsAdapter extends ArrayAdapter<NavigationItems.NavItem
         notifyDataSetChanged();
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
@@ -61,4 +62,6 @@ public class NavigationItemsAdapter extends ArrayAdapter<NavigationItems.NavItem
 
         return v;
     }
+
+
 }
