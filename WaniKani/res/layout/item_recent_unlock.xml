@@ -20,7 +20,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:text="サンプル"
-        android:textSize="26sp"
+        android:textAppearance="@android:style/TextAppearance.Large"
         android:textColor="@color/text_gray" />
 
     <ImageView
