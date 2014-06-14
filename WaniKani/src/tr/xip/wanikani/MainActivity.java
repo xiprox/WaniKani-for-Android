@@ -26,6 +26,8 @@ public class MainActivity extends ActionBarActivity
     public static boolean isFirstSyncDashboardDone = false;
     public static boolean isFirstSyncProfileDone = false;
 
+    public static final String STATE_ACTIONBAR_TITLE = "action_bar_title";
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
     public static CharSequence mTitle;
 
@@ -54,6 +56,11 @@ public class MainActivity extends ActionBarActivity
 
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
+            getSupportActionBar().setTitle(mTitle);
+        }
+
         if (prefMan.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
             finish();
@@ -65,8 +72,6 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        mTitle = getTitle();
 
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -137,5 +142,11 @@ public class MainActivity extends ActionBarActivity
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_ACTIONBAR_TITLE, mTitle.toString());
     }
 }
