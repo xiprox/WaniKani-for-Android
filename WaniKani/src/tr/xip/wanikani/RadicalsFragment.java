@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -253,6 +254,8 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                     mMessageFlipper.showNext();
             }
 
+            ((ActionBarActivity) context).supportInvalidateOptionsMenu();
+
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();
         }
@@ -272,5 +275,4 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             getActivity().startActivity(intent);
         }
     }
-
 }

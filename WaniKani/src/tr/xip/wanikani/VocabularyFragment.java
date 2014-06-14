@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -248,6 +249,8 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                     mMessageFlipper.showNext();
             }
 
+            ((ActionBarActivity) context).supportInvalidateOptionsMenu();
+            
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();
         }
