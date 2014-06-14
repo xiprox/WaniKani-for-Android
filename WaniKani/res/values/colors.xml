@@ -20,6 +20,12 @@
     <color name="holo_orange_dark">#FF8800</color>
     <color name="holo_red_light">#FF4444</color>
     <color name="holo_red_dark">#CC0000</color>
+
+    <!-- Swipe To Refresh Colors -->
+    <color name="swipe_refresh_1">@color/holo_blue_dark</color>
+    <color name="swipe_refresh_2">@color/holo_green_light</color>
+    <color name="swipe_refresh_3">#7a7a7a</color>
+    <color name="swipe_refresh_4">#707070</color>
     
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>

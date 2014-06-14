@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dashboard_pull_to_refresh"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dashboard_swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -92,4 +91,4 @@
         </LinearLayout>
 
     </ScrollView>
-</uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

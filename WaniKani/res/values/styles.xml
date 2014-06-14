@@ -41,32 +41,6 @@
         <item name="android:maxHeight">16dip</item>
     </style>
 
-    <style name="Widget.PtrHeader.wanikanilight" parent="android:Widget">
-        <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanilight</item>
-        <item name="ptrProgressBarColor">@color/holo_blue_dark</item>
-        <item name="ptrProgressBarStyle">inside</item>
-        <item name="ptrPullText">@string/ptr_pull</item>
-        <item name="ptrRefreshingText">@string/ptr_refreshing</item>
-        <item name="ptrReleaseText">@string/ptr_release</item>
-    </style>
-
-    <style name="Widget.PtrHeader.wanikanidark" parent="android:Widget">
-        <item name="ptrHeaderTitleTextAppearance">@style/TextApparance.PullToRefresh.wanikanidark</item>
-        <item name="ptrProgressBarColor">@color/holo_blue_dark</item>
-        <item name="ptrProgressBarStyle">inside</item>
-        <item name="ptrPullText">@string/ptr_pull</item>
-        <item name="ptrRefreshingText">@string/ptr_refreshing</item>
-        <item name="ptrReleaseText">@string/ptr_release</item>
-    </style>
-
-    <style name="TextApparance.PullToRefresh.wanikanilight" parent="android:TextAppearance.Medium">
-        <item name="android:textColor">@color/text_gray</item>
-    </style>
-
-    <style name="TextApparance.PullToRefresh.wanikanidark" parent="android:TextAppearance.Medium">
-        <item name="android:textColor">@color/text_gray</item>
-    </style>
-
     <style name="TextApparance.ActionBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/text_gray</item>
     </style>

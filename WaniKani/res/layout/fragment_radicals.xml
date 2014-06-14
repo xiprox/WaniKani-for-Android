@@ -32,23 +32,30 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true">
 
-                <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
-                    android:id="@+id/radicals_grid"
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/radicals_swipe_refresh"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="12dp"
-                    android:fadingEdge="none"
-                    android:clipToPadding="false"
-                    android:fastScrollEnabled="true"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:horizontalSpacing="6dp"
-                    android:verticalSpacing="6dp"
-                    android:columnWidth="100dp"
-                    android:stretchMode="columnWidth"
-                    android:numColumns="auto_fit" />
+                    android:layout_height="match_parent">
+
+                    <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
+                        android:id="@+id/radicals_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="12dp"
+                        android:fadingEdge="none"
+                        android:clipToPadding="false"
+                        android:fastScrollEnabled="true"
+                        android:scrollbarStyle="outsideOverlay"
+                        android:horizontalSpacing="6dp"
+                        android:verticalSpacing="6dp"
+                        android:columnWidth="100dp"
+                        android:stretchMode="columnWidth"
+                        android:numColumns="auto_fit" />
+                    
+                </android.support.v4.widget.SwipeRefreshLayout>
 
                 <LinearLayout
                     android:id="@+id/radicals_legend"

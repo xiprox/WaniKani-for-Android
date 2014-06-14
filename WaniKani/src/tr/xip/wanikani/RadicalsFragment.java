@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +35,7 @@ import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 
-public class RadicalsFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener {
+public class RadicalsFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener, SwipeRefreshLayout.OnRefreshListener {
 
     Context context;
 
@@ -64,6 +65,8 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     String LEVEL = "";
 
     MenuItem mLevelItem;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private void hideLegend() {
         mLegend.setVisibility(View.GONE);
@@ -102,6 +105,11 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         rootView = layoutInflater.inflate(R.layout.fragment_radicals, viewGroup, false);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.radicals_swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
         mLegend = (LinearLayout) rootView.findViewById(R.id.radicals_legend);
         mLegend.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
@@ -174,6 +182,14 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         }
     }
 
+    @Override
+    public void onRefresh() {
+        if (Build.VERSION.SDK_INT >= 11)
+            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        else
+            new UserLevelTask().execute();
+    }
+
     private class FetchTask extends AsyncTask<Void, Void, List<RadicalsList.RadicalItem>> {
 
         @Override
@@ -210,8 +226,12 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 }
             }
 
+            ((ActionBarActivity) context).supportInvalidateOptionsMenu();
+
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();
+
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -253,8 +273,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 if (mMessageFlipper.getDisplayedChild() == 0)
                     mMessageFlipper.showNext();
             }
-
-            ((ActionBarActivity) context).supportInvalidateOptionsMenu();
 
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();

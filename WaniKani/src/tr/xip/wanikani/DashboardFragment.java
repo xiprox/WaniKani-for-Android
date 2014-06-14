@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,12 +32,9 @@ import tr.xip.wanikani.cards.RecentUnlocksCard;
 import tr.xip.wanikani.cards.ReviewsCard;
 import tr.xip.wanikani.cards.StatusCard;
 import tr.xip.wanikani.managers.PrefManager;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class DashboardFragment extends Fragment
-        implements OnRefreshListener, AvailableCard.AvailableCardListener, ReviewsCard.ReviewsCardListener,
+        implements SwipeRefreshLayout.OnRefreshListener, AvailableCard.AvailableCardListener, ReviewsCard.ReviewsCardListener,
         StatusCard.StatusCardListener, ProgressCard.ProgressCardListener, RecentUnlocksCard.RecentUnlocksCardListener,
         CriticalItemsCard.CriticalItemsCardListener, MessageCard.MessageCardListener {
 
@@ -68,12 +66,12 @@ public class DashboardFragment extends Fragment
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
 
-    private PullToRefreshLayout mPullToRefreshLayout;
+    private SwipeRefreshLayout mSwipeToRefreshLayout;
 
     private BroadcastReceiver mSyncCalled = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mPullToRefreshLayout.setRefreshing(true);
+            mSwipeToRefreshLayout.setRefreshing(true);
         }
     };
 
@@ -123,12 +121,10 @@ public class DashboardFragment extends Fragment
 
         activity = getActivity();
 
-        mPullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.dashboard_pull_to_refresh);
-
-        ActionBarPullToRefresh.from(getActivity())
-                .allChildrenArePullable()
-                .listener(this)
-                .setup(mPullToRefreshLayout);
+        mSwipeToRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_swipe_refresh);
+        mSwipeToRefreshLayout.setOnRefreshListener(this);
+        mSwipeToRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
         mAvailableHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_available_holder);
         mReviewsHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_holder);
@@ -161,7 +157,7 @@ public class DashboardFragment extends Fragment
         transaction.commit();
 
         if (!MainActivity.isFirstSyncDashboardDone) {
-            mPullToRefreshLayout.setRefreshing(true);
+            mSwipeToRefreshLayout.setRefreshing(true);
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             MainActivity.isFirstSyncDashboardDone = true;
@@ -176,7 +172,7 @@ public class DashboardFragment extends Fragment
 
     private void updateSyncStatus() {
         if (isAvailableCardSynced && isReviewsCardSynced && isStatusCardSynced && isProgressCardSynced && isRecentUnlocksCardSynced && isCriticalItemsCardSynced) {
-            mPullToRefreshLayout.setRefreshComplete();
+            mSwipeToRefreshLayout.setRefreshing(false);
 
             if (isAvailableCardSyncedSuccess && isReviewsCardSyncedSuccess && isStatusCardSyncedSuccess && isRecentUnlocksCardSyncedSuccess
                     && isCriticalItemsCardSyncedSuccess) {
@@ -232,26 +228,6 @@ public class DashboardFragment extends Fragment
         ViewGroup.LayoutParams params = mRecentUnlocksFragmentHolder.getLayoutParams();
         params.height = height;
         mRecentUnlocksFragmentHolder.setLayoutParams(params);
-    }
-
-    @Override
-    public void onRefreshStarted(View paramView) {
-        isAvailableCardSynced = false;
-        isReviewsCardSynced = false;
-        isStatusCardSynced = false;
-        isProgressCardSynced = false;
-        isRecentUnlocksCardSynced = false;
-        isCriticalItemsCardSynced = false;
-
-        isAvailableCardSyncedSuccess = false;
-        isReviewsCardSyncedSuccess = false;
-        isStatusCardSyncedSuccess = false;
-        isProgressCardSyncedSuccess = false;
-        isRecentUnlocksCardSyncedSuccess = false;
-        isCriticalItemsCardSyncedSuccess = false;
-
-        Intent intent = new Intent(BroadcastIntents.SYNC());
-        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 
     @Override
@@ -347,5 +323,25 @@ public class DashboardFragment extends Fragment
     @Override
     public void onMessageCardOkButtonClick() {
         rootView.findViewById(R.id.fragment_dashboard_message_card).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRefresh() {
+        isAvailableCardSynced = false;
+        isReviewsCardSynced = false;
+        isStatusCardSynced = false;
+        isProgressCardSynced = false;
+        isRecentUnlocksCardSynced = false;
+        isCriticalItemsCardSynced = false;
+
+        isAvailableCardSyncedSuccess = false;
+        isReviewsCardSyncedSuccess = false;
+        isStatusCardSyncedSuccess = false;
+        isProgressCardSyncedSuccess = false;
+        isRecentUnlocksCardSyncedSuccess = false;
+        isCriticalItemsCardSyncedSuccess = false;
+
+        Intent intent = new Intent(BroadcastIntents.SYNC());
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
     }
 }

@@ -30,7 +30,6 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_wanikanidark</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Wanikanidark</item>
         <item name="android:windowBackground">@color/window_background_dark</item>
-        <item name="ptrHeaderStyle">@style/Widget.PtrHeader.wanikanidark</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:editTextStyle">@style/EditText.AppTheme</item>
         <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>

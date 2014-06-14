@@ -29,7 +29,6 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_wanikanilight</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Wanikanilight</item>
         <item name="android:windowBackground">@color/window_background_light</item>
-        <item name="ptrHeaderStyle">@style/Widget.PtrHeader.wanikanilight</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:editTextStyle">@style/EditText.AppTheme</item>
         <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>

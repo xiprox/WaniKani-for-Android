@@ -30,6 +30,11 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true">
 
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/vocabulary_swipe_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
                     android:id="@+id/vocabulary_grid"
                     android:layout_width="match_parent"
@@ -47,6 +52,8 @@
                     android:columnWidth="250dp"
                     android:stretchMode="columnWidth"
                     android:numColumns="auto_fit" />
+
+                </android.support.v4.widget.SwipeRefreshLayout>
 
                 <LinearLayout
                     android:id="@+id/vocabulary_legend"

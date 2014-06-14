@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +31,11 @@ import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.CircleTransformation;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarcompat.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-public class ProfileFragment extends Fragment implements OnRefreshListener {
+public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     Context context;
 
@@ -68,7 +66,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
 
     User user;
 
-    private PullToRefreshLayout mPullToRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -142,12 +140,10 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
         mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
         mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_out);
 
-        mPullToRefreshLayout = (PullToRefreshLayout) rootView.findViewById(R.id.dashboard_pull_to_refresh);
-
-        ActionBarPullToRefresh.from(getActivity())
-                .allChildrenArePullable()
-                .listener(this)
-                .setup(mPullToRefreshLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_pull_to_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
         if (prefMan.isProfileFirstTime()) {
             if (mViewFlipper.getDisplayedChild() == 0) {
@@ -158,7 +154,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
         loadOfflineValues();
 
         if (!MainActivity.isFirstSyncProfileDone) {
-            mPullToRefreshLayout.setRefreshing(true);
+            mSwipeRefreshLayout.setRefreshing(true);
 
             if (Build.VERSION.SDK_INT >= 11)
                 new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -236,11 +232,12 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
     }
 
     @Override
-    public void onRefreshStarted(View view) {
+    public void onRefresh() {
         if (Build.VERSION.SDK_INT >= 11)
             new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             new LoadTask().execute();
+
     }
 
     public class LoadTask extends AsyncTask<Void, Void, String> {
@@ -339,7 +336,7 @@ public class ProfileFragment extends Fragment implements OnRefreshListener {
                 saveOfflineValues();
             }
 
-            mPullToRefreshLayout.setRefreshComplete();
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 }
