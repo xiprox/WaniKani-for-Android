@@ -67,6 +67,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     MenuItem mLevelItem;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void hideLegend() {
         mLegend.setVisibility(View.GONE);
@@ -109,6 +110,11 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.radicals_swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+
+        mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.radicals_message_swipe_refresh);
+        mMessageSwipeRefreshLayout.setOnRefreshListener(this);
+        mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
                 R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
         mLegend = (LinearLayout) rootView.findViewById(R.id.radicals_legend);
@@ -232,6 +238,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 mListFlipper.showNext();
 
             mSwipeRefreshLayout.setRefreshing(false);
+            mMessageSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -272,6 +279,8 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
                 if (mMessageFlipper.getDisplayedChild() == 0)
                     mMessageFlipper.showNext();
+
+                mMessageSwipeRefreshLayout.setRefreshing(false);
             }
 
             if (mListFlipper.getDisplayedChild() == 0)

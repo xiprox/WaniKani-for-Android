@@ -63,6 +63,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     MenuItem mLevelItem;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void hideLegend() {
         mLegend.setVisibility(View.GONE);
@@ -106,7 +107,12 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
                 R.color.swipe_refresh_3, R.color.swipe_refresh_4);
-        
+
+        mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.vocabulary_message_swipe_refresh);
+        mMessageSwipeRefreshLayout.setOnRefreshListener(this);
+        mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+
         mLegend = (LinearLayout) rootView.findViewById(R.id.vocabulary_legend);
         mLegend.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
         mLegendOk = (LinearLayout) rootView.findViewById(R.id.vocabulary_legend_ok);
@@ -230,6 +236,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                 mListFlipper.showNext();
 
             mSwipeRefreshLayout.setRefreshing(false);
+            mMessageSwipeRefreshLayout.setRefreshing(false);
         }
 
         protected void onPreExecute() {
@@ -267,6 +274,8 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
                 if (mMessageFlipper.getDisplayedChild() == 0)
                     mMessageFlipper.showNext();
+
+                mMessageSwipeRefreshLayout.setRefreshing(false);
             }
 
             if (mListFlipper.getDisplayedChild() == 0)

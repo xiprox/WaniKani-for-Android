@@ -62,6 +62,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     MenuItem mLevelItem;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void hideLegend() {
         mLegend.setVisibility(View.GONE);
@@ -104,6 +105,11 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.kanji_swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
+                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+
+        mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.kanji_message_swipe_refresh);
+        mMessageSwipeRefreshLayout.setOnRefreshListener(this);
+        mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
                 R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
         mLegend = (LinearLayout) rootView.findViewById(R.id.kanji_legend);
@@ -229,6 +235,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
                 mListFlipper.showNext();
 
             mSwipeRefreshLayout.setRefreshing(false);
+            mMessageSwipeRefreshLayout.setRefreshing(false);
         }
 
         protected void onPreExecute() {
@@ -266,6 +273,8 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
                 if (mMessageFlipper.getDisplayedChild() == 0)
                     mMessageFlipper.showNext();
+
+                mMessageSwipeRefreshLayout.setRefreshing(false);
             }
 
             if (mListFlipper.getDisplayedChild() == 0)

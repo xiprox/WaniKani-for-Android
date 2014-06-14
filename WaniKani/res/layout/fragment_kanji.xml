@@ -35,23 +35,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
-                    android:id="@+id/kanji_grid"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="12dp"
-                    android:fadingEdge="none"
-                    android:clipToPadding="false"
-                    android:fastScrollEnabled="true"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:horizontalSpacing="6dp"
-                    android:verticalSpacing="6dp"
-                    android:columnWidth="100dp"
-                    android:stretchMode="columnWidth"
-                    android:numColumns="auto_fit" />
+                    <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
+                        android:id="@+id/kanji_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="12dp"
+                        android:fadingEdge="none"
+                        android:clipToPadding="false"
+                        android:fastScrollEnabled="true"
+                        android:scrollbarStyle="outsideOverlay"
+                        android:horizontalSpacing="6dp"
+                        android:verticalSpacing="6dp"
+                        android:columnWidth="100dp"
+                        android:stretchMode="columnWidth"
+                        android:numColumns="auto_fit" />
 
                 </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -92,7 +92,7 @@
                                 android:layout_height="37dp"
                                 android:background="@drawable/oval_gray"
                                 android:src="@drawable/legend_kanji_active"
-                                android:padding="1dp"/>
+                                android:padding="1dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
                                 android:layout_height="37dp"
                                 android:background="@drawable/oval_gray"
                                 android:src="@drawable/legend_locked"
-                                android:padding="1dp"/>
+                                android:padding="1dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -138,7 +138,7 @@
                                 android:layout_height="37dp"
                                 android:background="@drawable/oval_gray"
                                 android:src="@drawable/legend_burned"
-                                android:padding="1dp"/>
+                                android:padding="1dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -180,51 +180,56 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/tint_black_10"/>
+                        android:background="@color/tint_black_10" />
 
                 </LinearLayout>
             </RelativeLayout>
 
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/kanji_message_swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <ImageView
-                        android:layout_gravity="center_horizontal"
-                        android:id="@+id/kanji_message_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
 
-                    <TextView
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/text_gray"
-                        android:layout_gravity="center_horizontal"
-                        android:id="@+id/kanji_message_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.TextView.Light" />
+                        <ImageView
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/kanji_message_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp" />
 
-                    <TextView
-                        android:textColor="@color/text_gray"
-                        android:layout_gravity="center_horizontal"
-                        android:id="@+id/kanji_message_summary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="8dp"
-                        style="@style/Widget.TextView.Light" />
-                </LinearLayout>
-            </LinearLayout>
+                        <TextView
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="@color/text_gray"
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/kanji_message_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.TextView.Light" />
+
+                        <TextView
+                            android:textColor="@color/text_gray"
+                            android:layout_gravity="center_horizontal"
+                            android:id="@+id/kanji_message_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
+                            style="@style/Widget.TextView.Light" />
+                    </LinearLayout>
+                </ScrollView>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </ViewFlipper>
     </ViewFlipper>
 </RelativeLayout>
