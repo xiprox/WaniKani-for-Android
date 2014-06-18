@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -17,6 +19,7 @@ import java.util.List;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.KanjiList;
 import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
 public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.KanjiItem> {
@@ -51,6 +54,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
 
             viewHolder = new ViewHolder();
 
+            viewHolder.card = (RelativeLayout) convertView.findViewById(R.id.item_kanji_card);
             viewHolder.status = convertView.findViewById(R.id.item_kanji_status);
             viewHolder.character = (TextView) convertView.findViewById(R.id.item_kanji_character);
             viewHolder.meaning = (TextView) convertView.findViewById(R.id.item_kanji_meaning);
@@ -61,7 +65,9 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
             viewHolder = (ViewHolder) (convertView.getTag());
         }
 
-        convertView.setBackgroundResource(themeMan.getCard());
+        ((FrameLayout) convertView).setLayoutAnimation(Animations.FadeInController());
+
+        viewHolder.card.setBackgroundResource(themeMan.getCard());
 
         viewHolder.character.setText(kanjiItem.getCharacter());
         viewHolder.character.setTypeface(typeface);
@@ -113,6 +119,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
     }
 
     protected class ViewHolder {
+        public RelativeLayout card;
         public TextView character;
         public TextView meaning;
         public TextView reading;

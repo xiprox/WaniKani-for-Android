@@ -196,39 +196,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:layout_gravity="center_horizontal"
-                            android:id="@+id/radicals_message_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp" />
+                            <ImageView
+                                android:layout_gravity="center_horizontal"
+                                android:id="@+id/radicals_message_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp" />
 
-                        <TextView
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray"
-                            android:layout_gravity="center_horizontal"
-                            android:id="@+id/radicals_message_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            style="@style/Widget.TextView.Light" />
+                            <TextView
+                                android:textAppearance="@android:style/TextAppearance.Medium"
+                                android:textColor="@color/text_gray"
+                                android:layout_gravity="center_horizontal"
+                                android:id="@+id/radicals_message_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                style="@style/Widget.TextView.Light" />
 
-                        <TextView
-                            android:textColor="@color/text_gray"
-                            android:layout_gravity="center_horizontal"
-                            android:id="@+id/radicals_message_summary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginBottom="8dp"
-                            style="@style/Widget.TextView.Light" />
-                    </LinearLayout>
+                            <TextView
+                                android:textColor="@color/text_gray"
+                                android:layout_gravity="center_horizontal"
+                                android:id="@+id/radicals_message_summary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginBottom="8dp"
+                                style="@style/Widget.TextView.Light" />
+                        </LinearLayout>
                 </ScrollView>
             </android.support.v4.widget.SwipeRefreshLayout>
         </ViewFlipper>

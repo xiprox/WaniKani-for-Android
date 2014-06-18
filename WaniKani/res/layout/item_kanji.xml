@@ -1,53 +1,63 @@
 <?xml version="1" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
     android:layout_height="130dp"
     android:minHeight="130dp"
     android:minWidth="100dp"
-    android:background="@drawable/card_light">
+    android:background="@android:color/transparent"
+    android:layoutAnimation="@anim/fade_controller">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true">
+    <RelativeLayout
+        android:id="@+id/item_kanji_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="130dp"
+        android:minWidth="100dp"
+        android:background="@drawable/card_light">
 
-        <TextView
-            android:id="@+id/item_kanji_character"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="大"
-            android:textColor="@color/text_gray"
-            android:textSize="36sp" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/item_kanji_reading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="たい"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginTop="12dp" />
+            <TextView
+                android:id="@+id/item_kanji_character"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="大"
+                android:textColor="@color/text_gray"
+                android:textSize="36sp" />
 
-        <TextView
-            android:id="@+id/item_kanji_meaning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Big"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light" />
+            <TextView
+                android:id="@+id/item_kanji_reading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="たい"
+                android:textColor="@color/text_gray"
+                android:fontFamily="sans-serif-light"
+                android:layout_marginTop="12dp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/item_kanji_meaning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Big"
+                android:textColor="@color/text_gray"
+                android:fontFamily="sans-serif-light" />
 
-    <View
-        android:id="@+id/item_kanji_status"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
-        android:background="@drawable/oval_kanji"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"/>
+        </LinearLayout>
 
-</RelativeLayout>
+        <View
+            android:id="@+id/item_kanji_status"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/oval_kanji"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp" />
+
+    </RelativeLayout>
+</FrameLayout>

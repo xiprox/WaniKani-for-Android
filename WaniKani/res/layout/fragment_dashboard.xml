@@ -42,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layoutAnimation="@anim/fade_controller">
 
                 <FrameLayout
                     android:id="@+id/fragment_dashboard_reviews_card"
@@ -54,20 +55,23 @@
                 android:id="@+id/fragment_dashboard_status_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:layoutAnimation="@anim/fade_controller" />
 
             <FrameLayout
                 android:id="@+id/fragment_dashboard_progress_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:layoutAnimation="@anim/fade_controller" />
 
             <LinearLayout
                 android:id="@+id/fragment_dashboard_recent_unlocks_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layoutAnimation="@anim/fade_controller">
 
                 <FrameLayout
                     android:id="@+id/fragment_dashboard_recent_unlocks_card"
@@ -79,7 +83,8 @@
                 android:id="@+id/fragment_dashboard_critical_items_holder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layoutAnimation="@anim/fade_controller">
 
                 <FrameLayout
                     android:id="@+id/fragment_dashboard_critical_items_card"

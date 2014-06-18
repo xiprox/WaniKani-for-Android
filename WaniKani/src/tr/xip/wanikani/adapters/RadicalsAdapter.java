@@ -6,7 +6,9 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -19,6 +21,7 @@ import java.util.List;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
 public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<RadicalsList.RadicalItem> {
@@ -52,6 +55,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
 
             viewHolder = new ViewHolder();
 
+            viewHolder.card = (RelativeLayout) convertView.findViewById(R.id.item_radical_card);
             viewHolder.status = convertView.findViewById(R.id.item_radical_status);
             viewHolder.character = (TextView) (convertView.findViewById(R.id.item_radical_character));
             viewHolder.image = (ImageView) (convertView.findViewById(R.id.item_radical_character_image));
@@ -62,7 +66,9 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
             viewHolder = (ViewHolder) (convertView.getTag());
         }
 
-        convertView.setBackgroundResource(themeMan.getCard());
+        ((FrameLayout) convertView).setLayoutAnimation(Animations.FadeInController());
+
+        viewHolder.card.setBackgroundResource(themeMan.getCard());
 
         viewHolder.character.setTypeface(this.typeface);
 
@@ -119,6 +125,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
     }
 
     protected class ViewHolder {
+        public RelativeLayout card;
         public TextView character;
         public ImageView image;
         public TextView meaning;

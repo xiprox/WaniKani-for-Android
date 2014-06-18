@@ -5,6 +5,8 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
@@ -16,6 +18,7 @@ import java.util.List;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
 public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<VocabularyList.VocabularyItem> {
@@ -50,6 +53,7 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
 
             viewHolder = new ViewHolder();
 
+            viewHolder.card = (LinearLayout) convertView.findViewById(R.id.item_vocabulary_card);
             viewHolder.status = convertView.findViewById(R.id.item_vocabulary_status);
             viewHolder.character = (TextView) convertView.findViewById(R.id.item_vocabulary_character);
             viewHolder.meaning = (TextView) convertView.findViewById(R.id.item_vocabulary_meaning);
@@ -60,7 +64,9 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
             viewHolder = (ViewHolder) (convertView.getTag());
         }
 
-        convertView.setBackgroundResource(themeMan.getCard());
+        ((FrameLayout) convertView).setLayoutAnimation(Animations.FadeInController());
+
+        viewHolder.card.setBackgroundResource(themeMan.getCard());
 
         viewHolder.character.setText(vocabularyItem.getCharacter());
         viewHolder.character.setTypeface(typeface);
@@ -110,6 +116,7 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
     }
 
     protected class ViewHolder {
+        public LinearLayout card;
         public TextView character;
         public TextView meaning;
         public TextView kana;
