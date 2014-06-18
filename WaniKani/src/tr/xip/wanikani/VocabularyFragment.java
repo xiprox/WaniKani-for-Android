@@ -187,9 +187,9 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     @Override
     public void onRefresh() {
         if (Build.VERSION.SDK_INT >= 11)
-            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
-            new UserLevelTask().execute();
+            new FetchTask().execute();
     }
 
     private class FetchTask extends AsyncTask<Void, Void, List<VocabularyList.VocabularyItem>> {
