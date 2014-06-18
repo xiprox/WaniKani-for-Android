@@ -73,6 +73,7 @@
                 android:choiceMode="singleChoice"
                 android:divider="@color/separator"
                 android:dividerHeight="0px"
+                android:listSelector="@android:color/transparent"
                 tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
 
             <LinearLayout
@@ -93,6 +94,7 @@
                     android:layout_height="93dp"
                     android:choiceMode="singleChoice"
                     android:divider="@color/separator"
+                    android:listSelector="@android:color/transparent"
                     android:dividerHeight="1dp" />
 
                 <View

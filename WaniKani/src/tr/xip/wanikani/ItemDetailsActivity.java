@@ -261,6 +261,12 @@ public class ItemDetailsActivity extends ActionBarActivity {
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
     public boolean onNavigateUp() {
         super.onBackPressed();
         return true;

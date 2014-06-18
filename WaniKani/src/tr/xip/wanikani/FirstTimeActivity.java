@@ -64,6 +64,8 @@ public class FirstTimeActivity extends ActionBarActivity {
             public void onClick(View view) {
                 LayoutInflater inflater = LayoutInflater.from(FirstTimeActivity.this);
                 View dialogView = inflater.inflate(R.layout.dialog_how_to_get_key, null);
+                dialogView.setBackgroundColor(context.getResources().getColor(
+                        new ThemeManager(context).getWindowBackgroundColor()));
 
                 TextView linkTextView = (TextView) dialogView.findViewById(R.id.wanikani_go_link_text);
                 linkTextView.setMovementMethod(LinkMovementMethod.getInstance());

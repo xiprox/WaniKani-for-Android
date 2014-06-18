@@ -25,9 +25,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -76,7 +76,7 @@
                                 android:paddingLeft="4dp"
                                 android:text="@string/srs_title_apprentice"
                                 android:textColor="@color/text_gray"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -134,7 +134,7 @@
                                 android:paddingLeft="4dp"
                                 android:text="@string/srs_title_guru"
                                 android:textColor="@color/text_gray"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -195,7 +195,7 @@
                                 android:paddingLeft="4dp"
                                 android:text="@string/srs_title_master"
                                 android:textColor="@color/text_gray"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -252,7 +252,7 @@
                                 android:paddingLeft="4dp"
                                 android:text="@string/srs_title_enlightened"
                                 android:textColor="@color/text_gray"
-                                android:textSize="18sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -310,7 +310,7 @@
                             android:paddingLeft="4dp"
                             android:text="@string/srs_title_burned"
                             android:textColor="@color/text_gray"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>

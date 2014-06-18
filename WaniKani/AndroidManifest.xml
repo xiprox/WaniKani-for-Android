@@ -51,7 +51,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
-        <activity android:name="tr.xip.wanikani.FirstTimeActivity" />
+        <activity
+            android:name="tr.xip.wanikani.FirstTimeActivity"
+            android:icon="@drawable/ic_wanikani_stamp" />
         <activity
             android:name=".settings.SettingsActivity"
             android:theme="@style/ThemeLightDarkActionBar"

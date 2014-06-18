@@ -30,7 +30,7 @@
             android:layout_toLeftOf="@+id/card_progress_space1"
             android:text="@string/card_content_progress_level"
             android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray_light" />
+            android:textColor="@color/text_gray" />
 
         <TextView
             android:id="@+id/card_progress_space1"
@@ -50,7 +50,7 @@
             android:layout_alignParentRight="true"
             android:text="1"
             android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray_light" />
+            android:textColor="@color/text_gray" />
     </RelativeLayout>
 
     <LinearLayout
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_radicals_percentage_sign"
                     android:text="0"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="%"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_radicals_slash"
                     android:text="0"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_radicals_total"
                     android:text="/"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="0"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_kanji_percentage_sign"
                     android:text="0"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="%"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -198,7 +198,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_kanji_slash"
                     android:text="0"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_kanji_total"
                     android:text="/"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="0"
-                    android:textColor="@color/text_gray_light"
+                    android:textColor="@color/text_gray"
                     android:textSize="14sp" />
             </RelativeLayout>
 

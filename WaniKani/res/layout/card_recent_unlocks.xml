@@ -46,7 +46,8 @@
                     android:scrollbarStyle="outsideOverlay"
                     android:divider="@color/separator"
                     android:dividerHeight="1px"
-                    android:layout_marginBottom="48dp" />
+                    android:layout_marginBottom="48dp"
+                    android:listSelector="@android:color/transparent" />
 
                 <RelativeLayout
                     android:id="@+id/card_recent_unlocks_more_button"

@@ -3,7 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:minHeight="48dp">
+    android:minHeight="48dp"
+    android:background="@drawable/simple_item_background">
 
     <View
         android:id="@+id/item_recent_unlock_type"
@@ -45,6 +46,6 @@
         android:layout_marginRight="20dp"
         android:text="Mar 11"
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="@color/text_gray_light" />
+        android:textColor="@color/text_gray" />
 
 </RelativeLayout>

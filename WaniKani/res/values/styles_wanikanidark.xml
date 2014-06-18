@@ -44,11 +44,13 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_wanikanidark</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_wanikanidark</item>
         <item name="progressBarStyle">@style/ProgressBar.Wanikanidark</item>
+        <item name="titleTextStyle">@style/TextApparance.ActionBar</item>
     </style>
 
     <style name="ActionBar.Transparent.Wanikanidark" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@drawable/ab_transparent_wanikanidark</item>
         <item name="progressBarStyle">@style/ProgressBar.Wanikanidark</item>
+        <item name="titleTextStyle">@style/TextApparance.ActionBar</item>
     </style>
 	
     <style name="PopupMenu.Wanikanidark" parent="@style/Widget.AppCompat.PopupMenu">	

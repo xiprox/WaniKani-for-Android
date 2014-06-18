@@ -43,6 +43,7 @@
                         android:paddingRight="12dp"
                         android:paddingTop="8dp"
                         android:paddingBottom="12dp"
+                        android:listSelector="@android:color/transparent"
                         android:fadingEdge="none"
                         android:clipToPadding="false"
                         android:fastScrollEnabled="true"

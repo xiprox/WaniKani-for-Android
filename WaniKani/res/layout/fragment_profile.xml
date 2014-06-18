@@ -36,12 +36,13 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="2dp" />
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp">
 
                         <TextView
                             android:id="@+id/profile_username"
@@ -49,100 +50,111 @@
                             android:layout_width="wrap_content"
                             android:textColor="@color/text_gray"
                             android:textAppearance="@android:style/TextAppearance.Large"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:text="sada"
+                            android:layout_marginTop="12dp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="14dp">
 
-                            <TextView
-                                style="@style/Widget.TextView.Light"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:text="@string/card_content_progress_level"
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
 
-                            <TextView
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:text=" "
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:text="@string/card_content_progress_level"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
 
-                            <TextView
-                                android:id="@+id/profile_level"
-                                style="@style/Widget.TextView.Light"
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:text=" "
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:id="@+id/profile_level"
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:text="@string/content_profile_sect"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:text=" "
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:id="@+id/profile_title"
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:text="@string/content_profile_joined"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:text=" "
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:id="@+id/profile_creation_date"
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="16sp"
+                                    android:layout_height="wrap_content"
+                                    android:singleLine="true"
+                                    android:ellipsize="end" />
+                            </LinearLayout>
                         </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:text="@string/content_profile_sect"
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:text=" "
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:id="@+id/profile_title"
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:text="@string/content_profile_joined"
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:text=" "
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:id="@+id/profile_creation_date"
-                                style="@style/Widget.TextView.Light"
-                                android:layout_width="wrap_content"
-                                android:textColor="@color/text_gray_light"
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -160,7 +172,7 @@
                         android:layout_margin="12dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/text_gray_light" />
+                        android:textColor="@color/text_gray" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -195,7 +207,7 @@
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:text=""
-                            android:textColor="@color/text_gray_light"
+                            android:textColor="@color/text_gray"
                             android:textAppearance="@android:style/TextAppearance.Medium"
                             android:layout_height="wrap_content" />
 
@@ -230,7 +242,7 @@
                             android:layout_width="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
-                            android:textColor="@color/text_gray_light"
+                            android:textColor="@color/text_gray"
                             android:textAppearance="@android:style/TextAppearance.Medium"
                             android:layout_height="wrap_content" />
 
@@ -267,7 +279,7 @@
                             android:layout_marginLeft="70dp"
                             android:layout_alignParentRight="true"
                             android:maxLines="1"
-                            android:textColor="@color/text_gray_light"
+                            android:textColor="@color/text_gray"
                             android:textAppearance="@android:style/TextAppearance.Medium"
                             android:layout_height="wrap_content" />
 
@@ -304,7 +316,7 @@
                             android:layout_marginLeft="70dp"
                             android:layout_alignParentRight="true"
                             android:maxLines="1"
-                            android:textColor="@color/text_gray_light"
+                            android:textColor="@color/text_gray"
                             android:textAppearance="@android:style/TextAppearance.Medium"
                             android:layout_height="wrap_content" />
 
@@ -315,6 +327,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
         </ViewFlipper>
     </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

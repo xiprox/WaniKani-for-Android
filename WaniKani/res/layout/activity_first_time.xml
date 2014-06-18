@@ -63,12 +63,13 @@
 
             <Button
                 android:id="@+id/first_time_sign_in"
-                android:background="@drawable/simple_item_background"
                 android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/simple_item_background"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/text_gray"
                 android:text="@string/action_sign_in"
-                android:layout_height="wrap_content" />
+                android:minHeight="48dp"/>
         </RelativeLayout>
 
         <ProgressBar

@@ -4,8 +4,7 @@
     android:layout_height="130dp"
     android:minHeight="130dp"
     android:minWidth="100dp"
-    android:background="@android:color/transparent"
-    android:layoutAnimation="@anim/fade_controller">
+    android:background="@android:color/transparent">
 
     <RelativeLayout
         android:id="@+id/item_kanji_card"
