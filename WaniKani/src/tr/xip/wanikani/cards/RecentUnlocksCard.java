@@ -28,7 +28,7 @@ import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.RecentUnlocksActivity;
-import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
+import tr.xip.wanikani.adapters.RecentUnlocksArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.managers.PrefManager;
@@ -56,7 +56,7 @@ public class RecentUnlocksCard extends Fragment {
     ListView mRecentUnlocksList;
     RelativeLayout mMoreItemsButton;
 
-    RecentUnlocksAdapter mRecentUnlocksAdapter;
+    RecentUnlocksArrayAdapter mRecentUnlocksAdapter;
 
     ViewFlipper mViewFlipper;
     ViewFlipper mMessageViewFlipper;
@@ -178,7 +178,7 @@ public class RecentUnlocksCard extends Fragment {
             int height;
 
             if (result != null) {
-                mRecentUnlocksAdapter = new RecentUnlocksAdapter(mContext,
+                mRecentUnlocksAdapter = new RecentUnlocksArrayAdapter(mContext,
                         R.layout.item_recent_unlock, result, new Fonts().getKanjiFont(mContext));
 
                 if (mRecentUnlocksAdapter.getCount() != 0) {

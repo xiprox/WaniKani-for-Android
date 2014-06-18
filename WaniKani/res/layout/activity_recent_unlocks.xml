@@ -15,22 +15,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <LinearLayout
-            android:id="@+id/activity_recent_unlocks_card"
+        <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
+            android:id="@+id/activity_recent_unlocks_grid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/card_light"
-            android:layout_margin="16dp">
+            android:layout_height="match_parent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:clipToPadding="false"
+            android:fastScrollEnabled="true"
+            android:scrollbarStyle="outsideOverlay"
+            android:horizontalSpacing="6dp"
+            android:verticalSpacing="6dp"
+            android:columnWidth="250dp"
+            android:stretchMode="columnWidth"
+            android:numColumns="auto_fit" />
 
-            <ListView
-                android:id="@+id/activity_recent_unlocks_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:scrollbarStyle="outsideOverlay"
-                android:clipToPadding="false"
-                android:layout_marginBottom="2dp" />
-        </LinearLayout>
     </ViewFlipper>
 </LinearLayout>

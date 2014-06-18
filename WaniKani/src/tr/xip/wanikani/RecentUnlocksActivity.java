@@ -7,18 +7,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
+
 import java.util.List;
 
-import tr.xip.wanikani.adapters.RecentUnlocksAdapter;
+import tr.xip.wanikani.adapters.RecentUnlocksStickyHeaderGridViewArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.managers.ThemeManager;
-import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by xihsa_000 on 3/25/14.
@@ -30,13 +29,11 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
     Context context;
 
-    ListView mRecentUnlocksList;
+    StickyGridHeadersGridView mRecentUnlocksGrid;
 
     ViewFlipper mViewFlipper;
 
-    LinearLayout mCard;
-
-    RecentUnlocksAdapter mRecentUnlocksAdapter;
+    RecentUnlocksStickyHeaderGridViewArrayAdapter mRecentUnlocksAdapter;
 
     List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
 
@@ -51,10 +48,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_unlocks);
 
-        mCard = (LinearLayout) findViewById(R.id.activity_recent_unlocks_card);
-        mCard.setBackgroundResource(themeMan.getCard());
-
-        mRecentUnlocksList = (ListView) findViewById(R.id.activity_recent_unlocks_list);
+        mRecentUnlocksGrid = (StickyGridHeadersGridView) findViewById(R.id.activity_recent_unlocks_grid);
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.activity_recent_unlocks_view_flipper);
         mViewFlipper.setInAnimation(this, R.anim.abc_fade_in);
@@ -91,11 +85,11 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(List<RecentUnlocksList.UnlockItem> result) {
             if (result != null) {
-                mRecentUnlocksAdapter = new RecentUnlocksAdapter(context,
-                        R.layout.item_recent_unlock, result, new Fonts().getKanjiFont(context));
-                mRecentUnlocksList.setAdapter(mRecentUnlocksAdapter);
+                mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
+                        result, R.layout.header_simple, R.layout.item_recent_unlock_grid);
+                mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
 
-                mRecentUnlocksList.setOnItemClickListener(new recentUnlocksListItemClickListener());
+                mRecentUnlocksGrid.setOnItemClickListener(new recentUnlocksListItemClickListener());
 
                 if (mViewFlipper.getDisplayedChild() == 0) {
                     mViewFlipper.showNext();

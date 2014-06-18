@@ -23,7 +23,7 @@ import tr.xip.wanikani.utils.Fonts;
 /**
  * Created by xihsa_000 on 3/14/14.
  */
-public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockItem> {
+public class RecentUnlocksArrayAdapter extends ArrayAdapter<RecentUnlocksList.UnlockItem> {
 
     Context context;
     Typeface typeface;
@@ -35,7 +35,7 @@ public class RecentUnlocksAdapter extends ArrayAdapter<RecentUnlocksList.UnlockI
 
     private List<RecentUnlocksList.UnlockItem> items;
 
-    public RecentUnlocksAdapter(Context context, int textViewResourceId, List<RecentUnlocksList.UnlockItem> objects, Typeface typeface) {
+    public RecentUnlocksArrayAdapter(Context context, int textViewResourceId, List<RecentUnlocksList.UnlockItem> objects, Typeface typeface) {
         super(context, textViewResourceId, objects);
         this.items = objects;
         this.context = context;
