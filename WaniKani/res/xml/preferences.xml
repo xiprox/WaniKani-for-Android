@@ -24,7 +24,7 @@
             android:key="pref_dashboard_recent_unlock_number"
             android:title="@string/pref_title_recent_unlocks"
             android:summary="@string/pref_summary_recent_unlocks"
-            android:defaultValue="10" />
+            android:defaultValue="5" />
         <tr.xip.wanikani.settings.preferences.CriticalItemsPercentagePreference
             android:key="pref_dashboard_critical_items_percentage"
             android:title="@string/pref_title_critical_items_percentage"

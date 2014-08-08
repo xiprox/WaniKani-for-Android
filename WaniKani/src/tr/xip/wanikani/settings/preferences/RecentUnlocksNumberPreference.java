@@ -18,9 +18,9 @@ public class RecentUnlocksNumberPreference extends DialogPreference {
 
     NumberPicker mNumberPicker;
 
-    private int DEFAULT_VALUE = 10;
+    private int DEFAULT_VALUE = 5;
 
-    private int mCurrentValue = 10;
+    private int mCurrentValue = 5;
 
     public RecentUnlocksNumberPreference(Context context, AttributeSet attrs) {
         super(context, attrs);

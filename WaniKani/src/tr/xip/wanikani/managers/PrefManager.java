@@ -58,7 +58,7 @@ public class PrefManager {
     }
 
     public int getDashboardRecentUnlocksNumber() {
-        return prefs.getInt(PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER, 10);
+        return prefs.getInt(PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER, 5);
     }
 
     public void setDashboardRecentUnlocksNumber(int number) {
