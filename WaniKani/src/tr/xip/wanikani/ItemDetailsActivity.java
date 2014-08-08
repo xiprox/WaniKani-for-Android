@@ -47,6 +47,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
     public static final String TYPE_RADICAL = "radical";
     public static final String TYPE_KANJI = "kanji";
     public static final String TYPE_VOCABULARY = "vocabulary";
+
     WaniKaniApi api;
     ThemeManager themeMan;
     String gotType;
@@ -210,6 +211,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mMeaningNoteCard.setBackgroundResource(themeMan.getCard());
 
         mLocked = (LinearLayout) findViewById(R.id.details_progress_locked);
+        mLocked.setBackgroundResource(themeMan.getCard());
+
         mBurned = (LinearLayout) findViewById(R.id.details_progress_burned);
         mBurnedDate = (TextView) findViewById(R.id.details_progress_burned_date);
         mProgressContent = (LinearLayout) findViewById(R.id.details_progress_content);
