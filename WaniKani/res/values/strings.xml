@@ -173,9 +173,11 @@
 
     <!-- Time Strings -->
     <string name="less_than_a_minute_ago">less than a minute ago</string>
-    <string name="minute_ago">minute ago</string>
+    <string name="minute_ago">a minute ago</string>
     <string name="minutes_ago">minutes ago</string>
+    <string name="hour_ago">an hour ago</string>
     <string name="hours_ago">hours ago</string>
+    <string name="day_ago">a day ago</string>
     <string name="days_ago">days ago</string>
 
     <!-- Other Strings -->

@@ -102,8 +102,6 @@ public class PrefManager {
     }
 
     public String getDashboardLastUpdateTime() {
-        String updateTime;
-
         Date currentTime = new Date(System.currentTimeMillis());
         Date updateDate = new Date(prefs.getLong("pref_update_date_dashboard", 0));
 
@@ -115,13 +113,20 @@ public class PrefManager {
         if (differenceInMinutes == 0) {
             return context.getString(R.string.less_than_a_minute_ago);
         } else if (differenceInMinutes >= 60) {
-            if (differenceInHours >= 24)
-                return differenceInDays + " " + context.getString(R.string.days_ago);
-            else
-                return differenceInHours + " " + context.getString(R.string.hours_ago);
+            if (differenceInHours >= 24) {
+                if (differenceInDays == 1)
+                    return context.getString(R.string.day_ago);
+                else
+                    return differenceInDays + " " + context.getString(R.string.days_ago);
+            } else {
+                if (differenceInHours == 1)
+                    return context.getString(R.string.hour_ago);
+                else
+                    return differenceInHours + " " + context.getString(R.string.hours_ago);
+            }
         } else {
             if (differenceInMinutes == 1)
-                return differenceInMinutes + " " + context.getString(R.string.minute_ago);
+                return context.getString(R.string.minute_ago);
             else
                 return differenceInMinutes + " " + context.getString(R.string.minutes_ago);
         }
