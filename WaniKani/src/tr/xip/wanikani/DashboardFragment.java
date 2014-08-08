@@ -78,21 +78,27 @@ public class DashboardFragment extends Fragment
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(getString(R.string.error_connection_timeout), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime(), false, getString(R.string.ok));
+                    + " " + prefMan.getDashboardLastUpdateTime() + "."
+                    + "\n"
+                    + getString(R.string.info_may_be_outdated), false, getString(R.string.ok));
         }
     };
 
     private BroadcastReceiver mRetrofitConnectionErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showMessage(getString(R.string.error_connection_error), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime(), false, getString(R.string.ok));
+            showMessage(getString(R.string.error_no_connection), getString(R.string.content_last_updated)
+                    + " " + prefMan.getDashboardLastUpdateTime() + "."
+                    + "\n"
+                    + getString(R.string.info_may_be_outdated), false, getString(R.string.ok));
         }
     };
 
     private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(getString(R.string.error_unknown_error), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime(), false, getString(R.string.ok));
+                    + " " + prefMan.getDashboardLastUpdateTime() + "."
+                    + "\n"
+                    + getString(R.string.info_may_be_outdated), false, getString(R.string.ok));
         }
     };
 

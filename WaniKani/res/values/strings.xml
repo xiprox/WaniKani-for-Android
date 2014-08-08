@@ -155,7 +155,6 @@
     <string name="error_no_connection">No connection!</string>
     <string name="error_display_items">There was an error displaying items</string>
     <string name="error_connection_timeout">Connection timeout</string>
-    <string name="error_connection_error">Connection error</string>
     <string name="error_unknown_error">Unknown error</string>
     <string name="error_no_levels_selected">You should select at least one level</string>
     <string name="error_couldnt_load_data">Couldn\'t load data</string>
@@ -165,6 +164,7 @@
     <string name="info_please_connect_to_see_data">Please make sure you have a proper internet connection</string>
     <string name="info_loading">Loading</string>
     <string name="content_last_updated">Content was last updated</string>
+    <string name="info_may_be_outdated">Information displayed on this page may be outdated!</string>
 
     <!-- Dialog Strings -->
     <string name="dialog_logout_title">Confirm Logout</string>
