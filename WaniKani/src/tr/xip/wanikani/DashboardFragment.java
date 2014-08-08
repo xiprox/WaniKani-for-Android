@@ -232,15 +232,11 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onAvailableCardSyncFinishedListener(String result) {
-        if (result.equals(SYNC_RESULT_SUCCESS)) {
-            mAvailableHolder.setVisibility(View.VISIBLE);
+        if (result.equals(SYNC_RESULT_SUCCESS))
             isAvailableCardSyncedSuccess = true;
-        }
 
-        if (result.equals(SYNC_RESULT_FAILED)) {
-            mAvailableHolder.setVisibility(View.GONE);
+        if (result.equals(SYNC_RESULT_FAILED))
             isAvailableCardSyncedSuccess = false;
-        }
 
         isAvailableCardSynced = true;
         updateSyncStatus();
@@ -248,15 +244,11 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onReviewsCardSyncFinishedListener(String result) {
-        if (result.equals(SYNC_RESULT_SUCCESS)) {
-            mReviewsHolder.setVisibility(View.VISIBLE);
+        if (result.equals(SYNC_RESULT_SUCCESS))
             isReviewsCardSyncedSuccess = true;
-        }
 
-        if (result.equals(SYNC_RESULT_FAILED)) {
-            mReviewsHolder.setVisibility(View.GONE);
+        if (result.equals(SYNC_RESULT_FAILED))
             isReviewsCardSyncedSuccess = false;
-        }
 
         isReviewsCardSynced = true;
         updateSyncStatus();
