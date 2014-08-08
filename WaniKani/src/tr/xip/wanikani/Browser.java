@@ -2,6 +2,7 @@ package tr.xip.wanikani;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -11,8 +12,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 
@@ -21,28 +22,26 @@ import tr.xip.wanikani.utils.Fonts;
  */
 public class Browser extends ActionBarActivity {
 
-    WebView mWebview;
-
-    ThemeManager themeMan;
-
     public static final String ARG_ACTION = "action";
     public static final String ARG_ITEM = "item";
     public static final String ARG_ITEM_TYPE = "itemtype";
-
     public static final String ACTION_ITEM_DETAILS = "itemdetails";
     public static final String ACTION_LESSON = "lesson";
     public static final String ACTION_REVIEW = "reviews";
-
     static final String LESSON_URL = "https://www.wanikani.com/lesson/session";
     static final String REVIEW_URL = "https://www.wanikani.com/review/session";
     static final String RADICAL_URL = "https://www.wanikani.com/radicals/";
     static final String KANJI_URL = "https://www.wanikani.com/kanji/";
     static final String VOCABULARY_URL = "https://www.wanikani.com/vocabulary/";
+    WebView mWebview;
+    ThemeManager themeMan;
+    PrefManager prefMan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mWebview = new WebView(this);
         themeMan = new ThemeManager(this);
+        prefMan = new PrefManager(this);
 
         super.onCreate(savedInstanceState);
         setContentView(mWebview);
@@ -83,10 +82,14 @@ public class Browser extends ActionBarActivity {
         if (action.equals(ACTION_LESSON)) {
             mWebview.loadUrl(LESSON_URL);
             mActionBarTitleText.setText(R.string.ab_title_lessons);
+
+            setOrientation(prefMan.getLessonsScreenOrientation());
         }
         if (action.equals(ACTION_REVIEW)) {
             mWebview.loadUrl(REVIEW_URL);
             mActionBarTitleText.setText(R.string.ab_title_reviews);
+
+            setOrientation(prefMan.getReviewsScreenOrientation());
         }
 
         if (action.equals(ACTION_ITEM_DETAILS)) {
@@ -107,6 +110,14 @@ public class Browser extends ActionBarActivity {
         }
 
 
+    }
+
+    private void setOrientation(String orientation) {
+        if (orientation.equals("Portrait"))
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        else if (orientation.equals("Landscape"))
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     @Override

@@ -139,6 +139,10 @@
     <string name="pref_category_general">General</string>
     <string name="pref_title_fonts">Fonts</string>
     <string name="pref_summary_fonts">About the fonts used in this application</string>
+    <string name="pref_category_lessons">Lessons</string>
+    <string name="pref_category_reviews">Reviews</string>
+    <string name="pref_title_screen_orientation">Screen Orientation</string>
+    <string name="pref_summary_screen_orientation"></string>
 
     <string-array name="pref_entries_theme">
         <item>Light</item>
@@ -148,6 +152,12 @@
     <string-array name="pref_values_theme">
         <item>light</item>
         <item>dark</item>
+    </string-array>
+
+    <string-array name="pref_entries_screen_orientation">
+        <item>Auto-rotate</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
     </string-array>
 
     <!-- Error Strings -->

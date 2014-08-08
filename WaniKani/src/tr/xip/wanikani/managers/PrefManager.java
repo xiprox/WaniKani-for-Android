@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import org.apache.commons.io.FileUtils;
 
@@ -13,19 +12,19 @@ import java.io.IOException;
 import java.util.Date;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.settings.SettingsActivity;
 
 /**
  * Created by xihsa_000 on 3/11/14.
  */
 public class PrefManager {
-    private static SharedPreferences prefs;
-    private static SharedPreferences.Editor prefeditor;
-    private static Context context;
-
     public static final String PREF_API_KEY = "pref_api_key";
     public static final String PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER = "pref_dashboard_recent_unlock_number";
     public static final String PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE = "pref_dashboard_critical_items_percentage";
+    public static final String PREF_LESSONS_SCREEN_ORIENTATION = "pref_lessons_orientation";
+    public static final String PREF_REVIEWS_SCREEN_ORIENTATION = "pref_reviews_orientation";
+    private static SharedPreferences prefs;
+    private static SharedPreferences.Editor prefeditor;
+    private static Context context;
 
     public PrefManager(Context context) {
         this.context = context;
@@ -37,16 +36,16 @@ public class PrefManager {
         return prefs.getString("api_key", "0");
     }
 
+    public void setApiKey(String key) {
+        prefeditor.putString("api_key", key).commit();
+    }
+
     public boolean isFirstLaunch() {
         return prefs.getBoolean("first_launch", true);
     }
 
     public void setFirstLaunch(boolean value) {
         prefeditor.putBoolean("first_launch", value).commit();
-    }
-
-    public void setApiKey(String key) {
-        prefeditor.putString("api_key", key).commit();
     }
 
     public boolean isProfileFirstTime() {
@@ -73,28 +72,28 @@ public class PrefManager {
         prefeditor.putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
     }
 
-    public void setRadicalsLegendLearned(boolean value) {
-        PrefManager.prefeditor.putBoolean("pref_legend_radicals_learned", value).commit();
-    }
-
     public boolean isRadicalsLegendLearned() {
         return PrefManager.prefs.getBoolean("pref_legend_radicals_learned", false);
     }
 
-    public void setKanjiLegendLearned(boolean value) {
-        prefeditor.putBoolean("pref_legend_kanji_learned", value).commit();
+    public void setRadicalsLegendLearned(boolean value) {
+        PrefManager.prefeditor.putBoolean("pref_legend_radicals_learned", value).commit();
     }
 
     public boolean isKanjiLegendLearned() {
         return prefs.getBoolean("pref_legend_kanji_learned", false);
     }
 
-    public void setVocabularyLegendLearned(boolean value) {
-        prefeditor.putBoolean("pref_legend_vocabulary_learned", value).commit();
+    public void setKanjiLegendLearned(boolean value) {
+        prefeditor.putBoolean("pref_legend_kanji_learned", value).commit();
     }
 
     public boolean isVocabularyLegendLearned() {
         return prefs.getBoolean("pref_legend_vocabulary_learned", false);
+    }
+
+    public void setVocabularyLegendLearned(boolean value) {
+        prefeditor.putBoolean("pref_legend_vocabulary_learned", value).commit();
     }
 
     public void setDashboardLastUpdateDate(long date) {
@@ -130,6 +129,22 @@ public class PrefManager {
             else
                 return differenceInMinutes + " " + context.getString(R.string.minutes_ago);
         }
+    }
+
+    public String getLessonsScreenOrientation() {
+        return prefs.getString(PREF_LESSONS_SCREEN_ORIENTATION, "Portrait");
+    }
+
+    public void setLessonsScreenOrientation(String orientation) {
+        prefeditor.putString(PREF_LESSONS_SCREEN_ORIENTATION, orientation).commit();
+    }
+
+    public String getReviewsScreenOrientation() {
+        return prefs.getString(PREF_REVIEWS_SCREEN_ORIENTATION, "Portrait");
+    }
+
+    public void setReviewsScreenOrientation(String orientation) {
+        prefeditor.putString(PREF_REVIEWS_SCREEN_ORIENTATION, orientation).commit();
     }
 
     public void logout() {

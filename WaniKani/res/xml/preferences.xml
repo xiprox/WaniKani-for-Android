@@ -5,31 +5,48 @@
         android:key="pref_api_key"
         android:title="@string/pref_title_apikey" />
     <ListPreference
-        android:key="pref_theme"
-        android:title="@string/pref_title_theme"
-        android:summary="@string/pref_summary_theme"
-        android:entryValues="@array/pref_values_theme"
+        android:defaultValue="light"
         android:entries="@array/pref_entries_theme"
-        android:defaultValue="light" />
+        android:entryValues="@array/pref_values_theme"
+        android:key="pref_theme"
+        android:summary="@string/pref_summary_theme"
+        android:title="@string/pref_title_theme" />
 
     <PreferenceCategory android:title="@string/pref_category_general">
         <tr.xip.wanikani.settings.preferences.FontsPreference
             android:key="pref_general_fonts"
-            android:title="@string/pref_title_fonts"
-            android:summary="@string/pref_summary_fonts"/>
+            android:summary="@string/pref_summary_fonts"
+            android:title="@string/pref_title_fonts" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_category_dashboard">
         <tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference
+            android:defaultValue="5"
             android:key="pref_dashboard_recent_unlock_number"
-            android:title="@string/pref_title_recent_unlocks"
             android:summary="@string/pref_summary_recent_unlocks"
-            android:defaultValue="5" />
+            android:title="@string/pref_title_recent_unlocks" />
         <tr.xip.wanikani.settings.preferences.CriticalItemsPercentagePreference
+            android:defaultValue="75"
             android:key="pref_dashboard_critical_items_percentage"
-            android:title="@string/pref_title_critical_items_percentage"
             android:summary="@string/pref_summary_critical_items_percentage"
-            android:defaultValue="75" />
+            android:title="@string/pref_title_critical_items_percentage" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_category_lessons">
+        <ListPreference
+            android:defaultValue="Portrait"
+            android:entries="@array/pref_entries_screen_orientation"
+            android:entryValues="@array/pref_entries_screen_orientation"
+            android:key="pref_lessons_orientation"
+            android:title="@string/pref_title_screen_orientation" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_category_reviews">
+        <ListPreference
+            android:defaultValue="Portrait"
+            android:entries="@array/pref_entries_screen_orientation"
+            android:entryValues="@array/pref_entries_screen_orientation"
+            android:key="pref_reviews_orientation"
+            android:title="@string/pref_title_screen_orientation" />
+    </PreferenceCategory>
 </PreferenceScreen>
