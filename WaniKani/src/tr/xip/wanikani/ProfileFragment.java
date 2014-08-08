@@ -227,7 +227,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         dataMan.setPostsCount(user.getPostsCount());
         dataMan.setCreationDate(user.getCreationDate());
         dataMan.setAbout(user.getAbout());
-        dataMan.setWebsite(user.getAbout());
+        dataMan.setWebsite(user.getWebsite());
         dataMan.setTwitter(user.getTwitter());
     }
 
