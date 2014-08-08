@@ -33,8 +33,8 @@ public class Browser extends ActionBarActivity {
     public static final String ACTION_LESSON = "lesson";
     public static final String ACTION_REVIEW = "reviews";
 
-    static final String LESSON_URL = "https://www.wanikani.com/lesson";
-    static final String REVIEW_URL = "https://www.wanikani.com/review";
+    static final String LESSON_URL = "https://www.wanikani.com/lesson/session";
+    static final String REVIEW_URL = "https://www.wanikani.com/review/session";
     static final String RADICAL_URL = "https://www.wanikani.com/radicals/";
     static final String KANJI_URL = "https://www.wanikani.com/kanji/";
     static final String VOCABULARY_URL = "https://www.wanikani.com/vocabulary/";
