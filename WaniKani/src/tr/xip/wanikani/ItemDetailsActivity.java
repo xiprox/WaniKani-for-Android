@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,18 +40,15 @@ import tr.xip.wanikani.utils.Fonts;
  */
 public class ItemDetailsActivity extends ActionBarActivity {
 
-    WaniKaniApi api;
-    ThemeManager themeMan;
-
     public static final String ARG_TYPE = "type";
     public static final String ARG_CHARACTER = "character";
     public static final String ARG_IMAGE = "image";
     public static final String ARG_LEVEL = "level";
-
     public static final String TYPE_RADICAL = "radical";
     public static final String TYPE_KANJI = "kanji";
     public static final String TYPE_VOCABULARY = "vocabulary";
-
+    WaniKaniApi api;
+    ThemeManager themeMan;
     String gotType;
     String gotCharacter;
     String gotImage;
@@ -119,7 +115,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
     ProgressBar mReadingCorrectProgressBar;
     ProgressBar mReadingIncorrectProgressBar;
 
-//    ViewFlipper mViewFlipper;
+    ViewFlipper mViewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +126,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         Intent intent = getIntent();
         gotType = intent.getStringExtra(ARG_TYPE);
@@ -245,16 +246,16 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mReadingCorrectProgressBar = (ProgressBar) findViewById(R.id.details_progress_reading_correct_progress);
         mReadingIncorrectProgressBar = (ProgressBar) findViewById(R.id.details_progress_reading_incorrect_progress);
 
-        /*mViewFlipper = (ViewFlipper) findViewById(R.id.details_view_flipper);
+        mViewFlipper = (ViewFlipper) findViewById(R.id.details_view_flipper);
         mViewFlipper.setInAnimation(this, R.anim.abc_fade_in);
-        mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);*/
+        mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);
 
         mCharacter.setTypeface(new Fonts().getKanjiFont(this));
         mReading.setTypeface(new Fonts().getKanjiFont(this));
         mOnyomi.setTypeface(new Fonts().getKanjiFont(this));
         mKunyomi.setTypeface(new Fonts().getKanjiFont(this));
 
-        if (Build.VERSION.SDK_INT >= 11)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             new LoadTask().execute();
@@ -726,9 +727,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                     }
                 }
 
-                /*if(mViewFlipper.getDisplayedChild() == 0) {
+                if (mViewFlipper.getDisplayedChild() == 0) {
                     mViewFlipper.showNext();
-                }*/
+                }
             } else {
                 Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
                 finish();

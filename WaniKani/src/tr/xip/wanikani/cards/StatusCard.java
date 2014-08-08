@@ -342,7 +342,7 @@ public class StatusCard extends Fragment {
 
                     dataMan.setEnlightenRadicalsCount(radicals);
                     dataMan.setEnlightenKanjiCount(kanji);
-                    dataMan.setMasterVocabularyCount(vocabulary);
+                    dataMan.setEnlightenVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("burned")) {
                     radicals = srs.getBurned().getRadicalsCount();
