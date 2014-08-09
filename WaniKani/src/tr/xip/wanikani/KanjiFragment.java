@@ -1,6 +1,8 @@
 package tr.xip.wanikani;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -31,7 +33,6 @@ import java.util.List;
 import tr.xip.wanikani.adapters.KanjiAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.KanjiList;
-import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 
@@ -51,9 +52,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     StickyGridHeadersGridView mGrid;
     ViewFlipper mListFlipper;
 
-    LinearLayout mLegend;
-    LinearLayout mLegendOk;
-
     LevelPickerDialogFragment mLevelPickerDialog;
 
     KanjiAdapter mKanjiAdapter;
@@ -68,12 +66,21 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
-    private void hideLegend() {
-        mLegend.setVisibility(View.GONE);
-    }
-
     private void showLegend() {
-        mLegend.setVisibility(View.VISIBLE);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_legend, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView)
+                .setTitle(R.string.content_radicals_legend)
+                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        prefMan.setRadicalsLegendLearned(true);
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -116,10 +123,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
                 R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
-        mLegend = (LinearLayout) rootView.findViewById(R.id.kanji_legend);
-        mLegend.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
-        mLegendOk = (LinearLayout) rootView.findViewById(R.id.kanji_legend_ok);
-
         mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.kanji_grid);
         mGrid.setOnItemClickListener(new gridItemClickListener());
 
@@ -133,14 +136,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         if (!prefMan.isKanjiLegendLearned()) {
             showLegend();
         }
-
-        mLegendOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideLegend();
-                prefMan.setKanjiLegendLearned(true);
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= 11)
             new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -174,6 +169,9 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         switch (item.getItemId()) {
             case R.id.action_level:
                 showLevelDialog();
+                break;
+            case R.id.action_legend:
+                showLegend();
                 break;
         }
 
@@ -220,10 +218,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
                 mKanjiAdapter = new KanjiAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
                 mGrid.setAdapter(mKanjiAdapter);
-
-                if (!prefMan.isKanjiLegendLearned()) {
-                    showLegend();
-                }
 
                 if (mMessageFlipper.getDisplayedChild() == 1)
                     mMessageFlipper.showPrevious();

@@ -1,6 +1,8 @@
 package tr.xip.wanikani;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -53,9 +55,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     ViewFlipper mListFlipper;
 
-    LinearLayout mLegend;
-    LinearLayout mLegendOk;
-
     LevelPickerDialogFragment mLevelPickerDialog;
 
     RadicalsAdapter mRadicalsAdapter;
@@ -70,12 +69,21 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
-    private void hideLegend() {
-        mLegend.setVisibility(View.GONE);
-    }
-
     private void showLegend() {
-        mLegend.setVisibility(View.VISIBLE);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_legend, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView)
+                .setTitle(R.string.content_radicals_legend)
+                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        prefMan.setRadicalsLegendLearned(true);
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -119,10 +127,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
                 R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
-        mLegend = (LinearLayout) rootView.findViewById(R.id.radicals_legend);
-        mLegend.setBackgroundColor(getResources().getColor(themeMan.getWindowBackgroundColor()));
-        mLegendOk = (LinearLayout) rootView.findViewById(R.id.radicals_legend_ok);
-
         mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.radicals_grid);
         mGrid.setOnItemClickListener(new gridItemClickListener());
 
@@ -136,14 +140,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         if (!prefMan.isRadicalsLegendLearned()) {
             showLegend();
         }
-
-        mLegendOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideLegend();
-                prefMan.setRadicalsLegendLearned(true);
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= 11)
             new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -177,6 +173,9 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         switch (item.getItemId()) {
             case R.id.action_level:
                 showLevelDialog();
+                break;
+            case R.id.action_legend:
+                showLegend();
                 break;
         }
 

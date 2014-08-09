@@ -1,9 +1,8 @@
 <?xml version="1" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:animateLayoutChanges="true">
 
     <ViewFlipper
         android:id="@+id/kanji_list_flipper"
@@ -13,9 +12,9 @@
         android:outAnimation="@anim/abc_fade_out">
 
         <ProgressBar
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <ViewFlipper
             android:id="@+id/kanji_message_flipper"
@@ -39,151 +38,22 @@
                         android:id="@+id/kanji_grid"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:columnWidth="100dp"
+                        android:fadingEdge="none"
+                        android:fastScrollEnabled="true"
+                        android:horizontalSpacing="6dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="auto_fit"
+                        android:paddingBottom="12dp"
                         android:paddingLeft="12dp"
                         android:paddingRight="12dp"
                         android:paddingTop="8dp"
-                        android:paddingBottom="12dp"
-                        android:listSelector="@android:color/transparent"
-                        android:fadingEdge="none"
-                        android:clipToPadding="false"
-                        android:fastScrollEnabled="true"
                         android:scrollbarStyle="outsideOverlay"
-                        android:horizontalSpacing="6dp"
-                        android:verticalSpacing="6dp"
-                        android:columnWidth="100dp"
                         android:stretchMode="columnWidth"
-                        android:numColumns="auto_fit" />
+                        android:verticalSpacing="6dp" />
 
                 </android.support.v4.widget.SwipeRefreshLayout>
-
-                <LinearLayout
-                    android:id="@+id/kanji_legend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/window_background_light"
-                    android:clickable="true"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/content_radicals_legend"
-                        android:fontFamily="sans-serif-condensed"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/holo_blue_dark"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="12dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="12dp"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="37dp"
-                                android:layout_height="37dp"
-                                android:background="@drawable/oval_gray"
-                                android:src="@drawable/legend_kanji_active"
-                                android:padding="1dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/content_radicals_legend_active"
-                                android:fontFamily="sans-serif-condensed"
-                                android:textColor="@color/text_gray" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="37dp"
-                                android:layout_height="37dp"
-                                android:background="@drawable/oval_gray"
-                                android:src="@drawable/legend_locked"
-                                android:padding="1dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/content_radicals_legend_locked"
-                                android:fontFamily="sans-serif-condensed"
-                                android:textColor="@color/text_gray" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="1"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:layout_width="37dp"
-                                android:layout_height="37dp"
-                                android:background="@drawable/oval_gray"
-                                android:src="@drawable/legend_burned"
-                                android:padding="1dp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/content_radicals_legend_burned"
-                                android:fontFamily="sans-serif-condensed"
-                                android:textColor="@color/text_gray" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/holo_blue_dark"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp" />
-
-                    <LinearLayout
-                        android:id="@+id/kanji_legend_ok"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="@drawable/simple_item_background"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ok"
-                            android:layout_gravity="right"
-                            android:fontFamily="sans-serif-condensed"
-                            android:layout_marginRight="26dp"
-                            android:textColor="@color/holo_blue_dark"
-                            android:textAppearance="@android:style/TextAppearance.Medium" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/tint_black_10" />
-
-                </LinearLayout>
             </RelativeLayout>
 
 
@@ -197,37 +67,37 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <ImageView
-                            android:layout_gravity="center_horizontal"
                             android:id="@+id/kanji_message_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginTop="8dp" />
 
                         <TextView
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray"
-                            android:layout_gravity="center_horizontal"
                             android:id="@+id/kanji_message_title"
+                            style="@style/Widget.TextView.Light"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginBottom="8dp"
-                            style="@style/Widget.TextView.Light" />
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="@color/text_gray" />
 
                         <TextView
-                            android:textColor="@color/text_gray"
-                            android:layout_gravity="center_horizontal"
                             android:id="@+id/kanji_message_summary"
+                            style="@style/Widget.TextView.Light"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="8dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:layout_marginBottom="8dp"
-                            style="@style/Widget.TextView.Light" />
+                            android:textColor="@color/text_gray" />
                     </LinearLayout>
                 </ScrollView>
             </android.support.v4.widget.SwipeRefreshLayout>

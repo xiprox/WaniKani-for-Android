@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:icon="@drawable/ic_action_level"
         android:id="@+id/action_level"
+        android:icon="@drawable/ic_action_level"
         android:title="@string/action_level"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_legend"
+        android:icon="@drawable/ic_action_about"
+        android:title="@string/content_radicals_legend"
+        app:showAsAction="never" />
 </menu>
