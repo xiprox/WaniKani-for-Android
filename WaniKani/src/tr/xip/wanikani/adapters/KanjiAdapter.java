@@ -73,9 +73,13 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
         viewHolder.character.setTypeface(typeface);
 
         if (!kanjiItem.isUnlocked()) {
-            viewHolder.status.setBackgroundResource(R.drawable.oval_disabled);
+            viewHolder.card.setEnabled(true);
+            viewHolder.status.setBackgroundResource(R.drawable.pattern_diagonal_xml);
         } else if (kanjiItem.isBurned()) {
-            viewHolder.status.setBackgroundResource(R.drawable.oval_burned);
+            viewHolder.card.setEnabled(false);
+        } else {
+            viewHolder.card.setEnabled(true);
+            viewHolder.status.setBackgroundDrawable(null);
         }
 
         if (kanjiItem.getImportantReading().equals("onyomi"))

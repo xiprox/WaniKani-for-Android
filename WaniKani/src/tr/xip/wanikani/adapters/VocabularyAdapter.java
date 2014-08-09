@@ -72,9 +72,13 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
         viewHolder.character.setTypeface(typeface);
 
         if (!vocabularyItem.isUnlocked()) {
-            viewHolder.status.setBackgroundColor(context.getResources().getColor(R.color.background_disabled));
+            viewHolder.card.setEnabled(true);
+            viewHolder.status.setBackgroundResource(R.drawable.pattern_diagonal_xml);
         } else if (vocabularyItem.isBurned()) {
-            viewHolder.status.setBackgroundColor(context.getResources().getColor(R.color.wanikani_burned));
+            viewHolder.card.setEnabled(false);
+        } else {
+            viewHolder.card.setEnabled(true);
+            viewHolder.status.setBackgroundDrawable(null);
         }
 
         String[] readings = vocabularyItem.getKana().split(",");

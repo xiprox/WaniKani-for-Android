@@ -2,27 +2,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
     android:layout_height="60dp"
+    android:background="@android:color/transparent"
     android:minHeight="60dp"
-    android:minWidth="250dp"
-    android:background="@android:color/transparent">
+    android:minWidth="250dp">
 
     <LinearLayout
         android:id="@+id/item_vocabulary_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/card_light"
         android:minHeight="60dp"
         android:minWidth="250dp"
-        android:background="@drawable/card_light"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/item_vocabulary_status"
-            android:layout_width="3dp"
-            android:layout_height="match_parent"
-            android:background="@color/wanikani_vocabulary"
-            android:layout_marginBottom="2dp" />
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -30,22 +23,22 @@
                 android:id="@+id/item_vocabulary_character"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="大した"
-                android:textColor="@color/text_gray"
-                android:textSize="26sp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginLeft="12dp"
+                android:text="大した"
+                android:textColor="@color/text_gray"
+                android:textSize="26sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="12dp"
-                android:layout_marginBottom="2dp"
                 android:layout_centerVertical="true"
-                android:gravity="right">
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="12dp"
+                android:gravity="right"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/item_vocabulary_kana"
@@ -58,12 +51,18 @@
                     android:id="@+id/item_vocabulary_meaning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
                     android:text="Considerable"
-                    android:textColor="@color/text_gray"
-                    android:fontFamily="sans-serif-light" />
+                    android:textColor="@color/text_gray" />
 
             </LinearLayout>
         </RelativeLayout>
-
     </LinearLayout>
+
+    <View
+        android:id="@+id/item_vocabulary_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/pattern_diagonal_xml" />
 </FrameLayout>

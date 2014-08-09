@@ -3,6 +3,7 @@ package tr.xip.wanikani.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,9 +89,13 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
         }
 
         if (!radicalItem.isUnlocked()) {
-            viewHolder.status.setBackgroundColor(this.context.getResources().getColor(R.color.background_disabled));
+            viewHolder.card.setEnabled(true);
+            viewHolder.status.setBackgroundResource(R.drawable.pattern_diagonal_xml);
         } else if (radicalItem.isBurned()) {
-            viewHolder.status.setBackgroundColor(this.context.getResources().getColor(R.color.wanikani_burned));
+            viewHolder.card.setEnabled(false);
+        } else {
+            viewHolder.card.setEnabled(true);
+            viewHolder.status.setBackgroundDrawable(null);
         }
 
         viewHolder.meaning.setText(WordUtils.capitalize((radicalItem.getMeaning())));

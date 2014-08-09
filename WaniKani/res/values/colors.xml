@@ -26,7 +26,7 @@
     <color name="swipe_refresh_2">@color/holo_green_light</color>
     <color name="swipe_refresh_3">#7a7a7a</color>
     <color name="swipe_refresh_4">#707070</color>
-    
+
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>
     <color name="tint_black_10">#10000000</color>
@@ -64,10 +64,12 @@
     <color name="card_light_shadow2">#d6d6d6</color>
     <color name="card_light_content">#ffffff</color>
     <color name="card_light_content_pressed">#f8f8f8</color>
+    <color name="card_light_content_disabled">#80ffffff</color>
     <color name="card_dark_shadow">#222222</color>
     <color name="card_dark_shadow2">#272727</color>
     <color name="card_dark_content">#2d2d2d</color>
     <color name="card_dark_content_pressed">#2a2a2a</color>
+    <color name="card_dark_content_disabled">#402d2d2d</color>
     <color name="card_radical_shadow">#007cb9</color>
     <color name="card_kanji_shadow">#b5007d</color>
     <color name="card_vocabulary_shadow">#6f2481</color>
