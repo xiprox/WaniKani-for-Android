@@ -75,7 +75,6 @@ public class RecentUnlocksArrayAdapter extends ArrayAdapter<RecentUnlocksList.Un
             mUnlockCharacter.setVisibility(View.VISIBLE);
             mUnlockCharacterImage.setVisibility(View.GONE);
             mUnlockCharacter.setText(item.getCharacter());
-            Log.d("ADAPTER", "SETTING CHAR AT " + position + " TO " + item.getCharacter());
         } else {
             mUnlockCharacter.setVisibility(View.GONE);
             mUnlockCharacterImage.setVisibility(View.VISIBLE);
