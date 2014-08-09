@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,11 +24,12 @@ import android.widget.ViewFlipper;
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import tr.xip.wanikani.adapters.VocabularyAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.KanjiList;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
@@ -209,6 +211,12 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             super.onPostExecute(list);
 
             if (list != null) {
+                Collections.sort(list, new Comparator<VocabularyList.VocabularyItem>() {
+                    public int compare(VocabularyList.VocabularyItem item1, VocabularyList.VocabularyItem item2) {
+                        return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
+                    }
+                });
+
                 mVocabularyAdapter = new VocabularyAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
                 mGrid.setAdapter(mVocabularyAdapter);
 
@@ -223,7 +231,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                 mMessageTitle.setText(R.string.no_items_title);
                 mMessageSummary.setText(R.string.no_items_summary);
 
-                mGrid.setAdapter(null);
+                mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
 
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();

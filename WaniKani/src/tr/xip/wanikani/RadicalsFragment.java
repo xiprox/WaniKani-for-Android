@@ -16,22 +16,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import tr.xip.wanikani.adapters.RadicalsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RadicalsList;
+import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 
@@ -42,6 +42,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     WaniKaniApi apiMan;
     ThemeManager themeMan;
     PrefManager prefMan;
+    OfflineDataManager dataMan;
 
     TextView mMessageTitle;
     TextView mMessageSummary;
@@ -84,6 +85,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         apiMan = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
         themeMan = new ThemeManager(getActivity());
+        dataMan = new OfflineDataManager(getActivity());
     }
 
     @Override
@@ -215,6 +217,12 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             super.onPostExecute(list);
 
             if (list != null) {
+                Collections.sort(list, new Comparator<RadicalsList.RadicalItem>() {
+                    public int compare(RadicalsList.RadicalItem item1, RadicalsList.RadicalItem item2) {
+                        return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
+                    }
+                });
+
                 mRadicalsAdapter = new RadicalsAdapter(context, list, R.layout.header_level, R.layout.item_radical);
                 mGrid.setAdapter(mRadicalsAdapter);
 
@@ -225,7 +233,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 mMessageTitle.setText(R.string.no_items_title);
                 mMessageSummary.setText(R.string.no_items_summary);
 
-                mGrid.setAdapter(null);
+                mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
 
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();

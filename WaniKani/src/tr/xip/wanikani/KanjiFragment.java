@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,11 +24,14 @@ import android.widget.ViewFlipper;
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import tr.xip.wanikani.adapters.KanjiAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.managers.ThemeManager;
 
@@ -208,6 +212,12 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
             super.onPostExecute(list);
 
             if (list != null) {
+                Collections.sort(list, new Comparator<KanjiList.KanjiItem>() {
+                    public int compare(KanjiList.KanjiItem item1, KanjiList.KanjiItem item2) {
+                        return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
+                    }
+                });
+
                 mKanjiAdapter = new KanjiAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
                 mGrid.setAdapter(mKanjiAdapter);
 
@@ -222,7 +232,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
                 mMessageTitle.setText(R.string.no_items_title);
                 mMessageSummary.setText(R.string.no_items_summary);
 
-                mGrid.setAdapter(null);
+                mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
 
                 if (mMessageFlipper.getDisplayedChild() == 0) {
                     mMessageFlipper.showNext();
