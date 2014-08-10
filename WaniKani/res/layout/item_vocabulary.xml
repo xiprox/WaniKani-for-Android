@@ -64,5 +64,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
-        android:background="@drawable/pattern_diagonal_xml" />
+        android:minHeight="58dp"
+        android:minWidth="250dp" />
 </FrameLayout>
