@@ -76,7 +76,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                 .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        prefMan.setRadicalsLegendLearned(true);
+                        prefMan.setVocabularyLegendLearned(true);
                         dialogInterface.dismiss();
                     }
                 })

@@ -76,7 +76,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
                 .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        prefMan.setRadicalsLegendLearned(true);
+                        prefMan.setKanjiLegendLearned(true);
                         dialogInterface.dismiss();
                     }
                 })
