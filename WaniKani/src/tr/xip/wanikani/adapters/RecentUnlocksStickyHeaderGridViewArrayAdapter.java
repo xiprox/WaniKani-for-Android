@@ -15,6 +15,8 @@ import com.squareup.picasso.Picasso;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import tr.xip.wanikani.R;
@@ -34,7 +36,7 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
     View mUnlockType;
     TextView mUnlockCharacter;
     ImageView mUnlockCharacterImage;
-    TextView mUnlockDate;
+    TextView mUnlockTime;
 
     RelativeLayout mCard;
 
@@ -69,7 +71,7 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
         mUnlockType = v.findViewById(R.id.item_recent_unlock_type);
         mUnlockCharacter = (TextView) v.findViewById(R.id.item_recent_unlock_character);
         mUnlockCharacterImage = (ImageView) v.findViewById(R.id.item_recent_unlock_character_image);
-        mUnlockDate = (TextView) v.findViewById(R.id.item_recent_unlock_date);
+        mUnlockTime = (TextView) v.findViewById(R.id.item_recent_unlock_time);
 
         mUnlockCharacter.setTypeface(typeface);
 
@@ -98,15 +100,22 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
             mUnlockCharacterImage.setColorFilter(context.getResources().getColor(R.color.text_gray), Mode.SRC_ATOP);
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
-        mUnlockDate.setText(sdf.format(item.getUnlockDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        mUnlockTime.setText(sdf.format(item.getUnlockDate()));
 
         return v;
     }
 
     @Override
     public long getHeaderId(int position) {
-        return getItem(position).getUnlockDate();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(getItem(position).getUnlockDate()));
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTimeInMillis();
     }
 
     @Override
@@ -125,8 +134,16 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
 
         RecentUnlocksList.UnlockItem item = getItem(position);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy – hh:mm:ss");
-        holder.textView.setText(sdf.format(item.getUnlockDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(item.getUnlockDate()));
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        holder.textView.setText(sdf.format(calendar.getTimeInMillis()));
 
         return convertView;
     }

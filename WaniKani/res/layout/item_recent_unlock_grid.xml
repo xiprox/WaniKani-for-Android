@@ -46,15 +46,15 @@
             android:layout_marginLeft="4dp" />
 
         <TextView
-            android:id="@+id/item_recent_unlock_date"
+            android:id="@+id/item_recent_unlock_time"
             style="@style/Widget.TextView.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:text="Mar 11"
-            android:textAppearance="@android:style/TextAppearance.Large"
+            android:layout_marginRight="16dp"
+            android:text="00:00"
+            android:textSize="18sp"
             android:textColor="@color/text_gray" />
 
     </RelativeLayout>
