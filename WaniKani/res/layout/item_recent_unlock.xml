@@ -45,7 +45,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
         android:text="Mar 11"
-        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="18sp"
         android:textColor="@color/text_gray" />
 
 </RelativeLayout>
