@@ -1,156 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:fadingEdge="none">
+    android:background="@android:color/white"
+    android:minWidth="360dp"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:textColor="@color/holo_blue_light"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp" />
-
-        <View
+            android:id="@+id/text1"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/holo_blue_light" />
-
-        <TextView
-            android:id="@+id/wanikani_go_link_text"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/guide_how_to_get_key_step_1"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp" />
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:paddingBottom="16dp"
+            android:text="@string/action_how_to_api_key"
+            android:textColor="@color/text_gray_dark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2"
-            android:textColor="@color/holo_blue_light"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp" />
-
-        <View
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/holo_blue_light" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:text="@string/guide_how_to_get_key_step_2_part_1"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp" />
+            android:layout_marginBottom="48dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:fadingEdge="none">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/guide_get_api_key_menu_avatar"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:text="@string/guide_how_to_get_key_step_2_part_2"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/guide_get_api_key_menu_settings_item"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="6dp"
+                        android:text="1"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/text_gray_dark" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3"
-            android:textColor="@color/holo_blue_light"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp" />
+                    <TextView
+                        android:id="@+id/wanikani_go_link_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/guide_how_to_get_key_step_1"
+                        android:textColor="@color/text_gray_dark"
+                        android:textColorLink="@color/apptheme_main" />
+                </LinearLayout>
 
-        <View
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="2"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/text_gray_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/guide_how_to_get_key_step_2_part_1"
+                        android:textColor="@color/text_gray_dark" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/guide_get_api_key_menu_avatar" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="26dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/guide_how_to_get_key_step_2_part_2"
+                    android:textColor="@color/text_gray_dark" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/guide_get_api_key_menu_settings_item" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="3"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/text_gray_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/guide_how_to_get_key_step_3"
+                        android:textColor="@color/text_gray_dark" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/guide_get_api_key_settings_api_key" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="4"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textColor="@color/text_gray_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/guide_how_to_get_key_step_4"
+                        android:textColor="@color/text_gray_dark" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/holo_blue_light" />
+            android:layout_height="36dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="-36dp"
+            android:gravity="center|right"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:text="@string/guide_how_to_get_key_step_3"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/guide_get_api_key_settings_api_key"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4"
-            android:textColor="@color/holo_blue_light"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/holo_blue_light" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:linksClickable="true"
-            android:text="@string/guide_how_to_get_key_step_4"
-            android:textColor="@color/text_gray"
-            android:fontFamily="sans-serif-light"
-            android:layout_marginLeft="12dp"
-            android:layout_marginBottom="12dp" />
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="@drawable/selector_background_neutral"
+                android:gravity="center"
+                android:minHeight="36dp"
+                android:minWidth="88dp"
+                android:text="@string/ok"
+                android:textAllCaps="true"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

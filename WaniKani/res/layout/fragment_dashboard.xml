@@ -1,100 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dashboard_swipe_refresh"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="16dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:fadingEdge="none">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:animateLayoutChanges="true">
+            android:layout_height="149dp"
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/fragment_dashboard_message_card"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:visibility="gone" />
+                android:layout_height="146dp"
+                android:background="@color/apptheme_actionbar" />
 
-            <LinearLayout
-                android:id="@+id/fragment_dashboard_available_holder"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:id="@+id/fragment_dashboard_available_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fragment_dashboard_reviews_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:orientation="vertical"
-                android:layoutAnimation="@anim/fade_controller">
-
-                <FrameLayout
-                    android:id="@+id/fragment_dashboard_reviews_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:id="@+id/fragment_dashboard_status_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layoutAnimation="@anim/fade_controller" />
-
-            <FrameLayout
-                android:id="@+id/fragment_dashboard_progress_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layoutAnimation="@anim/fade_controller" />
-
-            <LinearLayout
-                android:id="@+id/fragment_dashboard_recent_unlocks_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:orientation="vertical"
-                android:layoutAnimation="@anim/fade_controller">
-
-                <FrameLayout
-                    android:id="@+id/fragment_dashboard_recent_unlocks_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fragment_dashboard_critical_items_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layoutAnimation="@anim/fade_controller">
-
-                <FrameLayout
-                    android:id="@+id/fragment_dashboard_critical_items_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-
+                android:layout_height="3dp"
+                android:background="@drawable/actionbar_shadow" />
         </LinearLayout>
 
-    </ScrollView>
-</android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/dashboard_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:id="@+id/dashboard_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:fadingEdge="none"
+                android:overScrollMode="never"
+                android:scrollbarStyle="outsideOverlay">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/fragment_dashboard_message_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginTop="@dimen/margin_dashboard_card_end"
+                        android:visibility="gone" />
+
+                    <FrameLayout
+                        android:id="@+id/fragment_dashboard_vacation_mode_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginTop="@dimen/margin_dashboard_card_end"
+                        android:layoutAnimation="@anim/fade_controller"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_dashboard_available_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginTop="@dimen/margin_dashboard_card_end"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_available_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fragment_dashboard_reviews_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layoutAnimation="@anim/fade_controller"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_reviews_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fragment_dashboard_status_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layoutAnimation="@anim/fade_controller" />
+
+                    <FrameLayout
+                        android:id="@+id/fragment_dashboard_progress_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layoutAnimation="@anim/fade_controller" />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_dashboard_recent_unlocks_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layoutAnimation="@anim/fade_controller"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_recent_unlocks_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fragment_dashboard_critical_items_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_dashboard_card_end"
+                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
+                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layoutAnimation="@anim/fade_controller"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_critical_items_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
+</LinearLayout>

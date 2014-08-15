@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
-    android:layout_height="48dp"
-    android:minHeight="48dp"
-    android:minWidth="250dp"
-    android:background="@android:color/transparent">
+    android:layout_height="64dp"
+    android:background="@android:color/white"
+    android:minHeight="64dp"
+    android:minWidth="250dp">
 
     <RelativeLayout
         android:id="@+id/item_recent_unlock_grid_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="48dp"
-        android:minWidth="250dp"
-        android:background="@drawable/card_light">
+        android:background="@drawable/selector_background_neutral"
+        android:minHeight="64dp"
+        android:minWidth="250dp">
 
         <View
             android:id="@+id/item_recent_unlock_type"
-            android:layout_width="4dp"
-            android:layout_height="48dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_alignParentLeft="true"
-            android:background="@color/background_disabled"
-            android:layout_marginBottom="2dp"/>
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/oval_disabled" />
 
         <TextView
             android:id="@+id/item_recent_unlock_character"
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="48dp"
             android:text="サンプル"
             android:textAppearance="@android:style/TextAppearance.Large"
             android:textColor="@color/text_gray" />
@@ -39,11 +40,11 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:paddingTop="10dp"
+            android:layout_marginLeft="32dp"
+            android:paddingBottom="10dp"
             android:paddingLeft="18dp"
             android:paddingRight="14dp"
-            android:paddingBottom="10dp"
-            android:layout_marginLeft="4dp" />
+            android:paddingTop="10dp" />
 
         <TextView
             android:id="@+id/item_recent_unlock_time"
@@ -54,8 +55,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:text="00:00"
-            android:textSize="18sp"
-            android:textColor="@color/text_gray" />
+            android:textColor="@color/text_gray"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 </FrameLayout>

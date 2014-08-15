@@ -60,15 +60,15 @@ public class RecentUnlocksArrayAdapter extends ArrayAdapter<RecentUnlocksList.Un
         mUnlockCharacter.setTypeface(typeface);
 
         if (item.getType().equals("radical")) {
-            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
+            mUnlockType.setBackgroundResource(R.drawable.oval_radical);
         }
 
         if (item.getType().equals("kanji")) {
-            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
+            mUnlockType.setBackgroundResource(R.drawable.oval_kanji);
         }
 
         if (item.getType().equals("vocabulary")) {
-            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
+            mUnlockType.setBackgroundResource(R.drawable.oval_vocabulary);
         }
 
         if (item.getImage() == null) {

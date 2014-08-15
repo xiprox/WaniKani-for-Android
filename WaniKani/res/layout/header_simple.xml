@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minWidth="10000dp">
+    android:layout_height="48dp"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:minWidth="10000dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/header_text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_gray"
-        android:text="1"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
-        android:layout_marginLeft="2dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/holo_blue_dark" />
-
+        android:layout_marginLeft="2dp"
+        android:text="Header"
+        android:textColor="@color/text_gray_light" />
 </LinearLayout>

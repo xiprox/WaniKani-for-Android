@@ -4,19 +4,18 @@
     android:id="@+id/card_recent_unlocks_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_light"
+    android:background="@drawable/card"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/card_recent_unlocks_title"
-        style="@style/Widget.TextView.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/card_title_recent_unlocks"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/text_gray"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp" />
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/apptheme_main" />
 
     <ViewFlipper
         android:id="@+id/card_recent_unlocks_view_flipper"
@@ -41,13 +40,13 @@
                     android:id="@+id/card_recent_unlocks_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="64dp"
                     android:clipToPadding="false"
-                    android:padding="12dp"
-                    android:scrollbarStyle="outsideOverlay"
-                    android:divider="@color/separator"
-                    android:dividerHeight="1px"
-                    android:layout_marginBottom="48dp"
-                    android:listSelector="@android:color/transparent" />
+                    android:divider="@drawable/divider_48dp_left"
+                    android:dividerHeight="1dp"
+                    android:listSelector="@android:color/transparent"
+                    android:padding="16dp"
+                    android:scrollbarStyle="outsideOverlay" />
 
                 <RelativeLayout
                     android:id="@+id/card_recent_unlocks_more_button"
@@ -55,7 +54,7 @@
                     android:layout_height="48dp"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="2dp"
-                    android:background="@drawable/simple_item_background">
+                    android:background="@drawable/selector_background_neutral">
 
                     <View
                         android:layout_width="match_parent"
@@ -63,24 +62,13 @@
                         android:layout_alignParentTop="true"
                         android:background="@color/separator" />
 
-                    <ImageView
-                        android:id="@+id/card_recent_unlocks_more_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="12dp"
-                        android:src="@drawable/ic_more" />
-
                     <TextView
-                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
                         android:layout_alignParentLeft="true"
-                        android:text="@string/action_more_items"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/action_more_items_capital"
                         android:textColor="@color/text_gray" />
 
                 </RelativeLayout>
@@ -98,14 +86,14 @@
 
                     <ImageView
                         android:id="@+id/card_recent_unlocks_message_icon"
-                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp" />
 
                     <TextView
-                        style="@style/Widget.TextView.Light"
                         android:id="@+id/card_recent_unlocks_message_title"
+                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -114,14 +102,14 @@
                         android:textColor="@color/text_gray" />
 
                     <TextView
-                        style="@style/Widget.TextView.Light"
                         android:id="@+id/card_recent_unlocks_message_summary"
+                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginBottom="8dp"
                         android:textColor="@color/text_gray" />
                 </LinearLayout>
 

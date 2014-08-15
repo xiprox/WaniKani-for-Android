@@ -1,20 +1,21 @@
 package tr.xip.wanikani;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
@@ -25,46 +26,58 @@ public class Browser extends ActionBarActivity {
     public static final String ARG_ACTION = "action";
     public static final String ARG_ITEM = "item";
     public static final String ARG_ITEM_TYPE = "itemtype";
+
     public static final String ACTION_ITEM_DETAILS = "itemdetails";
     public static final String ACTION_LESSON = "lesson";
     public static final String ACTION_REVIEW = "reviews";
-    static final String LESSON_URL = "https://www.wanikani.com/lesson/session";
-    static final String REVIEW_URL = "https://www.wanikani.com/review/session";
-    static final String RADICAL_URL = "https://www.wanikani.com/radicals/";
-    static final String KANJI_URL = "https://www.wanikani.com/kanji/";
-    static final String VOCABULARY_URL = "https://www.wanikani.com/vocabulary/";
+    public static final String ACTION_ACCOUNT_SETTINGS = "account_settings";
+
+    static final String WANIKANI_BASE_URL = "https://www.wanikani.com";
+    static final String LESSON_URL = WANIKANI_BASE_URL + "/lesson/session";
+    static final String REVIEW_URL = WANIKANI_BASE_URL + "/review/session";
+    static final String RADICAL_URL = WANIKANI_BASE_URL + "/radicals/";
+    static final String KANJI_URL = WANIKANI_BASE_URL + "/kanji/";
+    static final String VOCABULARY_URL = WANIKANI_BASE_URL + "/vocabulary/";
+    static final String ACCOUNT_SETTINGS_URL = WANIKANI_BASE_URL + "/account";
+
+    ViewGroup mActionBarLayout;
+    ImageView mActionBarIcon;
+    TextView mActionBarTitle;
+
     WebView mWebview;
-    ThemeManager themeMan;
     PrefManager prefMan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mWebview = new WebView(this);
-        themeMan = new ThemeManager(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_browser);
+
         prefMan = new PrefManager(this);
 
-        super.onCreate(savedInstanceState);
-        setContentView(mWebview);
+        mWebview = (WebView) findViewById(R.id.browser_webview);
 
-        getSupportActionBar().setIcon(R.drawable.ic_wanikani_stamp);
+        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.actionbar_main, null);
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mActionBarView = inflater.inflate(R.layout.actionbar_custom, null);
+        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
 
-        TextView mActionBarTitleText = (TextView) mActionBarView.findViewById(R.id.actionbar_custom_title_text);
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setCustomView(mActionBarLayout);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        mActionBar.setIcon(android.R.color.transparent);
+        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
+        mActionBar.setDisplayHomeAsUpEnabled(false);
+        mActionBar.setHomeButtonEnabled(false);
 
-        mActionBarView.setOnClickListener(new View.OnClickListener() {
+        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
+        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setCustomView(mActionBarView);
 
         mWebview.getSettings().setJavaScriptEnabled(true);
 
@@ -81,35 +94,38 @@ public class Browser extends ActionBarActivity {
 
         if (action.equals(ACTION_LESSON)) {
             mWebview.loadUrl(LESSON_URL);
-            mActionBarTitleText.setText(R.string.ab_title_lessons);
+            mActionBarTitle.setText(R.string.ab_title_lessons);
 
             setOrientation(prefMan.getLessonsScreenOrientation());
         }
         if (action.equals(ACTION_REVIEW)) {
             mWebview.loadUrl(REVIEW_URL);
-            mActionBarTitleText.setText(R.string.ab_title_reviews);
+            mActionBarTitle.setText(R.string.ab_title_reviews);
 
             setOrientation(prefMan.getReviewsScreenOrientation());
         }
 
         if (action.equals(ACTION_ITEM_DETAILS)) {
             if (itemType.equals(ItemDetailsActivity.TYPE_RADICAL)) {
-                mWebview.loadUrl(RADICAL_URL + item);
-                mActionBarTitleText.setText(item);
+                mWebview.loadUrl(RADICAL_URL + WordUtils.uncapitalize(item));
+                mActionBarTitle.setText(item);
             }
             if (itemType.equals(ItemDetailsActivity.TYPE_KANJI)) {
                 mWebview.loadUrl(KANJI_URL + item);
-                mActionBarTitleText.setText(item);
-                mActionBarTitleText.setTypeface(new Fonts().getKanjiFont(this));
+                mActionBarTitle.setText(item);
+                mActionBarTitle.setTypeface(new Fonts().getKanjiFont(this));
             }
             if (itemType.equals(ItemDetailsActivity.TYPE_VOCABULARY)) {
                 mWebview.loadUrl(VOCABULARY_URL + item);
-                mActionBarTitleText.setText(item);
-                mActionBarTitleText.setTypeface(new Fonts().getKanjiFont(this));
+                mActionBarTitle.setText(item);
+                mActionBarTitle.setTypeface(new Fonts().getKanjiFont(this));
             }
         }
 
-
+        if (action.equals(ACTION_ACCOUNT_SETTINGS)) {
+            mWebview.loadUrl(ACCOUNT_SETTINGS_URL);
+            mActionBarTitle.setText(R.string.title_account_settings);
+        }
     }
 
     private void setOrientation(String orientation) {

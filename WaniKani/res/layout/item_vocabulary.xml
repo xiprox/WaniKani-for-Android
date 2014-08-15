@@ -1,16 +1,16 @@
 <?xml version="1" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_vocabulary_card"
     android:layout_width="250dp"
-    android:layout_height="60dp"
-    android:background="@android:color/transparent"
-    android:minHeight="60dp"
+    android:layout_height="64dp"
+    android:background="@android:color/white"
+    android:minHeight="64dp"
     android:minWidth="250dp">
 
     <LinearLayout
-        android:id="@+id/item_vocabulary_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/card_light"
+        android:background="@drawable/selector_background_neutral"
         android:minHeight="60dp"
         android:minWidth="250dp"
         android:orientation="horizontal">
@@ -25,7 +25,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="16dp"
+                android:ellipsize="marquee"
+                android:maxEms="5"
+                android:maxLines="1"
                 android:text="大した"
                 android:textColor="@color/text_gray"
                 android:textSize="26sp" />
@@ -36,7 +39,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="2dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginRight="16dp"
                 android:gravity="right"
                 android:orientation="vertical">
 
@@ -44,6 +47,9 @@
                     android:id="@+id/item_vocabulary_kana"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:maxEms="7"
+                    android:maxLines="1"
                     android:text="たいした"
                     android:textColor="@color/text_gray" />
 
@@ -51,7 +57,10 @@
                     android:id="@+id/item_vocabulary_meaning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
                     android:fontFamily="sans-serif-light"
+                    android:maxEms="7"
+                    android:maxLines="1"
                     android:text="Considerable"
                     android:textColor="@color/text_gray" />
 
@@ -63,7 +72,6 @@
         android:id="@+id/item_vocabulary_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="2dp"
         android:minHeight="58dp"
         android:minWidth="250dp" />
 </FrameLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="Theme.Apptheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/selector_background_oval</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Apptheme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Apptheme</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Apptheme</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Apptheme</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Apptheme</item>
+        <item name="android:actionModeBackground">@color/apptheme_actionbar</item>
+        <item name="android:actionModeSplitBackground">@color/apptheme_actionbar</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Apptheme</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/window_background_light</item>
+        <item name="numberPickerStyle">@style/NumberPickerStyle</item>
+        <item name="actionButtonStyle">@style/ActionBarItem</item>
+        <item name="android:actionButtonStyle">@style/ActionBarItem</item>
+        <item name="actionOverflowButtonStyle">@style/ActionBarOverflowItem</item>
+        <item name="android:actionOverflowButtonStyle">@style/ActionBarOverflowItem</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:editTextStyle">@style/EditTextAppTheme</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/apptheme_fastscroll_thumb_holo</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Apptheme.Widget</item>
+
+    </style>
+</resources>

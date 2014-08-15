@@ -18,7 +18,6 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.KanjiList;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
@@ -26,8 +25,6 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
     Context context;
 
     int headerResourceId;
-
-    ThemeManager themeMan;
 
     private List<KanjiList.KanjiItem> items;
 
@@ -39,7 +36,6 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
         this.context = context;
         this.headerResourceId = headerResId;
         this.typeface = new Fonts().getKanjiFont(context);
-        this.themeMan = new ThemeManager(context);
     }
 
     @Override
@@ -54,7 +50,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
 
             viewHolder = new ViewHolder();
 
-            viewHolder.card = (RelativeLayout) convertView.findViewById(R.id.item_kanji_card);
+            viewHolder.card = (FrameLayout) convertView.findViewById(R.id.item_kanji_card);
             viewHolder.status = convertView.findViewById(R.id.item_kanji_status);
             viewHolder.character = (TextView) convertView.findViewById(R.id.item_kanji_character);
             viewHolder.meaning = (TextView) convertView.findViewById(R.id.item_kanji_meaning);
@@ -67,19 +63,18 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
 
         ((FrameLayout) convertView).setLayoutAnimation(Animations.FadeInController());
 
-        viewHolder.card.setBackgroundResource(themeMan.getCard());
-
         viewHolder.character.setText(kanjiItem.getCharacter());
         viewHolder.character.setTypeface(typeface);
 
         if (!kanjiItem.isUnlocked()) {
-            viewHolder.card.setEnabled(true);
+            viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
             viewHolder.status.setBackgroundResource(R.drawable.pattern_diagonal_xml);
         } else if (kanjiItem.isBurned()) {
-            viewHolder.card.setEnabled(false);
+            viewHolder.card.setBackgroundColor(context.getResources().getColor(R.color.wanikani_burned));
+            viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         } else {
-            viewHolder.card.setEnabled(true);
-            viewHolder.status.setBackgroundDrawable(null);
+            viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+            viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         }
 
         if (kanjiItem.getImportantReading().equals("onyomi"))
@@ -123,7 +118,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
     }
 
     protected class ViewHolder {
-        public RelativeLayout card;
+        public FrameLayout card;
         public TextView character;
         public TextView meaning;
         public TextView reading;

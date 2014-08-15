@@ -29,9 +29,7 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.adapters.CriticalItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.CriticalItemsList;
-import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
@@ -45,7 +43,6 @@ public class CriticalItemsCard extends Fragment {
     WaniKaniApi api;
     Utils utils;
     PrefManager prefMan;
-    ThemeManager themeMan;
 
     Context mContext;
 
@@ -89,7 +86,6 @@ public class CriticalItemsCard extends Fragment {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         prefMan = new PrefManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
     }
 
@@ -110,7 +106,6 @@ public class CriticalItemsCard extends Fragment {
         mMessageViewFlipper.setOutAnimation(getActivity(), R.anim.abc_fade_out);
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_critical_items_card);
-        mCard.setBackgroundResource(themeMan.getCard());
 
         mMessageIcon = (ImageView) rootView.findViewById(R.id.card_critical_items_message_icon);
         mMessageTitle = (TextView) rootView.findViewById(R.id.card_critical_items_message_title);

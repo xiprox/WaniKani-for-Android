@@ -1,13 +1,10 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -37,12 +33,13 @@ import tr.xip.wanikani.adapters.NavigationItemsAdapter;
 import tr.xip.wanikani.adapters.NavigationSecondaryItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
+import tr.xip.wanikani.dialogs.LogoutDialogFragment;
 import tr.xip.wanikani.items.NavigationItems;
 import tr.xip.wanikani.items.NavigationSecondaryItems;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.settings.SettingsActivity;
+import tr.xip.wanikani.utils.BlurTransformation;
 import tr.xip.wanikani.utils.CircleTransformation;
 
 public class NavigationDrawerFragment extends Fragment {
@@ -55,30 +52,26 @@ public class NavigationDrawerFragment extends Fragment {
 
     WaniKaniApi api;
     OfflineDataManager dataMan;
-    ThemeManager themeMan;
     PrefManager prefMan;
 
     ImageView mAvatar;
+    ImageView mAvatarBg;
     TextView mUsername;
-    TextView mProfileTitle;
 
     FrameLayout mProfile;
+
+    NavigationItemsAdapter mNavigationItemsAdapter;
 
     private NavigationDrawerCallbacks mCallbacks;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-
     private ListView mMainListView;
     private ListView mSecondaryListView;
-
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0;
-
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
-
-    NavigationItemsAdapter mNavigationItemsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +79,6 @@ public class NavigationDrawerFragment extends Fragment {
 
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
         prefMan = new PrefManager(getActivity());
 
         context = getActivity();
@@ -111,11 +103,9 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_navigation_drawer, null);
 
-        rootView.setBackgroundColor(getResources().getColor(themeMan.getNavDrawerBackgroundColor()));
-
         mAvatar = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar);
+        mAvatarBg = (ImageView) rootView.findViewById(R.id.navigation_drawer_avatar_bg);
         mUsername = (TextView) rootView.findViewById(R.id.navigation_drawer_username);
-        mProfileTitle = (TextView) rootView.findViewById(R.id.navigation_drawer_profile_title);
 
         mMainListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_main);
         mSecondaryListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_secondary);
@@ -174,17 +164,23 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
+    public void toggleDrawer() {
+        if (mDrawerLayout != null) {
+            if (isDrawerOpen()) {
+                mDrawerLayout.closeDrawer(mFragmentContainerView);
+            } else {
+                mDrawerLayout.openDrawer(mFragmentContainerView);
+            }
+        }
+    }
+
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, R.drawable.ic_drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, android.R.color.transparent, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -248,13 +244,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             if (mMainListView != null && mMainListView.getAdapter() != null)
                 ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(100);
-
-            if (mProfileTitle != null)
-                mProfileTitle.setTypeface(null, Typeface.BOLD);
         } else {
-            if (mProfileTitle != null)
-                mProfileTitle.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
-
             if (mMainListView != null && mMainListView.getAdapter() != null)
                 ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(position);
         }
@@ -306,14 +296,24 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
+        if (getActionBarTitle() != null)
+            getActionBarTitle().setText(R.string.app_name);
     }
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    private ImageView getActionBarIcon() {
+        return ((MainActivity) getActivity()).mActionBarIcon;
+    }
+
+    private TextView getActionBarTitle() {
+        return ((MainActivity) getActivity()).mActionBarTitle;
+    }
+
+    private void showlogoutDialog() {
+        new LogoutDialogFragment().show(getActivity().getSupportFragmentManager(), "logout-dialog");
     }
 
     public static interface NavigationDrawerCallbacks {
@@ -347,6 +347,11 @@ public class NavigationDrawerFragment extends Fragment {
                     .transform(new CircleTransformation())
                     .into(mAvatar);
 
+            Picasso.with(context)
+                    .load("http://www.gravatar.com/avatar/" + gravatar)
+                    .transform(new BlurTransformation(context))
+                    .into(mAvatarBg);
+
             if (result.equals("success")) {
                 mUsername.setText(username);
             }
@@ -370,25 +375,5 @@ public class NavigationDrawerFragment extends Fragment {
                 mDrawerLayout.closeDrawer(mFragmentContainerView);
             }
         }
-    }
-
-    private void showlogoutDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.dialog_logout_title)
-                .setMessage(R.string.dialog_logout_message)
-                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        prefMan.logout();
-                        startActivity(new Intent(getActivity(), FirstTimeActivity.class));
-                        getActivity().finish();
-                    }
-                })
-                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                });
-
-        builder.create().show();
     }
 }

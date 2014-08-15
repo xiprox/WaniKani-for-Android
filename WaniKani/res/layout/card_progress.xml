@@ -4,68 +4,61 @@
     android:id="@+id/card_progress_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_light"
+    android:background="@drawable/card"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
 
         <TextView
-            style="@style/Widget.TextView.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="@string/card_title_progress"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray" />
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/apptheme_main" />
 
         <TextView
-            style="@style/Widget.TextView.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/card_progress_space1"
             android:text="@string/card_content_progress_level"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray" />
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/text_gray_light" />
 
         <TextView
             android:id="@+id/card_progress_space1"
-            style="@style/Widget.TextView.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/card_progress_level"
             android:text=" "
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray" />
+            android:textAppearance="@android:style/TextAppearance.Large" />
 
         <TextView
             android:id="@+id/card_progress_level"
-            style="@style/Widget.TextView.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="1"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/text_gray" />
+            android:text="0"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/text_gray_light" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:background="@drawable/simple_item_background"
         android:orientation="vertical"
         android:paddingTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
 
             <RelativeLayout
@@ -73,17 +66,15 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/card_content_progress_radicals"
+                    android:text="@string/card_content_progress_radicals_allcaps"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/card_progress_radicals_percentage"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_radicals_percentage_sign"
@@ -93,7 +84,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_radicals_percentage_sign"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -107,6 +97,8 @@
                 style="@style/ProgressBarRadical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:progress="0" />
 
             <RelativeLayout
@@ -115,7 +107,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_radicals_progress"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_radicals_slash"
@@ -125,7 +116,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_radicals_slash"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_radicals_total"
@@ -135,7 +125,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_radicals_total"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -147,21 +136,18 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="32dp">
 
                 <TextView
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/card_content_progress_kanji"
+                    android:text="@string/card_content_progress_kanji_allcaps"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
-                ;
 
                 <TextView
                     android:id="@+id/card_progress_kanji_percentage"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_kanji_percentage_sign"
@@ -171,7 +157,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_kanji_percentage_sign"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -185,6 +170,8 @@
                 style="@style/ProgressBarKanji"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
                 android:progress="0" />
 
             <RelativeLayout
@@ -193,7 +180,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_kanji_progress"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_kanji_slash"
@@ -203,7 +189,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_kanji_slash"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/card_progress_kanji_total"
@@ -213,7 +198,6 @@
 
                 <TextView
                     android:id="@+id/card_progress_kanji_total"
-                    style="@style/Widget.TextView.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

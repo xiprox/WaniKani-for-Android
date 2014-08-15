@@ -32,7 +32,6 @@ import tr.xip.wanikani.adapters.RecentUnlocksArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
@@ -46,7 +45,6 @@ public class RecentUnlocksCard extends Fragment {
     WaniKaniApi api;
     Utils utils;
     PrefManager prefMan;
-    ThemeManager themeMan;
 
     Context mContext;
 
@@ -91,7 +89,6 @@ public class RecentUnlocksCard extends Fragment {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         prefMan = new PrefManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
     }
 
@@ -116,7 +113,6 @@ public class RecentUnlocksCard extends Fragment {
         mRecentUnlocksList.setOnItemClickListener(new recentUnlocksListItemClickListener());
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_recent_unlocks_card);
-        mCard.setBackgroundResource(themeMan.getCard());
 
         mMessageIcon = (ImageView) rootView.findViewById(R.id.card_recent_unlocks_message_icon);
         mMessageTitle = (TextView) rootView.findViewById(R.id.card_recent_unlocks_message_title);

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
@@ -37,8 +35,6 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
     TextView mUnlockCharacter;
     ImageView mUnlockCharacterImage;
     TextView mUnlockTime;
-
-    RelativeLayout mCard;
 
     int headerResourceId;
 
@@ -65,9 +61,6 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
 
         ((FrameLayout) v).setLayoutAnimation(Animations.FadeInController());
 
-        mCard = (RelativeLayout) v.findViewById(R.id.item_recent_unlock_grid_card);
-        mCard.setBackgroundResource(new ThemeManager(context).getCard());
-
         mUnlockType = v.findViewById(R.id.item_recent_unlock_type);
         mUnlockCharacter = (TextView) v.findViewById(R.id.item_recent_unlock_character);
         mUnlockCharacterImage = (ImageView) v.findViewById(R.id.item_recent_unlock_character_image);
@@ -76,15 +69,15 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
         mUnlockCharacter.setTypeface(typeface);
 
         if (item.getType().equals("radical")) {
-            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
+            mUnlockType.setBackgroundResource(R.drawable.oval_radical);
         }
 
         if (item.getType().equals("kanji")) {
-            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
+            mUnlockType.setBackgroundResource(R.drawable.oval_kanji);
         }
 
         if (item.getType().equals("vocabulary")) {
-            mUnlockType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
+            mUnlockType.setBackgroundResource(R.drawable.oval_vocabulary);
         }
 
         if (item.getImage() == null) {

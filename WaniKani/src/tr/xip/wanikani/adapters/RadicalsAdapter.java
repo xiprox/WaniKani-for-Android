@@ -3,13 +3,11 @@ package tr.xip.wanikani.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,7 +19,6 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.RadicalsList;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
@@ -29,12 +26,8 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
     Context context;
 
     int headerResourceId;
-
-    ThemeManager themeMan;
-
-    private List<RadicalsList.RadicalItem> items;
-
     Typeface typeface;
+    private List<RadicalsList.RadicalItem> items;
 
     public RadicalsAdapter(Context context, List<RadicalsList.RadicalItem> list, int headerResId, int itemResId) {
         super(context, list, headerResId, itemResId);
@@ -42,7 +35,6 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
         this.context = context;
         this.headerResourceId = headerResId;
         this.typeface = new Fonts().getKanjiFont(context);
-        this.themeMan = new ThemeManager(context);
     }
 
     public View getView(int position, View convertView, ViewGroup viewGroup) {
@@ -56,7 +48,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
 
             viewHolder = new ViewHolder();
 
-            viewHolder.card = (RelativeLayout) convertView.findViewById(R.id.item_radical_card);
+            viewHolder.card = (FrameLayout) convertView.findViewById(R.id.item_radical_card);
             viewHolder.status = convertView.findViewById(R.id.item_radical_status);
             viewHolder.character = (TextView) (convertView.findViewById(R.id.item_radical_character));
             viewHolder.image = (ImageView) (convertView.findViewById(R.id.item_radical_character_image));
@@ -68,8 +60,6 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
         }
 
         ((FrameLayout) convertView).setLayoutAnimation(Animations.FadeInController());
-
-        viewHolder.card.setBackgroundResource(themeMan.getCard());
 
         viewHolder.character.setTypeface(this.typeface);
 
@@ -89,13 +79,14 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
         }
 
         if (!radicalItem.isUnlocked()) {
-            viewHolder.card.setEnabled(true);
+            viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
             viewHolder.status.setBackgroundResource(R.drawable.pattern_diagonal_xml);
         } else if (radicalItem.isBurned()) {
-            viewHolder.card.setEnabled(false);
+            viewHolder.card.setBackgroundColor(context.getResources().getColor(R.color.wanikani_burned));
+            viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         } else {
-            viewHolder.card.setEnabled(true);
-            viewHolder.status.setBackgroundDrawable(null);
+            viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+            viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         }
 
         viewHolder.meaning.setText(WordUtils.capitalize((radicalItem.getMeaning())));
@@ -130,7 +121,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
     }
 
     protected class ViewHolder {
-        public RelativeLayout card;
+        public FrameLayout card;
         public TextView character;
         public ImageView image;
         public TextView meaning;

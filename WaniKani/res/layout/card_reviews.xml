@@ -4,186 +4,150 @@
     android:id="@+id/card_reviews_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/card_light"
+    android:background="@drawable/card"
     android:orientation="vertical">
 
     <TextView
-        style="@style/Widget.TextView.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/card_title_reviews"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/text_gray"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp" />
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/apptheme_main" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp">
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/card_content_reviews_next_review"
+            android:textColor="@color/text_gray_light" />
 
-            <LinearLayout
+        <TextView
+            android:id="@+id/card_reviews_next_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="Unknown"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/text_gray" />
+
+        <LinearLayout
+            android:id="@+id/card_reviews_more_reviews_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:text="@string/card_content_reviews_more_reviews"
+                android:textColor="@color/text_gray_light" />
 
-                <TextView
-                    android:id="@+id/card_reviews_next_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"
-                    android:textColor="@color/text_gray"
-                    android:textSize="32sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
-                        android:layout_gravity="center_vertical"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_review" />
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="4dp"
-                        android:text="@string/card_content_reviews_next_review"
-                        android:textColor="@color/text_gray" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_margin="8dp"
-            android:background="@color/separator"
-            android:padding="8dp" />
+            <TextView
+                android:id="@+id/card_reviews_more_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Unknown"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/text_gray" />
+        </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/card_reviews_separator">
+                android:id="@+id/card_reviews_next_hour_ring"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ring">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/card_reviews_next_hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/card_reviews_next_hour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/text_gray"
-                        android:textSize="32sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
-                            android:layout_gravity="center_vertical"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_review_box" />
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:paddingLeft="4dp"
-                            android:text="@string/card_content_reviews_next_hour"
-                            android:textColor="@color/text_gray" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
+                    android:text="0"
+                    android:textColor="@color/text_gray_light" />
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/card_reviews_next_hour_line"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="4dp"
+                android:text="@string/card_content_reviews_next_hour"
+                android:textColor="@color/text_gray_light" />
 
             <View
-                android:id="@+id/card_reviews_separator"
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="8dp"
-                android:background="@color/separator"
-                android:padding="8dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/card_reviews_separator">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/card_reviews_next_day"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/text_gray"
-                        android:textSize="32sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="26dp"
-                            android:layout_height="26dp"
-                            android:layout_gravity="center_vertical"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_review_box" />
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:paddingLeft="4dp"
-                            android:text="@string/card_content_reviews_next_day"
-                            android:textColor="@color/text_gray" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
+                android:id="@+id/card_reviews_next_hour_line"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/card_reviews_next_hour_ring"
+                android:background="@color/separator" />
 
         </RelativeLayout>
 
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical">
 
+            <RelativeLayout
+                android:id="@+id/card_reviews_next_day_ring"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/ring">
+
+                <TextView
+                    android:id="@+id/card_reviews_next_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:textColor="@color/text_gray_light" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/card_reviews_next_day_line"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="4dp"
+                android:text="@string/card_content_reviews_next_day"
+                android:textColor="@color/text_gray_light" />
+
+            <View
+                android:id="@+id/card_reviews_next_day_line"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/card_reviews_next_day_ring"
+                android:background="@color/separator" />
+
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

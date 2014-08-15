@@ -4,19 +4,18 @@
     android:id="@+id/card_critical_items_card"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_light"
+    android:background="@drawable/card"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/card_critical_items_title"
-        style="@style/Widget.TextView.Light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/card_title_critical_items"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="@color/text_gray"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp" />
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textColor="@color/apptheme_main" />
 
     <ViewFlipper
         android:id="@+id/card_critical_items_view_flipper"
@@ -38,9 +37,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
-                android:padding="12dp"
-                android:scrollbarStyle="outsideOverlay"
-                android:listSelector="@android:color/transparent" />
+                android:divider="@drawable/divider_48dp_left"
+                android:dividerHeight="1dp"
+                android:listSelector="@android:color/transparent"
+                android:padding="16dp"
+                android:scrollbarStyle="outsideOverlay" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,14 +55,14 @@
 
                     <ImageView
                         android:id="@+id/card_critical_items_message_icon"
-                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp" />
 
                     <TextView
-                        style="@style/Widget.TextView.Light"
                         android:id="@+id/card_critical_items_message_title"
+                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -70,17 +71,17 @@
                         android:textColor="@color/text_gray" />
 
                     <TextView
-                        style="@style/Widget.TextView.Light"
                         android:id="@+id/card_critical_items_message_summary"
+                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:textColor="@color/text_gray"
                         android:divider="@color/separator"
-                        android:dividerHeight="1px" />
+                        android:dividerHeight="1px"
+                        android:textColor="@color/text_gray" />
                 </LinearLayout>
 
             </LinearLayout>

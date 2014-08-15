@@ -1,8 +1,6 @@
 package tr.xip.wanikani;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -33,15 +30,15 @@ import java.util.List;
 import tr.xip.wanikani.adapters.VocabularyAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.VocabularyList;
+import tr.xip.wanikani.dialogs.LegendDialogFragment;
+import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 
 public class VocabularyFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener, SwipeRefreshLayout.OnRefreshListener {
 
     Context context;
 
     WaniKaniApi apiMan;
-    ThemeManager themeMan;
     PrefManager prefMan;
 
     TextView mMessageTitle;
@@ -63,24 +60,10 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
     MenuItem mLevelItem;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void showLegend() {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View dialogView = inflater.inflate(R.layout.dialog_legend, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView)
-                .setTitle(R.string.content_radicals_legend)
-                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        prefMan.setVocabularyLegendLearned(true);
-                        dialogInterface.dismiss();
-                    }
-                })
-                .show();
+        new LegendDialogFragment().show(getActivity().getSupportFragmentManager(), "legend-dialog");
     }
 
     @Override
@@ -89,7 +72,6 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         context = getActivity();
         apiMan = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
     }
 
     @Override
@@ -113,11 +95,6 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         rootView = layoutInflater.inflate(R.layout.fragment_vocabulary, viewGroup, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.vocabulary_swipe_refresh);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
-
         mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.vocabulary_message_swipe_refresh);
         mMessageSwipeRefreshLayout.setOnRefreshListener(this);
         mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
@@ -133,7 +110,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         mMessageTitle = (TextView) rootView.findViewById(R.id.vocabulary_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.vocabulary_message_summary);
 
-        if (!prefMan.isVocabularyLegendLearned()) {
+        if (!prefMan.isLegendLearned()) {
             showLegend();
         }
 
@@ -195,6 +172,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
     private class FetchTask extends AsyncTask<Void, Void, List<VocabularyList.VocabularyItem>> {
 
+        @Override
         protected List<VocabularyList.VocabularyItem> doInBackground(Void... voids) {
             try {
                 vocabularyList = apiMan.getVocabularyList(LEVEL);
@@ -206,6 +184,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             return vocabularyList;
         }
 
+        @Override
         protected void onPostExecute(List<VocabularyList.VocabularyItem> list) {
             super.onPostExecute(list);
 
@@ -238,13 +217,14 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();
 
-            mSwipeRefreshLayout.setRefreshing(false);
             mMessageSwipeRefreshLayout.setRefreshing(false);
         }
 
+        @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            if (mListFlipper.getDisplayedChild() == 1)
+                mListFlipper.showPrevious();
         }
     }
 

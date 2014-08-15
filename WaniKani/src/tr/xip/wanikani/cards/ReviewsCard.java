@@ -15,19 +15,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joda.time.Period;
-import org.joda.time.format.PeriodFormatter;
-
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
-import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
-import tr.xip.wanikani.managers.ThemeManager;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -39,8 +36,8 @@ public class ReviewsCard extends Fragment {
 
     WaniKaniApi api;
     OfflineDataManager dataMan;
+    PrefManager prefMan;
     Utils utils;
-    ThemeManager themeMan;
 
     View rootView;
 
@@ -50,23 +47,14 @@ public class ReviewsCard extends Fragment {
     TextView mNextHour;
     TextView mNextDay;
 
-    LinearLayout mCard;
-
-    Period period;
-    PeriodFormatter formatter;
+    LinearLayout mMoreReviewsHolder;
+    TextView mMoreReviews;
 
     long nextReview;
     int nextHour;
     int nextDay;
     boolean isVacationModeActive;
     int reviewsAvailable;
-
-    public void setListener(ReviewsCardListener listener, Context context) {
-        mListener = listener;
-        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
-    }
-
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -77,12 +65,18 @@ public class ReviewsCard extends Fragment {
         }
     };
 
+    public void setListener(ReviewsCardListener listener, Context context) {
+        mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
+    }
+
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
+        prefMan = new PrefManager(getActivity());
         utils = new Utils(getActivity());
-        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
     }
 
@@ -97,8 +91,8 @@ public class ReviewsCard extends Fragment {
         mNextHour = (TextView) rootView.findViewById(R.id.card_reviews_next_hour);
         mNextDay = (TextView) rootView.findViewById(R.id.card_reviews_next_day);
 
-        mCard = (LinearLayout) rootView.findViewById(R.id.card_reviews_card);
-        mCard.setBackgroundResource(themeMan.getCard());
+        mMoreReviewsHolder = (LinearLayout) rootView.findViewById(R.id.card_reviews_more_reviews_holder);
+        mMoreReviews = (TextView) rootView.findViewById(R.id.card_reviews_more_reviews);
 
         loadOfflineValues();
 
@@ -112,8 +106,13 @@ public class ReviewsCard extends Fragment {
         if (dataMan.getReviewsAvailable() != 0) {
             mNextReview.setText(getString(R.string.card_content_reviews_available_now));
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
-            mNextReview.setText(sdf.format(dataMan.getNextReviewDate()));
+            if (prefMan.isUseSpecificDates()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
+                mNextReview.setText(sdf.format(dataMan.getNextReviewDate()));
+            } else {
+                mNextReview.setText(Utils.getTimeDifference(context,
+                        new Date(dataMan.getNextReviewDate()), Utils.getCurrentDate()));
+            }
         }
     }
 
@@ -121,6 +120,10 @@ public class ReviewsCard extends Fragment {
         dataMan.setNextReviewDate(nextReview);
         dataMan.setReviewsAvailableNextHour(nextHour);
         dataMan.setReviewsAvailableNextDay(nextDay);
+    }
+
+    public interface ReviewsCardListener {
+        public void onReviewsCardSyncFinishedListener(String result);
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {
@@ -134,7 +137,7 @@ public class ReviewsCard extends Fragment {
                 nextHour = studyQueue.getAvailableReviewsNextHourCount();
                 nextDay = studyQueue.getAvailableReviewsNextDayCount();
                 reviewsAvailable = studyQueue.getAvailableReviewsCount();
-                isVacationModeActive = api.isVacationModeActive();
+                isVacationModeActive = api.isVacationModeActive(studyQueue.getUserInfo());
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -149,11 +152,35 @@ public class ReviewsCard extends Fragment {
                     mNextHour.setText(nextHour + "");
                     mNextDay.setText(nextDay + "");
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
+
                     if (reviewsAvailable != 0) {
                         mNextReview.setText(R.string.card_content_reviews_available_now);
+
+                        /*
+
+                        I had thought that the API was returning the date when more items would
+                        be added as next_review_date when you already had items available. Turns
+                        out I was wrong. It gives you current date if you have items to review...
+                        This feature will be implemented later in a slightly different way...
+
+                        mMoreReviewsHolder.setVisibility(View.VISIBLE);
+
+                        if (prefMan.isUseSpecificDates()) {
+                            mMoreReviews.setText(sdf.format(nextReview));
+                        } else {
+                            mMoreReviews.setText(Utils.getTimeDifference(context, new Date(nextReview),
+                                    Utils.getCurrentDate()));
+                        }
+
+                        */
                     } else {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
-                        mNextReview.setText(sdf.format(nextReview));
+                        if (prefMan.isUseSpecificDates()) {
+                            mNextReview.setText(sdf.format(nextReview));
+                        } else {
+                            mNextReview.setText(Utils.getTimeDifference(context, new Date(nextReview),
+                                    Utils.getCurrentDate()));
+                        }
                     }
 
                     mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
@@ -163,12 +190,9 @@ public class ReviewsCard extends Fragment {
                     mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
                 }
             } else {
-                // TODO - Vacation mode
+                // Vacation mode is handled in DashboardFragment
+                mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
             }
         }
-    }
-
-    public interface ReviewsCardListener {
-        public void onReviewsCardSyncFinishedListener(String result);
     }
 }

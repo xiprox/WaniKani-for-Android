@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import tr.xip.wanikani.R;
+import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/11/14.
@@ -22,6 +22,8 @@ public class PrefManager {
     public static final String PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE = "pref_dashboard_critical_items_percentage";
     public static final String PREF_LESSONS_SCREEN_ORIENTATION = "pref_lessons_orientation";
     public static final String PREF_REVIEWS_SCREEN_ORIENTATION = "pref_reviews_orientation";
+    public static final String PREF_USE_SPECIFIC_DATES = "pref_use_specific_dates";
+
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor prefeditor;
     private static Context context;
@@ -72,28 +74,12 @@ public class PrefManager {
         prefeditor.putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
     }
 
-    public boolean isRadicalsLegendLearned() {
-        return PrefManager.prefs.getBoolean("pref_legend_radicals_learned", false);
+    public boolean isLegendLearned() {
+        return PrefManager.prefs.getBoolean("pref_legend_learned", false);
     }
 
-    public void setRadicalsLegendLearned(boolean value) {
-        PrefManager.prefeditor.putBoolean("pref_legend_radicals_learned", value).commit();
-    }
-
-    public boolean isKanjiLegendLearned() {
-        return prefs.getBoolean("pref_legend_kanji_learned", false);
-    }
-
-    public void setKanjiLegendLearned(boolean value) {
-        prefeditor.putBoolean("pref_legend_kanji_learned", value).commit();
-    }
-
-    public boolean isVocabularyLegendLearned() {
-        return prefs.getBoolean("pref_legend_vocabulary_learned", false);
-    }
-
-    public void setVocabularyLegendLearned(boolean value) {
-        prefeditor.putBoolean("pref_legend_vocabulary_learned", value).commit();
+    public void setLegendLearned(boolean value) {
+        PrefManager.prefeditor.putBoolean("pref_legend_learned", value).commit();
     }
 
     public void setDashboardLastUpdateDate(long date) {
@@ -101,34 +87,8 @@ public class PrefManager {
     }
 
     public String getDashboardLastUpdateTime() {
-        Date currentTime = new Date(System.currentTimeMillis());
-        Date updateDate = new Date(prefs.getLong("pref_update_date_dashboard", 0));
-
-        long differenceInMilliseconds = currentTime.getTime() - updateDate.getTime();
-        long differenceInMinutes = differenceInMilliseconds / 60000;
-        long differenceInHours = differenceInMinutes / 60;
-        long differenceInDays = differenceInHours / 24;
-
-        if (differenceInMinutes == 0) {
-            return context.getString(R.string.less_than_a_minute_ago);
-        } else if (differenceInMinutes >= 60) {
-            if (differenceInHours >= 24) {
-                if (differenceInDays == 1)
-                    return context.getString(R.string.day_ago);
-                else
-                    return differenceInDays + " " + context.getString(R.string.days_ago);
-            } else {
-                if (differenceInHours == 1)
-                    return context.getString(R.string.hour_ago);
-                else
-                    return differenceInHours + " " + context.getString(R.string.hours_ago);
-            }
-        } else {
-            if (differenceInMinutes == 1)
-                return context.getString(R.string.minute_ago);
-            else
-                return differenceInMinutes + " " + context.getString(R.string.minutes_ago);
-        }
+        return Utils.getTimeDifference(context, Utils.getCurrentDate(),
+                new Date(prefs.getLong("pref_update_date_dashboard", 0)));
     }
 
     public String getLessonsScreenOrientation() {
@@ -145,6 +105,14 @@ public class PrefManager {
 
     public void setReviewsScreenOrientation(String orientation) {
         prefeditor.putString(PREF_REVIEWS_SCREEN_ORIENTATION, orientation).commit();
+    }
+
+    public boolean isUseSpecificDates() {
+        return prefs.getBoolean(PREF_USE_SPECIFIC_DATES, false);
+    }
+
+    public void setUseSpecificDates(boolean value) {
+        prefeditor.putBoolean(PREF_USE_SPECIFIC_DATES, value).commit();
     }
 
     public void logout() {

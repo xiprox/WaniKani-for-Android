@@ -1,6 +1,5 @@
 package tr.xip.wanikani;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +7,10 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.CircleTransformation;
 
 /**
@@ -62,7 +60,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     WaniKaniApi api;
     OfflineDataManager dataMan;
     PrefManager prefMan;
-    ThemeManager themeMan;
 
     User user;
 
@@ -112,7 +109,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         api = new WaniKaniApi(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         prefMan = new PrefManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
 
         mAvatar = (ImageView) rootView.findViewById(R.id.profile_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.profile_username);
@@ -128,10 +124,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mAvatarCard = (LinearLayout) rootView.findViewById(R.id.profile_avatar_card);
         mAboutCard = (LinearLayout) rootView.findViewById(R.id.profile_about_card);
         mDetailsCard = (LinearLayout) rootView.findViewById(R.id.profile_details_card);
-
-        mAvatarCard.setBackgroundResource(themeMan.getCard());
-        mAboutCard.setBackgroundResource(themeMan.getCard());
-        mDetailsCard.setBackgroundResource(themeMan.getCard());
 
         mWebsiteHolder = (RelativeLayout) rootView.findViewById(R.id.profile_website_holder);
         mTwitterHolder = (RelativeLayout) rootView.findViewById(R.id.profile_twitter_holder);
@@ -258,6 +250,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
             Picasso.with(context)
                     .load(R.drawable.profile_loading)
                     .fit()
+                    .transform(new CircleTransformation())
                     .into(mAvatar);
         }
 
@@ -274,7 +267,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 website = user.getWebsite();
                 twitter = user.getTwitter();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
                 creationDate = sdf.format(user.getCreationDate());
 
                 about = user.getAbout();
@@ -291,9 +284,9 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
             super.onPostExecute(result);
             Picasso.with(getActivity())
                     .load("http://www.gravatar.com/avatar/" + gravatar + "?s=200")
-                    .placeholder(R.drawable.profile_loading)
                     .error(R.drawable.profile_error)
                     .fit()
+                    .transform(new CircleTransformation())
                     .into(mAvatar);
 
             if (result.equals("success")) {

@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -17,7 +21,6 @@ import java.util.List;
 import tr.xip.wanikani.adapters.RecentUnlocksStickyHeaderGridViewArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
-import tr.xip.wanikani.managers.ThemeManager;
 
 /**
  * Created by xihsa_000 on 3/25/14.
@@ -25,9 +28,12 @@ import tr.xip.wanikani.managers.ThemeManager;
 public class RecentUnlocksActivity extends ActionBarActivity {
 
     WaniKaniApi api;
-    ThemeManager themeMan;
 
     Context context;
+
+    ViewGroup mActionBarLayout;
+    ImageView mActionBarIcon;
+    TextView mActionBarTitle;
 
     StickyGridHeadersGridView mRecentUnlocksGrid;
 
@@ -39,14 +45,36 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        api = new WaniKaniApi(this);
-        themeMan = new ThemeManager(this);
-        context = this;
-
-        setTheme(themeMan.getTheme());
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_unlocks);
+
+        api = new WaniKaniApi(this);
+        context = this;
+
+        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.actionbar_main, null);
+
+        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setCustomView(mActionBarLayout);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        mActionBar.setIcon(android.R.color.transparent);
+        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
+        mActionBar.setDisplayHomeAsUpEnabled(false);
+        mActionBar.setHomeButtonEnabled(false);
+
+        mActionBarTitle.setText(R.string.card_title_recent_unlocks);
+
+        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
+        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         mRecentUnlocksGrid = (StickyGridHeadersGridView) findViewById(R.id.activity_recent_unlocks_grid);
 
@@ -86,7 +114,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         protected void onPostExecute(List<RecentUnlocksList.UnlockItem> result) {
             if (result != null) {
                 mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
-                        result, R.layout.header_simple, R.layout.item_recent_unlock_grid);
+                        result, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
                 mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
 
                 mRecentUnlocksGrid.setOnItemClickListener(new recentUnlocksListItemClickListener());

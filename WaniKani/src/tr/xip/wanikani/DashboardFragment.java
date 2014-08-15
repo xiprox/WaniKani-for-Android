@@ -5,8 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,34 +18,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import tr.xip.wanikani.api.error.RetrofitErrorHandler;
+import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.cards.CriticalItemsCard;
 import tr.xip.wanikani.cards.MessageCard;
 import tr.xip.wanikani.cards.ProgressCard;
 import tr.xip.wanikani.cards.RecentUnlocksCard;
 import tr.xip.wanikani.cards.ReviewsCard;
-import tr.xip.wanikani.cards.StatusCard;
+import tr.xip.wanikani.cards.SRSCard;
+import tr.xip.wanikani.cards.VacationModeCard;
 import tr.xip.wanikani.managers.PrefManager;
 
 public class DashboardFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener, AvailableCard.AvailableCardListener, ReviewsCard.ReviewsCardListener,
-        StatusCard.StatusCardListener, ProgressCard.ProgressCardListener, RecentUnlocksCard.RecentUnlocksCardListener,
-        CriticalItemsCard.CriticalItemsCardListener, MessageCard.MessageCardListener {
-
-    View rootView;
-
-    Activity activity;
-
-    PrefManager prefMan;
+        SRSCard.StatusCardListener, ProgressCard.ProgressCardListener, RecentUnlocksCard.RecentUnlocksCardListener,
+        CriticalItemsCard.CriticalItemsCardListener, MessageCard.MessageCardListener, View.OnClickListener {
 
     public static final String SYNC_RESULT_SUCCESS = "success";
     public static final String SYNC_RESULT_FAILED = "failed";
+
+    View rootView;
+    Activity activity;
+    PrefManager prefMan;
+    WaniKaniApi api;
 
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
@@ -61,10 +58,15 @@ public class DashboardFragment extends Fragment
     boolean isRecentUnlocksCardSyncedSuccess = false;
     boolean isCriticalItemsCardSyncedSuccess = false;
 
+
     LinearLayout mAvailableHolder;
     LinearLayout mReviewsHolder;
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
+
+    FrameLayout mVacationModeCard;
+    FrameLayout mReviewsCard;
+    FrameLayout mProgressCard;
 
     private SwipeRefreshLayout mSwipeToRefreshLayout;
 
@@ -78,27 +80,21 @@ public class DashboardFragment extends Fragment
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(getString(R.string.error_connection_timeout), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime() + "."
-                    + "\n"
-                    + getString(R.string.info_may_be_outdated), false, getString(R.string.ok));
+                    + " " + prefMan.getDashboardLastUpdateTime());
         }
     };
 
     private BroadcastReceiver mRetrofitConnectionErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(getString(R.string.error_no_connection), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime() + "."
-                    + "\n"
-                    + getString(R.string.info_may_be_outdated), false, getString(R.string.ok));
+                    + " " + prefMan.getDashboardLastUpdateTime());
         }
     };
 
     private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(getString(R.string.error_unknown_error), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime() + "."
-                    + "\n"
-                    + getString(R.string.info_may_be_outdated), false, getString(R.string.ok));
+                    + " " + prefMan.getDashboardLastUpdateTime());
         }
     };
 
@@ -116,6 +112,7 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onCreate(Bundle paramBundle) {
+        api = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
         super.onCreate(paramBundle);
     }
@@ -137,12 +134,20 @@ public class DashboardFragment extends Fragment
         mRecentUnlocksFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_recent_unlocks_holder);
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
 
+        mVacationModeCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_vacation_mode_card);
+        mReviewsCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_card);
+        mProgressCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_progress_card);
+
+        mReviewsCard.setOnClickListener(this);
+        mProgressCard.setOnClickListener(this);
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+        VacationModeCard vacationModeCard = new VacationModeCard();
         AvailableCard availableCard = new AvailableCard();
         ReviewsCard reviewsCard = new ReviewsCard();
-        StatusCard statusCard = new StatusCard();
+        SRSCard statusCard = new SRSCard();
         ProgressCard progressCard = new ProgressCard();
         RecentUnlocksCard recentUnlocksCard = new RecentUnlocksCard();
         CriticalItemsCard criticalItemsCard = new CriticalItemsCard();
@@ -154,6 +159,7 @@ public class DashboardFragment extends Fragment
         recentUnlocksCard.setListener(this, getActivity());
         criticalItemsCard.setListener(this, getActivity());
 
+        transaction.replace(R.id.fragment_dashboard_vacation_mode_card, vacationModeCard);
         transaction.replace(R.id.fragment_dashboard_available_card, availableCard);
         transaction.replace(R.id.fragment_dashboard_reviews_card, reviewsCard);
         transaction.replace(R.id.fragment_dashboard_status_card, statusCard);
@@ -166,10 +172,12 @@ public class DashboardFragment extends Fragment
             mSwipeToRefreshLayout.setRefreshing(true);
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            new VacationModeCheckTask().execute();
             MainActivity.isFirstSyncDashboardDone = true;
         } else {
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+            new VacationModeCheckTask().execute();
         }
 
         return rootView;
@@ -206,7 +214,7 @@ public class DashboardFragment extends Fragment
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
     }
 
-    private void showMessage(String title, String summary, boolean hideOkButton, String buttonText) {
+    private void showMessage(String title, String summary) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         MessageCard fragment = new MessageCard();
@@ -215,8 +223,6 @@ public class DashboardFragment extends Fragment
         Bundle args = new Bundle();
         args.putString(MessageCard.ARG_TITLE, title);
         args.putString(MessageCard.ARG_SUMMARY, summary);
-        args.putBoolean(MessageCard.ARG_HIDE_OK_BUTTON, hideOkButton);
-        args.putString(MessageCard.ARG_BUTTON_TEXT, buttonText);
         fragment.setArguments(args);
 
         transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();
@@ -288,12 +294,10 @@ public class DashboardFragment extends Fragment
     public void onRecentUnlocksCardSyncFinishedListener(int height, String result) {
         if (result.equals(SYNC_RESULT_SUCCESS)) {
             isRecentUnlocksCardSyncedSuccess = true;
-            mRecentUnlocksFragmentHolder.setVisibility(View.VISIBLE);
         }
 
-            if (result.equals(SYNC_RESULT_FAILED)) {
+        if (result.equals(SYNC_RESULT_FAILED)) {
             isRecentUnlocksCardSyncedSuccess = false;
-            mRecentUnlocksFragmentHolder.setVisibility(View.GONE);
         }
 
         setRecentUnlocksFragmentHeight(height);
@@ -305,12 +309,10 @@ public class DashboardFragment extends Fragment
     public void onCriticalItemsCardSyncFinishedListener(int height, String result) {
         if (result.equals(SYNC_RESULT_SUCCESS)) {
             isCriticalItemsCardSyncedSuccess = true;
-            mCriticalItemsFragmentHolder.setVisibility(View.VISIBLE);
         }
 
         if (result.equals(SYNC_RESULT_FAILED)) {
             isCriticalItemsCardSyncedSuccess = false;
-            mCriticalItemsFragmentHolder.setVisibility(View.GONE);
         }
 
         setCriticalItemsFragmentHeight(height);
@@ -341,5 +343,44 @@ public class DashboardFragment extends Fragment
 
         Intent intent = new Intent(BroadcastIntents.SYNC());
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+        new VacationModeCheckTask().execute();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == mReviewsCard) {
+            // TODO - Handle reviews card stuff
+        }
+        if (view == mProgressCard) {
+            // TODO - Handle progress card stuff
+        }
+    }
+
+    private class VacationModeCheckTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                return api.getUser().getVacationDate() != 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isVacationModeActive) {
+            super.onPostExecute(isVacationModeActive);
+
+            if (isVacationModeActive) {
+                mAvailableHolder.setVisibility(View.GONE);
+                mReviewsHolder.setVisibility(View.GONE);
+                mVacationModeCard.setVisibility(View.VISIBLE);
+            } else {
+                mAvailableHolder.setVisibility(View.VISIBLE);
+                mReviewsHolder.setVisibility(View.VISIBLE);
+                mVacationModeCard.setVisibility(View.GONE);
+            }
+        }
     }
 }

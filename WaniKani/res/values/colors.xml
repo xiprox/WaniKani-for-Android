@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="color_apptheme">#ffb4673c</color>
+    <!-- App Theme Colors -->
+    <color name="apptheme_main">#e91e63</color>
+    <color name="apptheme_main_light">#f8bbd0</color>
+    <color name="apptheme_main_dark">#c2185b</color>
+    <color name="apptheme_actionbar">@color/apptheme_main</color>
+    <color name="apptheme_accent">#eeff41</color>
+    <color name="apptheme_accent_fallback_light">#f4ff81</color>
+    <color name="apptheme_accent_fallback_dark">#c6ff00</color>
+    <color name="apptheme_accent_translucent">#70eeff41</color>
 
     <!-- WaniKani Colors -->
-    <color name="wanikani_burned">#ff555555</color>
+    <color name="wanikani_burned">#eeeeee</color>
     <color name="wanikani_radical">#009ce9</color>
     <color name="wanikani_kanji">#f500a3</color>
     <color name="wanikani_vocabulary">#9d33b7</color>
@@ -22,10 +30,10 @@
     <color name="holo_red_dark">#CC0000</color>
 
     <!-- Swipe To Refresh Colors -->
-    <color name="swipe_refresh_1">@color/holo_blue_dark</color>
-    <color name="swipe_refresh_2">@color/holo_green_light</color>
-    <color name="swipe_refresh_3">#7a7a7a</color>
-    <color name="swipe_refresh_4">#707070</color>
+    <color name="swipe_refresh_1">#ffff00</color>
+    <color name="swipe_refresh_2">#ffff8d</color>
+    <color name="swipe_refresh_3">@color/swipe_refresh_1</color>
+    <color name="swipe_refresh_4">@color/swipe_refresh_2</color>
 
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>
@@ -47,29 +55,30 @@
     <color name="simple_item_background">@android:color/transparent</color>
     <color name="simple_item_background_pressed">#15000000</color>
 
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#ffc7c7c7</color>
+    <color name="gradient_end">@android:color/transparent</color>
+
     <!-- Text Colors -->
-    <color name="text_white">#ffffff</color>
+    <color name="text_white_translucent">#ddffffff</color>
     <color name="text_light">#f2f2f2</color>
     <color name="text_black">#000000</color>
-    <color name="text_dark">#3a3a3a</color>
-    <color name="text_gray">#7a7a7a</color>
-    <color name="text_gray_light">#9a9a9a</color>
+    <color name="text_gray">#656565</color>
+    <color name="text_gray_dark">#CC000000</color>
+    <color name="text_gray_light">#7a7a7a</color>
 
     <!-- Separator Colors -->
     <color name="separator">#507a7a7a</color>
+    <color name="separator_light">#207a7a7a</color>
     <color name="separator_login">#ffb8b8b8</color>
 
     <!-- Card colors -->
-    <color name="card_light_shadow">#cbcbcb</color>
-    <color name="card_light_shadow2">#d6d6d6</color>
-    <color name="card_light_content">#ffffff</color>
-    <color name="card_light_content_pressed">#f8f8f8</color>
-    <color name="card_light_content_disabled">#80ffffff</color>
-    <color name="card_dark_shadow">#222222</color>
-    <color name="card_dark_shadow2">#272727</color>
-    <color name="card_dark_content">#2d2d2d</color>
-    <color name="card_dark_content_pressed">#2a2a2a</color>
-    <color name="card_dark_content_disabled">#402d2d2d</color>
+    <color name="card_content">#fafafa</color>
+    <color name="card_content_pressed">#ededed</color>
+    <color name="card_content_disabled">#ccfafafa</color>
+    <color name="card_stroke">#f4f4f4</color>
+    <color name="card_stroke_pressed">#e7e7e7</color>
+    <color name="card_stroke_disabled">#ccf4f4f4</color>
     <color name="card_radical_shadow">#007cb9</color>
     <color name="card_kanji_shadow">#b5007d</color>
     <color name="card_vocabulary_shadow">#6f2481</color>

@@ -12,8 +12,8 @@ public class NavigationSecondaryItems {
     public ArrayList<ListItem> ITEMS = new ArrayList<ListItem>();
 
     public NavigationSecondaryItems() {
-        addItem(new ListItem(R.drawable.ic_action_settings, R.string.title_settings_allcaps));
-        addItem(new ListItem(R.drawable.ic_action_logout, R.string.title_logout_allcaps));
+        addItem(new ListItem(R.drawable.ic_action_settings, R.string.title_settings));
+        addItem(new ListItem(R.drawable.ic_action_logout, R.string.title_logout));
     }
 
     public static class ListItem {

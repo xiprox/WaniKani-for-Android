@@ -1,16 +1,16 @@
 <?xml version="1" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_kanji_card"
     android:layout_width="100dp"
     android:layout_height="130dp"
-    android:background="@android:color/transparent"
+    android:background="@android:color/white"
     android:minHeight="130dp"
     android:minWidth="100dp">
 
     <RelativeLayout
-        android:id="@+id/item_kanji_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/card_light"
+        android:background="@drawable/selector_background_neutral"
         android:minHeight="130dp"
         android:minWidth="100dp">
 
@@ -35,7 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:fontFamily="sans-serif-light"
+                android:gravity="center"
                 android:text="たい"
+
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -43,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
+                android:gravity="center"
                 android:text="Big"
                 android:textColor="@color/text_gray" />
 
@@ -53,7 +56,6 @@
         android:id="@+id/item_kanji_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="2dp"
         android:minHeight="128dp"
         android:minWidth="100dp" />
 </FrameLayout>

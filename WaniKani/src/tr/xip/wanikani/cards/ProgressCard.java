@@ -24,7 +24,6 @@ import tr.xip.wanikani.api.response.LevelProgression;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -36,7 +35,6 @@ public class ProgressCard extends Fragment {
     PrefManager prefMan;
     OfflineDataManager dataMan;
     Utils utils;
-    ThemeManager themeMan;
 
     View rootView;
 
@@ -87,7 +85,6 @@ public class ProgressCard extends Fragment {
         prefMan = new PrefManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
-        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
     }
 
@@ -110,7 +107,6 @@ public class ProgressCard extends Fragment {
         mKanjiProgressBar = (ProgressBar) rootView.findViewById(R.id.card_progress_kanji_progress_bar);
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_progress_card);
-        mCard.setBackgroundResource(themeMan.getCard());
 
         loadOfflineValues();
 

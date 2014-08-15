@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -33,16 +32,17 @@ import java.util.List;
 import tr.xip.wanikani.adapters.RadicalsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RadicalsList;
+import tr.xip.wanikani.dialogs.LegendDialogFragment;
+import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 
-public class RadicalsFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener, SwipeRefreshLayout.OnRefreshListener {
+public class RadicalsFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     Context context;
 
     WaniKaniApi apiMan;
-    ThemeManager themeMan;
     PrefManager prefMan;
     OfflineDataManager dataMan;
 
@@ -66,24 +66,10 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
     MenuItem mLevelItem;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void showLegend() {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View dialogView = inflater.inflate(R.layout.dialog_legend, null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(dialogView)
-                .setTitle(R.string.content_radicals_legend)
-                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        prefMan.setRadicalsLegendLearned(true);
-                        dialogInterface.dismiss();
-                    }
-                })
-                .show();
+        new LegendDialogFragment().show(getActivity().getSupportFragmentManager(), "legend-dialog");
     }
 
     @Override
@@ -92,7 +78,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         context = getActivity();
         apiMan = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
         dataMan = new OfflineDataManager(getActivity());
     }
 
@@ -117,11 +102,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         rootView = layoutInflater.inflate(R.layout.fragment_radicals, viewGroup, false);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.radicals_swipe_refresh);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
-
         mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.radicals_message_swipe_refresh);
         mMessageSwipeRefreshLayout.setOnRefreshListener(this);
         mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
@@ -137,7 +117,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mMessageTitle = (TextView) rootView.findViewById(R.id.radicals_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.radicals_message_summary);
 
-        if (!prefMan.isRadicalsLegendLearned()) {
+        if (!prefMan.isLegendLearned()) {
             showLegend();
         }
 
@@ -244,14 +224,14 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();
 
-            mSwipeRefreshLayout.setRefreshing(false);
             mMessageSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            if (mListFlipper.getDisplayedChild() == 1)
+                mListFlipper.showPrevious();
         }
     }
 

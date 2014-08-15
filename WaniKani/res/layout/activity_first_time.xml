@@ -1,82 +1,121 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ViewSwitcher
-        android:id="@+id/firt_time_view_switcher"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_placeholder_height"
+        android:background="@color/apptheme_actionbar" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:alpha="0.2"
+            android:orientation="vertical"
+            android:paddingBottom="72dp">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/logo_wanikani_stamp_apptheme" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="60dp"
+                android:text="@string/wanikani_hungers"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/text_gray_light" />
+        </LinearLayout>
+
+        <ViewSwitcher
+            android:id="@+id/firt_time_view_switcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/logo_wanikani_stamp"
-                    android:layout_height="150dp" />
-
-                <TextView
-                    style="@style/Widget.TextView.Light"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:text="@string/wanikani_hungers"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_gravity="center_horizontal"
-                    android:textAppearance="@android:style/TextAppearance.Large"
-                    android:textColor="@color/text_gray"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/card"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <EditText
-                    android:id="@+id/first_time_api_key"
-                    android:layout_width="wrap_content"
-                    android:minWidth="300dp"
-                    android:textColor="@color/text_gray"
-                    android:textColorHint="@color/text_gray_light"
-                    android:hint="@string/hint_api_key"
-                    android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/first_time_api_key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_api_key"
+                        android:minWidth="300dp"
+                        android:singleLine="true"
+                        android:textColor="@color/text_gray"
+                        android:textColorHint="@color/text_gray_light" />
+
+                    <Button
+                        android:id="@+id/first_time_how_to_api_key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:background="@drawable/selector_background_neutral"
+                        android:paddingLeft="6dp"
+                        android:paddingRight="6dp"
+                        android:text="@string/action_how_to_api_key"
+                        android:textColor="@color/text_gray"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_above="@+id/first_time_sign_in"
+                    android:background="@color/separator_login" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/window_background_light"
+                    android:minHeight="48dp" />
 
                 <Button
-                    android:id="@+id/first_time_how_to_api_key"
-                    android:background="@drawable/simple_item_background"
-                    android:layout_width="wrap_content"
-                    android:textSize="12sp"
-                    android:paddingLeft="6dp"
-                    android:textColor="@color/text_gray"
-                    android:text="@string/action_how_to_api_key"
-                    android:layout_height="20dp" />
+                    android:id="@+id/first_time_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/selector_background_neutral"
+                    android:minHeight="48dp"
+                    android:text="@string/action_sign_in"
+                    android:textColor="@color/text_gray" />
+            </RelativeLayout>
 
-            </LinearLayout>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/card"
+                android:padding="16dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/separator_login"
-                android:layout_above="@+id/first_time_sign_in" />
+        </ViewSwitcher>
 
-            <Button
-                android:id="@+id/first_time_sign_in"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/simple_item_background"
-                android:layout_alignParentBottom="true"
-                android:textColor="@color/text_gray"
-                android:text="@string/action_sign_in"
-                android:minHeight="48dp"/>
-        </RelativeLayout>
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-    </ViewSwitcher>
-
-</RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/actionbar_shadow" />
+    </RelativeLayout>
+</LinearLayout>

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +24,6 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
-import tr.xip.wanikani.managers.ThemeManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -30,35 +31,26 @@ import tr.xip.wanikani.utils.Utils;
  */
 public class AvailableCard extends Fragment {
 
+    public static final int BROWSER_REQUEST = 1;
+
+    View rootView;
+    Context context;
+
     WaniKaniApi api;
     OfflineDataManager dataMan;
     Utils utils;
-    ThemeManager themeMan;
 
-    View rootView;
-
-    Context context;
-
-    AvailableCardListener mListener;
-
-    LinearLayout mLessonsParent;
-    LinearLayout mReviewsParent;
-
+    ImageView mLessonsGo;
+    ImageView mReviewsGo;
     TextView mLessonsAvailable;
     TextView mReviewsAvailable;
-
     LinearLayout mCard;
 
     int lessonsAvailable;
     int reviewsAvailable;
+    boolean isVacationModeActive;
 
-    public static final int BROWSER_REQUEST = 1;
-
-    public void setListener(AvailableCardListener listener, Context context) {
-        mListener = listener;
-        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
-    }
+    AvailableCardListener mListener;
 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
@@ -70,12 +62,17 @@ public class AvailableCard extends Fragment {
         }
     };
 
+    public void setListener(AvailableCardListener listener, Context context) {
+        mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
+    }
+
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         dataMan = new OfflineDataManager(getActivity());
-        themeMan = new ThemeManager(getActivity());
         super.onCreate(state);
     }
 
@@ -86,14 +83,18 @@ public class AvailableCard extends Fragment {
 
         context = getActivity();
 
-        mLessonsParent = (LinearLayout) rootView.findViewById(R.id.card_available_lessons_parent);
-        mReviewsParent = (LinearLayout) rootView.findViewById(R.id.card_available_reviews_parent);
+        mLessonsGo = (ImageView) rootView.findViewById(R.id.card_available_lessons_go);
+        mReviewsGo = (ImageView) rootView.findViewById(R.id.card_available_reviews_go);
+
+        mLessonsGo.setColorFilter(getResources().getColor(R.color.text_gray),
+                PorterDuff.Mode.SRC_ATOP);
+        mReviewsGo.setColorFilter(getResources().getColor(R.color.text_gray),
+                PorterDuff.Mode.SRC_ATOP);
 
         mLessonsAvailable = (TextView) rootView.findViewById(R.id.card_available_lessons);
         mReviewsAvailable = (TextView) rootView.findViewById(R.id.card_available_reviews);
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_available_card);
-        mCard.setBackgroundResource(themeMan.getCard());
 
         setUpParentOnClicks();
 
@@ -114,7 +115,7 @@ public class AvailableCard extends Fragment {
 
     private void setUpParentOnClicks() {
 
-        mLessonsParent.setOnClickListener(new View.OnClickListener() {
+        mLessonsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Browser.class);
@@ -123,7 +124,7 @@ public class AvailableCard extends Fragment {
             }
         });
 
-        mReviewsParent.setOnClickListener(new View.OnClickListener() {
+        mReviewsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), Browser.class);
@@ -131,6 +132,10 @@ public class AvailableCard extends Fragment {
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });
+    }
+
+    public interface AvailableCardListener {
+        public void onAvailableCardSyncFinishedListener(String result);
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {
@@ -143,6 +148,7 @@ public class AvailableCard extends Fragment {
 
                 lessonsAvailable = studyQueue.getAvailableLesonsCount();
                 reviewsAvailable = studyQueue.getAvailableReviewsCount();
+                isVacationModeActive = api.isVacationModeActive(studyQueue.getUserInfo());
                 return "success";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -153,19 +159,20 @@ public class AvailableCard extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("success")) {
-                mLessonsAvailable.setText(lessonsAvailable + "");
-                mReviewsAvailable.setText(reviewsAvailable + "");
+                if (!isVacationModeActive) {
+                    mLessonsAvailable.setText(lessonsAvailable + "");
+                    mReviewsAvailable.setText(reviewsAvailable + "");
 
-                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
+                    mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
 
-                saveOfflineValues();
+                    saveOfflineValues();
+                } else {
+                    mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+                }
             } else {
-                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+                // Vacation mode is handled in DashboardFragment
+                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
             }
         }
-    }
-
-    public interface AvailableCardListener {
-        public void onAvailableCardSyncFinishedListener(String result);
     }
 }

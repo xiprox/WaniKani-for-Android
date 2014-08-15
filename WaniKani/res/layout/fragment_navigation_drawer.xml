@@ -2,12 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fadingEdge="none">
+        android:fadingEdge="none"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,52 +19,57 @@
             <FrameLayout
                 android:id="@+id/navigation_drawer_profile"
                 android:layout_width="match_parent"
-                android:foreground="@drawable/simple_item_background"
-                android:layout_height="64dp">
+                android:layout_height="150dp"
+                android:foreground="@drawable/selector_background_white">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@color/tint_black_05"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="@color/apptheme_main">
+
+                    <ImageView
+                        android:id="@+id/navigation_drawer_avatar_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
 
                     <ImageView
                         android:id="@+id/navigation_drawer_avatar"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:background="@drawable/oval_gray"
-                        android:scaleType="fitXY"
+                        android:layout_alignParentTop="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="6dp"
-                        android:padding="2dp" />
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/oval_white_translucent"
+                        android:padding="2dp"
+                        android:scaleType="fitXY" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_toRightOf="@+id/navigation_drawer_avatar"
-                        android:layout_centerVertical="true">
+                        android:layout_width="match_parent"
+                        android:layout_height="68dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/gradient_navigation_drawer"
+                        android:gravity="bottom"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/navigation_drawer_profile_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:text="@string/title_profile"
-                            android:fontFamily="sans-serif-light"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
                             android:id="@+id/navigation_drawer_username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:textColor="@color/text_gray"
-                            android:textSize="16sp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:ellipsize="marquee"
                             android:text="username"
-                            android:maxLines="1" />
+                            android:textAppearance="@android:style/TextAppearance.Large"
+                            android:textColor="@android:color/white" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@drawable/actionbar_shadow" />
                 </RelativeLayout>
             </FrameLayout>
 
@@ -70,8 +77,10 @@
                 android:id="@+id/navigation_drawer_list_main"
                 android:layout_width="match_parent"
                 android:layout_height="215dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:choiceMode="singleChoice"
-                android:divider="@color/separator"
+                android:divider="@android:color/transparent"
                 android:dividerHeight="0px"
                 android:listSelector="@android:color/transparent"
                 tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
@@ -79,28 +88,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@color/tint_black_05"
-                android:clickable="true">
+                android:clickable="true"
+                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/separator" />
+                    android:background="@color/separator_light" />
 
                 <ListView
                     android:id="@+id/navigation_drawer_list_secondary"
                     android:layout_width="match_parent"
-                    android:layout_height="93dp"
+                    android:layout_height="108dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:choiceMode="singleChoice"
-                    android:divider="@color/separator"
-                    android:listSelector="@android:color/transparent"
-                    android:dividerHeight="1dp" />
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0dp"
+                    android:listSelector="@android:color/transparent" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/separator" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

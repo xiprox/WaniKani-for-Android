@@ -1,12 +1,39 @@
 <resources>
 
     <style name="ThemeLightDarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="numberPickerStyle">@style/NPWidget.Holo.Light.NumberPicker</item>
+        <item name="numberPickerStyle">@style/NumberPickerStyle</item>
+    </style>
+
+    <style name="NumberPickerStyle" parent="@style/NPWidget.Holo.Light.NumberPicker">
+        <item name="selectionDivider">@color/apptheme_main</item>
     </style>
 
     <style name="AppTheme.ActionBar.Light" parent="Widget.AppCompat.Light.ActionBar.Solid"></style>
 
     <style name="AlertDialog" parent="@android:style/Theme.Dialog"></style>
+
+    <style name="ActionBarItem" parent="Widget.AppCompat.Light.ActionButton">
+        <item name="android:height">@dimen/action_bar_height</item>
+        <item name="android:width">@dimen/action_bar_height</item>
+        <item name="android:layout_height">@dimen/action_bar_height</item>
+        <item name="android:layout_width">@dimen/action_bar_height</item>
+        <item name="android:minHeight">@dimen/action_bar_height</item>
+        <item name="android:minWidth">@dimen/action_bar_height</item>
+        <item name="android:maxHeight">@dimen/action_bar_height</item>
+        <item name="android:maxWidth">@dimen/action_bar_height</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="ActionBarOverflowItem" parent="@style/ActionBarItem">
+        <item name="android:src">@drawable/ic_action_overflow</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="EditTextAppTheme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/edit_text_apptheme</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textColorHint">@color/text_gray_light</item>
+    </style>
 
     <style name="ProgressBarRadical" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/radical_progress_horizontal_holo_light
@@ -28,27 +55,29 @@
     </style>
 
     <style name="ProgressBarCorrect" parent="android:Widget.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progressbarcorrect_progress_horizontal_holo_light</item>
-        <item name="android:indeterminateDrawable">@drawable/progressbarcorrect_progress_indeterminate_horizontal_holo_light</item>
+        <item name="android:progressDrawable">
+            @drawable/progressbarcorrect_progress_horizontal_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/progressbarcorrect_progress_indeterminate_horizontal_holo_light
+        </item>
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
     </style>
 
     <style name="ProgressBarIncorrect" parent="android:Widget.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progressbarincorrect_progress_horizontal_holo_light</item>
-        <item name="android:indeterminateDrawable">@drawable/progressbarincorrect_progress_indeterminate_horizontal_holo_light</item>
+        <item name="android:progressDrawable">
+            @drawable/progressbarincorrect_progress_horizontal_holo_light
+        </item>
+        <item name="android:indeterminateDrawable">
+            @drawable/progressbarincorrect_progress_indeterminate_horizontal_holo_light
+        </item>
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
     </style>
 
     <style name="TextApparance.ActionBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/text_gray</item>
-    </style>
-
-    <style name="EditText.AppTheme" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/apptheme_edit_text_holo_light</item>
-        <item name="android:textColor">@color/text_gray</item>
-        <item name="android:textColorHint">@color/text_gray_light</item>
     </style>
 
 </resources>

@@ -1,887 +1,807 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadingEdge="none"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
-    <ViewFlipper
-        android:id="@+id/details_view_flipper"
+    <View
+        android:id="@+id/details_statusbar_bg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_placeholder_height"
+        android:background="@color/apptheme_actionbar" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="64dp" />
-
-        <LinearLayout
-            android:id="@+id/details_content"
+        <tr.xip.wanikani.SynchronizedScrollView
+            android:id="@+id/details_scrollview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:fadingEdge="none"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:overScrollMode="never">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_width="48dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/card_disabled">
-
-                    <TextView
-                        android:id="@+id/details_level"
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="-"
-                        android:textColor="@color/text_white"
-                        android:textSize="36sp" />
-
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:id="@+id/details_character_card"
+                <ViewFlipper
+                    android:id="@+id/details_view_flipper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/card_disabled"
-                    android:orientation="vertical"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp">
+                    android:layout_height="wrap_content">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <ImageView
-                            android:id="@+id/details_character_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="20dp"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="8dp"
-                            android:scaleType="fitCenter" />
-
-                        <TextView
-                            android:id="@+id/details_character_text"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:textAppearance="@android:style/TextAppearance.Large"
-                            android:textColor="@color/text_white" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2px"
-                            android:layout_alignParentBottom="true"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="#30ffffff" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            android:id="@+id/details_meaning"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginBottom="2dp"
-                            android:textAppearance="@android:style/TextAppearance.Large"
-                            android:textColor="@color/text_white" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/details_aternative_meanings_and_user_synonyms_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/card_light"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/details_alternative_meanings_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
+                    <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/card_title_details_alternative_meanings"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/details_alternative_meanings"
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/text_gray" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/details_user_synonyms_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_title_details_user_synonyms"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/details_user_synonyms"
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/text_gray" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/details_readings_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/card_light"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/details_readings_reading_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_title_details_reading"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/details_reading"
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/text_gray"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/details_readings_onyomi_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_title_details_reading_onyomi"
-                        android:textColor="@color/text_gray"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/details_readings_onyomi"
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/text_gray"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/details_readings_kunyomi_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_title_details_reading_kunyomi"
-                        android:textColor="@color/text_gray"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/details_readings_kunyomi"
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/text_gray"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/details_reading_note_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/card_light"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/card_title_details_reading_note"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="@color/text_gray" />
-
-                <TextView
-                    android:id="@+id/details_reading_note"
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/text_gray" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/details_meaning_note_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/card_light"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/card_title_details_meaning_note"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="@color/text_gray" />
-
-                <TextView
-                    android:id="@+id/details_meaning_note"
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/text_gray" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/details_progress_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                android:background="@drawable/card_light"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/details_progress_title"
-                    style="@style/Widget.TextView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/card_title_details_progress"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="@color/text_gray" />
-
-                <LinearLayout
-                    android:id="@+id/details_progress_locked"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:visibility="gone">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="64dp" />
 
                     <LinearLayout
+                        android:id="@+id/details_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_action_secure" />
+                        <LinearLayout
+                            android:id="@+id/details_actionbar_extension"
+                            android:layout_width="match_parent"
+                            android:layout_height="140dp"
+                            android:background="@color/apptheme_actionbar"
+                            android:orientation="vertical"
+                            android:paddingLeft="74dp">
 
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/card_title_details_meaning"
+                                android:textColor="@color/apptheme_accent" />
+
+                            <TextView
+                                android:id="@+id/details_meaning"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:maxLines="1"
+                                android:text="Item Meaning"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@android:color/white" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/card_content_progress_level"
+                                android:textColor="@color/apptheme_accent" />
+
+                            <TextView
+                                android:id="@+id/details_level"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="marquee"
+                                android:maxLines="1"
+                                android:text="0"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@android:color/white" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/details_actionbar_shadow_placeholder"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:background="@drawable/actionbar_shadow" />
+
+                        <LinearLayout
+                            android:id="@+id/details_alternative_meanings_and_user_synonyms_card"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/card_content_details_progress_locked"
-                            android:textColor="@color/text_gray"
-                            android:textSize="18sp" />
+                            android:background="@android:color/white"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/details_alternative_meanings_holder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginTop="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/details_title_alternative_meanings"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_title_details_alternative_meanings"
+                                    android:textAppearance="@android:style/TextAppearance.Large"
+                                    android:textColor="@color/apptheme_main" />
+
+                                <TextView
+                                    android:id="@+id/details_alternative_meanings"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:textColor="@color/text_gray" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/details_user_synonyms_holder"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/details_title_user_synonyms"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_title_details_user_synonyms"
+                                    android:textAppearance="@android:style/TextAppearance.Large"
+                                    android:textColor="@color/apptheme_main" />
+
+                                <TextView
+                                    android:id="@+id/details_user_synonyms"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:textColor="@color/text_gray" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/separator_light" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/details_readings_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/details_readings_reading_holder"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginTop="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/details_title_reading"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_title_details_reading"
+                                    android:textAppearance="@android:style/TextAppearance.Large"
+                                    android:textColor="@color/apptheme_main" />
+
+                                <TextView
+                                    android:id="@+id/details_reading"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/details_readings_onyomi_holder"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_title_details_reading_onyomi"
+                                    android:textAppearance="@android:style/TextAppearance.Large"
+                                    android:textColor="@color/text_gray" />
+
+                                <TextView
+                                    android:id="@+id/details_readings_onyomi"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/details_readings_kunyomi_holder"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_title_details_reading_kunyomi"
+                                    android:textAppearance="@android:style/TextAppearance.Large"
+                                    android:textColor="@color/text_gray" />
+
+                                <TextView
+                                    android:id="@+id/details_readings_kunyomi"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:text="なか"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/separator_light" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/details_reading_note_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/details_title_reading_note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/card_title_details_reading_note"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@color/apptheme_main" />
+
+                            <TextView
+                                android:id="@+id/details_reading_note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:textColor="@color/text_gray" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/separator_light" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/details_meaning_note_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/details_title_meaning_note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/card_title_details_meaning_note"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@color/apptheme_main" />
+
+                            <TextView
+                                android:id="@+id/details_meaning_note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:textColor="@color/text_gray" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@color/separator_light" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/details_progress_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
+                            android:background="@android:color/white"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/details_progress_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/card_title_details_progress"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@color/apptheme_main" />
+
+                            <LinearLayout
+                                android:id="@+id/details_progress_locked"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginTop="16dp"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+                                android:paddingBottom="16dp"
+                                android:paddingTop="16dp"
+                                android:visibility="gone">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:layout_gravity="center_horizontal"
+                                        android:src="@drawable/ic_action_secure" />
+
+                                    <TextView
+                                        style="@style/Widget.TextView.Light"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:text="@string/card_content_details_progress_locked"
+                                        android:textColor="@color/text_gray"
+                                        android:textSize="18sp" />
+                                </LinearLayout>
+
+                                <TextView
+                                    style="@style/Widget.TextView.Light"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_content_details_progress_or_not_learned"
+                                    android:textColor="@color/text_gray" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/details_progress_burned"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingBottom="16dp"
+                                android:paddingTop="16dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:src="@drawable/burned" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="16dp"
+                                    android:text="@string/card_content_details_burned"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="26sp" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/Widget.TextView.Light"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/card_content_details_progress_on"
+                                        android:textAppearance="@android:style/TextAppearance.Medium"
+                                        android:textColor="@color/text_gray_light" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_burned_date"
+                                        style="@style/Widget.TextView.Light"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="8dp"
+                                        android:textAppearance="@android:style/TextAppearance.Medium"
+                                        android:textColor="@color/text_gray_light" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/details_progress_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:orientation="horizontal">
+
+
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="SRS"
+                                        android:textColor="@color/text_gray" />
+
+                                    <ImageView
+                                        android:id="@+id/details_progress_srs_logo"
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginRight="12dp"
+                                        android:layout_toLeftOf="@+id/details_progress_srs_level"
+                                        android:src="@drawable/apprentice" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_srs_level"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/srs_title_apprentice"
+                                        android:textColor="@color/text_gray" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_unlocked_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/card_content_details_progress_unlocked_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_unlocked"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:textColor="@color/text_gray" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_next_available_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/card_content_details_progress_next_available_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_next_available"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:textColor="@color/text_gray" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_meaning_correct_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="@string/card_content_details_progress_meaning_correct_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_meaning_correct_percentage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_toLeftOf="@+id/details_progress_meaning_correct_percentage_sign"
+                                        android:maxEms="3"
+                                        android:maxLines="1"
+                                        android:text=""
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_meaning_correct_percentage_sign"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="%"
+                                        android:textColor="@color/text_gray" />
+
+                                    <ProgressBar
+                                        android:id="@+id/details_progress_meaning_correct_progress"
+                                        style="@style/ProgressBarCorrect"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/details_progress_meaning_correct_percentage"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:progress="0" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_meaning_incorrect_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="@string/card_content_details_progress_meaning_incorrect_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+
+                                    <TextView
+                                        android:id="@+id/details_progress_meaning_incorrect_percentage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_toLeftOf="@+id/details_progress_meaning_incorrect_percentage_sign"
+                                        android:maxEms="3"
+                                        android:maxLines="1"
+                                        android:text=""
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_meaning_incorrect_percentage_sign"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="%"
+                                        android:textColor="@color/text_gray" />
+
+                                    <ProgressBar
+                                        android:id="@+id/details_progress_meaning_incorrect_progress"
+                                        style="@style/ProgressBarIncorrect"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/details_progress_meaning_incorrect_percentage"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:progress="0" />
+
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_meaning_max_streak_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/card_content_details_progress_meaning_max_streak_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_meaning_max_streak"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:textColor="@color/text_gray" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_meaning_current_streak_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/card_content_details_progress_meaning_current_streak_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_meaning_current_streak"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:textColor="@color/text_gray" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_reading_correct_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="@string/card_content_details_progress_reading_correct_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_reading_correct_percentage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_toLeftOf="@+id/details_progress_reading_correct_percentage_sign"
+                                        android:maxEms="3"
+                                        android:maxLines="1"
+                                        android:text=""
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_reading_correct_percentage_sign"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="%"
+                                        android:textColor="@color/text_gray" />
+
+                                    <ProgressBar
+                                        android:id="@+id/details_progress_reading_correct_progress"
+                                        style="@style/ProgressBarCorrect"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/details_progress_reading_correct_percentage"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:progress="0" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_reading_incorrect_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="@string/card_content_details_progress_reading_incorrect_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_reading_incorrect_percentage"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_toLeftOf="@+id/details_progress_reading_incorrect_percentage_sign"
+                                        android:maxEms="3"
+                                        android:maxLines="1"
+                                        android:text=""
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_reading_incorrect_percentage_sign"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="16dp"
+                                        android:text="%"
+                                        android:textColor="@color/text_gray" />
+
+                                    <ProgressBar
+                                        android:id="@+id/details_progress_reading_incorrect_progress"
+                                        style="@style/ProgressBarIncorrect"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/details_progress_reading_incorrect_percentage"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:progress="0" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_reading_max_streak_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/card_content_details_progress_reading_max_streak_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_reading_max_streak"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:text=""
+                                        android:textColor="@color/text_gray" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/details_progress_reading_current_streak_holder"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="56dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_centerVertical="true"
+                                        android:text="@string/card_content_details_progress_reading_current_streak_allcaps"
+                                        android:textColor="@color/text_gray" />
+
+                                    <TextView
+                                        android:id="@+id/details_progress_reading_current_streak"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:text=""
+                                        android:textColor="@color/text_gray" />
+
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
 
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_content_details_progress_or_not_learned"
-                        android:textColor="@color/text_gray" />
-                </LinearLayout>
+                </ViewFlipper>
 
-                <LinearLayout
-                    android:id="@+id/details_progress_burned"
+                <View
+                    android:id="@+id/details_actionbar_shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/burned" />
-
-                    <TextView
-                        style="@style/Widget.TextView.Light"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/card_content_details_burned"
-                        android:textColor="@color/text_gray"
-                        android:textSize="26sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/card_content_details_progress_on"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <TextView
-                            android:id="@+id/details_progress_burned_date"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:text="1 Jan 2014"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/details_progress_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/details_progress_srs_logo"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp" />
-
-                        <TextView
-                            android:id="@+id/details_progress_srs_level"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="8dp"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_unlocked_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/card_content_details_progress_unlocked"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_unlocked"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_next_available_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/card_content_details_progress_next_available"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_next_available"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_meaning_correct_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="58dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/card_content_details_progress_meaning_correct"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_meaning_correct_percentage"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_toLeftOf="@+id/details_progress_meaning_correct_percentage_sign"
-                            android:maxEms="3"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <TextView
-                            android:id="@+id/details_progress_meaning_correct_percentage_sign"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
-                            android:text="%"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <ProgressBar
-                            android:id="@+id/details_progress_meaning_correct_progress"
-                            style="@style/ProgressBarCorrect"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/details_progress_meaning_correct_percentage"
-                            android:progress="0" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_meaning_incorrect_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="58dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/card_content_details_progress_meaning_incorrect"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-
-                        <TextView
-                            android:id="@+id/details_progress_meaning_incorrect_percentage"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_toLeftOf="@+id/details_progress_meaning_incorrect_percentage_sign"
-                            android:maxEms="3"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <TextView
-                            android:id="@+id/details_progress_meaning_incorrect_percentage_sign"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
-                            android:text="%"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <ProgressBar
-                            android:id="@+id/details_progress_meaning_incorrect_progress"
-                            style="@style/ProgressBarIncorrect"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/details_progress_meaning_incorrect_percentage"
-                            android:progress="0" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_meaning_max_streak_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/card_content_details_progress_meaning_max_streak"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_meaning_max_streak"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_meaning_current_streak_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/card_content_details_progress_meaning_current_streak"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_meaning_current_streak"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_reading_correct_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="58dp">
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentTop="true"
-                            android:background="@color/separator" />
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/card_content_details_progress_reading_correct"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_reading_correct_percentage"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_toLeftOf="@+id/details_progress_reading_correct_percentage_sign"
-                            android:maxEms="3"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <TextView
-                            android:id="@+id/details_progress_reading_correct_percentage_sign"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
-                            android:text="%"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <ProgressBar
-                            android:id="@+id/details_progress_reading_correct_progress"
-                            style="@style/ProgressBarCorrect"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/details_progress_reading_correct_percentage"
-                            android:progress="0" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_reading_incorrect_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="58dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/card_content_details_progress_reading_incorrect"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_reading_incorrect_percentage"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_toLeftOf="@+id/details_progress_reading_incorrect_percentage_sign"
-                            android:maxEms="3"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <TextView
-                            android:id="@+id/details_progress_reading_incorrect_percentage_sign"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="10dp"
-                            android:text="%"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <ProgressBar
-                            android:id="@+id/details_progress_reading_incorrect_progress"
-                            style="@style/ProgressBarIncorrect"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/details_progress_reading_incorrect_percentage"
-                            android:progress="0" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_reading_max_streak_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/card_content_details_progress_reading_max_streak"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_reading_max_streak"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/separator" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/details_progress_reading_current_streak_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp">
-
-                        <TextView
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:text="@string/card_content_details_progress_reading_current_streak"
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray" />
-
-                        <TextView
-                            android:id="@+id/details_progress_reading_current_streak"
-                            style="@style/Widget.TextView.Light"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:text=""
-                            android:textAppearance="@android:style/TextAppearance.Medium"
-                            android:textColor="@color/text_gray_light" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ViewFlipper>
-
-</ScrollView>
+                    android:layout_height="3dp"
+                    android:background="@drawable/actionbar_shadow" />
+            </FrameLayout>
+
+        </tr.xip.wanikani.SynchronizedScrollView>
+    </RelativeLayout>
+</LinearLayout>

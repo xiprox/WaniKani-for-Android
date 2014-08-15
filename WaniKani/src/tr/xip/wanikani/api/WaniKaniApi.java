@@ -14,6 +14,7 @@ import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.api.response.User;
+import tr.xip.wanikani.api.response.UserInfo;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.PrefManager;
 
@@ -52,8 +53,8 @@ public class WaniKaniApi {
         return service.getUser(API_KEY);
     }
 
-    public boolean isVacationModeActive() {
-        return (getUser().getVacationDate() + "").equals(null);
+    public boolean isVacationModeActive(UserInfo userInfo) {
+        return userInfo.getVacationDate() != 0;
     }
 
     public StudyQueue getStudyQueue() {

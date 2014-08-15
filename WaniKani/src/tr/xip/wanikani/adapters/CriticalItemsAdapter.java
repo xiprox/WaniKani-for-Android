@@ -3,7 +3,6 @@ package tr.xip.wanikani.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.CriticalItemsList;
-import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by xihsa_000 on 3/14/14.
@@ -58,15 +56,15 @@ public class CriticalItemsAdapter extends ArrayAdapter<CriticalItemsList.Critica
             mItemCharacter.setTypeface(typeface);
 
             if (item.getType().equals("radical")) {
-                mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_radical));
+                mItemType.setBackgroundResource(R.drawable.oval_radical);
             }
 
             if (item.getType().equals("kanji")) {
-                mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_kanji));
+                mItemType.setBackgroundResource(R.drawable.oval_kanji);
             }
 
             if (item.getType().equals("vocabulary")) {
-                mItemType.setBackgroundColor(v.getResources().getColor(R.color.wanikani_vocabulary));
+                mItemType.setBackgroundResource(R.drawable.oval_vocabulary);
             }
 
             if (item.getImage() == null) {

@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ViewFlipper
-        android:id="@+id/activity_recent_unlocks_view_flipper"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_placeholder_height"
+        android:background="@color/apptheme_actionbar" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
-            android:id="@+id/activity_recent_unlocks_grid"
+        <ViewFlipper
+            android:id="@+id/activity_recent_unlocks_view_flipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="12dp"
-            android:fadingEdge="none"
-            android:listSelector="@android:color/transparent"
-            android:clipToPadding="false"
-            android:fastScrollEnabled="true"
-            android:scrollbarStyle="outsideOverlay"
-            android:horizontalSpacing="6dp"
-            android:verticalSpacing="6dp"
-            android:columnWidth="250dp"
-            android:stretchMode="columnWidth"
-            android:numColumns="auto_fit" />
+            android:layout_height="match_parent">
 
-    </ViewFlipper>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
+                android:id="@+id/activity_recent_unlocks_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:columnWidth="250dp"
+                android:fadingEdge="none"
+                android:fastScrollEnabled="true"
+                android:horizontalSpacing="1dp"
+                android:numColumns="auto_fit"
+                android:scrollbarStyle="outsideOverlay"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="1dp" />
+
+        </ViewFlipper>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/actionbar_shadow" />
+    </RelativeLayout>
 </LinearLayout>

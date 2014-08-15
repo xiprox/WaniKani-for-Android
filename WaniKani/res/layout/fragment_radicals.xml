@@ -1,108 +1,110 @@
 <?xml version="1" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:animateLayoutChanges="true">
+
+    <View
+        android:id="@+id/radicals_actionbar_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/apptheme_actionbar" />
 
     <ViewFlipper
         android:id="@+id/radicals_list_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:inAnimation="@anim/abc_fade_in"
-        android:outAnimation="@anim/abc_fade_out"
-        android:animateLayoutChanges="true">
+        android:outAnimation="@anim/abc_fade_out">
 
         <ProgressBar
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <ViewFlipper
             android:id="@+id/radicals_message_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
             android:inAnimation="@anim/abc_fade_in"
             android:outAnimation="@anim/abc_fade_out"
-            android:paddingBottom="2dp"
-            android:animateLayoutChanges="true">
+            android:paddingBottom="2dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true">
 
-                <android.support.v4.widget.SwipeRefreshLayout
-                    android:id="@+id/radicals_swipe_refresh"
+                <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
+                    android:id="@+id/radicals_grid"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
-                        android:id="@+id/radicals_grid"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="12dp"
-                        android:listSelector="@android:color/transparent"
-                        android:fadingEdge="none"
-                        android:clipToPadding="false"
-                        android:fastScrollEnabled="true"
-                        android:scrollbarStyle="outsideOverlay"
-                        android:horizontalSpacing="6dp"
-                        android:verticalSpacing="6dp"
-                        android:columnWidth="100dp"
-                        android:stretchMode="columnWidth"
-                        android:numColumns="auto_fit" />
-
-                </android.support.v4.widget.SwipeRefreshLayout>
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:columnWidth="100dp"
+                    android:fadingEdge="none"
+                    android:fastScrollEnabled="true"
+                    android:horizontalSpacing="1dp"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="auto_fit"
+                    android:overScrollMode="never"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dp" />
             </RelativeLayout>
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/radicals_message_swipe_refresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="48dp">
 
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                        <LinearLayout
-                            android:orientation="vertical"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_gravity="center_horizontal"
-                                android:id="@+id/radicals_message_icon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp" />
+                        <ImageView
+                            android:id="@+id/radicals_message_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="16dp" />
 
-                            <TextView
-                                android:textAppearance="@android:style/TextAppearance.Medium"
-                                android:textColor="@color/text_gray"
-                                android:layout_gravity="center_horizontal"
-                                android:id="@+id/radicals_message_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                style="@style/Widget.TextView.Light" />
+                        <TextView
+                            android:id="@+id/radicals_message_title"
+                            style="@style/Widget.TextView.Light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="@color/text_gray" />
 
-                            <TextView
-                                android:textColor="@color/text_gray"
-                                android:layout_gravity="center_horizontal"
-                                android:id="@+id/radicals_message_summary"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:layout_marginBottom="8dp"
-                                style="@style/Widget.TextView.Light" />
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/radicals_message_summary"
+                            style="@style/Widget.TextView.Light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
                 </ScrollView>
             </android.support.v4.widget.SwipeRefreshLayout>
         </ViewFlipper>
     </ViewFlipper>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/radicals_actionbar_header"
+        android:background="@drawable/gradient_actionbar" />
 </RelativeLayout>

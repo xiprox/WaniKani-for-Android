@@ -1,6 +1,7 @@
 package tr.xip.wanikani.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,14 +50,15 @@ public class NavigationItemsAdapter extends ArrayAdapter<NavigationItems.NavItem
             ImageView mIcon = (ImageView) v.findViewById(R.id.navigation_item_icon);
             TextView mTitle = (TextView) v.findViewById(R.id.navigation_item_title);
 
+            mIcon.setImageResource(item.icon);
             mTitle.setText(item.title);
 
             if (position == selectedItem) {
-                mIcon.setImageResource(item.iconSelected);
-                mTitle.setTypeface(null, Typeface.BOLD);
+                mTitle.setTextColor(getContext().getResources().getColor(R.color.apptheme_main));
+                mIcon.setColorFilter(getContext().getResources().getColor(R.color.apptheme_main), PorterDuff.Mode.SRC_ATOP);
             } else {
-                mIcon.setImageResource(item.icon);
-                mTitle.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+                mTitle.setTextColor(getContext().getResources().getColor(R.color.text_gray));
+                mIcon.setColorFilter(getContext().getResources().getColor(R.color.text_gray), PorterDuff.Mode.SRC_ATOP);
             }
         }
 

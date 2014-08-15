@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/ThemeWanikanilight">
+        android:theme="@style/Theme.Apptheme">
         <activity
             android:name="tr.xip.wanikani.MainActivity"
             android:label="@string/app_name">
@@ -25,8 +25,6 @@
         </activity>
         <activity
             android:name=".Browser"
-            android:theme="@style/ThemeWanikanilight"
-            android:screenOrientation="portrait"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -34,7 +32,6 @@
         </activity>
         <activity
             android:name=".ItemDetailsActivity"
-            android:icon="@drawable/ic_wanikani_stamp"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
 
             <meta-data
@@ -44,7 +41,6 @@
         <activity
             android:name=".RecentUnlocksActivity"
             android:label="@string/card_title_recent_unlocks"
-            android:icon="@drawable/ic_wanikani_stamp"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
 
             <meta-data
@@ -52,13 +48,11 @@
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
         <activity
-            android:name="tr.xip.wanikani.FirstTimeActivity"
+            android:name=".FirstTimeActivity"
             android:icon="@drawable/ic_wanikani_stamp" />
         <activity
             android:name=".settings.SettingsActivity"
-            android:theme="@style/ThemeLightDarkActionBar"
             android:label="@string/title_settings"
-            android:icon="@drawable/ic_gear"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
 
             <meta-data

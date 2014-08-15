@@ -1,70 +1,75 @@
 package tr.xip.wanikani.settings.preferences;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.preference.DialogPreference;
-import android.util.AttributeSet;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 
 import net.simonvt.numberpicker.NumberPicker;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.managers.PrefManager;
 
 /**
  * Created by xihsa_000 on 4/4/14.
  */
-public class RecentUnlocksNumberPreference extends DialogPreference {
+public class RecentUnlocksNumberPreference extends DialogFragment {
+
+    Context context;
+    PrefManager prefMan;
 
     NumberPicker mNumberPicker;
 
     private int DEFAULT_VALUE = 5;
 
-    private int mCurrentValue = 5;
-
-    public RecentUnlocksNumberPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        setPositiveButtonText(android.R.string.ok);
-        setNegativeButtonText(android.R.string.cancel);
-
-        setDialogIcon(null);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity();
+        prefMan = new PrefManager(context);
     }
 
     @Override
-    protected View onCreateDialogView() {
-        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        View view = layoutInflater.inflate(R.layout.number_picker, null);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_pref_recent_unlocks_number, null);
 
         mNumberPicker = (NumberPicker) view.findViewById(R.id.number_picker);
         mNumberPicker.setMinValue(3);
         mNumberPicker.setMaxValue(30);
         mNumberPicker.setWrapSelectorWheel(false);
 
-        mNumberPicker.setValue(mCurrentValue);
+        mNumberPicker.setValue(prefMan.getDashboardRecentUnlocksNumber());
+
+        Button mOk = (Button) view.findViewById(R.id.button1);
+        Button mCancel = (Button) view.findViewById(R.id.button2);
+
+        mOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                prefMan.setDashboardRecentUnlocksNumber(mNumberPicker.getValue());
+                dismiss();
+            }
+        });
+
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
         return view;
-    }
-
-    @Override
-    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        if (restorePersistedValue) {
-            mCurrentValue = this.getPersistedInt(DEFAULT_VALUE);
-        } else {
-            mCurrentValue = (Integer) defaultValue;
-            persistInt((Integer) defaultValue);
-        }
-    }
-
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        if (positiveResult) {
-            persistInt(mNumberPicker.getValue());
-        }
-    }
-
-    @Override
-    protected Object onGetDefaultValue(TypedArray a, int index) {
-        return a.getInteger(index, DEFAULT_VALUE);
     }
 }

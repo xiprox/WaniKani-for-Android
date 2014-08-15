@@ -1,34 +1,33 @@
 package tr.xip.wanikani;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.dialogs.HowToGetKeyDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.managers.ThemeManager;
 
 public class FirstTimeActivity extends ActionBarActivity {
 
     WaniKaniApi api;
-    ThemeManager themeMan;
     PrefManager prefMan;
+
+    ViewGroup mActionBarLayout;
+    ImageView mActionBarIcon;
+    TextView mActionBarTitle;
 
     EditText mApiKey;
     Button mHowTo;
@@ -40,16 +39,27 @@ public class FirstTimeActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        context = this;
-
-        api = new WaniKaniApi(getApplicationContext());
-        prefMan = new PrefManager(getApplicationContext());
-        themeMan = new ThemeManager(this);
-
-        setTheme(themeMan.getTheme());
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_time);
+
+        context = this;
+        api = new WaniKaniApi(getApplicationContext());
+        prefMan = new PrefManager(getApplicationContext());
+
+        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.actionbar_main, null);
+
+        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+
+        mActionBarIcon.setVisibility(View.GONE);
+        mActionBarTitle.setText(R.string.action_login);
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setCustomView(mActionBarLayout);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        mActionBar.setIcon(android.R.color.transparent);
 
         mApiKey = (EditText) findViewById(R.id.first_time_api_key);
         mHowTo = (Button) findViewById(R.id.first_time_how_to_api_key);
@@ -62,26 +72,7 @@ public class FirstTimeActivity extends ActionBarActivity {
         mHowTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater inflater = LayoutInflater.from(FirstTimeActivity.this);
-                View dialogView = inflater.inflate(R.layout.dialog_how_to_get_key, null);
-                dialogView.setBackgroundColor(context.getResources().getColor(
-                        new ThemeManager(context).getWindowBackgroundColor()));
-
-                TextView linkTextView = (TextView) dialogView.findViewById(R.id.wanikani_go_link_text);
-                linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(FirstTimeActivity.this);
-                builder.setTitle(R.string.action_how_to_api_key)
-                        .setView(dialogView)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        });
-
-                builder.create();
-                builder.show();
+                new HowToGetKeyDialogFragment().show(getSupportFragmentManager(), "how-to-get-key");
             }
         });
 
