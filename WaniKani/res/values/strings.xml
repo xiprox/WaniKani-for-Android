@@ -204,15 +204,15 @@
     <!-- Time Strings -->
     <string name="ago">ago</string>
     <string name="in">In</string>
-    <string name="less_than_a_minute">Less than a minute</string>
-    <string name="a_minute">A Minute</string>
-    <string name="minutes">Minutes</string>
-    <string name="an_hour">An Hour</string>
+    <string name="less_than_a_minute">less than a minute</string>
+    <string name="a_minute">a minute</string>
+    <string name="minutes">minutes</string>
+    <string name="an_hour">an hour</string>
     <string name="hours">Hours</string>
-    <string name="a_day">A Day</string>
-    <string name="days">Days</string>
-    <string name="a_month">A Month</string>
-    <string name="months">Months</string>
+    <string name="a_day">a day</string>
+    <string name="days">days</string>
+    <string name="a_month">a month</string>
+    <string name="months">months</string>
 
     <!-- Other Strings -->
     <string name="ok">OK</string>

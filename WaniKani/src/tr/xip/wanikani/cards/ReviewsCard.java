@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -110,8 +112,8 @@ public class ReviewsCard extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
                 mNextReview.setText(sdf.format(dataMan.getNextReviewDate()));
             } else {
-                mNextReview.setText(Utils.getTimeDifference(context,
-                        new Date(dataMan.getNextReviewDate()), Utils.getCurrentDate()));
+                mNextReview.setText(WordUtils.capitalize(Utils.getTimeDifference(context,
+                        new Date(dataMan.getNextReviewDate()), Utils.getCurrentDate())));
             }
         }
     }
@@ -178,8 +180,8 @@ public class ReviewsCard extends Fragment {
                         if (prefMan.isUseSpecificDates()) {
                             mNextReview.setText(sdf.format(nextReview));
                         } else {
-                            mNextReview.setText(Utils.getTimeDifference(context, new Date(nextReview),
-                                    Utils.getCurrentDate()));
+                            mNextReview.setText(WordUtils.capitalize(Utils.getTimeDifference(context,
+                                    new Date(nextReview), Utils.getCurrentDate())));
                         }
                     }
 

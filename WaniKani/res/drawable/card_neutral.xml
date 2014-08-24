@@ -5,10 +5,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="0.7dp"
-                android:left="0.7dp"
-                android:right="0.7dp"
-                android:top="0.7dp" />
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
             <solid android:color="#04000000" />
             <corners android:radius="4dp" />
         </shape>
@@ -16,10 +16,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="0.7dp"
-                android:left="0.7dp"
-                android:right="0.7dp"
-                android:top="0.7dp" />
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
             <solid android:color="#07000000" />
             <corners android:radius="3dp" />
         </shape>
@@ -27,10 +27,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="0.7dp"
-                android:left="0.7dp"
-                android:right="0.7dp"
-                android:top="0.7dp" />
+                android:bottom="1dp"
+                android:left="1dp"
+                android:right="1dp"
+                android:top="1dp" />
             <solid android:color="#09000000" />
             <corners android:radius="2dp" />
         </shape>
@@ -38,10 +38,10 @@
     <item>
         <shape>
             <padding
-                android:bottom="0.7dp"
-                android:left="-0.3dp"
-                android:right="0.7dp"
-                android:top="-0.3dp" />
+                android:bottom="1dp"
+                android:left="-0.7dp"
+                android:right="1dp"
+                android:top="-0.7dp" />
             <solid android:color="#15000000" />
             <corners android:radius="1dp" />
         </shape>

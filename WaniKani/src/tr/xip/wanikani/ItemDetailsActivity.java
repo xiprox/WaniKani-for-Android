@@ -512,8 +512,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             if (prefMan.isUseSpecificDates()) {
                                 mNextAvailable.setText(availableDateFormat.format(radicalItem.getAvailableDate()) + "");
                             } else {
-                                mNextAvailable.setText(Utils.getTimeDifference(ItemDetailsActivity.this,
-                                        new Date(radicalItem.getAvailableDate()), Utils.getCurrentDate()) + "");
+                                mNextAvailable.setText(WordUtils.capitalize(Utils.getTimeDifference(
+                                        ItemDetailsActivity.this, new Date(radicalItem.getAvailableDate()),
+                                        Utils.getCurrentDate()) + ""));
                             }
 
                             mMeaningCorrectPercentage.setText(radicalItem.getMeaningCorrectPercentage() + "");
@@ -638,8 +639,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             if (prefMan.isUseSpecificDates()) {
                                 mNextAvailable.setText(availableDateFormat.format(kanjiItem.getAvailableDate()) + "");
                             } else {
-                                mNextAvailable.setText(Utils.getTimeDifference(ItemDetailsActivity.this,
-                                        new Date(kanjiItem.getAvailableDate()), Utils.getCurrentDate()) + "");
+                                mNextAvailable.setText(WordUtils.capitalize(Utils.getTimeDifference(
+                                        ItemDetailsActivity.this, new Date(kanjiItem.getAvailableDate()),
+                                        Utils.getCurrentDate()) + ""));
                             }
 
                             mMeaningCorrectPercentage.setText(kanjiItem.getMeaningCorrectPercentage() + "");
@@ -757,8 +759,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             if (prefMan.isUseSpecificDates()) {
                                 mNextAvailable.setText(availableDateFormat.format(vocabularyItem.getAvailableDate()) + "");
                             } else {
-                                mNextAvailable.setText(Utils.getTimeDifference(ItemDetailsActivity.this,
-                                        new Date(vocabularyItem.getAvailableDate()), Utils.getCurrentDate()) + "");
+                                mNextAvailable.setText(WordUtils.capitalize(Utils.getTimeDifference(
+                                        ItemDetailsActivity.this, new Date(vocabularyItem.getAvailableDate()),
+                                        Utils.getCurrentDate()) + ""));
                             }
 
                             mMeaningCorrectPercentage.setText(vocabularyItem.getMeaningCorrectPercentage() + "");

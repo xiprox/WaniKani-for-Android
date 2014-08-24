@@ -87,8 +87,8 @@ public class PrefManager {
     }
 
     public String getDashboardLastUpdateTime() {
-        return Utils.getTimeDifference(context, Utils.getCurrentDate(),
-                new Date(prefs.getLong("pref_update_date_dashboard", 0)));
+        return Utils.getTimeDifference(context, new Date(prefs.getLong("pref_update_date_dashboard", 0)),
+                Utils.getCurrentDate());
     }
 
     public String getLessonsScreenOrientation() {

@@ -67,7 +67,6 @@ android {
         compile files('libs/retrofit-1.4.1.jar')
         compile files('libs/gson-2.2.3.jar')
         compile files('libs/picasso-2.2.0.jar')
-        compile files('libs/achartengine-1.1.0.jar')
         compile files('libs/commons-io-2.4.jar')
         compile files('libs/commons-lang3-3.3.1.jar')
     }
