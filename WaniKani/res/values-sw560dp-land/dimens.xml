@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_card_side">68dp</dimen>
+    <dimen name="margin_card_side">168dp</dimen>
     <dimen name="margin_card_end">48dp</dimen>
     <dimen name="margin_card_between">18dp</dimen>
 </resources>

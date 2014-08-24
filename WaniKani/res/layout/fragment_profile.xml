@@ -45,14 +45,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/profile_avatar_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:layout_marginTop="@dimen/margin_card_end"
                         android:background="@drawable/card"
                         android:orientation="horizontal">
 
@@ -175,7 +177,9 @@
                         android:id="@+id/profile_about_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:background="@drawable/card"
                         android:orientation="vertical">
 
@@ -202,7 +206,9 @@
                         android:id="@+id/profile_details_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="@dimen/margin_card_end"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:animateLayoutChanges="true"
                         android:background="@drawable/card"
                         android:orientation="vertical">

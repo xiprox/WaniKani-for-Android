@@ -6,7 +6,7 @@
     <dimen name="action_bar_height">56dp</dimen>
     <dimen name="action_bar_placeholder_height">0dp</dimen>
 
-    <dimen name="margin_dashboard_card_side">12dp</dimen>
-    <dimen name="margin_dashboard_card_end">12dp</dimen>
-    <dimen name="margin_dashboard_card_between">8dp</dimen>
+    <dimen name="margin_card_side">12dp</dimen>
+    <dimen name="margin_card_end">12dp</dimen>
+    <dimen name="margin_card_between">8dp</dimen>
 </resources>

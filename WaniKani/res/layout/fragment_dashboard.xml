@@ -48,19 +48,19 @@
                         android:id="@+id/fragment_dashboard_message_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
-                        android:layout_marginTop="@dimen/margin_dashboard_card_end"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:layout_marginTop="@dimen/margin_card_end"
                         android:visibility="gone" />
 
                     <FrameLayout
                         android:id="@+id/fragment_dashboard_vacation_mode_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
-                        android:layout_marginTop="@dimen/margin_dashboard_card_end"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:layout_marginTop="@dimen/margin_card_end"
                         android:layoutAnimation="@anim/fade_controller"
                         android:visibility="gone" />
 
@@ -68,10 +68,10 @@
                         android:id="@+id/fragment_dashboard_available_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
-                        android:layout_marginTop="@dimen/margin_dashboard_card_end"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:layout_marginTop="@dimen/margin_card_end"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -84,9 +84,9 @@
                         android:id="@+id/fragment_dashboard_reviews_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:layoutAnimation="@anim/fade_controller"
                         android:orientation="vertical">
 
@@ -100,27 +100,27 @@
                         android:id="@+id/fragment_dashboard_status_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:layoutAnimation="@anim/fade_controller" />
 
                     <FrameLayout
                         android:id="@+id/fragment_dashboard_progress_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:layoutAnimation="@anim/fade_controller" />
 
                     <LinearLayout
                         android:id="@+id/fragment_dashboard_recent_unlocks_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_between"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:layoutAnimation="@anim/fade_controller"
                         android:orientation="vertical">
 
@@ -134,9 +134,9 @@
                         android:id="@+id/fragment_dashboard_critical_items_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_dashboard_card_end"
-                        android:layout_marginLeft="@dimen/margin_dashboard_card_side"
-                        android:layout_marginRight="@dimen/margin_dashboard_card_side"
+                        android:layout_marginBottom="@dimen/margin_card_end"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
                         android:layoutAnimation="@anim/fade_controller"
                         android:orientation="vertical">
 
