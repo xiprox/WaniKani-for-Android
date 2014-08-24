@@ -60,7 +60,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentTop="true"
-                        android:background="@color/separator" />
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@color/separator_light" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -116,5 +118,4 @@
             </LinearLayout>
         </ViewFlipper>
     </ViewFlipper>
-
 </LinearLayout>

@@ -64,20 +64,6 @@
             android:paddingRight="16dp">
 
             <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:background="@drawable/selector_background_neutral"
-                android:gravity="center"
-                android:minHeight="36dp"
-                android:minWidth="88dp"
-                android:text="@string/ok"
-                android:textAllCaps="true"
-                android:textColor="@color/text_gray_dark"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
@@ -86,6 +72,20 @@
                 android:minHeight="36dp"
                 android:minWidth="88dp"
                 android:text="@string/cancel"
+                android:textAllCaps="true"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="@drawable/selector_background_neutral"
+                android:gravity="center"
+                android:minHeight="36dp"
+                android:minWidth="88dp"
+                android:text="@string/ok"
                 android:textAllCaps="true"
                 android:textColor="@color/text_gray_dark"
                 android:textSize="14sp"

@@ -134,7 +134,7 @@ public class CriticalItemsCard extends Fragment {
             }
 
             totalHeight += mCardTitle.getMeasuredHeight();
-            totalHeight += pxFromDp(16); // Add the paddings as well
+            totalHeight += pxFromDp(32); // Add the paddings as well
 
             return totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }
@@ -182,7 +182,7 @@ public class CriticalItemsCard extends Fragment {
                         mMessageViewFlipper.showNext();
                     }
 
-                    height = (int) pxFromDp(158);
+                    height = (int) pxFromDp(168);
                 }
 
                 mListener.onCriticalItemsCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);

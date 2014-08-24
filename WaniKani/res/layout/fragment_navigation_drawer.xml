@@ -110,11 +110,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/tint_black_05"
-        android:clickable="true" />
-
 </LinearLayout>
