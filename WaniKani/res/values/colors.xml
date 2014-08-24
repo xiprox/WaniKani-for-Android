@@ -30,10 +30,10 @@
     <color name="holo_red_dark">#CC0000</color>
 
     <!-- Swipe To Refresh Colors -->
-    <color name="swipe_refresh_1">#ffff00</color>
-    <color name="swipe_refresh_2">#ffff8d</color>
-    <color name="swipe_refresh_3">@color/swipe_refresh_1</color>
-    <color name="swipe_refresh_4">@color/swipe_refresh_2</color>
+    <color name="swipe_refresh_1">#f8bbd0</color>
+    <color name="swipe_refresh_2">#f48fb1</color>
+    <color name="swipe_refresh_3">#f06292</color>
+    <color name="swipe_refresh_4">#ec407a</color>
 
     <!-- Tint Colors -->
     <color name="tint_black_30">#30000000</color>
