@@ -31,12 +31,13 @@ public class Utils {
                     + getAgoIfPastTime(context, differenceInMilliseconds);
         } else if (differenceInMinutes >= 60 || differenceInMinutes <= -60) {
             if (differenceInHours >= 24 || differenceInHours <= -24) {
-                if ((double) differenceInDays >= 30.4368 || (double) differenceInDays <= -30.4368) {
-                    if (differenceInMonths == 1 || differenceInMonths == -1)
-                        return context.getString(R.string.a_month)
+                if (differenceInDays >= 30 || differenceInDays <= -30) {
+                    if ((differenceInDays >= 30 && differenceInDays < 46)
+                            || (differenceInDays <= -30 && differenceInDays > -46))
+                        return "~ " + context.getString(R.string.a_month)
                                 + getAgoIfPastTime(context, differenceInMonths);
                     else
-                        return (long) removeMinusFromLong(differenceInMonths) + " "
+                        return Math.round(removeMinusFromLong(differenceInMonths)) + " "
                                 + context.getString(R.string.months)
                                 + getAgoIfPastTime(context, differenceInMonths);
                 } else {
