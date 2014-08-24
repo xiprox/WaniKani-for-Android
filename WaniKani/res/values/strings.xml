@@ -158,19 +158,22 @@
     <!-- Preferences Strings -->
     <string name="pref_title_apikey">API Key</string>
     <string name="pref_category_dashboard">Dashboard</string>
-    <string name="pref_title_recent_unlocks">Recent Unlocks</string>
+    <string name="pref_title_recent_unlocks">Recent unlocks</string>
     <string name="pref_summary_recent_unlocks">Number of recent unlock items to display in dashboard</string>
-    <string name="pref_title_critical_items_percentage">Critical Items</string>
+    <string name="pref_title_critical_items_percentage">Critical items</string>
     <string name="pref_summary_critical_items_percentage">All items with percentage correct below the specified percentage will be displayed</string>
     <string name="pref_category_general">General</string>
     <string name="pref_title_fonts">Fonts</string>
     <string name="pref_summary_fonts">About the fonts used in this application</string>
     <string name="pref_category_lessons">Lessons</string>
     <string name="pref_category_reviews">Reviews</string>
-    <string name="pref_title_screen_orientation">Screen Orientation</string>
+    <string name="pref_title_screen_orientation">Screen orientation</string>
     <string name="pref_summary_screen_orientation"></string>
-    <string name="pref_title_use_specific_dates">Specific Dates</string>
+    <string name="pref_title_use_specific_dates">Specific dates</string>
     <string name="pref_summary_use_specific_dates">Show dates and times specifically instead of showing remaining time</string>
+    <string name="pref_category_developer">Developer</string>
+    <string name="pref_title_open_source_licences">Open source licenses</string>
+    <string name="pref_title_app_version">App version</string>
 
     <!-- Screen Orientation -->
     <string name="screen_orientation_auto">Auto-rotate</string>

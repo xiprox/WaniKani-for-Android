@@ -1,5 +1,7 @@
 package tr.xip.wanikani.settings;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -14,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.dialogs.OpenSourceLicensesDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.settings.preferences.CriticalItemsPercentagePreference;
 import tr.xip.wanikani.settings.preferences.FontsPreference;
@@ -40,6 +43,8 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     TextView mLessonsScreenOrientationSummary;
     LinearLayout mReviewsScreenOrientation;
     TextView mReviewsScreenOrientationSummary;
+    TextView mDeveloperOpenSourceLicenses;
+    TextView mDeveloperAppVersionSummary;
 
     ViewGroup mActionBarLayout;
     ImageView mActionBarIcon;
@@ -62,6 +67,8 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         mLessonsScreenOrientationSummary = (TextView) findViewById(R.id.settings_lessons_screen_orientation_summary);
         mReviewsScreenOrientation = (LinearLayout) findViewById(R.id.settings_reviews_screen_orientation);
         mReviewsScreenOrientationSummary = (TextView) findViewById(R.id.settings_reviews_screen_orientation_summary);
+        mDeveloperOpenSourceLicenses = (TextView) findViewById(R.id.settings_developer_open_source_licenses);
+        mDeveloperAppVersionSummary = (TextView) findViewById(R.id.settings_developer_app_version_summary);
 
         mGeneralUseSpecificDatesCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -111,6 +118,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         loadGeneralUseSpecificDates();
         loadLessonsScreenOrientation();
         loadReviewsScreenOrientation();
+        loadAppVersionSummary();
     }
 
     public void setOnClickListeners() {
@@ -120,6 +128,7 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         mDashboardCriticalItemsPercentage.setOnClickListener(this);
         mLessonsScreenOrientation.setOnClickListener(this);
         mReviewsScreenOrientation.setOnClickListener(this);
+        mDeveloperOpenSourceLicenses.setOnClickListener(this);
     }
 
     private void loadApiKey() {
@@ -143,6 +152,15 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
 
     private void loadReviewsScreenOrientation() {
         mReviewsScreenOrientationSummary.setText(prefMan.getReviewsScreenOrientation());
+    }
+
+    private void loadAppVersionSummary() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            mDeveloperAppVersionSummary.setText(packageInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -178,7 +196,11 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
             case R.id.settings_reviews_screen_orientation:
                 new ReviewsScreenOrientationPreference().show(getSupportFragmentManager(),
                         "reviews-screen-orientation-preference");
-
+                break;
+            case R.id.settings_developer_open_source_licenses:
+                new OpenSourceLicensesDialogFragment().show(getSupportFragmentManager(),
+                        "open-source-licenses-preference-dialog");
+                break;
         }
     }
 
