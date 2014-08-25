@@ -35,7 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:orientation="vertical">
+            android:fadingEdge="none"
+            android:orientation="vertical"
+            android:overScrollMode="never">
 
             <ViewFlipper
                 android:id="@+id/profile_view_flipper"
@@ -217,8 +219,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginTop="16dp">
+                            android:layout_marginRight="16dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -287,7 +288,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginLeft="70dp"
+                                android:layout_marginLeft="100dp"
                                 android:ellipsize="marquee"
                                 android:maxLines="1"
                                 android:textColor="@color/text_gray" />
@@ -298,7 +299,6 @@
                             android:id="@+id/profile_twitter_holder"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:layout_marginBottom="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp">
 

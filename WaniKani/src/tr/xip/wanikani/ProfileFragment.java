@@ -186,7 +186,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mTopicsCount.setText(dataMan.getTopicsCount() + "");
         mPostsCount.setText(dataMan.getPostsCount() + "");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
         mCreationDate.setText(sdf.format(dataMan.getCreationDate()));
 
         if (dataMan.getAbout().length() != 0) {
