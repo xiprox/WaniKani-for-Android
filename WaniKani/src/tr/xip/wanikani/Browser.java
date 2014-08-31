@@ -32,13 +32,13 @@ public class Browser extends ActionBarActivity {
     public static final String ACTION_REVIEW = "reviews";
     public static final String ACTION_ACCOUNT_SETTINGS = "account_settings";
 
-    static final String WANIKANI_BASE_URL = "https://www.wanikani.com";
-    static final String LESSON_URL = WANIKANI_BASE_URL + "/lesson/session";
-    static final String REVIEW_URL = WANIKANI_BASE_URL + "/review/session";
-    static final String RADICAL_URL = WANIKANI_BASE_URL + "/radicals/";
-    static final String KANJI_URL = WANIKANI_BASE_URL + "/kanji/";
-    static final String VOCABULARY_URL = WANIKANI_BASE_URL + "/vocabulary/";
-    static final String ACCOUNT_SETTINGS_URL = WANIKANI_BASE_URL + "/account";
+    public static final String WANIKANI_BASE_URL = "https://www.wanikani.com";
+    public static final String LESSON_URL = WANIKANI_BASE_URL + "/lesson/session";
+    public static final String REVIEW_URL = WANIKANI_BASE_URL + "/review/session";
+    public static final String RADICAL_URL = WANIKANI_BASE_URL + "/radicals/";
+    public static final String KANJI_URL = WANIKANI_BASE_URL + "/kanji/";
+    public static final String VOCABULARY_URL = WANIKANI_BASE_URL + "/vocabulary/";
+    public static final String ACCOUNT_SETTINGS_URL = WANIKANI_BASE_URL + "/account";
 
     ViewGroup mActionBarLayout;
     ImageView mActionBarIcon;
@@ -93,16 +93,10 @@ public class Browser extends ActionBarActivity {
         String item = intent.getStringExtra(ARG_ITEM);
 
         if (action.equals(ACTION_LESSON)) {
-            mWebview.loadUrl(LESSON_URL);
-            mActionBarTitle.setText(R.string.ab_title_lessons);
-
-            setOrientation(prefMan.getLessonsScreenOrientation());
+            /* Lessons have moved to WebReviewActivity */
         }
         if (action.equals(ACTION_REVIEW)) {
-            mWebview.loadUrl(REVIEW_URL);
-            mActionBarTitle.setText(R.string.ab_title_reviews);
-
-            setOrientation(prefMan.getReviewsScreenOrientation());
+            /* Reviews have moved to WebReviewActivity */
         }
 
         if (action.equals(ACTION_ITEM_DETAILS)) {

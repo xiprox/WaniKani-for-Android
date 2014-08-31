@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,9 +22,11 @@ import tr.xip.wanikani.BroadcastIntents;
 import tr.xip.wanikani.Browser;
 import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.WebReviewActivity;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Utils;
 
 /**
@@ -118,8 +121,12 @@ public class AvailableCard extends Fragment {
         mLessonsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Browser.class);
+                /*Intent intent = new Intent(getActivity(), Browser.class);
                 intent.putExtra(Browser.ARG_ACTION, Browser.ACTION_LESSON);
+                getActivity().startActivityForResult(intent, BROWSER_REQUEST);*/
+                Intent intent = new PrefManager(context).getWebViewIntent();
+                intent.setAction (WebReviewActivity.OPEN_ACTION);
+                intent.setData(Uri.parse(Browser.LESSON_URL));
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });
@@ -127,8 +134,14 @@ public class AvailableCard extends Fragment {
         mReviewsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 Intent intent = new Intent(getActivity(), Browser.class);
                 intent.putExtra(Browser.ARG_ACTION, Browser.ACTION_REVIEW);
+                getActivity().startActivityForResult(intent, BROWSER_REQUEST);
+                */
+                Intent intent = new PrefManager(context).getWebViewIntent();
+                intent.setAction (WebReviewActivity.OPEN_ACTION);
+                intent.setData(Uri.parse(Browser.REVIEW_URL));
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
             }
         });

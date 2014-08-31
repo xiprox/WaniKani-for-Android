@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fmt_web_review_connecting">Connecting to WaniKani&#8230;</string>
+    <string name="fmt_web_review_error">Connection failed: %s</string>
+    <string name="tag_download_failed">Download failed</string>
+
+    <string name="ignore_button_message_title">Ignore button</string>
+    <string name="ignore_button_message_text">
+		Anyone using this feature is responsible for using it correctly.\n
+		This should be used only if you make an honest mistake but actually
+		knew the correct answer. Using it in any other way will harm your
+		Kanji learning process, cheating will only make learning Japanese harder
+		and you\'ll end up harming only yourselves!\n
+		See also \@ruipgpinheiro\'s post (author of the script) for more information:\n
+			https://www.wanikani.com/chat/api-and-third-party-apps/2940/
+    </string>
+    <string name="ignore_button_message_ok">OK, got it</string>
+
+    <string name="hw_accel_message_title">Note</string>
+    <string name="hw_accel_message_text">
+        To improve performance, HW acceleration is now enabled during reviews.
+        This is known to be problematic on some devices: some areas may not be
+        rendered correctly. If this is your case, you can disable it
+        by unchecking Settings/HW Accel
+    </string>
+    <string name="hw_accel_message_ok">OK, got it</string>
+
+    <string name="fmt_last_item_wait">Loading&#8230;</string>
+    <string name="fmt_last_item">Previous %s</string>
+
+</resources>

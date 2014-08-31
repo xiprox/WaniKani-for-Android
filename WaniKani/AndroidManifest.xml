@@ -59,6 +59,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+        <activity
+            android:name=".WebReviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:process=":webview"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SWWebReviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="false"
+            android:launchMode="singleTop"
+            android:process=":swwebview"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

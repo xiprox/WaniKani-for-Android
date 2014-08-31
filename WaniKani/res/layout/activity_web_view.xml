@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_placeholder_height"
+        android:background="@color/apptheme_actionbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/apptheme_actionbar"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/pb_reviews"
+            style="@style/ProgressBar.Apptheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:id="@+id/pb_download"
+            style="@style/ProgressBar.Apptheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/wv_splash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dip"
+                android:orientation="vertical"
+                android:padding="0dip"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dip"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="0dip" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_action_warning" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wv_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <tr.xip.wanikani.FocusWebView
+                        android:id="@+id/wv_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/txt_question_override"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:visibility="gone" />
+
+                    <RelativeLayout
+                        android:id="@+id/ime_div"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/card_reviews_edittext"
+                        android:paddingBottom="2dp"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/ime"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp" />
+
+                        <View
+                            android:id="@+id/v_srs"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@drawable/oval_apprentice"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_ignore"
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@+id/v_srs"
+                            android:background="@drawable/selector_background_neutral"
+                            android:text="✗"
+                            android:textColor="@android:color/white"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/ime_next"
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/selector_background_neutral"
+                            android:text=">"
+                            android:textColor="@color/text_gray" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="48dip"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/kb_mute_h"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/card"
+                            android:src="@drawable/ic_sound_gray"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/kb_single"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/card"
+                            android:text="1"
+                            android:textColor="@color/text_gray_light"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/actionbar_shadow" />
+    </RelativeLayout>
+</LinearLayout>

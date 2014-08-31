@@ -84,4 +84,18 @@
     <color name="card_vocabulary_shadow">#6f2481</color>
     <color name="card_disabled_shadow">#6a6a6a</color>
 
+    <!-- SRS colors -->
+    <color name="apprentice">#ff00aa</color>
+    <color name="guru">#aa38c6</color>
+    <color name="enlightened">#00aaff</color>
+    <color name="master">#5571e2</color>
+    <color name="burned">#555</color>
+
+    <!-- TextBox Colors -->
+    <color name="correctbg">#88cc00</color>
+    <color name="correctfg">#fff</color>
+    <color name="incorrectbg">#ff0033</color>
+    <color name="incorrectfg">#fff</color>
+    <color name="ignoredfg">#fff</color>
+    <color name="ignoredbg">#fecc31</color>
 </resources>

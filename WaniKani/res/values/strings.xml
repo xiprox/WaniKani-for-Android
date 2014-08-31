@@ -174,6 +174,45 @@
     <string name="pref_category_developer">Developer</string>
     <string name="pref_title_open_source_licences">Open source licenses</string>
     <string name="pref_title_app_version">App version</string>
+    <string name="pref_category_userscripts_and_enhancements">Userscripts and enhancements</string>
+    <string name="pref_title_review_improvements">Review improvements</string>
+    <string name="pref_summary_review_improvements">Enable userscripts and Custom IME</string>
+    <string name="pref_title_ignore_button">Ignore button</string>
+    <string name="pref_summary_ignore_button">Enable porting of Rui Pinheiro\'s ignore button</string>
+    <string name="pref_title_single_button">Single button</string>
+    <string name="pref_summary_single_button">Show \"1\" button, to enable item by item mode
+        				(reading and meaning are next to each other)</string>
+    <string name="pref_title_portrait_mode">Portrait mode</string>
+    <string name="pref_summary_portrait_mode">Force portrait mode when entering answers</string>
+    <string name="pref_title_wanikani_improve">WaniKani improve</string>
+    <string name="pref_summary_wanikani_improve">Skip to next question, if correct. Port of
+        		\@Seiji and \@Jatacid scripts</string>
+    <string name="pref_title_review_order">Review order</string>
+    <string name="pref_summary_review_order">Review radicals and kanji first. Port of
+        		\@Alucardeck\'s WKRO script</string>
+    <string name="pref_title_lesson_order">Lesson order</string>
+    <string name="pref_summary_lesson_order">Learn radicals and kanji first. Port of
+        		\@Alucardeck\'s WKLO script</string>
+    <string name="pref_title_external_frame_placer">External frame placer</string>
+    <string name="pref_summary_external_frame_placer">Enable \@jeshuamorrissey\'s script,
+        showing an external dictionary page in the lessons module (requires a large screen)</string>
+    <string name="pref_title_external_frame_placer_dictionary">External frame place dictionary</string>
+    <string name="pref_title_part_of_speech">Part of speech</string>
+    <string name="pref_summary_part_of_speech">Enable \@jeshuamorrissey\'s script, annotating items
+        with external definitions, part of speech and additional notes. Source is EDICT.</string>
+    <string name="pref_title_auto_popup">Auto popup</string>
+    <string name="pref_summary_auto_popup">Open info popup automatically after entering a wrong answer</string>
+    <string name="pref_title_mistake_delay">Mistake delay</string>
+    <string name="pref_summary_mistake_delay">Blocks enter for one second after entering a wrong answer. Port of Rui Pinheiro\'s userscript.</string>
+    <string name="pref_title_no_suggestions">No suggestions</string>
+    <string name="pref_summary_no_suggestions">Disable suggestions when entering japanese words</string>
+    <string name="pref_title_mute_button">Mute button</string>
+    <string name="pref_summary_mute_button">Show mute button when reviewing</string>
+    <string name="pref_title_srs_indication">SRS indication</string>
+    <string name="pref_summary_srs_indication">Show current item SRS level during reviews</string>
+    <string name="pref_title_hw_accel">HW acceleration</string>
+    <string name="pref_summary_hw_accel">Enables HW acceleration. You may need disable this if
+        reviews are rendered incorrectly.</string>
 
     <!-- Screen Orientation -->
     <string name="screen_orientation_auto">Auto-rotate</string>
