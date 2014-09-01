@@ -36,6 +36,7 @@ import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
+import tr.xip.wanikani.widget.RelativeTimeTextView;
 
 /**
  * Created by xihsa_000 on 3/23/14.
@@ -107,7 +108,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
     RelativeLayout mUnlockHolder;
     TextView mUnlocked;
     RelativeLayout mNextAvailableHolder;
-    TextView mNextAvailable;
+    RelativeTimeTextView mNextAvailable;
     RelativeLayout mMeaningCorrectHolder;
     TextView mMeaningCorrectPercentage;
     RelativeLayout mMeaningIncorrectHolder;
@@ -287,7 +288,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mUnlockHolder = (RelativeLayout) findViewById(R.id.details_progress_unlocked_holder);
         mUnlocked = (TextView) findViewById(R.id.details_progress_unlocked);
         mNextAvailableHolder = (RelativeLayout) findViewById(R.id.details_progress_next_available_holder);
-        mNextAvailable = (TextView) findViewById(R.id.details_progress_next_available);
+        mNextAvailable = (RelativeTimeTextView) findViewById(R.id.details_progress_next_available);
         mMeaningCorrectHolder = (RelativeLayout) findViewById(R.id.details_progress_meaning_correct_holder);
         mMeaningCorrectPercentage = (TextView) findViewById(R.id.details_progress_meaning_correct_percentage);
         mMeaningIncorrectHolder = (RelativeLayout) findViewById(R.id.details_progress_meaning_incorrect_holder);
@@ -512,9 +513,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             if (prefMan.isUseSpecificDates()) {
                                 mNextAvailable.setText(availableDateFormat.format(radicalItem.getAvailableDate()) + "");
                             } else {
-                                mNextAvailable.setText(WordUtils.capitalize(Utils.getTimeDifference(
-                                        ItemDetailsActivity.this, new Date(radicalItem.getAvailableDate()),
-                                        Utils.getCurrentDate()) + ""));
+                                mNextAvailable.setReferenceTime(radicalItem.getAvailableDate());
                             }
 
                             mMeaningCorrectPercentage.setText(radicalItem.getMeaningCorrectPercentage() + "");
@@ -639,9 +638,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             if (prefMan.isUseSpecificDates()) {
                                 mNextAvailable.setText(availableDateFormat.format(kanjiItem.getAvailableDate()) + "");
                             } else {
-                                mNextAvailable.setText(WordUtils.capitalize(Utils.getTimeDifference(
-                                        ItemDetailsActivity.this, new Date(kanjiItem.getAvailableDate()),
-                                        Utils.getCurrentDate()) + ""));
+                                mNextAvailable.setReferenceTime(kanjiItem.getAvailableDate());
                             }
 
                             mMeaningCorrectPercentage.setText(kanjiItem.getMeaningCorrectPercentage() + "");
@@ -759,9 +756,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                             if (prefMan.isUseSpecificDates()) {
                                 mNextAvailable.setText(availableDateFormat.format(vocabularyItem.getAvailableDate()) + "");
                             } else {
-                                mNextAvailable.setText(WordUtils.capitalize(Utils.getTimeDifference(
-                                        ItemDetailsActivity.this, new Date(vocabularyItem.getAvailableDate()),
-                                        Utils.getCurrentDate()) + ""));
+                                mNextAvailable.setReferenceTime(vocabularyItem.getAvailableDate());
                             }
 
                             mMeaningCorrectPercentage.setText(vocabularyItem.getMeaningCorrectPercentage() + "");

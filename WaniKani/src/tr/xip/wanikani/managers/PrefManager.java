@@ -107,9 +107,8 @@ public class PrefManager {
         prefeditor.putLong("pref_update_date_dashboard", date).commit();
     }
 
-    public String getDashboardLastUpdateTime() {
-        return Utils.getTimeDifference(context, new Date(prefs.getLong("pref_update_date_dashboard", 0)),
-                Utils.getCurrentDate());
+    public long getDashboardLastUpdateTime() {
+        return prefs.getLong("pref_update_date_dashboard", 0);
     }
 
     public boolean isUseSpecificDates() {

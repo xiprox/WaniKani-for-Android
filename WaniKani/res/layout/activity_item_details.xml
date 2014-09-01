@@ -508,7 +508,7 @@
                                         android:text="@string/card_content_details_progress_next_available_allcaps"
                                         android:textColor="@color/text_gray" />
 
-                                    <TextView
+                                    <tr.xip.wanikani.widget.RelativeTimeTextView
                                         android:id="@+id/details_progress_next_available"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"

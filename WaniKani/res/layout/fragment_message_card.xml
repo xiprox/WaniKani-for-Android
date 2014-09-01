@@ -22,7 +22,7 @@
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/apptheme_main" />
 
-        <TextView
+        <tr.xip.wanikani.widget.RelativeTimeTextView
             android:id="@+id/message_card_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

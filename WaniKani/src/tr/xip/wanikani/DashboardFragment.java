@@ -58,7 +58,6 @@ public class DashboardFragment extends Fragment
     boolean isRecentUnlocksCardSyncedSuccess = false;
     boolean isCriticalItemsCardSyncedSuccess = false;
 
-
     LinearLayout mAvailableHolder;
     LinearLayout mReviewsHolder;
     LinearLayout mCriticalItemsFragmentHolder;
@@ -67,6 +66,12 @@ public class DashboardFragment extends Fragment
     FrameLayout mVacationModeCard;
     FrameLayout mReviewsCard;
     FrameLayout mProgressCard;
+
+    enum MESSAGE_TYPE {
+        ERROR_CONNECTION_TIMEOUT,
+        ERROR_NO_CONNECTION,
+        ERROR_UNKNOWN
+    }
 
     private SwipeRefreshLayout mSwipeToRefreshLayout;
 
@@ -79,22 +84,19 @@ public class DashboardFragment extends Fragment
 
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showMessage(getString(R.string.error_connection_timeout), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime());
+            showMessage(MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT);
         }
     };
 
     private BroadcastReceiver mRetrofitConnectionErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showMessage(getString(R.string.error_no_connection), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime());
+            showMessage(MESSAGE_TYPE.ERROR_NO_CONNECTION);
         }
     };
 
     private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            showMessage(getString(R.string.error_unknown_error), getString(R.string.content_last_updated)
-                    + " " + prefMan.getDashboardLastUpdateTime());
+            showMessage(MESSAGE_TYPE.ERROR_UNKNOWN);
         }
     };
 
@@ -214,15 +216,34 @@ public class DashboardFragment extends Fragment
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
     }
 
-    private void showMessage(String title, String summary) {
+    private void showMessage(MESSAGE_TYPE msgType) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         MessageCard fragment = new MessageCard();
         fragment.setListener(this);
 
+        String title = "";
+        String prefix = "";
+
+        if (msgType == MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT) {
+            title = getString(R.string.error_connection_timeout);
+            prefix = getString(R.string.content_last_updated) + " ";
+        }
+
+        if (msgType == MESSAGE_TYPE.ERROR_NO_CONNECTION) {
+            title = getString(R.string.error_no_connection);
+            prefix = getString(R.string.content_last_updated) + " ";
+        }
+
+        if (msgType == MESSAGE_TYPE.ERROR_UNKNOWN) {
+            title = getString(R.string.error_unknown_error);
+            prefix = getString(R.string.content_last_updated) + " ";
+        }
+
         Bundle args = new Bundle();
         args.putString(MessageCard.ARG_TITLE, title);
-        args.putString(MessageCard.ARG_SUMMARY, summary);
+        args.putString(MessageCard.ARG_PREFIX, prefix);
+        args.putLong(MessageCard.ARG_TIME, prefMan.getDashboardLastUpdateTime());
         fragment.setArguments(args);
 
         transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();

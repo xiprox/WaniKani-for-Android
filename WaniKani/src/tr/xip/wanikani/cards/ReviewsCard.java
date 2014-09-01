@@ -28,6 +28,7 @@ import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Utils;
+import tr.xip.wanikani.widget.RelativeTimeTextView;
 
 /**
  * Created by xihsa_000 on 3/13/14.
@@ -45,7 +46,7 @@ public class ReviewsCard extends Fragment {
 
     ReviewsCardListener mListener;
 
-    TextView mNextReview;
+    RelativeTimeTextView mNextReview;
     TextView mNextHour;
     TextView mNextDay;
 
@@ -89,7 +90,7 @@ public class ReviewsCard extends Fragment {
 
         context = getActivity();
 
-        mNextReview = (TextView) rootView.findViewById(R.id.card_reviews_next_review);
+        mNextReview = (RelativeTimeTextView) rootView.findViewById(R.id.card_reviews_next_review);
         mNextHour = (TextView) rootView.findViewById(R.id.card_reviews_next_hour);
         mNextDay = (TextView) rootView.findViewById(R.id.card_reviews_next_day);
 
@@ -112,8 +113,7 @@ public class ReviewsCard extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
                 mNextReview.setText(sdf.format(dataMan.getNextReviewDate()));
             } else {
-                mNextReview.setText(WordUtils.capitalize(Utils.getTimeDifference(context,
-                        new Date(dataMan.getNextReviewDate()), Utils.getCurrentDate())));
+                mNextReview.setReferenceTime(dataMan.getNextReviewDate());
             }
         }
     }
@@ -180,8 +180,7 @@ public class ReviewsCard extends Fragment {
                         if (prefMan.isUseSpecificDates()) {
                             mNextReview.setText(sdf.format(nextReview));
                         } else {
-                            mNextReview.setText(WordUtils.capitalize(Utils.getTimeDifference(context,
-                                    new Date(nextReview), Utils.getCurrentDate())));
+                            mNextReview.setReferenceTime(nextReview);
                         }
                     }
 

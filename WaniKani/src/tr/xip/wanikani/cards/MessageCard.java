@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.widget.RelativeTimeTextView;
 
 /**
  * Created by Hikari on 6/11/14.
@@ -20,10 +21,12 @@ public class MessageCard extends Fragment {
     MessageCardListener mListener;
 
     public static final String ARG_TITLE = "title";
-    public static final String ARG_SUMMARY = "summary";
+    public static final String ARG_PREFIX = "prefix";
+    public static final String ARG_TIME = "time";
 
     String title;
-    String summary;
+    String prefix;
+    long time;
 
     public void setListener(MessageCardListener listener) {
         mListener = listener;
@@ -40,16 +43,20 @@ public class MessageCard extends Fragment {
 
         Bundle args = getArguments();
         title = args.getString(ARG_TITLE);
-        summary = args.getString(ARG_SUMMARY);
+        prefix = args.getString(ARG_PREFIX);
+        time = args.getLong(ARG_TIME);
 
         TextView mTitle = (TextView) rootView.findViewById(R.id.message_card_title);
-        TextView mSummary = (TextView) rootView.findViewById(R.id.message_card_summary);
+        RelativeTimeTextView mSummary = (RelativeTimeTextView) rootView.findViewById(R.id.message_card_summary);
 
         if (title != null)
             mTitle.setText(title);
 
-        if (summary != null)
-            mSummary.setText(summary);
+        if (prefix != null) {
+            mSummary.setPrefix(prefix);
+            mSummary.setReferenceTime(time);
+        }
+
 
         return rootView;
     }
