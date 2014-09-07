@@ -58,6 +58,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     RelativeLayout mMistakeDelay;
     CheckBox mMistakeDelayCheckBox;
     CheckBox mAutoPopupCheckBox;
+    RelativeLayout mRomaji;
+    CheckBox mRomajiCheckBox;
     RelativeLayout mNoSuggestion;
     CheckBox mNoSuggestionCheckBox;
     RelativeLayout mMuteButton;
@@ -111,6 +113,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mAutoPopupCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_auto_popup_check_box);
         mMistakeDelay = (RelativeLayout) findViewById(R.id.settings_userscripts_mistake_delay);
         mMistakeDelayCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_mistake_delay_check_box);
+        mRomaji = (RelativeLayout) findViewById(R.id.settings_userscripts_romaji);
+        mRomajiCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_romaji_check_box);
         mNoSuggestion = (RelativeLayout) findViewById(R.id.settings_userscripts_no_suggestions);
         mNoSuggestionCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_no_suggestions_check_box);
         mMuteButton = (RelativeLayout) findViewById(R.id.settings_userscripts_mute_button);
@@ -228,6 +232,13 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             }
         });
 
+        mRomajiCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                prefMan.setRomaji(isChecked);
+            }
+        });
+
         mNoSuggestionCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -310,6 +321,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         loadPartOfSpeech();
         loadAutoPopup();
         loadMistakeDelay();
+        loadRomaji();
         loadNoSuggestion();
         loadMuteButton();
         loadSRSIndication();
@@ -334,6 +346,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mPartOfSpeech.setOnClickListener(this);
         mAutoPopup.setOnClickListener(this);
         mMistakeDelay.setOnClickListener(this);
+        mRomaji.setOnClickListener(this);
         mNoSuggestion.setOnClickListener(this);
         mMuteButton.setOnClickListener(this);
         mSRSIndication.setOnClickListener(this);
@@ -402,6 +415,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
     private void loadMistakeDelay() {
         mMistakeDelayCheckBox.setChecked(prefMan.getMistakeDelay());
+    }
+
+    private void loadRomaji() {
+        mRomajiCheckBox.setChecked(prefMan.getRomaji());
     }
 
     private void loadNoSuggestion() {
@@ -490,6 +507,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.settings_userscripts_mistake_delay:
                 mMistakeDelayCheckBox.toggle();
+                break;
+            case R.id.settings_userscripts_romaji:
+                mRomajiCheckBox.toggle();
                 break;
             case R.id.settings_userscripts_no_suggestions:
                 mNoSuggestionCheckBox.toggle();

@@ -38,6 +38,7 @@ public class PrefManager {
     public static final String PREF_PART_OF_SPEECH = "pref_part_of_speech";
     public static final String PREF_AUTO_POPUP = "pref_auto_popup";
     public static final String PREF_MISTAKE_DELAY = "pref_mistake_delay";
+    public static final String PREF_ROMAJI = "pref_romaji";
     public static final String PREF_NO_SUGGESTION = "pref_no_suggestions";
     public static final String PREF_MUTE_BUTTON = "pref_mute_button";
     public static final String PREF_SRS_INDCATION = "pref_srs_indication";
@@ -230,6 +231,14 @@ public class PrefManager {
 
     public void setMistakeDelay(boolean value) {
         prefeditor.putBoolean(PREF_MISTAKE_DELAY, value).commit();
+    }
+
+    public boolean getRomaji() {
+        return prefs.getBoolean(PREF_ROMAJI, false);
+    }
+
+    public void setRomaji(boolean value) {
+        prefeditor.putBoolean(PREF_ROMAJI, value).commit();
     }
 
     public boolean getNoSuggestion() {

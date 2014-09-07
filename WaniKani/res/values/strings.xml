@@ -196,6 +196,8 @@
     <string name="pref_summary_auto_popup">Open info popup automatically after entering a wrong answer</string>
     <string name="pref_title_mistake_delay">Mistake delay</string>
     <string name="pref_summary_mistake_delay">Blocks enter for one second after entering a wrong answer. Port of Rui Pinheiro\'s userscript.</string>
+    <string name="pref_title_romaji">Force romaji</string>
+    <string name="pref_summary_romaji">Disable suggestions when entering english words. Might enable romaji if using system IME.</string>
     <string name="pref_title_no_suggestions">No suggestions</string>
     <string name="pref_summary_no_suggestions">Disable suggestions when entering japanese words</string>
     <string name="pref_title_mute_button">Mute button</string>

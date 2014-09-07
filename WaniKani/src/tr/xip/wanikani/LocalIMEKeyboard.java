@@ -916,6 +916,9 @@ public class LocalIMEKeyboard implements Keyboard {
     /// Was suggestion disabled last time we checked?
     boolean disableSuggestions;
 
+    /// Was romaji enabled last time we checked?
+    boolean romaji;
+
     /// Last Sequence number received from JS
     int lastSequence;
 
@@ -946,7 +949,7 @@ public class LocalIMEKeyboard implements Keyboard {
 
         imm = (InputMethodManager) wav.getSystemService (Context.INPUT_METHOD_SERVICE);
 
-        disableSuggestions = prefMan.getNoSuggestion();
+        disableSuggestions = prefMan.getNoSuggestion() | prefMan.getRomaji();
 
         dm = wav.getResources ().getDisplayMetrics ();
 
@@ -1360,9 +1363,13 @@ public class LocalIMEKeyboard implements Keyboard {
 
     protected void setInputType ()
     {
-        if (prefMan.getNoSuggestion()) {
+        boolean tren, trjp;
+        trjp = prefMan.getNoSuggestion();
+        tren = prefMan.getRomaji();
+
+        if (trjp || tren) {
             disableSuggestions = true;
-            if (imel.translate)
+            if ((imel.translate && trjp) || (!imel.translate && tren))
                 ew.setInputType (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
             else
                 ew.setInputType (InputType.TYPE_CLASS_TEXT);
