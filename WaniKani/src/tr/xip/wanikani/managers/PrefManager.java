@@ -24,6 +24,7 @@ public class PrefManager {
     public static final String PREF_API_KEY = "pref_api_key";
     public static final String PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER = "pref_dashboard_recent_unlock_number";
     public static final String PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE = "pref_dashboard_critical_items_percentage";
+    public static final String PREF_USE_CUSTOM_FONTS = "pref_use_custom_fonts";
     public static final String PREF_USE_SPECIFIC_DATES = "pref_use_specific_dates";
     public static final String PREF_REVIEWS_IMPROVEMENTS = "pref_reviews_improvements";
     public static final String PREF_IGNORE_BUTTON = "pref_ignore_button";
@@ -109,6 +110,14 @@ public class PrefManager {
 
     public long getDashboardLastUpdateTime() {
         return prefs.getLong("pref_update_date_dashboard", 0);
+    }
+
+    public boolean isUseCustomFonts() {
+        return prefs.getBoolean(PREF_USE_CUSTOM_FONTS, true);
+    }
+
+    public void setUseCUstomFonts(boolean value) {
+        prefeditor.putBoolean(PREF_USE_CUSTOM_FONTS, value).commit();
     }
 
     public boolean isUseSpecificDates() {

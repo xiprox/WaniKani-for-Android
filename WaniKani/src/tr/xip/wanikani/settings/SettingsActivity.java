@@ -19,7 +19,6 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.dialogs.OpenSourceLicensesDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.settings.preferences.CriticalItemsPercentagePreference;
-import tr.xip.wanikani.settings.preferences.FontsPreference;
 import tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference;
 
 /**
@@ -30,7 +29,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     PrefManager prefMan;
 
     TextView mApiKey;
-    TextView mGeneralFonts;
+    RelativeLayout mCustomFonts;
+    CheckBox mCustomFontsCheckBox;
     RelativeLayout mGeneralUseSpecificDates;
     CheckBox mGeneralUseSpecificDatesCheckBox;
     LinearLayout mDashboardRecentUnlocksNumber;
@@ -82,7 +82,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         prefMan = new PrefManager(this);
 
         mApiKey = (TextView) findViewById(R.id.settings_api_key);
-        mGeneralFonts = (TextView) findViewById(R.id.settings_general_fonts);
+        mCustomFonts = (RelativeLayout) findViewById(R.id.settings_general_use_custom_fonts);
+        mCustomFontsCheckBox = (CheckBox) findViewById(R.id.settings_general_use_custom_fonts_check_box);
         mGeneralUseSpecificDates = (RelativeLayout) findViewById(R.id.settings_general_use_specific_dates);
         mGeneralUseSpecificDatesCheckBox = (CheckBox) findViewById(R.id.settings_general_use_specific_dates_check_box);
         mDashboardRecentUnlocksNumber = (LinearLayout) findViewById(R.id.settings_dashboard_recent_unlocks_number);
@@ -120,6 +121,13 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mHWAccelCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_hw_accel_check_box);
         mDeveloperOpenSourceLicenses = (TextView) findViewById(R.id.settings_developer_open_source_licenses);
         mDeveloperAppVersionSummary = (TextView) findViewById(R.id.settings_developer_app_version_summary);
+
+        mCustomFontsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                prefMan.setUseCUstomFonts(isChecked);
+            }
+        });
 
         mGeneralUseSpecificDatesCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -289,6 +297,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
     private void loadPreferences() {
         loadApiKey();
+        loadUseCustomFonts();
         loadGeneralUseSpecificDates();
         loadReviewsImprovements();
         loadIgnoreButton();
@@ -309,7 +318,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     }
 
     public void setOnClickListeners() {
-        mGeneralFonts.setOnClickListener(this);
+        mCustomFonts.setOnClickListener(this);
         mGeneralUseSpecificDates.setOnClickListener(this);
         mDashboardRecentUnlocksNumber.setOnClickListener(this);
         mDashboardCriticalItemsPercentage.setOnClickListener(this);
@@ -341,6 +350,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         }
 
         mApiKey.setText(maskedApiKey);
+    }
+
+    private void loadUseCustomFonts() {
+        mCustomFontsCheckBox.setChecked(prefMan.isUseCustomFonts());
     }
 
     private void loadGeneralUseSpecificDates() {
@@ -428,8 +441,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.settings_general_fonts:
-                new FontsPreference().show(getFragmentManager(), "fonts-preference");
+            case R.id.settings_general_use_custom_fonts:
+                mCustomFontsCheckBox.toggle();
                 break;
             case R.id.settings_general_use_specific_dates:
                 mGeneralUseSpecificDatesCheckBox.toggle();

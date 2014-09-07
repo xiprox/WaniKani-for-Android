@@ -147,14 +147,6 @@
     <string name="card_content_details_progress_or_not_learned">or not learned yet</string>
     <string name="card_content_details_progress_on">on</string>
 
-    <!-- Fonts Dialog Strings -->
-    <string name="japanese_fonts">Japanese Fonts</string>
-    <string name="content_japanese_fonts_info">Android uses Chinese fonts for rendering Japanese Kanji as long as the
-        selected system language isn\'t Japanese. This application automatically deals with this by using custom
-        fonts. However, as far as I can see, on pre-gingerbread (Android 2.3) devices, custom fonts aren\'t
-        displayed properly. Instead of showing the custom fonts we defined, the app shows no text at all. For this
-        reason, we are using custom fonts only on devices running gingerbread or above. \n\nSorry guys :(</string>
-
     <!-- Preferences Strings -->
     <string name="pref_title_apikey">API Key</string>
     <string name="pref_category_dashboard">Dashboard</string>
@@ -213,6 +205,8 @@
     <string name="pref_title_hw_accel">HW acceleration</string>
     <string name="pref_summary_hw_accel">Enables HW acceleration. You may need disable this if
         reviews are rendered incorrectly.</string>
+    <string name="pref_title_custom_fonts">Use custom fonts</string>
+    <string name="pref_summary_custom_fonts">Use custom fotns for Japanese text instead of the system ones</string>
 
     <!-- Screen Orientation -->
     <string name="screen_orientation_auto">Auto-rotate</string>
