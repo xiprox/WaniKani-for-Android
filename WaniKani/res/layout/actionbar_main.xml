@@ -14,7 +14,6 @@
         android:background="@drawable/selector_background_oval"
         android:contentDescription="@null"
         android:padding="16dp"
-        android:layout_marginRight="16dp"
         android:src="@drawable/ic_drawer" />
 
     <TextView
@@ -27,5 +26,5 @@
         android:maxLines="1"
         android:text=""
         android:textColor="@android:color/white"
-        android:textSize="22sp" />
+        android:textSize="18sp" />
 </LinearLayout>

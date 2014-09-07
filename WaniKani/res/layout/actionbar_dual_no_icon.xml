@@ -6,16 +6,6 @@
     android:layout_height="56dp"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/actionbar_icon"
-        android:layout_width="56dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical|start"
-        android:background="@drawable/selector_background_oval"
-        android:contentDescription="@null"
-        android:padding="16dp"
-        android:src="@drawable/ic_drawer" />
-
     <TextView
         android:id="@+id/actionbar_title"
         android:layout_width="wrap_content"
@@ -24,7 +14,7 @@
         android:ellipsize="end"
         android:gravity="center|start"
         android:maxLines="1"
-        android:text=""
+        android:text="Test"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 
@@ -33,5 +23,6 @@
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="16dp"
         android:visibility="gone" />
 </LinearLayout>

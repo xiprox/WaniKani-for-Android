@@ -1,14 +1,14 @@
 package tr.xip.wanikani;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +34,8 @@ import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 
-public class KanjiFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener, SwipeRefreshLayout.OnRefreshListener {
+public class KanjiFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     Context context;
 
@@ -63,7 +64,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void showLegend() {
-        new LegendDialogFragment().show(getActivity().getSupportFragmentManager(), "legend-dialog");
+        new LegendDialogFragment().show(getActivity().getFragmentManager(), "legend-dialog");
     }
 
     @Override
@@ -158,7 +159,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     public void showLevelDialog() {
         if (mLevelPickerDialog != null) {
             mLevelPickerDialog.init(this.getId(), LEVEL);
-            mLevelPickerDialog.show(getActivity().getSupportFragmentManager(), "LevelPickerDialogFragment");
+            mLevelPickerDialog.show(getActivity().getFragmentManager(), "LevelPickerDialogFragment");
         }
     }
 
@@ -212,7 +213,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
                 }
             }
 
-            ((ActionBarActivity) context).supportInvalidateOptionsMenu();
+            ((Activity) context).invalidateOptionsMenu();
 
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();

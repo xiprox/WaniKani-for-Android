@@ -1,18 +1,17 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.cards.CriticalItemsCard;
 import tr.xip.wanikani.cards.MessageCard;
@@ -66,34 +64,23 @@ public class DashboardFragment extends Fragment
     FrameLayout mVacationModeCard;
     FrameLayout mReviewsCard;
     FrameLayout mProgressCard;
-
-    enum MESSAGE_TYPE {
-        ERROR_CONNECTION_TIMEOUT,
-        ERROR_NO_CONNECTION,
-        ERROR_UNKNOWN
-    }
-
     private SwipeRefreshLayout mSwipeToRefreshLayout;
-
     private BroadcastReceiver mSyncCalled = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mSwipeToRefreshLayout.setRefreshing(true);
         }
     };
-
     private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT);
         }
     };
-
     private BroadcastReceiver mRetrofitConnectionErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(MESSAGE_TYPE.ERROR_NO_CONNECTION);
         }
     };
-
     private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(MESSAGE_TYPE.ERROR_UNKNOWN);
@@ -375,6 +362,12 @@ public class DashboardFragment extends Fragment
         if (view == mProgressCard) {
             // TODO - Handle progress card stuff
         }
+    }
+
+    enum MESSAGE_TYPE {
+        ERROR_CONNECTION_TIMEOUT,
+        ERROR_NO_CONNECTION,
+        ERROR_UNKNOWN
     }
 
     private class VacationModeCheckTask extends AsyncTask<Void, Void, Boolean> {

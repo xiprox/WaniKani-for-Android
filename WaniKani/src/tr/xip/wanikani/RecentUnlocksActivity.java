@@ -1,11 +1,12 @@
 package tr.xip.wanikani;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +26,7 @@ import tr.xip.wanikani.api.response.RecentUnlocksList;
 /**
  * Created by xihsa_000 on 3/25/14.
  */
-public class RecentUnlocksActivity extends ActionBarActivity {
+public class RecentUnlocksActivity extends Activity {
 
     WaniKaniApi api;
 
@@ -51,30 +52,33 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         api = new WaniKaniApi(this);
         context = this;
 
-        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                R.layout.actionbar_main, null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_main, null);
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
 
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setCustomView(mActionBarLayout);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setIcon(android.R.color.transparent);
-        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-        mActionBar.setDisplayHomeAsUpEnabled(false);
-        mActionBar.setHomeButtonEnabled(false);
+            ActionBar mActionBar = getActionBar();
+            mActionBar.setCustomView(mActionBarLayout);
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+            mActionBar.setHomeButtonEnabled(false);
+            mActionBar.setIcon(android.R.color.transparent);
+            if (Build.VERSION.SDK_INT >= 18)
+                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
 
-        mActionBarTitle.setText(R.string.card_title_recent_unlocks);
+            setActionBarIcon(R.drawable.ic_action_back);
+            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
 
-        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        setActionBarTitle(getString(R.string.card_title_recent_unlocks));
 
         mRecentUnlocksGrid = (StickyGridHeadersGridView) findViewById(R.id.activity_recent_unlocks_grid);
 
@@ -86,15 +90,25 @@ public class RecentUnlocksActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onNavigateUp() {
         super.onBackPressed();
         return true;
     }
 
-    @Override
-    public boolean onNavigateUp() {
-        super.onBackPressed();
-        return true;
+    private void setActionBarTitle(String title) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            if (mActionBarTitle != null)
+                mActionBarTitle.setText(title);
+        } else
+            getActionBar().setTitle(title);
+    }
+
+    private void setActionBarIcon(int res) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            if (mActionBarIcon != null)
+                mActionBarIcon.setImageResource(res);
+        } else
+            getActionBar().setIcon(res);
     }
 
     private class LoadTask extends AsyncTask<Void, Void, List<RecentUnlocksList.UnlockItem>> {

@@ -48,10 +48,10 @@
                         <LinearLayout
                             android:id="@+id/details_actionbar_extension"
                             android:layout_width="match_parent"
-                            android:layout_height="140dp"
+                            android:layout_height="wrap_content"
                             android:background="@color/apptheme_actionbar"
                             android:orientation="vertical"
-                            android:paddingLeft="74dp">
+                            android:paddingLeft="58dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -66,8 +66,8 @@
                                 android:ellipsize="marquee"
                                 android:maxLines="1"
                                 android:text="Item Meaning"
-                                android:textAppearance="@android:style/TextAppearance.Large"
-                                android:textColor="@android:color/white" />
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -80,11 +80,12 @@
                                 android:id="@+id/details_level"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
                                 android:ellipsize="marquee"
                                 android:maxLines="1"
                                 android:text="0"
-                                android:textAppearance="@android:style/TextAppearance.Large"
-                                android:textColor="@android:color/white" />
+                                android:textColor="@android:color/white"
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <View

@@ -1,16 +1,15 @@
 package tr.xip.wanikani.settings.preferences;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-
-import net.simonvt.numberpicker.NumberPicker;
+import android.widget.NumberPicker;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.managers.PrefManager;

@@ -1,11 +1,10 @@
 package tr.xip.wanikani.cards;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import tr.xip.wanikani.R;
@@ -16,14 +15,11 @@ import tr.xip.wanikani.widget.RelativeTimeTextView;
  */
 public class MessageCard extends Fragment {
 
-    View rootView;
-
-    MessageCardListener mListener;
-
     public static final String ARG_TITLE = "title";
     public static final String ARG_PREFIX = "prefix";
     public static final String ARG_TIME = "time";
-
+    View rootView;
+    MessageCardListener mListener;
     String title;
     String prefix;
     long time;

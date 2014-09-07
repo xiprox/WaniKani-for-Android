@@ -1,16 +1,16 @@
 package tr.xip.wanikani;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,7 +69,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     private SwipeRefreshLayout mMessageSwipeRefreshLayout;
 
     private void showLegend() {
-        new LegendDialogFragment().show(getActivity().getSupportFragmentManager(), "legend-dialog");
+        new LegendDialogFragment().show(getActivity().getFragmentManager(), "legend-dialog");
     }
 
     @Override
@@ -165,7 +165,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     public void showLevelDialog() {
         if (mLevelPickerDialog != null) {
             mLevelPickerDialog.init(this.getId(), LEVEL);
-            mLevelPickerDialog.show(getActivity().getSupportFragmentManager(), "LevelPickerDialogFragment");
+            mLevelPickerDialog.show(getActivity().getFragmentManager(), "LevelPickerDialogFragment");
         }
     }
 
@@ -219,7 +219,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 }
             }
 
-            ((ActionBarActivity) context).supportInvalidateOptionsMenu();
+            ((Activity) context).invalidateOptionsMenu();
 
             if (mListFlipper.getDisplayedChild() == 0)
                 mListFlipper.showNext();

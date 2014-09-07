@@ -1,13 +1,13 @@
 package tr.xip.wanikani;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +26,6 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
@@ -35,13 +34,12 @@ import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
-import tr.xip.wanikani.utils.Utils;
 import tr.xip.wanikani.widget.RelativeTimeTextView;
 
 /**
  * Created by xihsa_000 on 3/23/14.
  */
-public class ItemDetailsActivity extends ActionBarActivity {
+public class ItemDetailsActivity extends Activity {
 
     public static final String ARG_TYPE = "type";
     public static final String ARG_CHARACTER = "character";
@@ -138,6 +136,19 @@ public class ItemDetailsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        gotType = intent.getStringExtra(ARG_TYPE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            if (gotType.equals(TYPE_RADICAL))
+                setTheme(R.style.Theme_Apptheme_Radical);
+            else if (gotType.equals(TYPE_KANJI))
+                setTheme(R.style.Theme_Apptheme_Kanji);
+            else if (gotType.equals(TYPE_VOCABULARY))
+                setTheme(R.style.Theme_Apptheme_Vocabulary);
+        }
+
         setContentView(R.layout.activity_item_details);
 
         api = new WaniKaniApi(this);
@@ -154,31 +165,48 @@ public class ItemDetailsActivity extends ActionBarActivity {
         gotImage = intent.getStringExtra(ARG_IMAGE);
         gotLevel = intent.getIntExtra(ARG_LEVEL, 0);
 
-        mActionBarExtension = (LinearLayout) findViewById(R.id.details_actionbar_extension);
+        ActionBar mActionBar = getActionBar();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_dual, null);
+
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+            mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
+
+            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
+            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
+            mActionBar.setHomeButtonEnabled(false);
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+
+            if (Build.VERSION.SDK_INT >= 18)
+                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
+        } else {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_dual_no_icon, null);
+
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+            mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
+
+            mActionBar.setHomeButtonEnabled(true);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         mStatusBarBackground = findViewById(R.id.details_statusbar_bg);
-        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                R.layout.actionbar_dual, null);
+        mActionBarExtension = (LinearLayout) findViewById(R.id.details_actionbar_extension);
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-        mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
-
-        ActionBar mActionBar = getSupportActionBar();
         mActionBar.setCustomView(mActionBarLayout);
         mActionBar.setDisplayShowCustomEnabled(true);
         mActionBar.setDisplayShowTitleEnabled(false);
         mActionBar.setIcon(android.R.color.transparent);
-        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-        mActionBar.setDisplayHomeAsUpEnabled(false);
-        mActionBar.setHomeButtonEnabled(false);
-
-        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         mAlternativeMeaningsTitle = (TextView) findViewById(R.id.details_title_alternative_meanings);
         mUserSynonymsTitle = (TextView) findViewById(R.id.details_title_user_synonyms);
@@ -323,12 +351,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
             new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         else
             new LoadTask().execute();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        super.onBackPressed();
-        return true;
     }
 
     @Override

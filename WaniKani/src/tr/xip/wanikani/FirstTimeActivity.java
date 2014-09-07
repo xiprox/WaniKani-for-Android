@@ -1,11 +1,12 @@
 package tr.xip.wanikani;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.dialogs.HowToGetKeyDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 
-public class FirstTimeActivity extends ActionBarActivity {
+public class FirstTimeActivity extends Activity {
 
     WaniKaniApi api;
     PrefManager prefMan;
@@ -46,20 +47,22 @@ public class FirstTimeActivity extends ActionBarActivity {
         api = new WaniKaniApi(getApplicationContext());
         prefMan = new PrefManager(getApplicationContext());
 
-        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                R.layout.actionbar_main, null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_main, null);
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
 
-        mActionBarIcon.setVisibility(View.GONE);
-        mActionBarTitle.setText(R.string.action_login);
+            mActionBarIcon.setVisibility(View.GONE);
+            mActionBarTitle.setText(R.string.action_login);
 
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setCustomView(mActionBarLayout);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setIcon(android.R.color.transparent);
+            ActionBar mActionBar = getActionBar();
+            mActionBar.setCustomView(mActionBarLayout);
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setIcon(android.R.color.transparent);
+        }
 
         mApiKey = (EditText) findViewById(R.id.first_time_api_key);
         mHowTo = (Button) findViewById(R.id.first_time_how_to_api_key);
@@ -72,7 +75,7 @@ public class FirstTimeActivity extends ActionBarActivity {
         mHowTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new HowToGetKeyDialogFragment().show(getSupportFragmentManager(), "how-to-get-key");
+                new HowToGetKeyDialogFragment().show(getFragmentManager(), "how-to-get-key");
             }
         });
 

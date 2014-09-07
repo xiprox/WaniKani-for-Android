@@ -1,10 +1,11 @@
 package tr.xip.wanikani;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import tr.xip.wanikani.utils.Fonts;
 /**
  * Created by xihsa_000 on 3/15/14.
  */
-public class Browser extends ActionBarActivity {
+public class Browser extends Activity {
 
     public static final String ARG_ACTION = "action";
     public static final String ARG_ITEM = "item";
@@ -56,28 +57,31 @@ public class Browser extends ActionBarActivity {
 
         mWebview = (WebView) findViewById(R.id.browser_webview);
 
-        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                R.layout.actionbar_main, null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_main, null);
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
 
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setCustomView(mActionBarLayout);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setIcon(android.R.color.transparent);
-        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-        mActionBar.setDisplayHomeAsUpEnabled(false);
-        mActionBar.setHomeButtonEnabled(false);
+            ActionBar mActionBar = getActionBar();
+            mActionBar.setCustomView(mActionBarLayout);
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setIcon(android.R.color.transparent);
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+            mActionBar.setHomeButtonEnabled(false);
+            if (Build.VERSION.SDK_INT >= 18)
+                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
 
-        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
+            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
 
         mWebview.getSettings().setJavaScriptEnabled(true);
 
@@ -102,24 +106,42 @@ public class Browser extends ActionBarActivity {
         if (action.equals(ACTION_ITEM_DETAILS)) {
             if (itemType.equals(ItemDetailsActivity.TYPE_RADICAL)) {
                 mWebview.loadUrl(RADICAL_URL + WordUtils.uncapitalize(item));
-                mActionBarTitle.setText(item);
+                setActionBarTitle(item, false);
             }
             if (itemType.equals(ItemDetailsActivity.TYPE_KANJI)) {
                 mWebview.loadUrl(KANJI_URL + item);
-                mActionBarTitle.setText(item);
-                mActionBarTitle.setTypeface(new Fonts().getKanjiFont(this));
+                setActionBarTitle(item, true);
             }
             if (itemType.equals(ItemDetailsActivity.TYPE_VOCABULARY)) {
                 mWebview.loadUrl(VOCABULARY_URL + item);
-                mActionBarTitle.setText(item);
-                mActionBarTitle.setTypeface(new Fonts().getKanjiFont(this));
+                setActionBarTitle(item, true);
             }
         }
 
         if (action.equals(ACTION_ACCOUNT_SETTINGS)) {
             mWebview.loadUrl(ACCOUNT_SETTINGS_URL);
-            mActionBarTitle.setText(R.string.title_account_settings);
+            setActionBarTitle(getString(R.string.title_account_settings), false);
         }
+    }
+
+    private void setActionBarTitle(String title, boolean setTypeface) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            if (mActionBarTitle != null) {
+                mActionBarTitle.setText(title);
+
+                if (setTypeface)
+                    mActionBarTitle.setTypeface(new Fonts().getKanjiFont(this));
+            }
+        } else
+            getActionBar().setTitle(title);
+    }
+
+    private void setActionBarIcon(int res) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            if (mActionBarIcon != null)
+                mActionBarIcon.setImageResource(res);
+        } else
+            getActionBar().setIcon(res);
     }
 
     private void setOrientation(String orientation) {
@@ -128,12 +150,6 @@ public class Browser extends ActionBarActivity {
         else if (orientation.equals("Landscape"))
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        super.onBackPressed();
-        return true;
     }
 
     @Override

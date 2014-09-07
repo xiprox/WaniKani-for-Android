@@ -82,7 +82,7 @@
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0px"
-                android:listSelector="@android:color/transparent"
+                android:listSelector="@drawable/selector_background_neutral"
                 tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
 
             <LinearLayout
@@ -105,7 +105,7 @@
                     android:choiceMode="singleChoice"
                     android:divider="@android:color/transparent"
                     android:dividerHeight="0dp"
-                    android:listSelector="@android:color/transparent" />
+                    android:listSelector="@drawable/selector_background_neutral" />
 
             </LinearLayout>
         </LinearLayout>

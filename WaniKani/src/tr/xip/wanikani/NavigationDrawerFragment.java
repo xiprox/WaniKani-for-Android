@@ -1,6 +1,8 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,12 +11,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -138,11 +136,10 @@ public class NavigationDrawerFragment extends Fragment {
         mProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ProfileFragment())
                         .commit();
-
                 // We dedicate 100 for profile
                 selectItem(100);
             }
@@ -180,7 +177,8 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, android.R.color.transparent, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
+                R.drawable.ic_drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -189,7 +187,7 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
-                getActivity().supportInvalidateOptionsMenu();
+                getActivity().invalidateOptionsMenu();
             }
 
             @Override
@@ -206,7 +204,7 @@ public class NavigationDrawerFragment extends Fragment {
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).commit();
                 }
 
-                getActivity().supportInvalidateOptionsMenu();
+                getActivity().invalidateOptionsMenu();
             }
         };
 
@@ -227,27 +225,22 @@ public class NavigationDrawerFragment extends Fragment {
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
 
-        if (mMainListView != null) {
+        if (mMainListView != null)
             mMainListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
+        if (mDrawerLayout != null)
             mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
+        if (mCallbacks != null)
             mCallbacks.onNavigationDrawerItemSelected(position);
-        }
 
         if (position == 100) {
             // Profile was selected
-            if (MainActivity.mTitle != null)
-                MainActivity.mTitle = getString(R.string.title_profile);
+            MainActivity.mTitle = getString(R.string.title_profile);
 
             if (mMainListView != null && mMainListView.getAdapter() != null)
                 ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(100);
-        } else {
-            if (mMainListView != null && mMainListView.getAdapter() != null)
-                ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(position);
-        }
+        } else if (mMainListView != null && mMainListView.getAdapter() != null)
+            ((NavigationItemsAdapter) mMainListView.getAdapter()).selectItem(position);
+
     }
 
     @Override
@@ -296,24 +289,11 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void showGlobalContextActionBar() {
-        if (getActionBarTitle() != null)
-            getActionBarTitle().setText(R.string.app_name);
-    }
-
-    private ActionBar getActionBar() {
-        return ((ActionBarActivity) getActivity()).getSupportActionBar();
-    }
-
-    private ImageView getActionBarIcon() {
-        return ((MainActivity) getActivity()).mActionBarIcon;
-    }
-
-    private TextView getActionBarTitle() {
-        return ((MainActivity) getActivity()).mActionBarTitle;
+        ((MainActivity) getActivity()).setActionBarTitle(getString(R.string.app_name));
     }
 
     private void showlogoutDialog() {
-        new LogoutDialogFragment().show(getActivity().getSupportFragmentManager(), "logout-dialog");
+        new LogoutDialogFragment().show(getActivity().getFragmentManager(), "logout-dialog");
     }
 
     public static interface NavigationDrawerCallbacks {

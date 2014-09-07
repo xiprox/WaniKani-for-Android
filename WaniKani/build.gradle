@@ -10,11 +10,14 @@ buildscript {
     }
 }
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    // In order to be able to use 21 you need to have the following modified platform directory
+    // in your SDK/platforms directory
+    // https://docs.google.com/file/d/0B3kP5OEGFYUBZWxacV9jVjVKOGs
+    compileSdkVersion 21
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 4
         versionName "1.0.1"
@@ -59,11 +62,10 @@ android {
 
     dependencies {
         // compile fileTree(dir: 'libs', include: '*.jar')
-        compile 'com.android.support:support-v4:19.1.0'
-        compile 'com.android.support:appcompat-v7:19.1.0'
-        compile 'com.android.support:gridlayout-v7:18.0.+'
-        compile 'net.simonvt.numberpicker:android-numberpicker:1.0.0'
-        compile 'com.tonicartos:stickygridheaders:1.0.1'
+        compile 'com.android.support:support-v4:+'
+        compile 'com.android.support:appcompat-v7:+'
+        compile 'com.android.support:gridlayout-v7:+'
+        compile 'com.tonicartos:stickygridheaders:+'
         compile files('libs/retrofit-1.4.1.jar')
         compile files('libs/gson-2.2.3.jar')
         compile files('libs/picasso-2.2.0.jar')

@@ -35,7 +35,7 @@
                 android:textColor="@color/text_gray_dark"
                 android:textSize="14sp" />
 
-            <net.simonvt.numberpicker.NumberPicker
+            <NumberPicker
                 android:id="@+id/number_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,8 +62,7 @@
                 android:text="@string/cancel"
                 android:textAllCaps="true"
                 android:textColor="@color/text_gray_dark"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/button1"
@@ -76,8 +75,7 @@
                 android:text="@string/ok"
                 android:textAllCaps="true"
                 android:textColor="@color/text_gray_dark"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>

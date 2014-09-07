@@ -10,7 +10,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/selector_background_neutral"
         android:minHeight="130dp"
         android:minWidth="100dp">
 

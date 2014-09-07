@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tr.xip.wanikani">
 
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="19" />
+    <!--
+    Little nice trick to get L support libraries working in older Android versions.
+    More info at
+    http://www.reddit.com/r/androiddev/comments/297xli/howto_use_the_v21_support_libs_on_older_versions
+    -->
+    <uses-sdk tools:node="replace" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -64,15 +68,27 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
+            android:parentActivityName="tr.xip.wanikani.MainActivity"
             android:process=":webview"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
         <activity
             android:name=".SWWebReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="false"
             android:launchMode="singleTop"
+            android:parentActivityName="tr.xip.wanikani.MainActivity"
             android:process=":swwebview"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

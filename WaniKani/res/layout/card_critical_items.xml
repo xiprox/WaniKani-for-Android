@@ -39,7 +39,7 @@
                 android:clipToPadding="false"
                 android:divider="@drawable/divider_48dp_left"
                 android:dividerHeight="1dp"
-                android:listSelector="@android:color/transparent"
+                android:listSelector="@drawable/selector_background_neutral"
                 android:padding="16dp"
                 android:scrollbarStyle="outsideOverlay" />
 

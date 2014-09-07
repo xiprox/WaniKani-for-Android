@@ -2,22 +2,22 @@ package tr.xip.wanikani;
 
 import java.io.File;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieSyncManager;
@@ -72,7 +72,7 @@ import tr.xip.wanikani.userscripts.PartOfSpeech;
  * it calls its <code>show</code> (vs. <code>hide</code>) method.
  * The JavascriptObject is implemented by @link WebReviewActivity.WKNKeyboard.
  */
-public class WebReviewActivity extends ActionBarActivity {
+public class WebReviewActivity extends Activity {
 
     /**
      * This class is barely a container of all the strings that should match with the
@@ -653,6 +653,8 @@ public class WebReviewActivity extends ActionBarActivity {
     /** The file downloader, if any */
     private FileDownloader fda;
 
+    ActionBar mActionBar;
+
     /** Action Bar Views*/
     ViewGroup mActionBarLayout;
     ImageView mActionBarIcon;
@@ -668,34 +670,32 @@ public class WebReviewActivity extends ActionBarActivity {
     {
         super.onCreate (bundle);
 
-        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                R.layout.actionbar_main, null);
+        mActionBar = getActionBar();
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_main, null);
 
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setCustomView(mActionBarLayout);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setIcon(android.R.color.transparent);
-        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-        mActionBar.setDisplayHomeAsUpEnabled(false);
-        mActionBar.setHomeButtonEnabled(false);
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
 
-        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+            mActionBar.setCustomView(mActionBarLayout);
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setIcon(android.R.color.transparent);
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+            mActionBar.setHomeButtonEnabled(false);
+            if (Build.VERSION.SDK_INT >= 18)
+                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
 
-        String intentData = getIntent().getData().toString();
-        if (intentData.contains("review"))
-            mActionBarTitle.setText(R.string.ab_title_reviews);
-        else if (intentData.contains("lesson"))
-            mActionBarTitle.setText(R.string.ab_title_lessons);
+            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
+            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                    }
+            });
+        }
 
         prefMan = new PrefManager(this);
         Resources res;
@@ -704,6 +704,12 @@ public class WebReviewActivity extends ActionBarActivity {
         setVolumeControlStream (AudioManager.STREAM_MUSIC);
 
         setContentView (R.layout.activity_web_view);
+
+        String intentData = getIntent().getData().toString();
+        if (intentData.contains("review"))
+            setActionBarTitle(getString(R.string.ab_title_reviews));
+        else if (intentData.contains("lesson"))
+            setActionBarTitle(getString(R.string.ab_title_lessons));
 
         res = getResources ();
 
@@ -759,6 +765,22 @@ public class WebReviewActivity extends ActionBarActivity {
         reaper = new TimerThreadsReaper ();
         rtask = reaper.createTask (new Handler (), 2, 7000);
         rtask.setListener (new ReaperTaskListener ());
+    }
+
+    private void setActionBarTitle(String title) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            if (mActionBarTitle != null)
+                mActionBarTitle.setText(title);
+        } else
+            mActionBar.setTitle(title);
+    }
+
+    private void setActionBarIcon(int res) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            if (mActionBarIcon != null)
+                mActionBarIcon.setImageResource(res);
+        } else
+            mActionBar.setIcon(res);
     }
 
     @Override

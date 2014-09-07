@@ -1,5 +1,9 @@
 package tr.xip.wanikani.cards;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +12,11 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,7 +68,7 @@ public class SRSCard extends Fragment {
     ImageView mEnlightenedIcon;
     ImageView mBurnedIcon;
 
-//    ViewFlipper mDetailsFlipper;
+    //    ViewFlipper mDetailsFlipper;
     ViewFlipper mDetailsSuperFlipper;
 
     TextView mDetailsRadicals;
@@ -273,25 +278,55 @@ public class SRSCard extends Fragment {
         mDetailsUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchToMain();
+                switchToMain(mDetailsUp);
             }
         });
     }
 
     private void switchToDetails() {
-//        if (mDetailsFlipper.getDisplayedChild() == 0)
-//            mDetailsFlipper.showNext();
-        mMainContent.setVisibility(View.GONE);
-        mDetailsContent.setVisibility(View.VISIBLE);
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            int cx = (mDetailsContent.getLeft() + mDetailsContent.getRight()) / 2;
+            int cy = (mDetailsContent.getTop() + mDetailsContent.getBottom()) / 2;
+
+            int finalRadius = mDetailsContent.getWidth();
+
+            Log.e("LALALALALAa", cx + "_------_" + cy + " ------ " + finalRadius);
+
+            ValueAnimator anim =
+                    ViewAnimationUtils.createCircularReveal(mDetailsContent, cx, cy, 0, finalRadius);
+            anim.start();
+        } else {*/
+            mMainContent.setVisibility(View.GONE);
+            mDetailsContent.setVisibility(View.VISIBLE);
+//        }
     }
 
-    private void switchToMain() {
-//        if (mDetailsFlipper.getDisplayedChild() == 1)
-//            mDetailsFlipper.showPrevious();
+    private void switchToMain(final View view) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            int cx = (view.getLeft() + view.getRight()) / 2;
+            int cy = (view.getTop() + view.getBottom()) / 2;
+
+            int initialRadius = view.getWidth();
+
+            ValueAnimator anim =
+                    ViewAnimationUtils.createCircularReveal(view, cx, cy, initialRadius, 0);
+
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    view.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            anim.start();
+        } else {*/
+            mMainContent.setVisibility(View.VISIBLE);
+            mDetailsContent.setVisibility(View.GONE);
+//        }
+
         if (mDetailsSuperFlipper.getDisplayedChild() == 1)
             mDetailsSuperFlipper.showPrevious();
-        mMainContent.setVisibility(View.VISIBLE);
-        mDetailsContent.setVisibility(View.GONE);
     }
 
     public interface StatusCardListener {

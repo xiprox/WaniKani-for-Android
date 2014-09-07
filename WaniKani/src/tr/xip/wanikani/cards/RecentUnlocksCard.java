@@ -1,5 +1,6 @@
 package tr.xip.wanikani.cards;
 
+import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,32 +47,6 @@ public class RecentUnlocksCard extends Fragment {
     PrefManager prefMan;
 
     Context mContext;
-
-    RecentUnlocksCardListener mListener;
-
-    TextView mCardTitle;
-    ListView mRecentUnlocksList;
-    RelativeLayout mMoreItemsButton;
-
-    RecentUnlocksArrayAdapter mRecentUnlocksAdapter;
-
-    ViewFlipper mViewFlipper;
-    ViewFlipper mMessageViewFlipper;
-
-    LinearLayout mCard;
-
-    ImageView mMessageIcon;
-    TextView mMessageTitle;
-    TextView mMessageSummary;
-
-    List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
-
-    public void setListener(RecentUnlocksCardListener listener, Context context) {
-        mListener = listener;
-        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
-    }
-
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -83,6 +57,24 @@ public class RecentUnlocksCard extends Fragment {
                 new LoadTask().execute();
         }
     };
+    RecentUnlocksCardListener mListener;
+    TextView mCardTitle;
+    ListView mRecentUnlocksList;
+    RelativeLayout mMoreItemsButton;
+    RecentUnlocksArrayAdapter mRecentUnlocksAdapter;
+    ViewFlipper mViewFlipper;
+    ViewFlipper mMessageViewFlipper;
+    LinearLayout mCard;
+    ImageView mMessageIcon;
+    TextView mMessageTitle;
+    TextView mMessageSummary;
+    List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
+
+    public void setListener(RecentUnlocksCardListener listener, Context context) {
+        mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
+    }
 
     @Override
     public void onCreate(Bundle state) {
@@ -155,6 +147,10 @@ public class RecentUnlocksCard extends Fragment {
 
     private float pxFromDp(float dp) {
         return dp * mContext.getResources().getDisplayMetrics().density;
+    }
+
+    public interface RecentUnlocksCardListener {
+        public void onRecentUnlocksCardSyncFinishedListener(int height, String result);
     }
 
     private class LoadTask extends AsyncTask<String, Void, List<RecentUnlocksList.UnlockItem>> {
@@ -231,9 +227,5 @@ public class RecentUnlocksCard extends Fragment {
             intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
             getActivity().startActivity(intent);
         }
-    }
-
-    public interface RecentUnlocksCardListener {
-        public void onRecentUnlocksCardSyncFinishedListener(int height, String result);
     }
 }

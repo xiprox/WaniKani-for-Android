@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_level"
         android:icon="@drawable/ic_action_level"
-        android:title="@string/action_level"
-        app:showAsAction="always" />
+        android:showAsAction="always"
+        android:title="@string/action_level" />
     <item
         android:id="@+id/action_legend"
         android:icon="@drawable/ic_action_about"
-        android:title="@string/content_radicals_legend"
-        app:showAsAction="never" />
+        android:showAsAction="never"
+        android:title="@string/content_radicals_legend" />
 </menu>

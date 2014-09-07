@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_details_view_on_web"
         android:icon="@drawable/ic_action_web_site"
         android:title="@string/action_view_on_web"
-        app:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 </menu>

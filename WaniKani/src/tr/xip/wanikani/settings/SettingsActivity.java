@@ -1,11 +1,11 @@
 package tr.xip.wanikani.settings;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -25,7 +25,7 @@ import tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference;
 /**
  * Created by xihsa_000 on 4/4/14.
  */
-public class SettingsActivity extends ActionBarActivity implements View.OnClickListener {
+public class SettingsActivity extends Activity implements View.OnClickListener {
 
     PrefManager prefMan;
 
@@ -257,30 +257,34 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     }
 
     public void setUpActionBar() {
-        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                R.layout.actionbar_main, null);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
+            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                    R.layout.actionbar_main, null);
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
 
-        ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setCustomView(mActionBarLayout);
-        mActionBar.setDisplayShowCustomEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setIcon(android.R.color.transparent);
-        mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-        mActionBar.setDisplayHomeAsUpEnabled(false);
-        mActionBar.setHomeButtonEnabled(false);
+            ActionBar mActionBar = getActionBar();
+            mActionBar.setCustomView(mActionBarLayout);
+            mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setIcon(android.R.color.transparent);
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+            mActionBar.setHomeButtonEnabled(false);
 
-        mActionBarTitle.setText(R.string.title_settings);
+            if (Build.VERSION.SDK_INT > 18)
+                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
 
-        mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-        mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
+            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
+
+        setActionBarTitle(getString(R.string.title_settings));
     }
 
     private void loadPreferences() {
@@ -425,17 +429,17 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.settings_general_fonts:
-                new FontsPreference().show(getSupportFragmentManager(), "fonts-preference");
+                new FontsPreference().show(getFragmentManager(), "fonts-preference");
                 break;
             case R.id.settings_general_use_specific_dates:
                 mGeneralUseSpecificDatesCheckBox.toggle();
                 break;
             case R.id.settings_dashboard_recent_unlocks_number:
-                new RecentUnlocksNumberPreference().show(getSupportFragmentManager(),
+                new RecentUnlocksNumberPreference().show(getFragmentManager(),
                         "recent-unlocks-numbers-preference");
                 break;
             case R.id.settings_dashboard_critical_items_percentage:
-                new CriticalItemsPercentagePreference().show(getSupportFragmentManager(),
+                new CriticalItemsPercentagePreference().show(getFragmentManager(),
                         "critical-items-percentage-preference");
                 break;
             case R.id.settings_userscripts_review_improvements:
@@ -487,9 +491,26 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                 mHWAccelCheckBox.toggle();
                 break;
             case R.id.settings_developer_open_source_licenses:
-                new OpenSourceLicensesDialogFragment().show(getSupportFragmentManager(),
+                new OpenSourceLicensesDialogFragment().show(getFragmentManager(),
                         "open-source-licenses-preference-dialog");
                 break;
         }
+    }
+
+
+    private void setActionBarTitle(String title) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH)
+            if (mActionBarTitle != null)
+                mActionBarTitle.setText(title);
+            else
+                getActionBar().setTitle(title);
+    }
+
+    private void setActionBarIcon(int res) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH)
+            if (mActionBarIcon != null)
+                mActionBarIcon.setImageResource(res);
+            else
+                getActionBar().setIcon(res);
     }
 }
