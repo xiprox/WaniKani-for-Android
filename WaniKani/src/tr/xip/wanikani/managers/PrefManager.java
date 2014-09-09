@@ -47,14 +47,18 @@ public class PrefManager {
     public static final String PREF_MUTE = "pref_mute";
     public static final String PREF_HW_ACCEL = "pref_hw_accel";
 
+    private static Context context;
     private static SharedPreferences prefs;
     private static SharedPreferences.Editor prefeditor;
-    private static Context context;
+    private static SharedPreferences reviewsPrefs;
+    private static SharedPreferences.Editor reviewsPrefsEditor;
 
     public PrefManager(Context context) {
         this.context = context;
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefeditor = prefs.edit();
+        reviewsPrefs = context.getSharedPreferences("review-lessons_prefs", Context.MODE_PRIVATE);
+        reviewsPrefsEditor = reviewsPrefs.edit();
     }
 
     public String getApiKey() {
@@ -275,19 +279,19 @@ public class PrefManager {
     }
 
     public boolean getIgnoreButtonMessage() {
-        return prefs.getBoolean(PREF_IGNORE_BUTTON_MESSAGE, true);
+        return reviewsPrefs.getBoolean(PREF_IGNORE_BUTTON_MESSAGE, true);
     }
 
     public void setIgnoreButtonMessage(boolean value) {
-        prefeditor.putBoolean(PREF_IGNORE_BUTTON_MESSAGE, value).commit();
+        reviewsPrefsEditor.putBoolean(PREF_IGNORE_BUTTON_MESSAGE, value).commit();
     }
 
     public boolean getHWAccelMessage() {
-        return prefs.getBoolean(PREF_HW_ACCEL_MESSAGE, true);
+        return reviewsPrefs.getBoolean(PREF_HW_ACCEL_MESSAGE, true);
     }
 
     public void setHWAccelMessage(boolean value) {
-        prefeditor.putBoolean(PREF_HW_ACCEL_MESSAGE, value).commit();
+        reviewsPrefsEditor.putBoolean(PREF_HW_ACCEL_MESSAGE, value).commit();
     }
 
     public boolean getHWAccel() {
@@ -314,6 +318,7 @@ public class PrefManager {
 
     public void logout() {
         prefeditor.clear().commit();
+        reviewsPrefsEditor.clear().commit();
 
         File offlineData = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/shared_prefs/offline_data.xml");
         File cacheDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/cache");
