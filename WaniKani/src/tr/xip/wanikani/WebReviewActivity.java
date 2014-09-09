@@ -896,6 +896,12 @@ public class WebReviewActivity extends Activity {
     }
 
     @Override
+    public boolean onNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onBackPressed ()
     {
         String url;
