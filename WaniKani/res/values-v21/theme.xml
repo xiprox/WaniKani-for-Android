@@ -5,6 +5,7 @@
         <item name="android:colorPrimary">@color/apptheme_main</item>
         <item name="android:colorPrimaryDark">@color/apptheme_main</item>
         <item name="android:colorAccent">@color/apptheme_main</item>
+        <item name="android:actionModeBackground">@color/apptheme_main</item>
         <item name="android:windowBackground">@color/window_background_light</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
