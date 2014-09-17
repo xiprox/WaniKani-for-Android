@@ -54,6 +54,14 @@
                 android:textColor="@color/text_gray" />
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/item_radical_srs_level"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/oval_disabled" />
     </RelativeLayout>
 
     <View

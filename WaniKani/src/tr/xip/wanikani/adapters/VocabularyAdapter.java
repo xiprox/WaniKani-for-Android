@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
@@ -24,10 +23,8 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
     Context context;
 
     int headerResourceId;
-
-    private List<VocabularyList.VocabularyItem> items;
-
     Typeface typeface;
+    private List<VocabularyList.VocabularyItem> items;
 
     public VocabularyAdapter(Context context, List<VocabularyList.VocabularyItem> list, int headerResId, int itemResId) {
         super(context, list, headerResId, itemResId);
@@ -54,6 +51,7 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
             viewHolder.character = (TextView) convertView.findViewById(R.id.item_vocabulary_character);
             viewHolder.meaning = (TextView) convertView.findViewById(R.id.item_vocabulary_meaning);
             viewHolder.kana = (TextView) convertView.findViewById(R.id.item_vocabulary_kana);
+            viewHolder.srs = convertView.findViewById(R.id.item_vocabulary_srs_level);
 
             convertView.setTag(viewHolder);
         } else {
@@ -75,6 +73,20 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
             viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
             viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         }
+
+        if (vocabularyItem.isUnlocked()) {
+            if (vocabularyItem.getSrsLevel().equals("apprentice"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_apprentice);
+            if (vocabularyItem.getSrsLevel().equals("guru"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_guru);
+            if (vocabularyItem.getSrsLevel().equals("master"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_master);
+            if (vocabularyItem.getSrsLevel().equals("enlighten"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_enlightened);
+            if (vocabularyItem.getSrsLevel().equals("burned"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_burned);
+        } else
+            viewHolder.srs.setBackgroundResource(R.drawable.oval_disabled);
 
         String[] readings = vocabularyItem.getKana().split(",");
 
@@ -120,6 +132,7 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
         public TextView meaning;
         public TextView kana;
         public View status;
+        public View srs;
     }
 
     protected class HeaderViewHolder {

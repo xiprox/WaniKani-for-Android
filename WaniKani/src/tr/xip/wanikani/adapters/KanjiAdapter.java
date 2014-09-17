@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersSimpleArrayAdapter;
 
@@ -25,10 +23,8 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
     Context context;
 
     int headerResourceId;
-
-    private List<KanjiList.KanjiItem> items;
-
     Typeface typeface;
+    private List<KanjiList.KanjiItem> items;
 
     public KanjiAdapter(Context context, List<KanjiList.KanjiItem> list, int headerResId, int itemResId) {
         super(context, list, headerResId, itemResId);
@@ -55,6 +51,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
             viewHolder.character = (TextView) convertView.findViewById(R.id.item_kanji_character);
             viewHolder.meaning = (TextView) convertView.findViewById(R.id.item_kanji_meaning);
             viewHolder.reading = (TextView) convertView.findViewById(R.id.item_kanji_reading);
+            viewHolder.srs = convertView.findViewById(R.id.item_kanji_srs_level);
 
             convertView.setTag(viewHolder);
         } else {
@@ -76,6 +73,20 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
             viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
             viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         }
+
+        if (kanjiItem.isUnlocked()) {
+            if (kanjiItem.getSrsLevel().equals("apprentice"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_apprentice);
+            if (kanjiItem.getSrsLevel().equals("guru"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_guru);
+            if (kanjiItem.getSrsLevel().equals("master"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_master);
+            if (kanjiItem.getSrsLevel().equals("enlighten"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_enlightened);
+            if (kanjiItem.getSrsLevel().equals("burned"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_burned);
+        } else
+            viewHolder.srs.setBackgroundResource(R.drawable.oval_disabled);
 
         if (kanjiItem.getImportantReading().equals("onyomi"))
             viewHolder.reading.setText(kanjiItem.getOnyomi());
@@ -123,6 +134,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
         public TextView meaning;
         public TextView reading;
         public View status;
+        public View srs;
     }
 
     protected class HeaderViewHolder {

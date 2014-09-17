@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    android:columnWidth="250dp"
+                    android:columnWidth="280dp"
                     android:drawSelectorOnTop="true"
                     android:fadingEdge="none"
                     android:fastScrollEnabled="true"

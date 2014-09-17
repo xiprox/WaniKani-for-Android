@@ -50,9 +50,10 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
 
             viewHolder.card = (FrameLayout) convertView.findViewById(R.id.item_radical_card);
             viewHolder.status = convertView.findViewById(R.id.item_radical_status);
-            viewHolder.character = (TextView) (convertView.findViewById(R.id.item_radical_character));
-            viewHolder.image = (ImageView) (convertView.findViewById(R.id.item_radical_character_image));
-            viewHolder.meaning = (TextView) (convertView.findViewById(R.id.item_radical_meaning));
+            viewHolder.character = (TextView) convertView.findViewById(R.id.item_radical_character);
+            viewHolder.image = (ImageView) convertView.findViewById(R.id.item_radical_character_image);
+            viewHolder.meaning = (TextView) convertView.findViewById(R.id.item_radical_meaning);
+            viewHolder.srs = convertView.findViewById(R.id.item_radical_srs_level);
 
             convertView.setTag(viewHolder);
         } else {
@@ -88,6 +89,20 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
             viewHolder.card.setBackgroundColor(context.getResources().getColor(android.R.color.white));
             viewHolder.status.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         }
+
+        if (radicalItem.isUnlocked()) {
+            if (radicalItem.getSrsLevel().equals("apprentice"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_apprentice);
+            if (radicalItem.getSrsLevel().equals("guru"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_guru);
+            if (radicalItem.getSrsLevel().equals("master"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_master);
+            if (radicalItem.getSrsLevel().equals("enlighten"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_enlightened);
+            if (radicalItem.getSrsLevel().equals("burned"))
+                viewHolder.srs.setBackgroundResource(R.drawable.oval_burned);
+        } else
+            viewHolder.srs.setBackgroundResource(R.drawable.oval_disabled);
 
         viewHolder.meaning.setText(WordUtils.capitalize((radicalItem.getMeaning())));
 
@@ -126,6 +141,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
         public ImageView image;
         public TextView meaning;
         public View status;
+        public View srs;
     }
 
     protected class HeaderViewHolder {
