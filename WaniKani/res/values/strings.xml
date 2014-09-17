@@ -162,7 +162,7 @@
     <string name="pref_title_screen_orientation">Screen orientation</string>
     <string name="pref_summary_screen_orientation"></string>
     <string name="pref_title_use_specific_dates">Specific dates</string>
-    <string name="pref_summary_use_specific_dates">Show dates and times specifically instead of showing remaining time</string>
+    <string name="pref_summary_use_specific_dates">Show dates and times specifically instead of showing relative time</string>
     <string name="pref_category_developer">Developer</string>
     <string name="pref_title_open_source_licences">Open source licenses</string>
     <string name="pref_title_app_version">App version</string>
