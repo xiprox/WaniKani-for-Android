@@ -57,6 +57,9 @@ android {
         maven {
             url 'https://github.com/toxbee/mvn-repo/raw/master/maven-deploy'
         }
+        flatDir {
+            dirs 'libs'
+        }
         mavenCentral()
     }
 
