@@ -113,7 +113,7 @@ public class ProgressCard extends Fragment {
         return rootView;
     }
 
-    private void loadOfflineValues() {
+    public void loadOfflineValues() {
         mUserLevel.setText(dataMan.getLevel() + "");
         mRadicalsProgress.setText(dataMan.getRadicalsProgress() + "");
         mRadicalsTotal.setText(dataMan.getRadicalsProgress() + "");
@@ -135,6 +135,10 @@ public class ProgressCard extends Fragment {
         dataMan.setKanjiPercentage(kanjiPercentage);
         dataMan.setKanjiProgress(kanjiProgress);
         dataMan.setKanjiTotal(kanjiTotal);
+    }
+
+    public void load() {
+        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private class LoadTask extends AsyncTask<String, Void, String> {

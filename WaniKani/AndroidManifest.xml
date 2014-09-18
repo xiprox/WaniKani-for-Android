@@ -89,6 +89,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ProgressDetailsActivity"
+            android:label="@string/card_title_progress"
+            android:parentActivityName="tr.xip.wanikani.MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="tr.xip.wanikani.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

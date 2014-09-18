@@ -360,7 +360,7 @@ public class DashboardFragment extends Fragment
             // TODO - Handle reviews card stuff
         }
         if (view == mProgressCard) {
-            // TODO - Handle progress card stuff
+            startActivity(new Intent(getActivity(), ProgressDetailsActivity.class));
         }
     }
 
