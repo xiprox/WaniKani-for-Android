@@ -17,9 +17,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
@@ -702,6 +703,10 @@ public class WebReviewActivity extends Activity {
 
         CookieSyncManager.createInstance (this);
         setVolumeControlStream (AudioManager.STREAM_MUSIC);
+
+        if (prefMan.getReviewsLessonsFullscreen()) {
+            mActionBar.hide();
+        }
 
         setContentView (R.layout.activity_web_view);
 

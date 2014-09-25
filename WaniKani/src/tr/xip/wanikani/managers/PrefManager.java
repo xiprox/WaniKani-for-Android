@@ -46,6 +46,7 @@ public class PrefManager {
     public static final String PREF_HW_ACCEL_MESSAGE = "pref_hw_accel_message";
     public static final String PREF_MUTE = "pref_mute";
     public static final String PREF_HW_ACCEL = "pref_hw_accel";
+    public static final String PREF_REVIEWS_LESSONS_FULLSCREEN = "pref_rev_les_fullscreen";
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -314,6 +315,14 @@ public class PrefManager {
 
     public void setMute(boolean value) {
         prefeditor.putBoolean(PREF_MUTE, value).commit();
+    }
+
+    public boolean getReviewsLessonsFullscreen() {
+        return prefs.getBoolean(PREF_REVIEWS_LESSONS_FULLSCREEN, false);
+    }
+
+    public void setReviewsLessonsFullscreen(boolean value) {
+        prefeditor.putBoolean(PREF_REVIEWS_LESSONS_FULLSCREEN, value).commit();
     }
 
     public void logout() {

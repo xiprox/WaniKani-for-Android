@@ -35,6 +35,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     CheckBox mGeneralUseSpecificDatesCheckBox;
     LinearLayout mDashboardRecentUnlocksNumber;
     LinearLayout mDashboardCriticalItemsPercentage;
+    RelativeLayout mReviewsLessonsFullscreen;
+    CheckBox mReviewsLessonsFullscreenCheckBox;
     RelativeLayout mReviewImprovements;
     CheckBox mReviewImprovementsCheckBox;
     RelativeLayout mIgnoreButton;
@@ -90,6 +92,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mGeneralUseSpecificDatesCheckBox = (CheckBox) findViewById(R.id.settings_general_use_specific_dates_check_box);
         mDashboardRecentUnlocksNumber = (LinearLayout) findViewById(R.id.settings_dashboard_recent_unlocks_number);
         mDashboardCriticalItemsPercentage = (LinearLayout) findViewById(R.id.settings_dashboard_critical_items_percentage);
+        mReviewsLessonsFullscreen = (RelativeLayout) findViewById(R.id.settings_rev_les_fullscreen);
+        mReviewsLessonsFullscreenCheckBox = (CheckBox) findViewById(R.id.settings_rev_les_fullscreen_check_box);
         mReviewImprovements = (RelativeLayout) findViewById(R.id.settings_userscripts_review_improvements);
         mReviewImprovementsCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_review_improvements_check_box);
         mIgnoreButton = (RelativeLayout) findViewById(R.id.settings_userscripts_ignore_button);
@@ -137,6 +141,13 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 prefMan.setUseSpecificDates(isChecked);
+            }
+        });
+
+        mReviewsLessonsFullscreenCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                prefMan.setReviewsLessonsFullscreen(isChecked);
             }
         });
 
@@ -311,6 +322,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         loadUseCustomFonts();
         loadGeneralUseSpecificDates();
         loadReviewsImprovements();
+        loadReviewsLessonsFullscreen();
         loadIgnoreButton();
         loadSingleButton();
         loadPortraitMode();
@@ -335,6 +347,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mDashboardRecentUnlocksNumber.setOnClickListener(this);
         mDashboardCriticalItemsPercentage.setOnClickListener(this);
         mReviewImprovements.setOnClickListener(this);
+        mReviewsLessonsFullscreen.setOnClickListener(this);
         mIgnoreButton.setOnClickListener(this);
         mSingleButton.setOnClickListener(this);
         mPortraitMode.setOnClickListener(this);
@@ -375,6 +388,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
 
     private void loadReviewsImprovements() {
         mReviewImprovementsCheckBox.setChecked(prefMan.getReviewsImprovements());
+    }
+
+    private void loadReviewsLessonsFullscreen() {
+        mReviewsLessonsFullscreenCheckBox.setChecked(prefMan.getReviewsLessonsFullscreen());
     }
 
     private void loadIgnoreButton() {
@@ -474,6 +491,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.settings_userscripts_review_improvements:
                 mReviewImprovementsCheckBox.toggle();
+                break;
+            case R.id.settings_rev_les_fullscreen:
+                mReviewsLessonsFullscreenCheckBox.toggle();
                 break;
             case R.id.settings_userscripts_ignore_button:
                 mIgnoreButtonCheckBox.toggle();
