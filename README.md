@@ -10,7 +10,6 @@ WaniKani for Android is BSD Licensed, contributions are always welcome. (Please 
   - [Retrofit](http://square.github.io/retrofit)
   - [Gson](https://code.google.com/p/google-gson/)
   - [StickyGridHeaders](https://github.com/TonicArtos/StickyGridHeaders)
-  - [Number Picker Backport](https://github.com/SimonVT/android-numberpicker)
   - [Picasso](http://square.github.io/picasso/)
   - [Commons IO](http://commons.apache.org/proper/commons-io/)
   - [Commons Lang](http://commons.apache.org/proper/commons-lang/)
