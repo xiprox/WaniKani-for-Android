@@ -17,12 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tr.xip.wanikani.BroadcastIntents;
+import tr.xip.wanikani.CriticalItemsActivity;
 import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
@@ -45,31 +48,6 @@ public class CriticalItemsCard extends Fragment {
     PrefManager prefMan;
 
     Context mContext;
-
-    CriticalItemsCardListener mListener;
-
-    TextView mCardTitle;
-    ListView mCriticalItemsList;
-
-    CriticalItemsAdapter mCriticalItemsAdapter;
-
-    ViewFlipper mViewFlipper;
-    ViewFlipper mMessageViewFlipper;
-
-    LinearLayout mCard;
-
-    ImageView mMessageIcon;
-    TextView mMessageTitle;
-    TextView mMessageSummary;
-
-    List<CriticalItemsList.CriticalItem> criticalItemsList = null;
-
-    public void setListener(CriticalItemsCardListener listener, Context context) {
-        mListener = listener;
-        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
-                new IntentFilter(BroadcastIntents.SYNC()));
-    }
-
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -80,6 +58,24 @@ public class CriticalItemsCard extends Fragment {
                 new LoadTask().execute();
         }
     };
+    CriticalItemsCardListener mListener;
+    TextView mCardTitle;
+    ListView mCriticalItemsList;
+    CriticalItemsAdapter mCriticalItemsAdapter;
+    ViewFlipper mViewFlipper;
+    ViewFlipper mMessageViewFlipper;
+    LinearLayout mCard;
+    ImageView mMessageIcon;
+    TextView mMessageTitle;
+    TextView mMessageSummary;
+    RelativeLayout mMoreButton;
+    List<CriticalItemsList.CriticalItem> criticalItemsList = null;
+
+    public void setListener(CriticalItemsCardListener listener, Context context) {
+        mListener = listener;
+        LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
+                new IntentFilter(BroadcastIntents.SYNC()));
+    }
 
     @Override
     public void onCreate(Bundle state) {
@@ -113,6 +109,14 @@ public class CriticalItemsCard extends Fragment {
 
         mCriticalItemsList.setOnItemClickListener(new criticalItemListItemClickListener());
 
+        mMoreButton = (RelativeLayout) rootView.findViewById(R.id.card_critical_items_more_button);
+        mMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CriticalItemsActivity.class));
+            }
+        });
+
         return rootView;
     }
 
@@ -144,6 +148,10 @@ public class CriticalItemsCard extends Fragment {
         return dp * mContext.getResources().getDisplayMetrics().density;
     }
 
+    public interface CriticalItemsCardListener {
+        public void onCriticalItemsCardSyncFinishedListener(int height, String result);
+    }
+
     private class LoadTask extends AsyncTask<String, Void, List<CriticalItemsList.CriticalItem>> {
 
         @Override
@@ -162,8 +170,34 @@ public class CriticalItemsCard extends Fragment {
             int height;
 
             if (result != null) {
+                List<CriticalItemsList.CriticalItem> mNewList = new ArrayList<CriticalItemsList.CriticalItem>();
+
+                for (int i = 0; i < result.size(); i++)
+                    if (i < prefMan.getCriticalItemsNumber())
+                        mNewList.add(result.get(i));
+
                 mCriticalItemsAdapter = new CriticalItemsAdapter(mContext,
-                        R.layout.item_critical, result, new Fonts().getKanjiFont(mContext));
+                        R.layout.item_critical, mNewList, new Fonts().getKanjiFont(mContext));
+
+                int sixteenDpPaddingInPx = (int) pxFromDp(16);
+                int sixtyFourDpInPx = (int) pxFromDp(64);
+
+                if (mNewList.size() < result.size()) {
+                    mCriticalItemsList.setPadding(
+                            sixteenDpPaddingInPx,
+                            sixteenDpPaddingInPx,
+                            sixteenDpPaddingInPx,
+                            sixtyFourDpInPx
+                    );
+                    mMoreButton.setVisibility(View.VISIBLE);
+                } else {
+                    mCriticalItemsList.setPadding(sixteenDpPaddingInPx,
+                            sixteenDpPaddingInPx,
+                            sixteenDpPaddingInPx,
+                            sixteenDpPaddingInPx
+                    );
+                    mMoreButton.setVisibility(View.GONE);
+                }
 
                 if (mCriticalItemsAdapter.getCount() != 0) {
                     mCriticalItemsList.setAdapter(mCriticalItemsAdapter);
@@ -218,9 +252,5 @@ public class CriticalItemsCard extends Fragment {
             intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
             getActivity().startActivity(intent);
         }
-    }
-
-    public interface CriticalItemsCardListener {
-        public void onCriticalItemsCardSyncFinishedListener(int height, String result);
     }
 }

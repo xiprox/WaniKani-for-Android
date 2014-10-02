@@ -24,6 +24,7 @@ public class PrefManager {
     public static final String PREF_API_KEY = "pref_api_key";
     public static final String PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER = "pref_dashboard_recent_unlock_number";
     public static final String PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE = "pref_dashboard_critical_items_percentage";
+    public static final String PREF_CRITICAL_ITEMS_NUMBER = "pref_critical_items_number";
     public static final String PREF_USE_CUSTOM_FONTS = "pref_use_custom_fonts";
     public static final String PREF_USE_SPECIFIC_DATES = "pref_use_specific_dates";
     public static final String PREF_REVIEWS_IMPROVEMENTS = "pref_reviews_improvements";
@@ -100,6 +101,14 @@ public class PrefManager {
 
     public void setDashboardCriticalItemsPercentage(int number) {
         prefeditor.putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
+    }
+
+    public int getCriticalItemsNumber() {
+        return prefs.getInt(PREF_CRITICAL_ITEMS_NUMBER, 5);
+    }
+
+    public void setCriticalItemsNumber(int value) {
+        prefeditor.putInt(PREF_CRITICAL_ITEMS_NUMBER, value).commit();
     }
 
     public boolean isLegendLearned() {

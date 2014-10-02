@@ -18,6 +18,7 @@ import android.widget.TextView;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.dialogs.OpenSourceLicensesDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.settings.preferences.CriticalItemsNumberPreference;
 import tr.xip.wanikani.settings.preferences.CriticalItemsPercentagePreference;
 import tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference;
 
@@ -35,6 +36,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     CheckBox mGeneralUseSpecificDatesCheckBox;
     LinearLayout mDashboardRecentUnlocksNumber;
     LinearLayout mDashboardCriticalItemsPercentage;
+    LinearLayout mCriticalItemsNumber;
     RelativeLayout mReviewsLessonsFullscreen;
     CheckBox mReviewsLessonsFullscreenCheckBox;
     RelativeLayout mReviewImprovements;
@@ -92,6 +94,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mGeneralUseSpecificDatesCheckBox = (CheckBox) findViewById(R.id.settings_general_use_specific_dates_check_box);
         mDashboardRecentUnlocksNumber = (LinearLayout) findViewById(R.id.settings_dashboard_recent_unlocks_number);
         mDashboardCriticalItemsPercentage = (LinearLayout) findViewById(R.id.settings_dashboard_critical_items_percentage);
+        mCriticalItemsNumber = (LinearLayout) findViewById(R.id.settings_dashboard_critical_items_number);
         mReviewsLessonsFullscreen = (RelativeLayout) findViewById(R.id.settings_rev_les_fullscreen);
         mReviewsLessonsFullscreenCheckBox = (CheckBox) findViewById(R.id.settings_rev_les_fullscreen_check_box);
         mReviewImprovements = (RelativeLayout) findViewById(R.id.settings_userscripts_review_improvements);
@@ -346,6 +349,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
         mGeneralUseSpecificDates.setOnClickListener(this);
         mDashboardRecentUnlocksNumber.setOnClickListener(this);
         mDashboardCriticalItemsPercentage.setOnClickListener(this);
+        mCriticalItemsNumber.setOnClickListener(this);
         mReviewImprovements.setOnClickListener(this);
         mReviewsLessonsFullscreen.setOnClickListener(this);
         mIgnoreButton.setOnClickListener(this);
@@ -488,6 +492,10 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
             case R.id.settings_dashboard_critical_items_percentage:
                 new CriticalItemsPercentagePreference().show(getFragmentManager(),
                         "critical-items-percentage-preference");
+                break;
+            case R.id.settings_dashboard_critical_items_number:
+                new CriticalItemsNumberPreference().show(getFragmentManager(),
+                        "critical-items-number-preference");
                 break;
             case R.id.settings_userscripts_review_improvements:
                 mReviewImprovementsCheckBox.toggle();

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_placeholder_height"
+        android:background="@color/apptheme_actionbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ViewFlipper
+            android:id="@+id/activity_critical_items_view_flipper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inAnimation="@anim/abc_fade_in"
+            android:outAnimation="@anim/abc_fade_out">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <GridView
+                android:id="@+id/activity_critical_items_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:columnWidth="250dp"
+                android:drawSelectorOnTop="true"
+                android:fadingEdge="none"
+                android:fastScrollEnabled="true"
+                android:horizontalSpacing="1dp"
+                android:listSelector="@drawable/selector_background_neutral"
+                android:numColumns="auto_fit"
+                android:scrollbarStyle="outsideOverlay"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="1dp" />
+        </ViewFlipper>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/actionbar_shadow" />
+    </RelativeLayout>
+</LinearLayout>

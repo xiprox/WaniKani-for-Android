@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fadingEdge="none">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minWidth="280dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:text="@string/pref_title_critical_items_numner"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pref_summary_critical_items_number"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="14sp" />
+
+            <NumberPicker
+                android:id="@+id/number_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center|right"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="@drawable/selector_background_neutral"
+                android:gravity="center"
+                android:minHeight="36dp"
+                android:minWidth="88dp"
+                android:text="@string/cancel"
+                android:textAllCaps="true"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:background="@drawable/selector_background_neutral"
+                android:gravity="center"
+                android:minHeight="36dp"
+                android:minWidth="88dp"
+                android:text="@string/ok"
+                android:textAllCaps="true"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

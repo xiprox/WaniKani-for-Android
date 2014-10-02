@@ -32,16 +32,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ListView
-                android:id="@+id/card_critical_items_list"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:divider="@drawable/divider_48dp_left"
-                android:dividerHeight="1dp"
-                android:listSelector="@drawable/selector_background_neutral"
-                android:padding="16dp"
-                android:scrollbarStyle="outsideOverlay" />
+                android:layout_height="wrap_content">
+
+                <ListView
+                    android:id="@+id/card_critical_items_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:divider="@drawable/divider_48dp_left"
+                    android:dividerHeight="1dp"
+                    android:listSelector="@drawable/selector_background_neutral"
+                    android:paddingBottom="64dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="16dp"
+                    android:scrollbarStyle="outsideOverlay" />
+
+                <RelativeLayout
+                    android:id="@+id/card_critical_items_more_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/selector_background_neutral"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@color/separator_light" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/action_more_items_capital"
+                        android:textColor="@color/text_gray" />
+
+                </RelativeLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,11 +119,7 @@
                         android:dividerHeight="1px"
                         android:textColor="@color/text_gray" />
                 </LinearLayout>
-
             </LinearLayout>
-
         </ViewFlipper>
     </ViewFlipper>
-
-
 </LinearLayout>
