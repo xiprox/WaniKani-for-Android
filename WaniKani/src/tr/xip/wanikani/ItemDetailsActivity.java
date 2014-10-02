@@ -256,12 +256,7 @@ public class ItemDetailsActivity extends Activity {
         if (gotImage != null) {
             mActionBarTitleImage.setVisibility(View.VISIBLE);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Picasso.with(getApplicationContext()).load(gotImage).into(mActionBarTitleImage);
-                }
-            }).start();
+            Picasso.with(getApplicationContext()).load(gotImage).into(mActionBarTitleImage);
 
             mActionBarTitleImage.setColorFilter(getResources().getColor(android.R.color.white),
                     PorterDuff.Mode.SRC_ATOP);
