@@ -168,11 +168,6 @@
                     android:layout_height="1dp"
                     android:background="@color/separator_light" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/separator_light" />
-
                 <LinearLayout
                     android:id="@+id/settings_dashboard_critical_items_number"
                     android:layout_width="match_parent"
@@ -194,6 +189,11 @@
                         android:text="@string/pref_summary_critical_items_number"
                         android:textColor="@color/text_gray" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/separator_light" />
 
                 <LinearLayout
                     android:id="@+id/settings_dashboard_critical_items_percentage"
