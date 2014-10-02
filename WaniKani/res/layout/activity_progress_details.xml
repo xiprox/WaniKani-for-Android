@@ -63,7 +63,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
@@ -97,18 +97,15 @@
 
                                 <tr.xip.wanikani.widget.ScrollableGridView
                                     android:id="@+id/progress_details_radicals_grid"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginTop="16dp"
                                     android:columnWidth="48dp"
                                     android:drawSelectorOnTop="true"
                                     android:gravity="center"
                                     android:horizontalSpacing="6dp"
                                     android:listSelector="@drawable/selector_background_neutral_grid_item"
                                     android:numColumns="auto_fit"
-                                    android:paddingLeft="16dp"
-                                    android:paddingRight="16dp"
+                                    android:padding="16dp"
                                     android:stretchMode="none"
                                     android:verticalSpacing="6dp" />
 
