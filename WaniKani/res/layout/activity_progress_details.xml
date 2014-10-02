@@ -1,198 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/action_bar_placeholder_height"
+    android:orientation="vertical"
     tools:context=".ProgressDetailsActivity">
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="123dp"
-        android:orientation="vertical">
+        android:layout_height="@dimen/action_bar_placeholder_height"
+        android:background="@color/apptheme_actionbar" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@color/apptheme_main" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@drawable/actionbar_shadow" />
-    </LinearLayout>
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="123dp"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/apptheme_main" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@drawable/actionbar_shadow" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <fragment
-                    android:id="@+id/progress_details_progress_card"
-                    android:name="tr.xip.wanikani.cards.ProgressCardNoTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_card_between"
-                    android:layout_marginLeft="@dimen/margin_card_side"
-                    android:layout_marginRight="@dimen/margin_card_side"
-                    android:layout_marginTop="@dimen/margin_card_end"
-                    tools:layout="@layout/card_progress_no_title" />
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
 
-                <FrameLayout
-                    android:id="@+id/progress_details_radicals_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_card_between"
-                    android:layout_marginLeft="@dimen/margin_card_side"
-                    android:layout_marginRight="@dimen/margin_card_side"
-                    android:background="@drawable/card">
-
-                    <LinearLayout
+                    <fragment
+                        android:id="@+id/progress_details_progress_card"
+                        android:name="tr.xip.wanikani.cards.ProgressCardNoTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:layout_marginTop="@dimen/margin_card_end"
+                        tools:layout="@layout/card_progress_no_title" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="@string/card_title_remaining_radicals"
-                            android:textAppearance="@android:style/TextAppearance.Large"
-                            android:textColor="@color/apptheme_main" />
+                    <FrameLayout
+                        android:id="@+id/progress_details_radicals_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:background="@drawable/card">
 
-                        <ViewFlipper
-                            android:id="@+id/progress_details_radicals_flipper"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inAnimation="@anim/abc_fade_in"
-                            android:outAnimation="@anim/abc_fade_out">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <ProgressBar
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_margin="16dp" />
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/card_title_remaining_radicals"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@color/apptheme_main" />
 
                             <ViewFlipper
-                                android:id="@+id/progress_details_radicals_message_flipper"
+                                android:id="@+id/progress_details_radicals_flipper"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:inAnimation="@anim/abc_fade_in"
                                 android:outAnimation="@anim/abc_fade_out">
 
-                                <tr.xip.wanikani.widget.ScrollableGridView
-                                    android:id="@+id/progress_details_radicals_grid"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:columnWidth="48dp"
-                                    android:drawSelectorOnTop="true"
-                                    android:gravity="center"
-                                    android:horizontalSpacing="6dp"
-                                    android:listSelector="@drawable/selector_background_neutral_grid_item"
-                                    android:numColumns="auto_fit"
-                                    android:padding="16dp"
-                                    android:stretchMode="none"
-                                    android:verticalSpacing="6dp" />
-
-                                <TextView
-                                    android:id="@+id/progress_details_radicals_message_text"
+                                <ProgressBar
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginTop="16dp"
-                                    android:fontFamily="sans-serif-light"
-                                    android:text="No items dammit!"
-                                    android:textAppearance="@android:style/TextAppearance.Medium"
-                                    android:textColor="@color/text_gray" />
+                                    android:layout_margin="16dp" />
+
+                                <ViewFlipper
+                                    android:id="@+id/progress_details_radicals_message_flipper"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inAnimation="@anim/abc_fade_in"
+                                    android:outAnimation="@anim/abc_fade_out">
+
+                                    <tr.xip.wanikani.widget.ScrollableGridView
+                                        android:id="@+id/progress_details_radicals_grid"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:columnWidth="48dp"
+                                        android:drawSelectorOnTop="true"
+                                        android:gravity="center"
+                                        android:horizontalSpacing="6dp"
+                                        android:listSelector="@drawable/selector_background_neutral_grid_item"
+                                        android:numColumns="auto_fit"
+                                        android:padding="16dp"
+                                        android:stretchMode="none"
+                                        android:verticalSpacing="6dp" />
+
+                                    <TextView
+                                        android:id="@+id/progress_details_radicals_message_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:fontFamily="sans-serif-light"
+                                        android:text="No items dammit!"
+                                        android:textAppearance="@android:style/TextAppearance.Medium"
+                                        android:textColor="@color/text_gray" />
+                                </ViewFlipper>
                             </ViewFlipper>
-                        </ViewFlipper>
-                    </LinearLayout>
-                </FrameLayout>
+                        </LinearLayout>
+                    </FrameLayout>
 
-                <FrameLayout
-                    android:id="@+id/progress_details_kanji_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_card_between"
-                    android:layout_marginLeft="@dimen/margin_card_side"
-                    android:layout_marginRight="@dimen/margin_card_side"
-                    android:background="@drawable/card">
-
-                    <LinearLayout
+                    <FrameLayout
+                        android:id="@+id/progress_details_kanji_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:background="@drawable/card">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="@string/card_title_remaining_kanji"
-                            android:textAppearance="@android:style/TextAppearance.Large"
-                            android:textColor="@color/apptheme_main" />
-
-                        <ViewFlipper
-                            android:id="@+id/progress_details_kanji_flipper"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inAnimation="@anim/abc_fade_in"
-                            android:outAnimation="@anim/abc_fade_out">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <ProgressBar
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_margin="16dp" />
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/card_title_remaining_kanji"
+                                android:textAppearance="@android:style/TextAppearance.Large"
+                                android:textColor="@color/apptheme_main" />
 
                             <ViewFlipper
-                                android:id="@+id/progress_details_kanji_message_flipper"
+                                android:id="@+id/progress_details_kanji_flipper"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:inAnimation="@anim/abc_fade_in"
                                 android:outAnimation="@anim/abc_fade_out">
 
-                                <tr.xip.wanikani.widget.ScrollableGridView
-                                    android:id="@+id/progress_details_kanji_grid"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:columnWidth="48dp"
-                                    android:drawSelectorOnTop="true"
-                                    android:gravity="center"
-                                    android:horizontalSpacing="6dp"
-                                    android:listSelector="@drawable/selector_background_neutral_grid_item"
-                                    android:numColumns="auto_fit"
-                                    android:padding="16dp"
-                                    android:stretchMode="none"
-                                    android:verticalSpacing="6dp" />
-
-                                <TextView
-                                    android:id="@+id/progress_details_kanji_message_text"
+                                <ProgressBar
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginTop="16dp"
-                                    android:fontFamily="sans-serif-light"
-                                    android:textAppearance="@android:style/TextAppearance.Medium"
-                                    android:textColor="@color/text_gray" />
+                                    android:layout_margin="16dp" />
+
+                                <ViewFlipper
+                                    android:id="@+id/progress_details_kanji_message_flipper"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:inAnimation="@anim/abc_fade_in"
+                                    android:outAnimation="@anim/abc_fade_out">
+
+                                    <tr.xip.wanikani.widget.ScrollableGridView
+                                        android:id="@+id/progress_details_kanji_grid"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:columnWidth="48dp"
+                                        android:drawSelectorOnTop="true"
+                                        android:gravity="center"
+                                        android:horizontalSpacing="6dp"
+                                        android:listSelector="@drawable/selector_background_neutral_grid_item"
+                                        android:numColumns="auto_fit"
+                                        android:padding="16dp"
+                                        android:stretchMode="none"
+                                        android:verticalSpacing="6dp" />
+
+                                    <TextView
+                                        android:id="@+id/progress_details_kanji_message_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:fontFamily="sans-serif-light"
+                                        android:textAppearance="@android:style/TextAppearance.Medium"
+                                        android:textColor="@color/text_gray" />
+                                </ViewFlipper>
                             </ViewFlipper>
-                        </ViewFlipper>
-                    </LinearLayout>
-                </FrameLayout>
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</LinearLayout>
