@@ -198,11 +198,17 @@ public class ProgressDetailsActivity extends Activity implements ProgressCard.Pr
 
         private void filterRemaining() {
             for (RadicalsList.RadicalItem item : mRadicals)
-                if (item.isUnlocked() && item.getSrsLevel().equals("apprentice"))
+                if (item.isUnlocked()) {
+                    if (item.getSrsLevel().equals("apprentice"))
+                        mRemainingRadicals.add(item);
+                } else
                     mRemainingRadicals.add(item);
 
             for (KanjiList.KanjiItem item : mKanji)
-                if (item.isUnlocked() && item.getSrsLevel().equals("apprentice"))
+                if (item.isUnlocked()) {
+                    if (item.getSrsLevel().equals("apprentice"))
+                        mRemainingKanji.add(item);
+                } else
                     mRemainingKanji.add(item);
         }
     }
