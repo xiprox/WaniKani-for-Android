@@ -2,8 +2,6 @@ package tr.xip.wanikani;
 
 import java.io.File;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -17,6 +15,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -73,7 +73,7 @@ import tr.xip.wanikani.userscripts.PartOfSpeech;
  * it calls its <code>show</code> (vs. <code>hide</code>) method.
  * The JavascriptObject is implemented by @link WebReviewActivity.WKNKeyboard.
  */
-public class WebReviewActivity extends Activity {
+public class WebReviewActivity extends ActionBarActivity {
 
     /**
      * This class is barely a container of all the strings that should match with the
@@ -656,11 +656,6 @@ public class WebReviewActivity extends Activity {
 
     ActionBar mActionBar;
 
-    /** Action Bar Views*/
-    ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
-    TextView mActionBarTitle;
-
     /**
      * Called when the action is initially displayed. It initializes the objects
      * and starts loading the review page.
@@ -671,32 +666,8 @@ public class WebReviewActivity extends Activity {
     {
         super.onCreate (bundle);
 
-        mActionBar = getActionBar();
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_main, null);
-
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-
-            mActionBar.setCustomView(mActionBarLayout);
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setIcon(android.R.color.transparent);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setHomeButtonEnabled(false);
-            if (Build.VERSION.SDK_INT >= 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-
-            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                    }
-            });
-        }
+        mActionBar = getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         prefMan = new PrefManager(this);
         Resources res;
@@ -712,9 +683,9 @@ public class WebReviewActivity extends Activity {
 
         String intentData = getIntent().getData().toString();
         if (intentData.contains("review"))
-            setActionBarTitle(getString(R.string.ab_title_reviews));
+            mActionBar.setTitle(getString(R.string.ab_title_reviews));
         else if (intentData.contains("lesson"))
-            setActionBarTitle(getString(R.string.ab_title_lessons));
+            mActionBar.setTitle(getString(R.string.ab_title_lessons));
 
         res = getResources ();
 
@@ -770,22 +741,6 @@ public class WebReviewActivity extends Activity {
         reaper = new TimerThreadsReaper ();
         rtask = reaper.createTask (new Handler (), 2, 7000);
         rtask.setListener (new ReaperTaskListener ());
-    }
-
-    private void setActionBarTitle(String title) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarTitle != null)
-                mActionBarTitle.setText(title);
-        } else
-            mActionBar.setTitle(title);
-    }
-
-    private void setActionBarIcon(int res) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarIcon != null)
-                mActionBarIcon.setImageResource(res);
-        } else
-            mActionBar.setIcon(res);
     }
 
     @Override
@@ -901,7 +856,7 @@ public class WebReviewActivity extends Activity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
     }

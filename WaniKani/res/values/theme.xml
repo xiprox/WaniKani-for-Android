@@ -1,85 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-
-    <style name="Theme.Apptheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarItemBackground">@drawable/selector_background_oval</item>
-        <item name="android:popupMenuStyle">@style/PopupMenu.Apptheme</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Apptheme</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Apptheme</item>
-        <item name="android:actionDropDownStyle">@style/DropDownNav.Apptheme</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Solid.Apptheme</item>
-        <item name="android:actionModeBackground">@color/apptheme_actionbar</item>
-        <item name="android:actionModeSplitBackground">@color/apptheme_actionbar</item>
-        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Apptheme
-        </item>
-        <item name="android:windowContentOverlay">@null</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/window_background_light</item>
-        <item name="android:actionButtonStyle">@style/ActionBarItem</item>
-        <item name="android:actionOverflowButtonStyle">@style/ActionBarOverflowItem</item>
-        <item name="android:editTextStyle">@style/EditTextAppTheme</item>
-        <item name="android:fastScrollThumbDrawable">@drawable/apptheme_fastscroll_thumb_holo</item>
-
-        <item name="android:actionBarWidgetTheme">@style/Theme.Apptheme.Widget</item>
-
+        <item name="android:actionModeBackground">@color/apptheme_main</item>
+        <item name="colorPrimary">@color/apptheme_main</item>
+        <item name="colorPrimaryDark">@color/apptheme_main_dark</item>
+        <item name="colorAccent">@color/apptheme_main</item>
     </style>
 
-    <style name="ActionBar.Solid.Apptheme" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/apptheme_actionbar</item>
-        <item name="android:backgroundStacked">@color/apptheme_actionbar</item>
-        <item name="android:backgroundSplit">@color/apptheme_actionbar</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Apptheme</item>
-        <item name="android:height">@dimen/action_bar_height</item>
+    <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/window_background_light</item>
+        <item name="android:actionModeBackground">@color/apptheme_main</item>
+        <item name="colorPrimary">@color/apptheme_main</item>
+        <item name="colorPrimaryDark">@color/apptheme_main_dark</item>
+        <item name="colorAccent">@color/apptheme_main</item>
     </style>
-
-    <style name="ActionBarItem" parent="android:Widget.ActionButton">
-        <item name="android:height">@dimen/action_bar_height</item>
-        <item name="android:width">@dimen/action_bar_height</item>
-        <item name="android:minWidth">@dimen/action_bar_height</item>
-        <item name="android:minHeight">@dimen/action_bar_height</item>
-        <item name="android:maxWidth">@dimen/action_bar_height</item>
-        <item name="android:maxHeight">@dimen/action_bar_height</item>
-    </style>
-
-    <style name="ActionBarOverflowItem" parent="@style/ActionBarItem">
-        <item name="android:src">@drawable/ic_action_overflow</item>
-        <item name="android:padding">12dp</item>
-    </style>
-
-    <style name="PopupMenu.Apptheme" parent="android:Widget.PopupMenu">
-        <item name="android:popupBackground">@drawable/card_neutral</item>
-    </style>
-
-    <style name="DropDownListView.Apptheme" parent="android:Widget.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selector_background_neutral</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Apptheme" parent="android:Widget.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_apptheme</item>
-    </style>
-
-    <style name="DropDownNav.Apptheme" parent="android:Widget.Spinner.DropDown">
-        <item name="android:background">@drawable/spinner_background_ab_apptheme</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_apptheme</item>
-        <item name="android:dropDownSelector">@drawable/selector_background_neutral</item>
-    </style>
-
-    <style name="ProgressBar.Apptheme" parent="android:Widget.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_apptheme</item>
-    </style>
-
-    <style name="ActionButton.CloseMode.Apptheme" parent="android:Widget.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_apptheme</item>
-    </style>
-
-    <style name="Theme.Apptheme.Widget" parent="android:Theme">
-        <item name="android:popupMenuStyle">@style/PopupMenu.Apptheme</item>
-        <item name="android:dropDownListViewStyle">@style/DropDownListView.Apptheme</item>
-        <item name="android:textColor">@color/text_gray_dark</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:listPreferredItemHeight">48dp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
 </resources>

@@ -1,9 +1,7 @@
 <resources>
 
-    <style name="EditTextAppTheme" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/edit_text_apptheme</item>
-        <item name="android:textColor">@color/text_gray</item>
-        <item name="android:textColorHint">@color/text_gray_light</item>
+    <style name="ProgressBar.Apptheme" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_apptheme</item>
     </style>
 
     <style name="ProgressBarRadical" parent="android:Widget.ProgressBar.Horizontal">
@@ -45,9 +43,5 @@
         </item>
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
-    </style>
-
-    <style name="TextAppearance.ActionBar" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/text_gray</item>
     </style>
 </resources>

@@ -1,13 +1,16 @@
 package tr.xip.wanikani;
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +42,7 @@ import tr.xip.wanikani.widget.RelativeTimeTextView;
 /**
  * Created by xihsa_000 on 3/23/14.
  */
-public class ItemDetailsActivity extends Activity {
+public class ItemDetailsActivity extends ActionBarActivity {
 
     public static final String ARG_TYPE = "type";
     public static final String ARG_CHARACTER = "character";
@@ -52,12 +55,13 @@ public class ItemDetailsActivity extends Activity {
     WaniKaniApi api;
     PrefManager prefMan;
 
+    Toolbar mToolbar;
+
     String gotType;
     String gotCharacter;
     String gotImage;
     int gotLevel;
 
-    View mStatusBarBackground;
     ViewGroup mActionBarLayout;
     ImageView mActionBarIcon;
     TextView mActionBarTitle;
@@ -136,25 +140,16 @@ public class ItemDetailsActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_item_details);
 
         Intent intent = getIntent();
         gotType = intent.getStringExtra(ARG_TYPE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            if (gotType.equals(TYPE_RADICAL))
-                setTheme(R.style.Theme_Apptheme_Radical);
-            else if (gotType.equals(TYPE_KANJI))
-                setTheme(R.style.Theme_Apptheme_Kanji);
-            else if (gotType.equals(TYPE_VOCABULARY))
-                setTheme(R.style.Theme_Apptheme_Vocabulary);
-        }
-
-        setContentView(R.layout.activity_item_details);
 
         api = new WaniKaniApi(this);
         prefMan = new PrefManager(this);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -165,42 +160,21 @@ public class ItemDetailsActivity extends Activity {
         gotImage = intent.getStringExtra(ARG_IMAGE);
         gotLevel = intent.getIntExtra(ARG_LEVEL, 0);
 
-        ActionBar mActionBar = getActionBar();
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_dual, null);
+        ActionBar mActionBar = getSupportActionBar();
 
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-            mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
+        mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
+                R.layout.actionbar_dual_no_icon, null);
 
-            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
+        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
+        mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
+        mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
 
-            mActionBar.setHomeButtonEnabled(false);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
-            if (Build.VERSION.SDK_INT >= 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-        } else {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_dual_no_icon, null);
-
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-            mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
-
-            mActionBar.setHomeButtonEnabled(true);
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        mStatusBarBackground = findViewById(R.id.details_statusbar_bg);
         mActionBarExtension = (LinearLayout) findViewById(R.id.details_actionbar_extension);
 
         mActionBar.setCustomView(mActionBarLayout);
@@ -215,42 +189,43 @@ public class ItemDetailsActivity extends Activity {
         mReadingNoteTitle = (TextView) findViewById(R.id.details_title_reading_note);
         mProgressTitle = (TextView) findViewById(R.id.details_progress_title);
 
+        Resources res = getResources();
         if (gotType.equals(TYPE_RADICAL)) {
-            mStatusBarBackground.setBackgroundColor(getResources().getColor(R.color.wanikani_radical));
-            mActionBarLayout.setBackgroundColor(getResources().getColor(R.color.wanikani_radical));
             mActionBarExtension.setBackgroundColor(getResources().getColor(R.color.wanikani_radical));
-            mActionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                    .getColor(R.color.wanikani_radical)));
+            mToolbar.setBackgroundColor(res.getColor(R.color.wanikani_radical));
             mAlternativeMeaningsTitle.setTextColor(getResources().getColor(R.color.wanikani_radical));
             mUserSynonymsTitle.setTextColor(getResources().getColor(R.color.wanikani_radical));
             mReadingTitle.setTextColor(getResources().getColor(R.color.wanikani_radical));
             mMeaningNoteTitle.setTextColor(getResources().getColor(R.color.wanikani_radical));
             mReadingNoteTitle.setTextColor(getResources().getColor(R.color.wanikani_radical));
             mProgressTitle.setTextColor(getResources().getColor(R.color.wanikani_radical));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getWindow().setStatusBarColor(res.getColor(R.color.wanikani_radical_dark));
         } else if (gotType.equals(TYPE_KANJI)) {
-            mStatusBarBackground.setBackgroundColor(getResources().getColor(R.color.wanikani_kanji));
-            mActionBarLayout.setBackgroundColor(getResources().getColor(R.color.wanikani_kanji));
             mActionBarExtension.setBackgroundColor(getResources().getColor(R.color.wanikani_kanji));
-            mActionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                    .getColor(R.color.wanikani_kanji)));
+            mToolbar.setBackgroundColor(res.getColor(R.color.wanikani_kanji));
             mAlternativeMeaningsTitle.setTextColor(getResources().getColor(R.color.wanikani_kanji));
             mUserSynonymsTitle.setTextColor(getResources().getColor(R.color.wanikani_kanji));
             mReadingTitle.setTextColor(getResources().getColor(R.color.wanikani_kanji));
             mMeaningNoteTitle.setTextColor(getResources().getColor(R.color.wanikani_kanji));
             mReadingNoteTitle.setTextColor(getResources().getColor(R.color.wanikani_kanji));
             mProgressTitle.setTextColor(getResources().getColor(R.color.wanikani_kanji));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getWindow().setStatusBarColor(res.getColor(R.color.wanikani_kanji_dark));
         } else {
-            mStatusBarBackground.setBackgroundColor(getResources().getColor(R.color.wanikani_vocabulary));
-            mActionBarLayout.setBackgroundColor(getResources().getColor(R.color.wanikani_vocabulary));
             mActionBarExtension.setBackgroundColor(getResources().getColor(R.color.wanikani_vocabulary));
-            mActionBar.setBackgroundDrawable(new ColorDrawable(getResources()
-                    .getColor(R.color.wanikani_vocabulary)));
+            mToolbar.setBackgroundColor(res.getColor(R.color.wanikani_vocabulary));
             mAlternativeMeaningsTitle.setTextColor(getResources().getColor(R.color.wanikani_vocabulary));
             mUserSynonymsTitle.setTextColor(getResources().getColor(R.color.wanikani_vocabulary));
             mReadingTitle.setTextColor(getResources().getColor(R.color.wanikani_vocabulary));
             mMeaningNoteTitle.setTextColor(getResources().getColor(R.color.wanikani_vocabulary));
             mReadingNoteTitle.setTextColor(getResources().getColor(R.color.wanikani_vocabulary));
             mProgressTitle.setTextColor(getResources().getColor(R.color.wanikani_vocabulary));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                getWindow().setStatusBarColor(res.getColor(R.color.wanikani_vocabulary_dark));
         }
 
         if (gotImage != null) {
@@ -349,7 +324,7 @@ public class ItemDetailsActivity extends Activity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
     }

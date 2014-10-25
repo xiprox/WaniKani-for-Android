@@ -14,8 +14,11 @@
     <!-- WaniKani Colors -->
     <color name="wanikani_burned">#eeeeee</color>
     <color name="wanikani_radical">#009ce9</color>
+    <color name="wanikani_radical_dark">#ff0088cd</color>
     <color name="wanikani_kanji">#f500a3</color>
+    <color name="wanikani_kanji_dark">#ffd90091</color>
     <color name="wanikani_vocabulary">#9d33b7</color>
+    <color name="wanikani_vocabulary_dark">#ff81319b</color>
 
     <!-- Holo Colors -->
     <color name="holo_blue_light">#33B5E5</color>

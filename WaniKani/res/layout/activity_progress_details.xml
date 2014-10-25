@@ -6,10 +6,10 @@
     android:orientation="vertical"
     tools:context=".ProgressDetailsActivity">
 
-    <View
+    <include
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_placeholder_height"
-        android:background="@color/apptheme_actionbar" />
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"

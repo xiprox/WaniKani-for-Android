@@ -1,26 +1,21 @@
 package tr.xip.wanikani;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.managers.PrefManager;
 
-public class MainActivity extends Activity
+public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     public static final String STATE_ACTIONBAR_TITLE = "action_bar_title";
@@ -30,13 +25,10 @@ public class MainActivity extends Activity
 
     public static CharSequence mTitle;
 
-    ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
-    TextView mActionBarTitle;
-
     PrefManager prefMan;
 
     ActionBar mActionBar;
+    Toolbar mToolbar;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -57,39 +49,14 @@ public class MainActivity extends Activity
 
         prefMan = new PrefManager(this);
 
-        mActionBar = getActionBar();
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_main, null);
-
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-
-            mActionBar.setCustomView(mActionBarLayout);
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setIcon(android.R.color.transparent);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setHomeButtonEnabled(false);
-            mActionBar.setDisplayShowHomeEnabled(false);
-
-            if (Build.VERSION.SDK_INT >= 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mNavigationDrawerFragment.toggleDrawer();
-                }
-            });
-        } else {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        mActionBar = getSupportActionBar();
 
         if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
-            setActionBarTitle(mTitle.toString());
+            mActionBar.setTitle(mTitle.toString());
         }
 
         if (prefMan.isFirstLaunch()) {
@@ -98,7 +65,7 @@ public class MainActivity extends Activity
         }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -107,7 +74,7 @@ public class MainActivity extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
 
         switch (position) {
@@ -137,7 +104,11 @@ public class MainActivity extends Activity
 
     public void restoreActionBar() {
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        setActionBarTitle(mTitle.toString());
+        mActionBar.setTitle(mTitle.toString());
+    }
+
+    public Toolbar getToolbar() {
+        return mToolbar;
     }
 
     @Override
@@ -173,21 +144,5 @@ public class MainActivity extends Activity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(STATE_ACTIONBAR_TITLE, mTitle.toString());
-    }
-
-    public void setActionBarTitle(String title) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarTitle != null)
-                mActionBarTitle.setText(title);
-        } else
-            mActionBar.setTitle(title);
-    }
-
-    private void setActionBarIcon(int res) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarIcon != null)
-                mActionBarIcon.setImageResource(res);
-        } else
-            mActionBar.setIcon(res);
     }
 }

@@ -4,7 +4,6 @@
     <dimen name="navigation_drawer_width">260dp</dimen>
 
     <dimen name="action_bar_height">56dp</dimen>
-    <dimen name="action_bar_placeholder_height">0dp</dimen>
 
     <dimen name="margin_card_side">12dp</dimen>
     <dimen name="margin_card_end">12dp</dimen>

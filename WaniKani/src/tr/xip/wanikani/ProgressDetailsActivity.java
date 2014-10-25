@@ -1,18 +1,15 @@
 package tr.xip.wanikani;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -31,19 +28,17 @@ import tr.xip.wanikani.cards.ProgressCardNoTitle;
 /**
  * Created by Hikari on 9/18/14.
  */
-public class ProgressDetailsActivity extends Activity implements ProgressCard.ProgressCardListener {
+public class ProgressDetailsActivity extends ActionBarActivity implements ProgressCard.ProgressCardListener {
 
     WaniKaniApi api;
+
+    Toolbar mToolbar;
 
     List<RadicalsList.RadicalItem> mRemainingRadicals = new ArrayList<RadicalsList.RadicalItem>();
     List<KanjiList.KanjiItem> mRemainingKanji = new ArrayList<KanjiList.KanjiItem>();
 
     GridView mRadicalsGrid;
     GridView mKanjiGrid;
-
-    ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
-    TextView mActionBarTitle;
 
     ViewFlipper mRadicalsFlipper;
     ViewFlipper mKanjiFlipper;
@@ -61,9 +56,12 @@ public class ProgressDetailsActivity extends Activity implements ProgressCard.Pr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_details);
-        setUpActionBar();
         api = new WaniKaniApi(this);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRadicalsGrid = (GridView) findViewById(R.id.progress_details_radicals_grid);
         mKanjiGrid = (GridView) findViewById(R.id.progress_details_kanji_grid);
@@ -83,7 +81,7 @@ public class ProgressDetailsActivity extends Activity implements ProgressCard.Pr
         mRadicalsCard = (FrameLayout) findViewById(R.id.progress_details_radicals_card);
         mKanjiCard = (FrameLayout) findViewById(R.id.progress_details_kanji_card);
 
-        Fragment mProgressCard = getFragmentManager().
+        Fragment mProgressCard = getSupportFragmentManager().
                 findFragmentById(R.id.progress_details_progress_card);
 
         ((ProgressCardNoTitle) mProgressCard).load();
@@ -91,36 +89,6 @@ public class ProgressDetailsActivity extends Activity implements ProgressCard.Pr
 
         new RemainingItemsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-    }
-
-    public void setUpActionBar() {
-        // TODO - Fix extra empty space
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_main, null);
-
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-
-            ActionBar mActionBar = getActionBar();
-            mActionBar.setCustomView(mActionBarLayout);
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setHomeButtonEnabled(false);
-            mActionBar.setIcon(android.R.color.transparent);
-            if (Build.VERSION.SDK_INT >= 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-
-            mActionBarTitle.setText(R.string.card_title_progress);
-            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
-        }
     }
 
     @Override

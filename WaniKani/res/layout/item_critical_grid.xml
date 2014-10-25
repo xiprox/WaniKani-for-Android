@@ -55,7 +55,6 @@
 
             <TextView
                 android:id="@+id/item_critical_percentage"
-                style="@style/Widget.TextView.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"

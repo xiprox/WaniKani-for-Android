@@ -1,9 +1,5 @@
 package tr.xip.wanikani.cards;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +8,10 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -296,8 +291,8 @@ public class SRSCard extends Fragment {
                     ViewAnimationUtils.createCircularReveal(mDetailsContent, cx, cy, 0, finalRadius);
             anim.start();
         } else {*/
-            mMainContent.setVisibility(View.GONE);
-            mDetailsContent.setVisibility(View.VISIBLE);
+        mMainContent.setVisibility(View.GONE);
+        mDetailsContent.setVisibility(View.VISIBLE);
 //        }
     }
 
@@ -321,8 +316,8 @@ public class SRSCard extends Fragment {
 
             anim.start();
         } else {*/
-            mMainContent.setVisibility(View.VISIBLE);
-            mDetailsContent.setVisibility(View.GONE);
+        mMainContent.setVisibility(View.VISIBLE);
+        mDetailsContent.setVisibility(View.GONE);
 //        }
 
         if (mDetailsSuperFlipper.getDisplayedChild() == 1)

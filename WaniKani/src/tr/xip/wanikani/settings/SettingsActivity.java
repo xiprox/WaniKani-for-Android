@@ -1,16 +1,13 @@
 package tr.xip.wanikani.settings;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +22,7 @@ import tr.xip.wanikani.settings.preferences.RecentUnlocksNumberPreference;
 /**
  * Created by xihsa_000 on 4/4/14.
  */
-public class SettingsActivity extends Activity implements View.OnClickListener {
+public class SettingsActivity extends ActionBarActivity implements View.OnClickListener {
 
     PrefManager prefMan;
 
@@ -75,15 +72,12 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     TextView mDeveloperOpenSourceLicenses;
     TextView mDeveloperAppVersionSummary;
 
-
-    ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
-    TextView mActionBarTitle;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         prefMan = new PrefManager(this);
 
@@ -284,40 +278,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
     }
 
     public void setUp() {
-        setUpActionBar();
         loadPreferences();
         setOnClickListeners();
-    }
-
-    public void setUpActionBar() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_main, null);
-
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-
-            ActionBar mActionBar = getActionBar();
-            mActionBar.setCustomView(mActionBarLayout);
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setIcon(android.R.color.transparent);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setHomeButtonEnabled(false);
-
-            if (Build.VERSION.SDK_INT > 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-
-            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onBackPressed();
-                }
-            });
-        }
-
-        setActionBarTitle(getString(R.string.title_settings));
     }
 
     private void loadPreferences() {
@@ -552,26 +514,15 @@ public class SettingsActivity extends Activity implements View.OnClickListener {
                 mHWAccelCheckBox.toggle();
                 break;
             case R.id.settings_developer_open_source_licenses:
-                new OpenSourceLicensesDialogFragment().show(getFragmentManager(),
+                new OpenSourceLicensesDialogFragment().show(getSupportFragmentManager(),
                         "open-source-licenses-preference-dialog");
                 break;
         }
     }
 
-
-    private void setActionBarTitle(String title) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH)
-            if (mActionBarTitle != null)
-                mActionBarTitle.setText(title);
-            else
-                getActionBar().setTitle(title);
-    }
-
-    private void setActionBarIcon(int res) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH)
-            if (mActionBarIcon != null)
-                mActionBarIcon.setImageResource(res);
-            else
-                getActionBar().setIcon(res);
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }

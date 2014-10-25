@@ -66,12 +66,12 @@ android {
     dependencies {
         // compile fileTree(dir: 'libs', include: '*.jar')
         compile 'com.android.support:support-v4:+'
+        compile 'com.android.support:support-v13:+'
         compile 'com.android.support:appcompat-v7:+'
-        compile 'com.android.support:gridlayout-v7:+'
+        compile 'com.android.support:cardview-v7:+'
         compile 'com.tonicartos:stickygridheaders:+'
         compile 'com.squareup.retrofit:retrofit:+'
         compile 'com.squareup.picasso:picasso:+'
-        compile 'com.google.code.gson:gson:+'
         compile files('libs/commons-io-2.4.jar')
         compile files('libs/commons-lang3-3.3.1.jar')
     }

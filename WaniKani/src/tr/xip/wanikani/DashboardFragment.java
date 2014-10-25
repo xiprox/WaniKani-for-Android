@@ -1,17 +1,17 @@
 package tr.xip.wanikani;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,7 @@ public class DashboardFragment extends Fragment
     public static final String SYNC_RESULT_FAILED = "failed";
 
     View rootView;
-    Activity activity;
+    ActionBarActivity activity;
     PrefManager prefMan;
     WaniKaniApi api;
 
@@ -111,7 +111,7 @@ public class DashboardFragment extends Fragment
 
         rootView = paramLayoutInflater.inflate(R.layout.fragment_dashboard, paramViewGroup, false);
 
-        activity = getActivity();
+        activity = (ActionBarActivity) getActivity();
 
         mSwipeToRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_swipe_refresh);
         mSwipeToRefreshLayout.setOnRefreshListener(this);
@@ -130,7 +130,7 @@ public class DashboardFragment extends Fragment
         mReviewsCard.setOnClickListener(this);
         mProgressCard.setOnClickListener(this);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         VacationModeCard vacationModeCard = new VacationModeCard();
@@ -204,7 +204,7 @@ public class DashboardFragment extends Fragment
     }
 
     private void showMessage(MESSAGE_TYPE msgType) {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         MessageCard fragment = new MessageCard();
         fragment.setListener(this);

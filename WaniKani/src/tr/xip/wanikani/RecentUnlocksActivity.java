@@ -1,17 +1,13 @@
 package tr.xip.wanikani;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -26,15 +22,13 @@ import tr.xip.wanikani.api.response.RecentUnlocksList;
 /**
  * Created by xihsa_000 on 3/25/14.
  */
-public class RecentUnlocksActivity extends Activity {
+public class RecentUnlocksActivity extends ActionBarActivity {
 
     WaniKaniApi api;
 
     Context context;
 
-    ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
-    TextView mActionBarTitle;
+    ActionBar mActionBar;
 
     StickyGridHeadersGridView mRecentUnlocksGrid;
 
@@ -52,33 +46,10 @@ public class RecentUnlocksActivity extends Activity {
         api = new WaniKaniApi(this);
         context = this;
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_main, null);
+        mActionBar = getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-
-            ActionBar mActionBar = getActionBar();
-            mActionBar.setCustomView(mActionBarLayout);
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setHomeButtonEnabled(false);
-            mActionBar.setIcon(android.R.color.transparent);
-            if (Build.VERSION.SDK_INT >= 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-
-            setActionBarIcon(R.drawable.ic_action_back);
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
-        }
-
-        setActionBarTitle(getString(R.string.card_title_recent_unlocks));
+        mActionBar.setTitle(getString(R.string.card_title_recent_unlocks));
 
         mRecentUnlocksGrid = (StickyGridHeadersGridView) findViewById(R.id.activity_recent_unlocks_grid);
 
@@ -90,25 +61,9 @@ public class RecentUnlocksActivity extends Activity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
-    }
-
-    private void setActionBarTitle(String title) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarTitle != null)
-                mActionBarTitle.setText(title);
-        } else
-            getActionBar().setTitle(title);
-    }
-
-    private void setActionBarIcon(int res) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarIcon != null)
-                mActionBarIcon.setImageResource(res);
-        } else
-            getActionBar().setIcon(res);
     }
 
     private class LoadTask extends AsyncTask<Void, Void, List<RecentUnlocksList.UnlockItem>> {

@@ -1,8 +1,6 @@
 package tr.xip.wanikani;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,9 +8,12 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -136,7 +137,7 @@ public class NavigationDrawerFragment extends Fragment {
         mProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ProfileFragment())
                         .commit();
@@ -177,8 +178,13 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout,
-                R.drawable.ic_drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(
+                getActivity(),
+                mDrawerLayout,
+                ((MainActivity) getActivity()).getToolbar(),
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        ) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -289,11 +295,13 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void showGlobalContextActionBar() {
-        ((MainActivity) getActivity()).setActionBarTitle(getString(R.string.app_name));
+        ActionBarActivity activity = (ActionBarActivity) getActivity();
+        if (activity != null)
+            activity.getSupportActionBar().setTitle(getString(R.string.app_name));
     }
 
     private void showlogoutDialog() {
-        new LogoutDialogFragment().show(getActivity().getFragmentManager(), "logout-dialog");
+        new LogoutDialogFragment().show(getActivity().getSupportFragmentManager(), "logout-dialog");
     }
 
     public static interface NavigationDrawerCallbacks {

@@ -95,7 +95,6 @@
 
                     <TextView
                         android:id="@+id/card_recent_unlocks_message_title"
-                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -105,7 +104,6 @@
 
                     <TextView
                         android:id="@+id/card_recent_unlocks_message_summary"
-                        style="@style/Widget.TextView.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

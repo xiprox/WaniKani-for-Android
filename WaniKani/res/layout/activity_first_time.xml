@@ -3,11 +3,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_placeholder_height"
-        android:background="@color/apptheme_actionbar" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -63,6 +58,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_api_key"
                         android:minWidth="300dp"
+                        android:text="4733cdca0ecb10ae771aca6aa42bb08d"
                         android:singleLine="true"
                         android:textColor="@color/text_gray"
                         android:textColorHint="@color/text_gray_light" />

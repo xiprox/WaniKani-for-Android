@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <View
+    <include
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_placeholder_height"
-        android:background="@color/apptheme_actionbar" />
+        android:layout_height="wrap_content" />
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -27,6 +27,5 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             tools:layout="@layout/fragment_navigation_drawer" />
-
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

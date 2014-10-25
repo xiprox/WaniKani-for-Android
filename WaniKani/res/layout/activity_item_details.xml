@@ -6,11 +6,10 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <View
-        android:id="@+id/details_statusbar_bg"
+    <include
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/action_bar_placeholder_height"
-        android:background="@color/apptheme_actionbar" />
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -361,7 +360,6 @@
                                         android:src="@drawable/ic_action_secure" />
 
                                     <TextView
-                                        style="@style/Widget.TextView.Light"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
@@ -371,7 +369,6 @@
                                 </LinearLayout>
 
                                 <TextView
-                                    style="@style/Widget.TextView.Light"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/card_content_details_progress_or_not_learned"
@@ -409,7 +406,6 @@
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        style="@style/Widget.TextView.Light"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/card_content_details_progress_on"
@@ -418,7 +414,6 @@
 
                                     <TextView
                                         android:id="@+id/details_progress_burned_date"
-                                        style="@style/Widget.TextView.Light"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="8dp"

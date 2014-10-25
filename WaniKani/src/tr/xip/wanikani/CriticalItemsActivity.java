@@ -1,17 +1,13 @@
 package tr.xip.wanikani;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -26,14 +22,12 @@ import tr.xip.wanikani.managers.PrefManager;
 /**
  * Created by Hikari on 10/2/14.
  */
-public class CriticalItemsActivity extends Activity {
+public class CriticalItemsActivity extends ActionBarActivity {
 
     WaniKaniApi api;
     PrefManager prefMan;
 
-    ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
-    TextView mActionBarTitle;
+    ActionBar mActionBar;
 
     GridView mGrid;
     ViewFlipper mFlipper;
@@ -50,33 +44,10 @@ public class CriticalItemsActivity extends Activity {
         api = new WaniKaniApi(this);
         prefMan = new PrefManager(this);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
-                    R.layout.actionbar_main, null);
+        mActionBar = getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
-            mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
-            mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
-
-            ActionBar mActionBar = getActionBar();
-            mActionBar.setCustomView(mActionBarLayout);
-            mActionBar.setDisplayShowCustomEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-            mActionBar.setHomeButtonEnabled(false);
-            mActionBar.setIcon(android.R.color.transparent);
-            if (Build.VERSION.SDK_INT >= 18)
-                mActionBar.setHomeAsUpIndicator(android.R.color.transparent);
-
-            mActionBarIcon.setImageResource(R.drawable.ic_action_back);
-            mActionBarIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
-                }
-            });
-        }
-
-        setActionBarTitle(getString(R.string.card_title_critical_items));
+        mActionBar.setTitle(R.string.card_title_critical_items);
 
         mGrid = (GridView) findViewById(R.id.activity_critical_items_grid);
         mFlipper = (ViewFlipper) findViewById(R.id.activity_critical_items_view_flipper);
@@ -85,17 +56,9 @@ public class CriticalItemsActivity extends Activity {
     }
 
     @Override
-    public boolean onNavigateUp() {
+    public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
-    }
-
-    private void setActionBarTitle(String title) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH) {
-            if (mActionBarTitle != null)
-                mActionBarTitle.setText(title);
-        } else
-            getActionBar().setTitle(title);
     }
 
     private class LoadTask extends AsyncTask<Void, Void, List<CriticalItemsList.CriticalItem>> {
