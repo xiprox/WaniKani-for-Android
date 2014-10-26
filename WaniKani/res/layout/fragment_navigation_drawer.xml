@@ -65,11 +65,6 @@
                             android:textAppearance="@android:style/TextAppearance.Large"
                             android:textColor="@android:color/white" />
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:background="@drawable/actionbar_shadow" />
                 </RelativeLayout>
             </FrameLayout>
 
@@ -100,8 +95,8 @@
                     android:id="@+id/navigation_drawer_list_secondary"
                     android:layout_width="match_parent"
                     android:layout_height="108dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     android:choiceMode="singleChoice"
                     android:divider="@android:color/transparent"
                     android:dividerHeight="0dp"

@@ -42,38 +42,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/card"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginRight="16dp">
 
-                    <EditText
-                        android:id="@+id/first_time_api_key"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hint_api_key"
-                        android:minWidth="300dp"
-                        android:singleLine="true"
-                        android:textColor="@color/text_gray"
-                        android:textColorHint="@color/text_gray_light" />
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <Button
-                        android:id="@+id/first_time_how_to_api_key"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:background="@drawable/selector_background_neutral"
-                        android:paddingLeft="6dp"
-                        android:paddingRight="6dp"
-                        android:text="@string/action_how_to_api_key"
-                        android:textColor="@color/text_gray"
-                        android:textSize="12sp" />
+                        <EditText
+                            android:id="@+id/first_time_api_key"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_api_key"
+                            android:minWidth="300dp"
+                            android:singleLine="true"
+                            android:textColor="@color/text_gray"
+                            android:textColorHint="@color/text_gray_light" />
 
-                </LinearLayout>
+                        <Button
+                            android:id="@+id/first_time_how_to_api_key"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:background="@drawable/selector_background_neutral"
+                            android:paddingLeft="6dp"
+                            android:paddingRight="6dp"
+                            android:text="@string/action_how_to_api_key"
+                            android:textColor="@color/text_gray"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
 
                 <View
                     android:layout_width="match_parent"
@@ -99,12 +103,16 @@
                     android:textColor="@color/text_gray" />
             </RelativeLayout>
 
-            <ProgressBar
+            <android.support.v7.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/card"
-                android:padding="16dp" />
+                android:layout_gravity="center">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp" />
+            </android.support.v7.widget.CardView>
 
         </ViewSwitcher>
 

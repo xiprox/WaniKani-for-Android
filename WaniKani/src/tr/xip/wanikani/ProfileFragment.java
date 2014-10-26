@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +48,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     TextView mWebsite;
     TextView mTwitter;
 
-    LinearLayout mAvatarCard;
-    LinearLayout mAboutCard;
-    LinearLayout mDetailsCard;
+    CardView mAboutCard;
 
     RelativeLayout mWebsiteHolder;
     RelativeLayout mTwitterHolder;
@@ -120,9 +119,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mWebsite = (TextView) rootView.findViewById(R.id.profile_website);
         mTwitter = (TextView) rootView.findViewById(R.id.profile_twitter);
 
-        mAvatarCard = (LinearLayout) rootView.findViewById(R.id.profile_avatar_card);
-        mAboutCard = (LinearLayout) rootView.findViewById(R.id.profile_about_card);
-        mDetailsCard = (LinearLayout) rootView.findViewById(R.id.profile_details_card);
+        mAboutCard = (CardView) rootView.findViewById(R.id.profile_about_card);
 
         mWebsiteHolder = (RelativeLayout) rootView.findViewById(R.id.profile_website_holder);
         mTwitterHolder = (RelativeLayout) rootView.findViewById(R.id.profile_twitter_holder);

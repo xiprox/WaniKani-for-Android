@@ -1,119 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_recent_unlocks_card"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/card"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/card_recent_unlocks_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/card_title_recent_unlocks"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="@color/apptheme_main" />
-
-    <ViewFlipper
-        android:id="@+id/card_recent_unlocks_view_flipper"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_recent_unlocks_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ProgressBar
+        <TextView
+            android:id="@+id/card_recent_unlocks_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/card_title_recent_unlocks"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/apptheme_main" />
 
         <ViewFlipper
-            android:id="@+id/card_recent_unlocks_connection_view_flipper"
+            android:id="@+id/card_recent_unlocks_view_flipper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ViewFlipper
+                android:id="@+id/card_recent_unlocks_connection_view_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ListView
-                    android:id="@+id/card_recent_unlocks_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="64dp"
-                    android:clipToPadding="false"
-                    android:divider="@drawable/divider_48dp_left"
-                    android:dividerHeight="1dp"
-                    android:listSelector="@drawable/selector_background_neutral"
-                    android:padding="16dp"
-                    android:scrollbarStyle="outsideOverlay" />
-
                 <RelativeLayout
-                    android:id="@+id/card_recent_unlocks_more_button"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/selector_background_neutral">
+                    android:layout_height="wrap_content">
 
-                    <View
+                    <ListView
+                        android:id="@+id/card_recent_unlocks_list"
                         android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:background="@color/separator_light" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:text="@string/action_more_items_capital"
-                        android:textColor="@color/text_gray" />
+                        android:layout_marginBottom="64dp"
+                        android:clipToPadding="false"
+                        android:divider="@drawable/divider_48dp_left"
+                        android:dividerHeight="1dp"
+                        android:listSelector="@drawable/selector_background_neutral"
+                        android:padding="16dp"
+                        android:scrollbarStyle="outsideOverlay" />
 
+                    <RelativeLayout
+                        android:id="@+id/card_recent_unlocks_more_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="2dp"
+                        android:background="@drawable/selector_background_neutral">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@color/separator_light" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:text="@string/action_more_items_capital"
+                            android:textColor="@color/text_gray" />
+
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/card_recent_unlocks_message_icon"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/card_recent_unlocks_message_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="8dp"
-                        android:textAppearance="@android:style/TextAppearance.Medium"
-                        android:textColor="@color/text_gray" />
+                        <ImageView
+                            android:id="@+id/card_recent_unlocks_message_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp" />
 
-                    <TextView
-                        android:id="@+id/card_recent_unlocks_message_summary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="@color/text_gray" />
+                        <TextView
+                            android:id="@+id/card_recent_unlocks_message_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:textAppearance="@android:style/TextAppearance.Medium"
+                            android:textColor="@color/text_gray" />
+
+                        <TextView
+                            android:id="@+id/card_recent_unlocks_message_summary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:textColor="@color/text_gray" />
+                    </LinearLayout>
                 </LinearLayout>
-
-            </LinearLayout>
+            </ViewFlipper>
         </ViewFlipper>
-    </ViewFlipper>
-</LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

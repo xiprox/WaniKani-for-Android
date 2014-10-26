@@ -5,10 +5,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -49,8 +49,8 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
     TextView mRadicalsMessageText;
     TextView mKanjiMessageText;
 
-    FrameLayout mRadicalsCard;
-    FrameLayout mKanjiCard;
+    CardView mRadicalsCard;
+    CardView mKanjiCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +78,8 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
         mRadicalsGrid.setOnItemClickListener(new RadicalsItemClickListener());
         mKanjiGrid.setOnItemClickListener(new KanjiItemClickListener());
 
-        mRadicalsCard = (FrameLayout) findViewById(R.id.progress_details_radicals_card);
-        mKanjiCard = (FrameLayout) findViewById(R.id.progress_details_kanji_card);
+        mRadicalsCard = (CardView) findViewById(R.id.progress_details_radicals_card);
+        mKanjiCard = (CardView) findViewById(R.id.progress_details_kanji_card);
 
         Fragment mProgressCard = getSupportFragmentManager().
                 findFragmentById(R.id.progress_details_progress_card);

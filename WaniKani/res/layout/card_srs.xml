@@ -1,460 +1,463 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/card_status_card"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/card"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/card_title_status"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:textColor="@color/apptheme_main" />
-
-    <LinearLayout
-        android:id="@+id/card_status_main_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_status_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/card_status_apprentice_parent"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@drawable/selector_background_neutral"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/card_status_apprentice_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/apprentice" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/srs_title_apprentice"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/card_status_apprentice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="80dp"
-            android:background="@color/separator_light" />
-
-        <LinearLayout
-            android:id="@+id/card_status_guru_parent"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@drawable/selector_background_neutral"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/card_status_guru_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/guru" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/srs_title_guru"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/card_status_guru"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="80dp"
-            android:background="@color/separator_light" />
-
-        <LinearLayout
-            android:id="@+id/card_status_master_parent"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@drawable/selector_background_neutral"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/card_status_master_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/master" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/srs_title_master"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/card_status_master"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="80dp"
-            android:background="@color/separator_light" />
-
-        <LinearLayout
-            android:id="@+id/card_status_enlightened_parent"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@drawable/selector_background_neutral"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/card_status_enlightened_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/enlighten" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/srs_title_enlightened"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/card_status_enlightened"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="80dp"
-            android:background="@color/separator_light" />
-
-        <LinearLayout
-            android:id="@+id/card_status_burned_parent"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:background="@drawable/selector_background_neutral"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/card_status_burned_icon"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/burned" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="@string/srs_title_burned"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/card_status_burned"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:text="0"
-                    android:textColor="@color/text_gray"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:background="@color/separator_light" />
+            android:text="@string/card_title_status"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:textColor="@color/apptheme_main" />
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/card_status_main_content"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/card_content_progress_total_items_allcaps"
-                android:textColor="@color/text_gray" />
-
-            <TextView
-                android:id="@+id/card_status_total_items"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
-                android:text="0"
-                android:textColor="@color/text_gray" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/card_status_details_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <ViewFlipper
-            android:id="@+id/card_status_details_super_flipper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/card_status_apprentice_parent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="72dp"
+                android:background="@drawable/selector_background_neutral"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/card_status_apprentice_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/apprentice" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/srs_title_apprentice"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/card_status_apprentice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:text="0"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@color/separator_light" />
+
+            <LinearLayout
+                android:id="@+id/card_status_guru_parent"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@drawable/selector_background_neutral"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/card_status_guru_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/guru" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/srs_title_guru"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/card_status_guru"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:text="0"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@color/separator_light" />
+
+            <LinearLayout
+                android:id="@+id/card_status_master_parent"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@drawable/selector_background_neutral"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/card_status_master_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/master" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/srs_title_master"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/card_status_master"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:text="0"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@color/separator_light" />
+
+            <LinearLayout
+                android:id="@+id/card_status_enlightened_parent"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@drawable/selector_background_neutral"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/card_status_enlightened_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/enlighten" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/srs_title_enlightened"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/card_status_enlightened"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:text="0"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="80dp"
+                android:background="@color/separator_light" />
+
+            <LinearLayout
+                android:id="@+id/card_status_burned_parent"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@drawable/selector_background_neutral"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/card_status_burned_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/burned" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/srs_title_burned"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/card_status_burned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:text="0"
+                        android:textColor="@color/text_gray"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/separator_light" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/card_content_progress_total_items_allcaps"
+                    android:textColor="@color/text_gray" />
+
+                <TextView
+                    android:id="@+id/card_status_total_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:text="0"
+                    android:textColor="@color/text_gray" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/card_status_details_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ViewFlipper
+                android:id="@+id/card_status_details_super_flipper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/selector_background_neutral"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/card_status_details_srs_logo"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
-                        android:src="@drawable/apprentice" />
-
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="16dp">
+                        android:layout_height="72dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/selector_background_neutral"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/card_status_details_srs_level"
-                            android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/card_status_details_srs_logo"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/apprentice" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:text="@string/srs_title_apprentice"
-                            android:textColor="@color/text_gray"
-                            android:textSize="18sp" />
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="16dp">
 
-                        <TextView
-                            android:id="@+id/card_status_details_total_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="8dp"
-                            android:text="0"
-                            android:textColor="@color/text_gray"
-                            android:textSize="18sp" />
-                    </RelativeLayout>
-                </LinearLayout>
+                            <TextView
+                                android:id="@+id/card_status_details_srs_level"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:text="@string/srs_title_apprentice"
+                                android:textColor="@color/text_gray"
+                                android:textSize="18sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="96dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@color/separator_light" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/card_content_progress_radicals_allcaps"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/card_status_details_radicals_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"
-                        android:text="0"
-                        android:textColor="@color/text_gray" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/card_content_progress_kanji_allcaps"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/card_status_details_kanji_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"
-                        android:text="0"
-                        android:textColor="@color/text_gray" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/card_content_progress_vocabulary_allcaps"
-                        android:textColor="@color/text_gray" />
-
-                    <TextView
-                        android:id="@+id/card_status_details_vocabulary_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="8dp"
-                        android:text="0"
-                        android:textColor="@color/text_gray" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/card_status_details_up_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/selector_background_neutral"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/action_back_allcaps"
-                        android:textColor="@color/text_gray" />
+                            <TextView
+                                android:id="@+id/card_status_details_total_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="8dp"
+                                android:text="0"
+                                android:textColor="@color/text_gray"
+                                android:textSize="18sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="96dp"
+                        android:layout_marginRight="16dp"
                         android:background="@color/separator_light" />
 
-                </RelativeLayout>
-            </LinearLayout>
-        </ViewFlipper>
-    </RelativeLayout>
-</LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/card_content_progress_radicals_allcaps"
+                            android:textColor="@color/text_gray" />
+
+                        <TextView
+                            android:id="@+id/card_status_details_radicals_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:text="0"
+                            android:textColor="@color/text_gray" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/card_content_progress_kanji_allcaps"
+                            android:textColor="@color/text_gray" />
+
+                        <TextView
+                            android:id="@+id/card_status_details_kanji_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:text="0"
+                            android:textColor="@color/text_gray" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:text="@string/card_content_progress_vocabulary_allcaps"
+                            android:textColor="@color/text_gray" />
+
+                        <TextView
+                            android:id="@+id/card_status_details_vocabulary_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:text="0"
+                            android:textColor="@color/text_gray" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/card_status_details_up_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/selector_background_neutral"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="@string/action_back_allcaps"
+                            android:textColor="@color/text_gray" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignParentTop="true"
+                            android:background="@color/separator_light" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </ViewFlipper>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

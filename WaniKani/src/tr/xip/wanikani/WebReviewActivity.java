@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -636,6 +637,9 @@ public class WebReviewActivity extends ActionBarActivity {
     /** The local IME keyboard */
     private Keyboard localIMEKeyboard;
 
+    private CardView muteHolder;
+    private CardView singleHolder;
+
     /** The mute button */
     private ImageButton muteH;
 
@@ -731,6 +735,9 @@ public class WebReviewActivity extends ActionBarActivity {
 
         nativeKeyboard = new NativeKeyboard (this, wv);
         localIMEKeyboard = new LocalIMEKeyboard (this, wv);
+
+        muteHolder = (CardView) findViewById(R.id.kb_mute_holder);
+        singleHolder = (CardView) findViewById(R.id.kb_single_holder);
 
         muteH = (ImageButton) findViewById (R.id.kb_mute_h);
         muteH.setOnClickListener (new MuteListener ());
@@ -906,6 +913,7 @@ public class WebReviewActivity extends ActionBarActivity {
 
         show = kbstatus.canMute () && prefMan.getMuteButton();
         muteH.setVisibility (show ? View.VISIBLE : View.GONE);
+        muteHolder.setVisibility(show ? View.VISIBLE : View.GONE);
 
         setMute (show && prefMan.getMute());
     }
@@ -916,6 +924,7 @@ public class WebReviewActivity extends ActionBarActivity {
 
         show = kbstatus.canDoSingle () && prefMan.getSingleButton();
         singleb.setVisibility (show ? View.VISIBLE : View.GONE);
+        singleHolder.setVisibility(show ? View.VISIBLE : View.GONE);
         if (single) {
             singleb.setTextColor (selectedColor);
             singleb.setTypeface (null, Typeface.BOLD);

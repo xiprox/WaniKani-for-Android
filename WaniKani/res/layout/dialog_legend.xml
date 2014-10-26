@@ -43,16 +43,15 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <FrameLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/card">
+                        android:layout_height="48dp">
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/white" />
-                    </FrameLayout>
+                    </android.support.v7.widget.CardView>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -75,10 +74,9 @@
                         android:layout_height="48dp"
                         android:background="@android:color/white">
 
-                        <FrameLayout
+                        <android.support.v7.widget.CardView
                             android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/card">
+                            android:layout_height="48dp">
 
                             <View
                                 android:layout_width="match_parent"
@@ -86,7 +84,7 @@
                                 android:layout_marginLeft="0.5dp"
                                 android:layout_marginTop="0.5dp"
                                 android:background="@drawable/pattern_diagonal_xml" />
-                        </FrameLayout>
+                        </android.support.v7.widget.CardView>
                     </LinearLayout>
 
                     <TextView
@@ -105,16 +103,15 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <FrameLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/card">
+                        android:layout_height="48dp">
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@color/wanikani_burned" />
-                    </FrameLayout>
+                    </android.support.v7.widget.CardView>
 
                     <TextView
                         android:layout_width="wrap_content"

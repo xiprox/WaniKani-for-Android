@@ -63,7 +63,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
     int gotLevel;
 
     ViewGroup mActionBarLayout;
-    ImageView mActionBarIcon;
     TextView mActionBarTitle;
     ImageView mActionBarTitleImage;
     LinearLayout mActionBarExtension;
@@ -168,7 +167,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mActionBarLayout = (ViewGroup) getLayoutInflater().inflate(
                 R.layout.actionbar_dual_no_icon, null);
 
-        mActionBarIcon = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_icon);
         mActionBarTitle = (TextView) mActionBarLayout.findViewById(R.id.actionbar_title);
         mActionBarTitleImage = (ImageView) mActionBarLayout.findViewById(R.id.actionbar_title_image);
 
