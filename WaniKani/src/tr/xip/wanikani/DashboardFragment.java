@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +62,15 @@ public class DashboardFragment extends Fragment
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
 
+    CardView mMessageCardHolder;
+    CardView mVacationModeCardHolder;
+
     FrameLayout mVacationModeCard;
     FrameLayout mReviewsCard;
     FrameLayout mProgressCard;
+
     private SwipeRefreshLayout mSwipeToRefreshLayout;
+
     private BroadcastReceiver mSyncCalled = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -122,6 +128,9 @@ public class DashboardFragment extends Fragment
         mReviewsHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_holder);
         mRecentUnlocksFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_recent_unlocks_holder);
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
+
+        mMessageCardHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_message_card_holder);
+        mVacationModeCardHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_vacation_mode_card_holder);
 
         mVacationModeCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_vacation_mode_card);
         mReviewsCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_card);
@@ -235,7 +244,7 @@ public class DashboardFragment extends Fragment
 
         transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();
 
-        rootView.findViewById(R.id.fragment_dashboard_message_card).setVisibility(View.VISIBLE);
+        mMessageCardHolder.setVisibility(View.VISIBLE);
     }
 
     private void setCriticalItemsFragmentHeight(int height) {
@@ -330,7 +339,7 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onMessageCardOkButtonClick() {
-        rootView.findViewById(R.id.fragment_dashboard_message_card).setVisibility(View.GONE);
+        mMessageCardHolder.setVisibility(View.GONE);
     }
 
     @Override
@@ -389,11 +398,11 @@ public class DashboardFragment extends Fragment
             if (isVacationModeActive) {
                 mAvailableHolder.setVisibility(View.GONE);
                 mReviewsHolder.setVisibility(View.GONE);
-                mVacationModeCard.setVisibility(View.VISIBLE);
+                mVacationModeCardHolder.setVisibility(View.VISIBLE);
             } else {
                 mAvailableHolder.setVisibility(View.VISIBLE);
                 mReviewsHolder.setVisibility(View.VISIBLE);
-                mVacationModeCard.setVisibility(View.GONE);
+                mVacationModeCardHolder.setVisibility(View.GONE);
             }
         }
     }

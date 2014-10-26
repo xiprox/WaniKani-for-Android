@@ -44,107 +44,149 @@
                     android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
-                    <FrameLayout
-                        android:id="@+id/fragment_dashboard_message_card"
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/fragment_dashboard_message_card_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_card_side"
                         android:layout_marginRight="@dimen/margin_card_side"
                         android:layout_marginTop="@dimen/margin_card_end"
-                        android:visibility="gone" />
-
-                    <FrameLayout
-                        android:id="@+id/fragment_dashboard_vacation_mode_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_card_between"
-                        android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:layout_marginTop="@dimen/margin_card_end"
-                        android:layoutAnimation="@anim/fade_controller"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:id="@+id/fragment_dashboard_available_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_card_between"
-                        android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:layout_marginTop="@dimen/margin_card_end"
-                        android:orientation="vertical">
+                        android:visibility="gone">
 
                         <FrameLayout
-                            android:id="@+id/fragment_dashboard_available_card"
+                            android:id="@+id/fragment_dashboard_message_card"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
-                    </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
-                    <LinearLayout
-                        android:id="@+id/fragment_dashboard_reviews_holder"
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/fragment_dashboard_vacation_mode_card_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_between"
                         android:layout_marginLeft="@dimen/margin_card_side"
                         android:layout_marginRight="@dimen/margin_card_side"
-                        android:layoutAnimation="@anim/fade_controller"
-                        android:orientation="vertical">
+                        android:layout_marginTop="@dimen/margin_card_end"
+                        android:visibility="gone">
 
                         <FrameLayout
-                            android:id="@+id/fragment_dashboard_reviews_card"
+                            android:id="@+id/fragment_dashboard_vacation_mode_card"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller" />
+                    </android.support.v7.widget.CardView>
 
-                    <FrameLayout
-                        android:id="@+id/fragment_dashboard_status_card"
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_between"
                         android:layout_marginLeft="@dimen/margin_card_side"
                         android:layout_marginRight="@dimen/margin_card_side"
-                        android:layoutAnimation="@anim/fade_controller" />
+                        android:layout_marginTop="@dimen/margin_card_end">
 
-                    <FrameLayout
-                        android:id="@+id/fragment_dashboard_progress_card"
+                        <LinearLayout
+                            android:id="@+id/fragment_dashboard_available_holder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:id="@+id/fragment_dashboard_available_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_between"
                         android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:layoutAnimation="@anim/fade_controller" />
+                        android:layout_marginRight="@dimen/margin_card_side">
 
-                    <LinearLayout
-                        android:id="@+id/fragment_dashboard_recent_unlocks_holder"
+                        <LinearLayout
+                            android:id="@+id/fragment_dashboard_reviews_holder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:id="@+id/fragment_dashboard_reviews_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_between"
                         android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:layoutAnimation="@anim/fade_controller"
-                        android:orientation="vertical">
+                        android:layout_marginRight="@dimen/margin_card_side">
 
                         <FrameLayout
-                            android:id="@+id/fragment_dashboard_recent_unlocks_card"
+                            android:id="@+id/fragment_dashboard_status_card"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller" />
+                    </android.support.v7.widget.CardView>
 
-                    <LinearLayout
-                        android:id="@+id/fragment_dashboard_critical_items_holder"
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_progress_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side">
+
+                        <LinearLayout
+                            android:id="@+id/fragment_dashboard_recent_unlocks_holder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:id="@+id/fragment_dashboard_recent_unlocks_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_end"
                         android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:layoutAnimation="@anim/fade_controller"
-                        android:orientation="vertical">
+                        android:layout_marginRight="@dimen/margin_card_side">
 
-                        <FrameLayout
-                            android:id="@+id/fragment_dashboard_critical_items_card"
+                        <LinearLayout
+                            android:id="@+id/fragment_dashboard_critical_items_holder"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:id="@+id/fragment_dashboard_critical_items_card"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

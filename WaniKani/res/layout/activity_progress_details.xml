@@ -46,16 +46,21 @@
                     android:animateLayoutChanges="true"
                     android:orientation="vertical">
 
-                    <fragment
-                        android:id="@+id/progress_details_progress_card"
-                        android:name="tr.xip.wanikani.cards.ProgressCardNoTitle"
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_between"
                         android:layout_marginLeft="@dimen/margin_card_side"
                         android:layout_marginRight="@dimen/margin_card_side"
-                        android:layout_marginTop="@dimen/margin_card_end"
-                        tools:layout="@layout/card_progress_no_title" />
+                        android:layout_marginTop="@dimen/margin_card_end">
+
+                        <fragment
+                            android:id="@+id/progress_details_progress_card"
+                            android:name="tr.xip.wanikani.cards.ProgressCardNoTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:layout="@layout/card_progress_no_title" />
+                    </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/progress_details_radicals_card"
