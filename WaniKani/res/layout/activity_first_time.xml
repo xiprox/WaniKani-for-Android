@@ -58,7 +58,6 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_api_key"
                         android:minWidth="300dp"
-                        android:text="4733cdca0ecb10ae771aca6aa42bb08d"
                         android:singleLine="true"
                         android:textColor="@color/text_gray"
                         android:textColorHint="@color/text_gray_light" />
