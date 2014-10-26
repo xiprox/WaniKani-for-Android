@@ -92,6 +92,12 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
     public void onProgressCardSyncFinishedListener(String result) {
         /* empty */
     }
