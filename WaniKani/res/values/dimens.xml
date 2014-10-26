@@ -5,7 +5,7 @@
 
     <dimen name="action_bar_height">56dp</dimen>
 
-    <dimen name="margin_card_side">12dp</dimen>
-    <dimen name="margin_card_end">12dp</dimen>
-    <dimen name="margin_card_between">8dp</dimen>
+    <dimen name="margin_card_side">8dp</dimen>
+    <dimen name="margin_card_end">8dp</dimen>
+    <dimen name="margin_card_between">0dp</dimen>
 </resources>
