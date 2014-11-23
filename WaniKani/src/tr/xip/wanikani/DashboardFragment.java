@@ -58,7 +58,8 @@ public class DashboardFragment extends Fragment
     boolean isCriticalItemsCardSyncedSuccess = false;
 
     LinearLayout mAvailableHolder;
-    LinearLayout mReviewsHolder;
+    CardView mReviewsHolder;
+    CardView mProgressHolder;
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
 
@@ -125,7 +126,8 @@ public class DashboardFragment extends Fragment
                 R.color.swipe_refresh_3, R.color.swipe_refresh_4);
 
         mAvailableHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_available_holder);
-        mReviewsHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_holder);
+        mReviewsHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_reviews_holder);
+        mProgressHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_progress_holder);
         mRecentUnlocksFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_recent_unlocks_holder);
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
 
@@ -136,8 +138,8 @@ public class DashboardFragment extends Fragment
         mReviewsCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_card);
         mProgressCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_progress_card);
 
-        mReviewsCard.setOnClickListener(this);
-        mProgressCard.setOnClickListener(this);
+        mReviewsHolder.setOnClickListener(this);
+        mProgressHolder.setOnClickListener(this);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -365,10 +367,10 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        if (view == mReviewsCard) {
+        if (view == mReviewsHolder) {
             // TODO - Handle reviews card stuff
         }
-        if (view == mProgressCard) {
+        if (view == mProgressHolder) {
             startActivity(new Intent(getActivity(), ProgressDetailsActivity.class));
         }
     }
