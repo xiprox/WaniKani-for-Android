@@ -275,9 +275,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             VocabularyItem vocabularyItem = mVocabularyAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_VOCABULARY);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, vocabularyItem.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, vocabularyItem.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, vocabularyItem);
             getActivity().startActivity(intent);
         }
     }

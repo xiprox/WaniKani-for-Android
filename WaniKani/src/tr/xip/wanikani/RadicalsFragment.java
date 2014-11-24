@@ -281,10 +281,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             RadicalItem radicalItem = mRadicalsAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_RADICAL);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, radicalItem.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, radicalItem.getImage());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, radicalItem.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, radicalItem);
             getActivity().startActivity(intent);
         }
     }

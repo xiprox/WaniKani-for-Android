@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.managers.PrefManager;
 
 /**
@@ -62,7 +63,7 @@ public class Browser extends ActionBarActivity {
 
         Intent intent = getIntent();
         String action = intent.getStringExtra(ARG_ACTION);
-        String itemType = intent.getStringExtra(ARG_ITEM_TYPE);
+        BaseItem.ItemType itemType = (BaseItem.ItemType) intent.getSerializableExtra(ARG_ITEM_TYPE);
         String item = intent.getStringExtra(ARG_ITEM);
 
         if (action.equals(ACTION_LESSON)) {
@@ -73,15 +74,15 @@ public class Browser extends ActionBarActivity {
         }
 
         if (action.equals(ACTION_ITEM_DETAILS)) {
-            if (itemType.equals(ItemDetailsActivity.TYPE_RADICAL)) {
+            if (itemType == BaseItem.ItemType.RADICAL) {
                 mWebview.loadUrl(RADICAL_URL + WordUtils.uncapitalize(item));
                 mActionBar.setTitle(item);
             }
-            if (itemType.equals(ItemDetailsActivity.TYPE_KANJI)) {
+            if (itemType == BaseItem.ItemType.KANJI) {
                 mWebview.loadUrl(KANJI_URL + item);
                 mActionBar.setTitle(item);
             }
-            if (itemType.equals(ItemDetailsActivity.TYPE_VOCABULARY)) {
+            if (itemType == BaseItem.ItemType.VOCABULARY) {
                 mWebview.loadUrl(VOCABULARY_URL + item);
                 mActionBar.setTitle(item);
             }

@@ -106,10 +106,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
             UnlockItem item = recentUnlocksList.get(position);
 
             Intent intent = new Intent(getApplicationContext(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.getImage());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);
             startActivity(intent);
         }
     }

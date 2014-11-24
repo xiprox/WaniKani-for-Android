@@ -276,9 +276,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
             KanjiItem kanjiItem = mKanjiAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_KANJI);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, kanjiItem.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, kanjiItem.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, kanjiItem);
             getActivity().startActivity(intent);
         }
     }

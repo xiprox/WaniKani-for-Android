@@ -30,13 +30,9 @@
                 <ViewFlipper
                     android:id="@+id/details_view_flipper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="64dp" />
+                    android:layout_height="wrap_content"
+                    android:inAnimation="@anim/abc_fade_in"
+                    android:outAnimation="@anim/abc_fade_out">
 
                     <LinearLayout
                         android:id="@+id/details_content"
@@ -786,9 +782,13 @@
                                 </RelativeLayout>
                             </LinearLayout>
                         </LinearLayout>
-
                     </LinearLayout>
 
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="64dp" />
                 </ViewFlipper>
 
                 <View

@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.UnlockItem;
 
 /**
@@ -57,15 +58,15 @@ public class RecentUnlocksArrayAdapter extends ArrayAdapter<UnlockItem> {
 
         mUnlockCharacter.setTypeface(typeface);
 
-        if (item.getType().equals("radical")) {
+        if (item.getType() == BaseItem.ItemType.RADICAL) {
             mUnlockType.setBackgroundResource(R.drawable.oval_radical);
         }
 
-        if (item.getType().equals("kanji")) {
+        if (item.getType() == BaseItem.ItemType.KANJI) {
             mUnlockType.setBackgroundResource(R.drawable.oval_kanji);
         }
 
-        if (item.getType().equals("vocabulary")) {
+        if (item.getType() == BaseItem.ItemType.VOCABULARY) {
             mUnlockType.setBackgroundResource(R.drawable.oval_vocabulary);
         }
 

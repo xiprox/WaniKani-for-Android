@@ -196,10 +196,7 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
             RadicalItem item = mRemainingRadicals.get(position);
 
             Intent intent = new Intent(ProgressDetailsActivity.this, ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_RADICAL);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.getImage());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);
             startActivity(intent);
         }
     }
@@ -211,9 +208,7 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
             KanjiItem item = mRemainingKanji.get(position);
 
             Intent intent = new Intent(ProgressDetailsActivity.this, ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_KANJI);
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);
             startActivity(intent);
         }
     }

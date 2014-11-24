@@ -6,6 +6,10 @@ import java.io.Serializable;
  * Created by Hikari on 9/2/14.
  */
 public class BaseItem implements Serializable {
+    public static final String TYPE_RADICAL = "radical";
+    public static final String TYPE_KANJI = "kanji";
+    public static final String TYPE_VOCABULARY = "vocabulary";
+
     private String character;
     private String kana;
     private String meaning;
@@ -15,7 +19,8 @@ public class BaseItem implements Serializable {
     private String important_reading;
     private int level;
     private UserSpecific user_specific;
-    private ItemType type;
+
+    private ItemType typeEnum;
 
     public BaseItem() {
 
@@ -36,11 +41,31 @@ public class BaseItem implements Serializable {
     }
 
     public ItemType getType() {
-        return type;
+        return typeEnum;
     }
 
     public void setType(ItemType type) {
-        this.type = type;
+        this.typeEnum = type;
+    }
+
+    public String getTypeString() {
+        if (typeEnum == ItemType.RADICAL)
+            return TYPE_RADICAL;
+        if (typeEnum == ItemType.KANJI)
+            return TYPE_KANJI;
+        if (typeEnum == ItemType.VOCABULARY)
+            return TYPE_VOCABULARY;
+        else return null;
+    }
+
+    public ItemType getTypeFromString(String type) {
+        if (type.equals(TYPE_RADICAL))
+            return ItemType.RADICAL;
+        if (type.equals(TYPE_KANJI))
+            return ItemType.KANJI;
+        if (type.equals(TYPE_VOCABULARY))
+            return ItemType.VOCABULARY;
+        else return null;
     }
 
     public String getCharacter() {
@@ -170,11 +195,11 @@ public class BaseItem implements Serializable {
         return getType() == ItemType.KANJI ? user_specific.reading_note : null;
     }
 
-    public enum ItemType {
+    public enum ItemType implements Serializable {
         RADICAL, KANJI, VOCABULARY
     }
 
-    private class UserSpecific {
+    private class UserSpecific implements Serializable {
         private String srs;
         private long unlocked_date;
         private long available_date;

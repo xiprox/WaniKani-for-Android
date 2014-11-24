@@ -16,6 +16,7 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.CriticalItemsGridAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.CriticalItem;
 import tr.xip.wanikani.managers.PrefManager;
 
@@ -105,10 +106,7 @@ public class CriticalItemsActivity extends ActionBarActivity {
             CriticalItem item = mList.get(position);
 
             Intent intent = new Intent(getApplicationContext(), ItemDetailsActivity.class);
-            intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());
-            intent.putExtra(ItemDetailsActivity.ARG_CHARACTER, item.getCharacter());
-            intent.putExtra(ItemDetailsActivity.ARG_IMAGE, item.getImage());
-            intent.putExtra(ItemDetailsActivity.ARG_LEVEL, item.getLevel());
+            intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);
             startActivity(intent);
         }
     }
