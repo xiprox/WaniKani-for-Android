@@ -1,10 +1,12 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
+
 /**
  * Created by xihsa_000 on 3/11/14.
  */
 
-public class User {
+public class User implements Serializable {
     public UserInfo user_information;
 
     public String getUsername() {

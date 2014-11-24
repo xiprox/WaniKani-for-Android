@@ -15,13 +15,13 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.CriticalItemsList;
+import tr.xip.wanikani.api.response.CriticalItem;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by xihsa_000 on 3/14/14.
  */
-public class CriticalItemsGridAdapter extends ArrayAdapter<CriticalItemsList.CriticalItem> {
+public class CriticalItemsGridAdapter extends ArrayAdapter<CriticalItem> {
 
     Context context;
     Typeface typeface;
@@ -31,9 +31,9 @@ public class CriticalItemsGridAdapter extends ArrayAdapter<CriticalItemsList.Cri
     ImageView mItemCharacterImage;
     TextView mItemPercentage;
 
-    private List<CriticalItemsList.CriticalItem> items;
+    private List<CriticalItem> items;
 
-    public CriticalItemsGridAdapter(Context context, int textViewResourceId, List<CriticalItemsList.CriticalItem> objects) {
+    public CriticalItemsGridAdapter(Context context, int textViewResourceId, List<CriticalItem> objects) {
         super(context, textViewResourceId, objects);
         this.items = objects;
         this.context = context;
@@ -43,7 +43,7 @@ public class CriticalItemsGridAdapter extends ArrayAdapter<CriticalItemsList.Cri
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
-        CriticalItemsList.CriticalItem item = items.get(position);
+        CriticalItem item = items.get(position);
 
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

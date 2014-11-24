@@ -15,18 +15,18 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.VocabularyList;
+import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
-public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<VocabularyList.VocabularyItem> {
+public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<VocabularyItem> {
     Context context;
 
     int headerResourceId;
     Typeface typeface;
-    private List<VocabularyList.VocabularyItem> items;
+    private List<VocabularyItem> items;
 
-    public VocabularyAdapter(Context context, List<VocabularyList.VocabularyItem> list, int headerResId, int itemResId) {
+    public VocabularyAdapter(Context context, List<VocabularyItem> list, int headerResId, int itemResId) {
         super(context, list, headerResId, itemResId);
         this.items = list;
         this.context = context;
@@ -38,7 +38,7 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
-        VocabularyList.VocabularyItem vocabularyItem = items.get(position);
+        VocabularyItem vocabularyItem = items.get(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -119,7 +119,7 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<Vocab
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        VocabularyList.VocabularyItem item = getItem(position);
+        VocabularyItem item = getItem(position);
 
         holder.textView.setText(item.getLevel() + "");
 

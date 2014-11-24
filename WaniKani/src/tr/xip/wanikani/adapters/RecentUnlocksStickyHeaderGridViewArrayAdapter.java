@@ -20,13 +20,14 @@ import java.util.List;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by xihsa_000 on 3/14/14.
  */
-public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHeadersSimpleArrayAdapter<RecentUnlocksList.UnlockItem> {
+public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHeadersSimpleArrayAdapter<UnlockItem> {
 
     Context context;
     Typeface typeface;
@@ -38,9 +39,9 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
 
     int headerResourceId;
 
-    private List<RecentUnlocksList.UnlockItem> items;
+    private List<UnlockItem> items;
 
-    public RecentUnlocksStickyHeaderGridViewArrayAdapter(Context context, List<RecentUnlocksList.UnlockItem> objects, int headerResId, int itemResId) {
+    public RecentUnlocksStickyHeaderGridViewArrayAdapter(Context context, List<UnlockItem> objects, int headerResId, int itemResId) {
         super(context, objects, headerResId, itemResId);
         this.items = objects;
         this.context = context;
@@ -52,7 +53,7 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
-        RecentUnlocksList.UnlockItem item = items.get(position);
+        UnlockItem item = items.get(position);
 
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -125,7 +126,7 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        RecentUnlocksList.UnlockItem item = getItem(position);
+        UnlockItem item = getItem(position);
 
         SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy");
 

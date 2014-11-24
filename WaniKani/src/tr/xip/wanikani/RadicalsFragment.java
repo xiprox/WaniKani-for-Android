@@ -29,6 +29,7 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.RadicalsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.RadicalItem;
 import tr.xip.wanikani.api.response.RadicalsList;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
@@ -56,7 +57,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     LevelPickerDialogFragment mLevelPickerDialog;
 
     RadicalsAdapter mRadicalsAdapter;
-    List<RadicalsList.RadicalItem> radicalsList = null;
+    List<RadicalItem> radicalsList = null;
 
     View rootView;
 
@@ -175,10 +176,10 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             new FetchTask().execute();
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, List<RadicalsList.RadicalItem>> {
+    private class FetchTask extends AsyncTask<Void, Void, List<RadicalItem>> {
 
         @Override
-        protected List<RadicalsList.RadicalItem> doInBackground(Void... voids) {
+        protected List<RadicalItem> doInBackground(Void... voids) {
             try {
                 radicalsList = apiMan.getRadicalsList(LEVEL);
                 return radicalsList;
@@ -190,12 +191,12 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         }
 
         @Override
-        protected void onPostExecute(List<RadicalsList.RadicalItem> list) {
+        protected void onPostExecute(List<RadicalItem> list) {
             super.onPostExecute(list);
 
             if (list != null) {
-                Collections.sort(list, new Comparator<RadicalsList.RadicalItem>() {
-                    public int compare(RadicalsList.RadicalItem item1, RadicalsList.RadicalItem item2) {
+                Collections.sort(list, new Comparator<RadicalItem>() {
+                    public int compare(RadicalItem item1, RadicalItem item2) {
                         return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                     }
                 });
@@ -277,7 +278,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            RadicalsList.RadicalItem radicalItem = mRadicalsAdapter.getItem(position);
+            RadicalItem radicalItem = mRadicalsAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_RADICAL);

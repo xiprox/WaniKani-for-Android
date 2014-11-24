@@ -15,18 +15,18 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.KanjiItem;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
-public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.KanjiItem> {
+public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiItem> {
     Context context;
 
     int headerResourceId;
     Typeface typeface;
-    private List<KanjiList.KanjiItem> items;
+    private List<KanjiItem> items;
 
-    public KanjiAdapter(Context context, List<KanjiList.KanjiItem> list, int headerResId, int itemResId) {
+    public KanjiAdapter(Context context, List<KanjiItem> list, int headerResId, int itemResId) {
         super(context, list, headerResId, itemResId);
         this.items = list;
         this.context = context;
@@ -38,7 +38,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
-        KanjiList.KanjiItem kanjiItem = items.get(position);
+        KanjiItem kanjiItem = items.get(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -121,7 +121,7 @@ public class KanjiAdapter extends StickyGridHeadersSimpleArrayAdapter<KanjiList.
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        KanjiList.KanjiItem item = getItem(position);
+        KanjiItem item = getItem(position);
 
         holder.textView.setText(item.getLevel() + "");
 

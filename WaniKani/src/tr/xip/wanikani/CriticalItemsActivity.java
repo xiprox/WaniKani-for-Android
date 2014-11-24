@@ -16,7 +16,7 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.CriticalItemsGridAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.CriticalItemsList;
+import tr.xip.wanikani.api.response.CriticalItem;
 import tr.xip.wanikani.managers.PrefManager;
 
 /**
@@ -32,7 +32,7 @@ public class CriticalItemsActivity extends ActionBarActivity {
     GridView mGrid;
     ViewFlipper mFlipper;
 
-    List<CriticalItemsList.CriticalItem> mList = new ArrayList<CriticalItemsList.CriticalItem>();
+    List<CriticalItem> mList = new ArrayList<CriticalItem>();
 
     CriticalItemsGridAdapter mAdapter;
 
@@ -61,10 +61,10 @@ public class CriticalItemsActivity extends ActionBarActivity {
         return true;
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, List<CriticalItemsList.CriticalItem>> {
+    private class LoadTask extends AsyncTask<Void, Void, List<CriticalItem>> {
 
         @Override
-        protected List<CriticalItemsList.CriticalItem> doInBackground(Void... voids) {
+        protected List<CriticalItem> doInBackground(Void... voids) {
             try {
                 mList = api.getCriticalItemsList(prefMan.getDashboardCriticalItemsPercentage());
                 return mList;
@@ -75,7 +75,7 @@ public class CriticalItemsActivity extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(List<CriticalItemsList.CriticalItem> result) {
+        protected void onPostExecute(List<CriticalItem> result) {
             if (result != null) {
                 mAdapter = new CriticalItemsGridAdapter(
                         CriticalItemsActivity.this,
@@ -102,7 +102,7 @@ public class CriticalItemsActivity extends ActionBarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            CriticalItemsList.CriticalItem item = mList.get(position);
+            CriticalItem item = mList.get(position);
 
             Intent intent = new Intent(getApplicationContext(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());

@@ -18,6 +18,7 @@ import java.util.List;
 import tr.xip.wanikani.adapters.RecentUnlocksStickyHeaderGridViewArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.api.response.UnlockItem;
 
 /**
  * Created by xihsa_000 on 3/25/14.
@@ -36,7 +37,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
     RecentUnlocksStickyHeaderGridViewArrayAdapter mRecentUnlocksAdapter;
 
-    List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
+    List<UnlockItem> recentUnlocksList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +67,10 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         return true;
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, List<RecentUnlocksList.UnlockItem>> {
+    private class LoadTask extends AsyncTask<Void, Void, List<UnlockItem>> {
 
         @Override
-        protected List<RecentUnlocksList.UnlockItem> doInBackground(Void... voids) {
+        protected List<UnlockItem> doInBackground(Void... voids) {
             try {
                 recentUnlocksList = api.getRecentUnlocksList(100); // Get the maximum amount of unlocks which is 100
                 return recentUnlocksList;
@@ -80,7 +81,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         }
 
         @Override
-        protected void onPostExecute(List<RecentUnlocksList.UnlockItem> result) {
+        protected void onPostExecute(List<UnlockItem> result) {
             if (result != null) {
                 mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
                         result, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
@@ -102,7 +103,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            RecentUnlocksList.UnlockItem item = recentUnlocksList.get(position);
+            UnlockItem item = recentUnlocksList.get(position);
 
             Intent intent = new Intent(getApplicationContext(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());

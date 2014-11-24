@@ -31,7 +31,7 @@ import tr.xip.wanikani.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.adapters.CriticalItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.CriticalItemsList;
+import tr.xip.wanikani.api.response.CriticalItem;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
@@ -69,7 +69,7 @@ public class CriticalItemsCard extends Fragment {
     TextView mMessageTitle;
     TextView mMessageSummary;
     RelativeLayout mMoreButton;
-    List<CriticalItemsList.CriticalItem> criticalItemsList = null;
+    List<CriticalItem> criticalItemsList = null;
 
     public void setListener(CriticalItemsCardListener listener, Context context) {
         mListener = listener;
@@ -152,10 +152,10 @@ public class CriticalItemsCard extends Fragment {
         public void onCriticalItemsCardSyncFinishedListener(int height, String result);
     }
 
-    private class LoadTask extends AsyncTask<String, Void, List<CriticalItemsList.CriticalItem>> {
+    private class LoadTask extends AsyncTask<String, Void, List<CriticalItem>> {
 
         @Override
-        protected List<CriticalItemsList.CriticalItem> doInBackground(String... strings) {
+        protected List<CriticalItem> doInBackground(String... strings) {
             try {
                 criticalItemsList = api.getCriticalItemsList(prefMan.getDashboardCriticalItemsPercentage());
             } catch (Exception e) {
@@ -166,11 +166,11 @@ public class CriticalItemsCard extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<CriticalItemsList.CriticalItem> result) {
+        protected void onPostExecute(List<CriticalItem> result) {
             int height;
 
             if (result != null) {
-                List<CriticalItemsList.CriticalItem> mNewList = new ArrayList<CriticalItemsList.CriticalItem>();
+                List<CriticalItem> mNewList = new ArrayList<CriticalItem>();
 
                 for (int i = 0; i < result.size(); i++)
                     if (i < prefMan.getCriticalItemsNumber())
@@ -243,7 +243,7 @@ public class CriticalItemsCard extends Fragment {
     private class criticalItemListItemClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            CriticalItemsList.CriticalItem item = criticalItemsList.get(position);
+            CriticalItem item = criticalItemsList.get(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());

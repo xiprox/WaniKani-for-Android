@@ -29,6 +29,7 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.VocabularyAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
@@ -53,7 +54,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     LevelPickerDialogFragment mLevelPickerDialog;
 
     VocabularyAdapter mVocabularyAdapter;
-    List<VocabularyList.VocabularyItem> vocabularyList = null;
+    List<VocabularyItem> vocabularyList = null;
 
     View rootView;
 
@@ -171,10 +172,10 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             new FetchTask().execute();
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, List<VocabularyList.VocabularyItem>> {
+    private class FetchTask extends AsyncTask<Void, Void, List<VocabularyItem>> {
 
         @Override
-        protected List<VocabularyList.VocabularyItem> doInBackground(Void... voids) {
+        protected List<VocabularyItem> doInBackground(Void... voids) {
             try {
                 vocabularyList = apiMan.getVocabularyList(LEVEL);
                 return vocabularyList;
@@ -186,12 +187,12 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         }
 
         @Override
-        protected void onPostExecute(List<VocabularyList.VocabularyItem> list) {
+        protected void onPostExecute(List<VocabularyItem> list) {
             super.onPostExecute(list);
 
             if (list != null) {
-                Collections.sort(list, new Comparator<VocabularyList.VocabularyItem>() {
-                    public int compare(VocabularyList.VocabularyItem item1, VocabularyList.VocabularyItem item2) {
+                Collections.sort(list, new Comparator<VocabularyItem>() {
+                    public int compare(VocabularyItem item1, VocabularyItem item2) {
                         return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                     }
                 });
@@ -271,7 +272,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            VocabularyList.VocabularyItem vocabularyItem = mVocabularyAdapter.getItem(position);
+            VocabularyItem vocabularyItem = mVocabularyAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_VOCABULARY);

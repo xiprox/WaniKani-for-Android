@@ -3,7 +3,6 @@ package tr.xip.wanikani.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.RecentUnlocksList;
-import tr.xip.wanikani.utils.Fonts;
+import tr.xip.wanikani.api.response.UnlockItem;
 
 /**
  * Created by xihsa_000 on 3/14/14.
  */
-public class RecentUnlocksArrayAdapter extends ArrayAdapter<RecentUnlocksList.UnlockItem> {
+public class RecentUnlocksArrayAdapter extends ArrayAdapter<UnlockItem> {
 
     Context context;
     Typeface typeface;
@@ -33,9 +31,9 @@ public class RecentUnlocksArrayAdapter extends ArrayAdapter<RecentUnlocksList.Un
     ImageView mUnlockCharacterImage;
     TextView mUnlockDate;
 
-    private List<RecentUnlocksList.UnlockItem> items;
+    private List<UnlockItem> items;
 
-    public RecentUnlocksArrayAdapter(Context context, int textViewResourceId, List<RecentUnlocksList.UnlockItem> objects, Typeface typeface) {
+    public RecentUnlocksArrayAdapter(Context context, int textViewResourceId, List<UnlockItem> objects, Typeface typeface) {
         super(context, textViewResourceId, objects);
         this.items = objects;
         this.context = context;
@@ -45,7 +43,7 @@ public class RecentUnlocksArrayAdapter extends ArrayAdapter<RecentUnlocksList.Un
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
 
-        RecentUnlocksList.UnlockItem item = items.get(position);
+        UnlockItem item = items.get(position);
 
         if (v == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

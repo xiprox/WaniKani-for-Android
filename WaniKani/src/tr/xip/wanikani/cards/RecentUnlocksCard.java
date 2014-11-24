@@ -30,7 +30,7 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.RecentUnlocksActivity;
 import tr.xip.wanikani.adapters.RecentUnlocksArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
@@ -68,7 +68,7 @@ public class RecentUnlocksCard extends Fragment {
     ImageView mMessageIcon;
     TextView mMessageTitle;
     TextView mMessageSummary;
-    List<RecentUnlocksList.UnlockItem> recentUnlocksList = null;
+    List<UnlockItem> recentUnlocksList = null;
 
     public void setListener(RecentUnlocksCardListener listener, Context context) {
         mListener = listener;
@@ -153,10 +153,10 @@ public class RecentUnlocksCard extends Fragment {
         public void onRecentUnlocksCardSyncFinishedListener(int height, String result);
     }
 
-    private class LoadTask extends AsyncTask<String, Void, List<RecentUnlocksList.UnlockItem>> {
+    private class LoadTask extends AsyncTask<String, Void, List<UnlockItem>> {
 
         @Override
-        protected List<RecentUnlocksList.UnlockItem> doInBackground(String... strings) {
+        protected List<UnlockItem> doInBackground(String... strings) {
             try {
                 recentUnlocksList = api.getRecentUnlocksList(prefMan.getDashboardRecentUnlocksNumber());
             } catch (Exception e) {
@@ -166,7 +166,7 @@ public class RecentUnlocksCard extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(List<RecentUnlocksList.UnlockItem> result) {
+        protected void onPostExecute(List<UnlockItem> result) {
             int height;
 
             if (result != null) {
@@ -218,7 +218,7 @@ public class RecentUnlocksCard extends Fragment {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            RecentUnlocksList.UnlockItem item = recentUnlocksList.get(position);
+            UnlockItem item = recentUnlocksList.get(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, item.getType());

@@ -1,9 +1,11 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
+
 /**
  * Created by xihsa_000 on 3/12/14.
  */
-public class LevelProgression {
+public class LevelProgression implements Serializable {
     private UserInfo user_information;
     private RequestedInformation requested_information;
 
@@ -11,7 +13,7 @@ public class LevelProgression {
         return user_information;
     }
 
-    private class RequestedInformation {
+    private class RequestedInformation implements Serializable {
         private int radicals_progress;
         private int radicals_total;
         private int kanji_progress;

@@ -1,9 +1,11 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
+
 /**
  * Created by xihsa_000 on 3/12/14.
  */
-public class UserInfo {
+public class UserInfo implements Serializable {
     private String username;
     private String gravatar;
     private int level;

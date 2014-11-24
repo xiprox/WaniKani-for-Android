@@ -32,8 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.KanjiItem;
 import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.RadicalItem;
 import tr.xip.wanikani.api.response.RadicalsList;
+import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.utils.Fonts;
@@ -381,15 +384,15 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
     private class LoadTask extends AsyncTask<Void, Void, String> {
 
-        RadicalsList.RadicalItem radicalItem;
-        KanjiList.KanjiItem kanjiItem;
-        VocabularyList.VocabularyItem vocabularyItem;
+        RadicalItem radicalItem;
+        KanjiItem kanjiItem;
+        VocabularyItem vocabularyItem;
 
         @Override
         protected String doInBackground(Void... voids) {
             try {
                 if (gotType.equals(TYPE_RADICAL)) {
-                    List<RadicalsList.RadicalItem> list = api.getRadicalsList(gotLevel + "");
+                    List<RadicalItem> list = api.getRadicalsList(gotLevel + "");
 
                     if (gotCharacter != null) {
                         for (int i = 0; i < list.size(); i++) {
@@ -413,7 +416,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 }
 
                 if (gotType.equals(TYPE_KANJI)) {
-                    List<KanjiList.KanjiItem> list = api.getKanjiList(gotLevel + "");
+                    List<KanjiItem> list = api.getKanjiList(gotLevel + "");
 
                     for (int i = 0; i < list.size(); i++) {
                         if (list.get(i).getCharacter().equals(gotCharacter)) {
@@ -424,7 +427,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 }
 
                 if (gotType.equals(TYPE_VOCABULARY)) {
-                    List<VocabularyList.VocabularyItem> list = api.getVocabularyList(gotLevel + "");
+                    List<VocabularyItem> list = api.getVocabularyList(gotLevel + "");
 
                     for (int i = 0; i < list.size(); i++) {
                         if (list.get(i).getCharacter().equals(gotCharacter)) {

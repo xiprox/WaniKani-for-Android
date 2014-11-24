@@ -1,9 +1,11 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
+
 /**
  * Created by xihsa_000 on 3/12/14.
  */
-public class Error {
+public class Error implements Serializable {
     private String code;
     private String message;
 

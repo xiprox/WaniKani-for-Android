@@ -10,20 +10,20 @@ import android.widget.TextView;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.KanjiItem;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by Hikari on 9/18/14.
  */
-public class RemainingKanjiAdapter extends ArrayAdapter<KanjiList.KanjiItem> {
+public class RemainingKanjiAdapter extends ArrayAdapter<KanjiItem> {
 
     View rootView;
     Context context;
 
-    List<KanjiList.KanjiItem> mList;
+    List<KanjiItem> mList;
 
-    public RemainingKanjiAdapter(Context context, int resource, List<KanjiList.KanjiItem> objects) {
+    public RemainingKanjiAdapter(Context context, int resource, List<KanjiItem> objects) {
         super(context, resource, objects);
         this.context = context;
         mList = objects;
@@ -31,7 +31,7 @@ public class RemainingKanjiAdapter extends ArrayAdapter<KanjiList.KanjiItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        KanjiList.KanjiItem item = mList.get(position);
+        KanjiItem item = mList.get(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

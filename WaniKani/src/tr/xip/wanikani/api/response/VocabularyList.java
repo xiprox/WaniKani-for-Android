@@ -1,11 +1,12 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class VocabularyList {
+public class VocabularyList implements Serializable {
     private UserInfo user_information;
     private List<VocabularyItem> requested_information;
     private Error error;
@@ -20,12 +21,5 @@ public class VocabularyList {
 
     public Error getError() {
         return error;
-    }
-
-    public class VocabularyItem extends Item {
-        @Override
-        public ItemType getType() {
-            return ItemType.VOCABULARY;
-        }
     }
 }

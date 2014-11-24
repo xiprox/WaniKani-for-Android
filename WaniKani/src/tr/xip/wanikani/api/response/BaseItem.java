@@ -1,9 +1,11 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
+
 /**
  * Created by Hikari on 9/2/14.
  */
-public class Item {
+public class BaseItem implements Serializable {
     private String character;
     private String kana;
     private String meaning;
@@ -15,11 +17,11 @@ public class Item {
     private UserSpecific user_specific;
     private ItemType type;
 
-    public Item() {
+    public BaseItem() {
 
     }
 
-    public Item(ItemType type) {
+    public BaseItem(ItemType type) {
         switch (type) {
             case RADICAL:
                 setType(ItemType.RADICAL);

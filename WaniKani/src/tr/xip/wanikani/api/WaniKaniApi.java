@@ -6,16 +6,16 @@ import java.util.List;
 
 import retrofit.RestAdapter;
 import tr.xip.wanikani.api.error.RetrofitErrorHandler;
-import tr.xip.wanikani.api.response.CriticalItemsList;
-import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.CriticalItem;
+import tr.xip.wanikani.api.response.KanjiItem;
 import tr.xip.wanikani.api.response.LevelProgression;
-import tr.xip.wanikani.api.response.RadicalsList;
-import tr.xip.wanikani.api.response.RecentUnlocksList;
+import tr.xip.wanikani.api.response.RadicalItem;
 import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.api.response.StudyQueue;
+import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.api.response.UserInfo;
-import tr.xip.wanikani.api.response.VocabularyList;
+import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.managers.PrefManager;
 
 /**
@@ -69,23 +69,23 @@ public class WaniKaniApi {
         return service.getSRSDistribution(API_KEY);
     }
 
-    public List<RecentUnlocksList.UnlockItem> getRecentUnlocksList(int limit) {
+    public List<UnlockItem> getRecentUnlocksList(int limit) {
         return service.getRecentUnlocksList(API_KEY, limit).getList();
     }
 
-    public List<CriticalItemsList.CriticalItem> getCriticalItemsList(int percentage) {
+    public List<CriticalItem> getCriticalItemsList(int percentage) {
         return service.getCriticalItemsList(API_KEY, percentage).getList();
     }
 
-    public List<RadicalsList.RadicalItem> getRadicalsList(String level) {
+    public List<RadicalItem> getRadicalsList(String level) {
         return service.getRadicalsList(API_KEY, level).getList();
     }
 
-    public List<KanjiList.KanjiItem> getKanjiList(String level) {
+    public List<KanjiItem> getKanjiList(String level) {
         return service.getKanjiList(API_KEY, level).getList();
     }
 
-    public List<VocabularyList.VocabularyItem> getVocabularyList(String level) {
+    public List<VocabularyItem> getVocabularyList(String level) {
         return service.getVocabularyList(API_KEY, level).getList();
     }
 }

@@ -1,9 +1,11 @@
 package tr.xip.wanikani.api.response;
 
+import java.io.Serializable;
+
 /**
  * Created by xihsa_000 on 3/12/14.
  */
-public class SRSDistribution {
+public class SRSDistribution implements Serializable {
     private UserInfo user_information;
     private RequestedInformation requested_information;
 
@@ -11,14 +13,14 @@ public class SRSDistribution {
         return user_information;
     }
 
-    private class RequestedInformation {
+    private class RequestedInformation implements Serializable {
         private Level apprentice;
         private Level guru;
         private Level master;
         private Level enlighten;
         private Level burned;
 
-        public class Level {
+        public class Level implements Serializable {
             private int radicals;
             private int kanji;
             private int vocabulary;

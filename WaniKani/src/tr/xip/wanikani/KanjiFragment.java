@@ -29,7 +29,7 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.KanjiAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.KanjiList;
+import tr.xip.wanikani.api.response.KanjiItem;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
@@ -53,7 +53,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     LevelPickerDialogFragment mLevelPickerDialog;
 
     KanjiAdapter mKanjiAdapter;
-    List<KanjiList.KanjiItem> kanjiList = null;
+    List<KanjiItem> kanjiList = null;
 
     View rootView;
 
@@ -171,10 +171,10 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
             new FetchTask().execute();
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, List<KanjiList.KanjiItem>> {
+    private class FetchTask extends AsyncTask<Void, Void, List<KanjiItem>> {
 
         @Override
-        protected List<KanjiList.KanjiItem> doInBackground(Void... voids) {
+        protected List<KanjiItem> doInBackground(Void... voids) {
             try {
                 kanjiList = apiMan.getKanjiList(LEVEL);
                 return kanjiList;
@@ -186,12 +186,12 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         }
 
         @Override
-        protected void onPostExecute(List<KanjiList.KanjiItem> list) {
+        protected void onPostExecute(List<KanjiItem> list) {
             super.onPostExecute(list);
 
             if (list != null) {
-                Collections.sort(list, new Comparator<KanjiList.KanjiItem>() {
-                    public int compare(KanjiList.KanjiItem item1, KanjiList.KanjiItem item2) {
+                Collections.sort(list, new Comparator<KanjiItem>() {
+                    public int compare(KanjiItem item1, KanjiItem item2) {
                         return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                     }
                 });
@@ -273,7 +273,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            KanjiList.KanjiItem kanjiItem = mKanjiAdapter.getItem(position);
+            KanjiItem kanjiItem = mKanjiAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_TYPE, ItemDetailsActivity.TYPE_KANJI);
