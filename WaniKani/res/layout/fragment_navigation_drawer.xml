@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <ScrollView
@@ -19,30 +20,29 @@
             <FrameLayout
                 android:id="@+id/navigation_drawer_profile"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/apptheme_main"
                 android:foreground="@drawable/selector_background_white">
+
+                <ImageView
+                    android:id="@+id/navigation_drawer_avatar_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/apptheme_main">
-
-                    <ImageView
-                        android:id="@+id/navigation_drawer_avatar_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
+                    android:layout_height="150dp"
+                    android:layout_marginTop="@dimen/nav_drawer_status_bar_offset">
 
                     <ImageView
                         android:id="@+id/navigation_drawer_avatar"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         android:layout_alignParentTop="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/oval_white_translucent"
-                        android:padding="2dp"
                         android:scaleType="fitXY" />
 
                     <LinearLayout

@@ -172,11 +172,13 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
-        mFragmentContainerView = getActivity().findViewById(fragmentId);
+    public void setUp(int drawerHolderId, DrawerLayout drawerLayout) {
+        mFragmentContainerView = getActivity().findViewById(drawerHolderId);
         mDrawerLayout = drawerLayout;
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
+        mDrawerLayout.setStatusBarBackground(R.color.apptheme_main_dark);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),

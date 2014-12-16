@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="nav_drawer_status_bar_offset">24dp</dimen>
+
     <dimen name="action_bar_placeholder_height">0dp</dimen>
 
     <dimen name="margin_card_between">8dp</dimen>

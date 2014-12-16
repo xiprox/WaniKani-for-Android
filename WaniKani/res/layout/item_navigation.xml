@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
+            android:fontFamily="sans-serif-medium"
             android:text="SAMPLE ITEM"
             android:textColor="@color/text_gray" />
     </LinearLayout>
