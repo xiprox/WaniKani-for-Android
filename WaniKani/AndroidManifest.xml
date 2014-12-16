@@ -10,6 +10,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
         <activity
             android:name="tr.xip.wanikani.MainActivity"
             android:label="@string/app_name"
@@ -20,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Browser"
             android:parentActivityName="tr.xip.wanikani.MainActivity">
@@ -27,15 +29,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
         <activity
             android:name=".ItemDetailsActivity"
-            android:theme="@style/AppTheme_NoActionBar"
-            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            android:parentActivityName="tr.xip.wanikani.MainActivity"
+            android:theme="@style/AppTheme_NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
         <activity
             android:name=".RecentUnlocksActivity"
             android:label="@string/card_title_recent_unlocks"
@@ -45,9 +49,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
         <activity
             android:name=".FirstTimeActivity"
             android:icon="@drawable/ic_wanikani_stamp" />
+
         <activity
             android:name=".settings.SettingsActivity"
             android:label="@string/title_settings"
@@ -57,6 +63,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
         <activity
             android:name=".WebReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -70,6 +77,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
         <activity
             android:name=".SWWebReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -87,8 +95,8 @@
         <activity
             android:name=".ProgressDetailsActivity"
             android:label="@string/card_title_progress"
-            android:theme="@style/AppTheme_NoActionBar"
-            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            android:parentActivityName="tr.xip.wanikani.MainActivity"
+            android:theme="@style/AppTheme_NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -104,6 +112,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
+
+        <receiver android:name=".notification.NotificationReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="tr.xip.wanikani.action.SCHEDULE_NOTIF_ALARM" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notification.NotificationPublisher">
+            <intent-filter>
+                <action android:name="tr.xip.wanikani.action.SHOW_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notification.LessonsReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

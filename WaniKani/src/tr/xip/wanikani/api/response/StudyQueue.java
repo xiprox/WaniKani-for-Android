@@ -22,23 +22,22 @@ public class StudyQueue implements Serializable {
     }
 
     public int getAvailableLesonsCount() {
-        return requested_information.lessons_available;
+        return requested_information != null ? requested_information.lessons_available : 0;
     }
 
     public int getAvailableReviewsCount() {
-        return requested_information.reviews_available;
+        return requested_information != null ? requested_information.reviews_available : 0;
     }
 
     public int getAvailableReviewsNextHourCount() {
-        return requested_information.reviews_available_next_hour;
+        return requested_information != null ? requested_information.reviews_available_next_hour : 0;
     }
 
     public int getAvailableReviewsNextDayCount() {
-        return requested_information.reviews_available_next_day;
+        return requested_information != null ? requested_information.reviews_available_next_day : 0;
     }
 
     public long getNextReviewDate() {
-        return requested_information.next_review_date * 1000;
+        return requested_information != null ? requested_information.next_review_date * 1000 : 0;
     }
-
 }

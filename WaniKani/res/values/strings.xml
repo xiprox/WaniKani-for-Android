@@ -263,6 +263,15 @@
     <string name="months">months</string>
     <string name="just_now">just now</string>
 
+    <!-- Notification Strings -->
+    <string name="notif_title_new_lessons_and_reviews">New lessons and reviews</string>
+    <string name="notif_title_new_lessons">New lessons</string>
+    <string name="notif_title_new_reviews">New reviews</string>
+    <string name="notif_content_x_lessons_and_x_reviews_available">{lessons_count} lessons and {reviews_count} reviews available</string>
+    <string name="notif_content_x_lessons_available">{lessons_count} lessons available</string>
+    <string name="notif_content_x_reviews_available">{reviews_count} reviews available</string>
+    <string name="notif_action_lessons">Lessons</string>
+    <string name="notif_action_reviews">Reviews</string>
 
     <!-- Other Strings -->
     <string name="ok">OK</string>

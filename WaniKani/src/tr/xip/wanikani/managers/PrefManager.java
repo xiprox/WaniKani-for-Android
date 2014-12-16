@@ -1,5 +1,7 @@
 package tr.xip.wanikani.managers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,12 +12,11 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 import tr.xip.wanikani.ExternalFramePlacer;
 import tr.xip.wanikani.SWWebReviewActivity;
 import tr.xip.wanikani.WebReviewActivity;
-import tr.xip.wanikani.utils.Utils;
+import tr.xip.wanikani.notification.NotificationPublisher;
 
 /**
  * Created by xihsa_000 on 3/11/14.
@@ -48,6 +49,9 @@ public class PrefManager {
     public static final String PREF_MUTE = "pref_mute";
     public static final String PREF_HW_ACCEL = "pref_hw_accel";
     public static final String PREF_REVIEWS_LESSONS_FULLSCREEN = "pref_rev_les_fullscreen";
+    public static final String PREF_SHOW_NOTIFICATIONS = "pref_show_notifications";
+    public static final String PREF_REMIND_PENDING_LESSONS = "pref_remind_pending_lessons";
+    public static final String PREF_LESSONS_REMINDER_INTERVAL = "pref_lesson_reminder_interval";
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -334,6 +338,30 @@ public class PrefManager {
         prefeditor.putBoolean(PREF_REVIEWS_LESSONS_FULLSCREEN, value).commit();
     }
 
+    public void setNotificationsEnabled(boolean value) {
+        prefeditor.putBoolean(PREF_SHOW_NOTIFICATIONS, value).commit();
+    }
+
+    public boolean notificationsEnabled() {
+        return prefs.getBoolean(PREF_SHOW_NOTIFICATIONS, true);
+    }
+
+    public void setRemindPendingLessons(boolean value) {
+        prefeditor.putBoolean(PREF_REMIND_PENDING_LESSONS, value).commit();
+    }
+
+    public boolean shouldRemindPendingLessons() {
+        return prefs.getBoolean(PREF_REMIND_PENDING_LESSONS, true);
+    }
+
+    public long getPendingLessonsReminderInterval() {
+        return prefs.getLong(PREF_LESSONS_REMINDER_INTERVAL, 7200000); // 2 hours
+    }
+
+    public void setPendingLessonsReminderInterval(long milliseconds) {
+        prefeditor.putLong(PREF_LESSONS_REMINDER_INTERVAL, milliseconds).commit();
+    }
+
     public void logout() {
         prefeditor.clear().commit();
         reviewsPrefsEditor.clear().commit();
@@ -351,6 +379,17 @@ public class PrefManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Cancel the notification alarm...
+        Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context,
+                NotificationPublisher.REQUEST_CODE,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 
     public static enum Keyboard {
