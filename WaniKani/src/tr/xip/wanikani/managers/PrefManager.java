@@ -50,8 +50,7 @@ public class PrefManager {
     public static final String PREF_HW_ACCEL = "pref_hw_accel";
     public static final String PREF_REVIEWS_LESSONS_FULLSCREEN = "pref_rev_les_fullscreen";
     public static final String PREF_SHOW_NOTIFICATIONS = "pref_show_notifications";
-    public static final String PREF_REMIND_PENDING_LESSONS = "pref_remind_pending_lessons";
-    public static final String PREF_LESSONS_REMINDER_INTERVAL = "pref_lesson_reminder_interval";
+    public static final String PREF_NOTIFICATION_REMINDER_INTERVAL = "pref_lesson_reminder_interval";
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -346,20 +345,12 @@ public class PrefManager {
         return prefs.getBoolean(PREF_SHOW_NOTIFICATIONS, true);
     }
 
-    public void setRemindPendingLessons(boolean value) {
-        prefeditor.putBoolean(PREF_REMIND_PENDING_LESSONS, value).commit();
+    public long getNotificationReminderInterval() {
+        return prefs.getLong(PREF_NOTIFICATION_REMINDER_INTERVAL, 7200000); // 2 hours
     }
 
-    public boolean shouldRemindPendingLessons() {
-        return prefs.getBoolean(PREF_REMIND_PENDING_LESSONS, true);
-    }
-
-    public long getPendingLessonsReminderInterval() {
-        return prefs.getLong(PREF_LESSONS_REMINDER_INTERVAL, 7200000); // 2 hours
-    }
-
-    public void setPendingLessonsReminderInterval(long milliseconds) {
-        prefeditor.putLong(PREF_LESSONS_REMINDER_INTERVAL, milliseconds).commit();
+    public void setNotificationReminderInterval(long milliseconds) {
+        prefeditor.putLong(PREF_NOTIFICATION_REMINDER_INTERVAL, milliseconds).commit();
     }
 
     public void logout() {

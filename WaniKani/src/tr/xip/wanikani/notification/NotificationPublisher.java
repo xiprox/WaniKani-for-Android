@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import tr.xip.wanikani.Browser;
 import tr.xip.wanikani.MainActivity;
@@ -38,6 +39,10 @@ public class NotificationPublisher extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        publish(context);
+    }
+
+    public void publish(Context context) {
         this.context = context;
         this.prefMan = new PrefManager(context);
         this.notifPrefs = new NotificationPreferences(context);
@@ -82,10 +87,6 @@ public class NotificationPublisher extends BroadcastReceiver {
                     /** We have both lessons and reviews */
                     if (lessonsCount != 0 && reviewsCount != 0) {
                         mBuilder.setContentTitle(getString(R.string.notif_title_new_lessons_and_reviews));
-                        String contentText = getString(R.string.notif_content_x_lessons_and_x_reviews_available)
-                                .replace("{lessons_count}", lessonsCount + "")
-                                .replace("{reviews_count}", reviewsCount + "");
-                        mBuilder.setContentText(contentText);
 
                         NotificationCompat.Action mLessonsAction = new NotificationCompat.Action(
                                 R.drawable.ic_arrow_forward_white_36dp,
@@ -102,39 +103,34 @@ public class NotificationPublisher extends BroadcastReceiver {
                         mBuilder.setContentIntent(getDashboardPendingIntent())
                                 .addAction(mLessonsAction)
                                 .addAction(mReviewsAction);
-
-                        notifPrefs.saveLastLessonsShown(System.currentTimeMillis());
                     }
 
                     /** We only have lessons */
                     if (lessonsCount != 0 && reviewsCount == 0) {
                         mBuilder.setContentTitle(getString(R.string.notif_title_new_lessons));
-                        String contentText = getString(R.string.notif_content_x_lessons_available)
-                                .replace("{lessons_count}", lessonsCount + "");
-                        mBuilder.setContentText(contentText);
                         mBuilder.setContentIntent(getBrowserPendingIntent(BROWSER_TYPE_LESSONS));
-
-                        notifPrefs.saveLastLessonsShown(System.currentTimeMillis());
                     }
 
                     /** We only have reviews */
                     if (reviewsCount != 0 && lessonsCount == 0) {
                         mBuilder.setContentTitle(getString(R.string.notif_title_new_reviews));
-                        String contentText = getString(R.string.notif_content_x_reviews_available)
-                                .replace("{reviews_count}", reviewsCount + "");
-                        mBuilder.setContentText(contentText);
                         mBuilder.setContentIntent(getBrowserPendingIntent(BROWSER_TYPE_REVIEWS));
                     }
+
+                    mBuilder.setContentText(getContentText(lessonsCount, reviewsCount));
 
                     NotificationManager mNotificationManager =
                             (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+                    notifPrefs.saveLastNotificationShown(System.currentTimeMillis());
                 }
             }
 
             notifPrefs.setAlarmSet(false);
-            Intent broadcastIntent = new Intent(NotificationPreferences.BROADCAST_SCHEDULE_NOTIF_ALARM);
-            context.sendBroadcast(broadcastIntent);
+            new NotificationReceiver().handleSituation(context);
+
+            Log.d("NOTIFICATION PUBLISHER", "PUBLISHED A NOTIFICATION");
         }
 
         private PendingIntent getBrowserPendingIntent(int type) {
@@ -165,6 +161,38 @@ public class NotificationPublisher extends BroadcastReceiver {
             stackBuilder.addNextIntent(intent);
 
             return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        private String getContentText(int lessonsCount, int reviewsCount) {
+            String lesson = getString(R.string.notif_content_lesson);
+            String lessons = getString(R.string.notif_content_lessons);
+            String review = getString(R.string.notif_content_review);
+            String reviews = getString(R.string.notif_content_reviews);
+
+            /** We have both lessons and reviews */
+            if (lessonsCount != 0 && reviewsCount != 0) {
+                return getString(R.string.notif_content_x_lessons_and_x_reviews_available)
+                        .replace("{lessons_count}", lessonsCount + "")
+                        .replace("{reviews_count}", reviewsCount + "")
+                        .replace("{lessons}", lessonsCount == 1 ? lesson : lessons)
+                        .replace("{reviews}", reviewsCount == 1 ? review : reviews);
+            }
+
+            /** We only have lessons */
+            if (lessonsCount != 0 && reviewsCount == 0) {
+                return getString(R.string.notif_content_x_lessons_available)
+                        .replace("{lessons_count}", lessonsCount + "")
+                        .replace("{lessons}", lessonsCount == 1 ? lesson : lessons);
+            }
+
+            /** We only have reviews */
+            if (reviewsCount != 0 && lessonsCount == 0) {
+                return getString(R.string.notif_content_x_reviews_available)
+                        .replace("{reviews_count}", reviewsCount + "")
+                        .replace("{reviews}", reviewsCount == 1 ? review : reviews);
+            }
+
+            return null;
         }
     }
 }

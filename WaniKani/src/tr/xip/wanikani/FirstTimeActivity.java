@@ -16,6 +16,7 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.dialogs.HowToGetKeyDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.notification.NotificationPreferences;
+import tr.xip.wanikani.notification.NotificationScheduler;
 
 public class FirstTimeActivity extends ActionBarActivity {
 
@@ -98,8 +99,7 @@ public class FirstTimeActivity extends ActionBarActivity {
                 startActivity(new Intent(context, MainActivity.class));
 
                 // Set an alarm for notifications for the first time
-                Intent broadcastIntent = new Intent(NotificationPreferences.BROADCAST_SCHEDULE_NOTIF_ALARM);
-                sendBroadcast(broadcastIntent);
+                new NotificationScheduler(context).schedule();
 
                 finish();
             } else if (result.equals("no_user")) {

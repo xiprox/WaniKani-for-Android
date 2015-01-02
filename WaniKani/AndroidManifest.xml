@@ -113,24 +113,12 @@
                 android:value="tr.xip.wanikani.MainActivity" />
         </activity>
 
+        <receiver android:name=".notification.NotificationPublisher" />
+
         <receiver android:name=".notification.NotificationReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="tr.xip.wanikani.action.SCHEDULE_NOTIF_ALARM" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".notification.NotificationPublisher">
-            <intent-filter>
-                <action android:name="tr.xip.wanikani.action.SHOW_NOTIFICATION" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".notification.LessonsReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
     </application>
-
 </manifest>
