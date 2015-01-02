@@ -24,6 +24,5 @@
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
         android:visibility="gone" />
 </LinearLayout>
