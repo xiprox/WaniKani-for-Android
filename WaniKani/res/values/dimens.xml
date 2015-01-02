@@ -5,6 +5,8 @@
     <dimen name="navigation_drawer_width">300dp</dimen>
     <dimen name="nav_drawer_status_bar_offset">0dp</dimen>
 
+    <dimen name="nav_drawer_item_height">48dp</dimen>
+
     <dimen name="action_bar_height">56dp</dimen>
 
     <dimen name="margin_card_side">8dp</dimen>

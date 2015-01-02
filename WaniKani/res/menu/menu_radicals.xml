@@ -8,7 +8,6 @@
         android:title="@string/action_level" />
     <item
         android:id="@+id/action_legend"
-        android:icon="@drawable/ic_action_about"
         app:showAsAction="never"
         android:title="@string/content_radicals_legend" />
 </menu>

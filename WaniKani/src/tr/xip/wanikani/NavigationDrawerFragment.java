@@ -33,8 +33,6 @@ import tr.xip.wanikani.adapters.NavigationSecondaryItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.dialogs.LogoutDialogFragment;
-import tr.xip.wanikani.items.NavigationItems;
-import tr.xip.wanikani.items.NavigationSecondaryItems;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.settings.SettingsActivity;
@@ -109,6 +107,9 @@ public class NavigationDrawerFragment extends Fragment {
         mMainListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_main);
         mSecondaryListView = (ListView) rootView.findViewById(R.id.navigation_drawer_list_secondary);
 
+        mNavigationItemsAdapter = new NavigationItemsAdapter(getActivity());
+        mMainListView.setAdapter(mNavigationItemsAdapter);
+        mMainListView.getLayoutParams().height = mNavigationItemsAdapter.getListViewHeight();
         mMainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -116,20 +117,12 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        NavigationItems mNavigationContent = new NavigationItems();
-        mNavigationItemsAdapter = new NavigationItemsAdapter(getActivity(),
-                R.layout.item_recent_unlock, mNavigationContent.ITEMS);
-
-        mMainListView.setAdapter(mNavigationItemsAdapter);
-
         mMainListView.setItemChecked(mCurrentSelectedPosition, true);
 
-        NavigationSecondaryItems mNavSecondaryContent = new NavigationSecondaryItems();
-        NavigationSecondaryItemsAdapter mNavSecondaryItemsAdapter = new NavigationSecondaryItemsAdapter(getActivity(),
-                R.layout.item_navigation_secondary, mNavSecondaryContent.ITEMS);
-
+        NavigationSecondaryItemsAdapter mNavSecondaryItemsAdapter =
+                new NavigationSecondaryItemsAdapter(getActivity());
         mSecondaryListView.setAdapter(mNavSecondaryItemsAdapter);
-
+        mSecondaryListView.getLayoutParams().height = mNavSecondaryItemsAdapter.getListViewHeight();
         mSecondaryListView.setOnItemClickListener(new SecondaryNavigationItemClickListener());
 
         mProfile = (FrameLayout) rootView.findViewById(R.id.navigation_drawer_profile);
