@@ -98,8 +98,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
         mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.kanji_message_swipe_refresh);
         mMessageSwipeRefreshLayout.setOnRefreshListener(this);
-        mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+        mMessageSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_refresh);
 
         mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.kanji_grid);
         mGrid.setOnItemClickListener(new gridItemClickListener());

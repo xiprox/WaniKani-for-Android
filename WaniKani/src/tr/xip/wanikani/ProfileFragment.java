@@ -130,8 +130,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_pull_to_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_refresh);
 
         if (prefMan.isProfileFirstTime()) {
             if (mViewFlipper.getDisplayedChild() == 0) {

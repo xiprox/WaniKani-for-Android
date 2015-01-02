@@ -103,8 +103,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
         mMessageSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.radicals_message_swipe_refresh);
         mMessageSwipeRefreshLayout.setOnRefreshListener(this);
-        mMessageSwipeRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+        mMessageSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_refresh);
 
         mGrid = (StickyGridHeadersGridView) rootView.findViewById(R.id.radicals_grid);
         mGrid.setOnItemClickListener(new gridItemClickListener());

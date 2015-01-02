@@ -122,8 +122,7 @@ public class DashboardFragment extends Fragment
 
         mSwipeToRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_swipe_refresh);
         mSwipeToRefreshLayout.setOnRefreshListener(this);
-        mSwipeToRefreshLayout.setColorScheme(R.color.swipe_refresh_1, R.color.swipe_refresh_2,
-                R.color.swipe_refresh_3, R.color.swipe_refresh_4);
+        mSwipeToRefreshLayout.setColorSchemeResources(R.color.swipe_refresh);
 
         mAvailableHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_available_holder);
         mReviewsHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_reviews_holder);
