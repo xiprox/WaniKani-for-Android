@@ -10,7 +10,7 @@
         <item name="colorAccent">@color/apptheme_main</item>
     </style>
 
-    <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/window_background_light</item>
         <item name="android:actionModeBackground">@color/apptheme_main</item>
         <item name="colorPrimary">@color/apptheme_main</item>
