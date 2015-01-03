@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -16,14 +15,15 @@ import tr.xip.wanikani.MainActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.SWWebReviewActivity;
 import tr.xip.wanikani.WebReviewActivity;
-import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.StudyQueueGetTask;
+import tr.xip.wanikani.tasks.callbacks.StudyQueueGetTaskCallbacks;
 
 /**
  * Created by Hikari on 12/16/14.
  */
-public class NotificationPublisher extends BroadcastReceiver {
+public class NotificationPublisher extends BroadcastReceiver implements StudyQueueGetTaskCallbacks {
     public static final int REQUEST_CODE = 0;
 
     private static final int NOTIFICATION_ID = 0;
@@ -47,152 +47,140 @@ public class NotificationPublisher extends BroadcastReceiver {
         this.prefMan = new PrefManager(context);
         this.notifPrefs = new NotificationPreferences(context);
 
-        new FetchTask().execute();
+        new StudyQueueGetTask(context, this).executeParallel();
     }
 
     private String getString(int res) {
         return context.getString(res);
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, Boolean> {
-        StudyQueue queue;
+    @Override
+    public void onStudyQueueGetTaskPreExecute() {
+        /* Do nothing */
+    }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                queue = new WaniKaniApi(context).getStudyQueue();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
+    @Override
+    public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
+        if (queue != null) {
+            int lessonsCount = queue.getAvailableLesonsCount();
+            int reviewsCount = queue.getAvailableReviewsCount();
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+            if (lessonsCount != 0 || reviewsCount != 0) {
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+                mBuilder.setSmallIcon(R.drawable.ic_school_white_36dp)
+                        .setColor(context.getResources().getColor(R.color.apptheme_main))
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setAutoCancel(true);
 
-            if (success) {
-                int lessonsCount = queue.getAvailableLesonsCount();
-                int reviewsCount = queue.getAvailableReviewsCount();
+                /** We have both lessons and reviews */
+                if (lessonsCount != 0 && reviewsCount != 0) {
+                    mBuilder.setContentTitle(getString(R.string.notif_title_new_lessons_and_reviews));
 
-                if (lessonsCount != 0 || reviewsCount != 0) {
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-                    mBuilder.setSmallIcon(R.drawable.ic_school_white_36dp)
-                            .setColor(context.getResources().getColor(R.color.apptheme_main))
-                            .setPriority(NotificationCompat.PRIORITY_LOW)
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                            .setAutoCancel(true);
+                    NotificationCompat.Action mLessonsAction = new NotificationCompat.Action(
+                            R.drawable.ic_arrow_forward_white_36dp,
+                            getString(R.string.notif_action_lessons),
+                            getBrowserPendingIntent(BROWSER_TYPE_LESSONS)
+                    );
 
-                    /** We have both lessons and reviews */
-                    if (lessonsCount != 0 && reviewsCount != 0) {
-                        mBuilder.setContentTitle(getString(R.string.notif_title_new_lessons_and_reviews));
+                    NotificationCompat.Action mReviewsAction = new NotificationCompat.Action(
+                            R.drawable.ic_arrow_forward_white_36dp,
+                            getString(R.string.notif_action_reviews),
+                            getBrowserPendingIntent(BROWSER_TYPE_REVIEWS)
+                    );
 
-                        NotificationCompat.Action mLessonsAction = new NotificationCompat.Action(
-                                R.drawable.ic_arrow_forward_white_36dp,
-                                getString(R.string.notif_action_lessons),
-                                getBrowserPendingIntent(BROWSER_TYPE_LESSONS)
-                        );
-
-                        NotificationCompat.Action mReviewsAction = new NotificationCompat.Action(
-                                R.drawable.ic_arrow_forward_white_36dp,
-                                getString(R.string.notif_action_reviews),
-                                getBrowserPendingIntent(BROWSER_TYPE_REVIEWS)
-                        );
-
-                        mBuilder.setContentIntent(getDashboardPendingIntent())
-                                .addAction(mLessonsAction)
-                                .addAction(mReviewsAction);
-                    }
-
-                    /** We only have lessons */
-                    if (lessonsCount != 0 && reviewsCount == 0) {
-                        mBuilder.setContentTitle(getString(R.string.notif_title_new_lessons));
-                        mBuilder.setContentIntent(getBrowserPendingIntent(BROWSER_TYPE_LESSONS));
-                    }
-
-                    /** We only have reviews */
-                    if (reviewsCount != 0 && lessonsCount == 0) {
-                        mBuilder.setContentTitle(getString(R.string.notif_title_new_reviews));
-                        mBuilder.setContentIntent(getBrowserPendingIntent(BROWSER_TYPE_REVIEWS));
-                    }
-
-                    mBuilder.setContentText(getContentText(lessonsCount, reviewsCount));
-
-                    NotificationManager mNotificationManager =
-                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-
-                    notifPrefs.saveLastNotificationShown(System.currentTimeMillis());
+                    mBuilder.setContentIntent(getDashboardPendingIntent())
+                            .addAction(mLessonsAction)
+                            .addAction(mReviewsAction);
                 }
+
+                /** We only have lessons */
+                if (lessonsCount != 0 && reviewsCount == 0) {
+                    mBuilder.setContentTitle(getString(R.string.notif_title_new_lessons));
+                    mBuilder.setContentIntent(getBrowserPendingIntent(BROWSER_TYPE_LESSONS));
+                }
+
+                /** We only have reviews */
+                if (reviewsCount != 0 && lessonsCount == 0) {
+                    mBuilder.setContentTitle(getString(R.string.notif_title_new_reviews));
+                    mBuilder.setContentIntent(getBrowserPendingIntent(BROWSER_TYPE_REVIEWS));
+                }
+
+                mBuilder.setContentText(getContentText(lessonsCount, reviewsCount));
+
+                NotificationManager mNotificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+                notifPrefs.saveLastNotificationShown(System.currentTimeMillis());
             }
-
-            notifPrefs.setAlarmSet(false);
-            new NotificationReceiver().handleSituation(context);
-
-            Log.d("NOTIFICATION PUBLISHER", "PUBLISHED A NOTIFICATION");
         }
 
-        private PendingIntent getBrowserPendingIntent(int type) {
-            Intent browserIntent = prefMan.getWebViewIntent();
-            browserIntent.setAction(WebReviewActivity.OPEN_ACTION);
+        notifPrefs.setAlarmSet(false);
+        new NotificationReceiver().handleSituation(context);
 
-            switch (type) {
-                case BROWSER_TYPE_LESSONS:
-                    browserIntent.setData(Uri.parse(Browser.LESSON_URL));
-                    break;
-                case BROWSER_TYPE_REVIEWS:
-                    browserIntent.setData(Uri.parse(Browser.REVIEW_URL));
-                    break;
-            }
+        Log.d("NOTIFICATION PUBLISHER", "PUBLISHED A NOTIFICATION");
+    }
 
-            TaskStackBuilder browserStackBuilder = TaskStackBuilder.create(context);
-            browserStackBuilder.addParentStack(
-                    prefMan.getHWAccel() ? WebReviewActivity.class : SWWebReviewActivity.class);
-            browserStackBuilder.addNextIntent(browserIntent);
+    private PendingIntent getBrowserPendingIntent(int type) {
+        Intent browserIntent = prefMan.getWebViewIntent();
+        browserIntent.setAction(WebReviewActivity.OPEN_ACTION);
 
-            return browserStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        switch (type) {
+            case BROWSER_TYPE_LESSONS:
+                browserIntent.setData(Uri.parse(Browser.LESSON_URL));
+                break;
+            case BROWSER_TYPE_REVIEWS:
+                browserIntent.setData(Uri.parse(Browser.REVIEW_URL));
+                break;
         }
 
-        private PendingIntent getDashboardPendingIntent() {
-            Intent intent = new Intent(context, MainActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(MainActivity.class);
-            stackBuilder.addNextIntent(intent);
+        TaskStackBuilder browserStackBuilder = TaskStackBuilder.create(context);
+        browserStackBuilder.addParentStack(
+                prefMan.getHWAccel() ? WebReviewActivity.class : SWWebReviewActivity.class);
+        browserStackBuilder.addNextIntent(browserIntent);
 
-            return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        return browserStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent getDashboardPendingIntent() {
+        Intent intent = new Intent(context, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(intent);
+
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private String getContentText(int lessonsCount, int reviewsCount) {
+        String lesson = getString(R.string.notif_content_lesson);
+        String lessons = getString(R.string.notif_content_lessons);
+        String review = getString(R.string.notif_content_review);
+        String reviews = getString(R.string.notif_content_reviews);
+
+        /** We have both lessons and reviews */
+        if (lessonsCount != 0 && reviewsCount != 0) {
+            return getString(R.string.notif_content_x_lessons_and_x_reviews_available)
+                    .replace("{lessons_count}", lessonsCount + "")
+                    .replace("{reviews_count}", reviewsCount + "")
+                    .replace("{lessons}", lessonsCount == 1 ? lesson : lessons)
+                    .replace("{reviews}", reviewsCount == 1 ? review : reviews);
         }
 
-        private String getContentText(int lessonsCount, int reviewsCount) {
-            String lesson = getString(R.string.notif_content_lesson);
-            String lessons = getString(R.string.notif_content_lessons);
-            String review = getString(R.string.notif_content_review);
-            String reviews = getString(R.string.notif_content_reviews);
-
-            /** We have both lessons and reviews */
-            if (lessonsCount != 0 && reviewsCount != 0) {
-                return getString(R.string.notif_content_x_lessons_and_x_reviews_available)
-                        .replace("{lessons_count}", lessonsCount + "")
-                        .replace("{reviews_count}", reviewsCount + "")
-                        .replace("{lessons}", lessonsCount == 1 ? lesson : lessons)
-                        .replace("{reviews}", reviewsCount == 1 ? review : reviews);
-            }
-
-            /** We only have lessons */
-            if (lessonsCount != 0 && reviewsCount == 0) {
-                return getString(R.string.notif_content_x_lessons_available)
-                        .replace("{lessons_count}", lessonsCount + "")
-                        .replace("{lessons}", lessonsCount == 1 ? lesson : lessons);
-            }
-
-            /** We only have reviews */
-            if (reviewsCount != 0 && lessonsCount == 0) {
-                return getString(R.string.notif_content_x_reviews_available)
-                        .replace("{reviews_count}", reviewsCount + "")
-                        .replace("{reviews}", reviewsCount == 1 ? review : reviews);
-            }
-
-            return null;
+        /** We only have lessons */
+        if (lessonsCount != 0 && reviewsCount == 0) {
+            return getString(R.string.notif_content_x_lessons_available)
+                    .replace("{lessons_count}", lessonsCount + "")
+                    .replace("{lessons}", lessonsCount == 1 ? lesson : lessons);
         }
+
+        /** We only have reviews */
+        if (reviewsCount != 0 && lessonsCount == 0) {
+            return getString(R.string.notif_content_x_reviews_available)
+                    .replace("{reviews_count}", reviewsCount + "")
+                    .replace("{reviews}", reviewsCount == 1 ? review : reviews);
+        }
+
+        return null;
     }
 }

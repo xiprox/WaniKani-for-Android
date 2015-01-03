@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -32,13 +30,15 @@ import tr.xip.wanikani.adapters.RecentUnlocksArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.RecentUnlocksListGetTask;
+import tr.xip.wanikani.tasks.callbacks.RecentUnlocksListGetTaskCallbacks;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class RecentUnlocksCard extends Fragment {
+public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetTaskCallbacks {
 
     View rootView;
 
@@ -47,28 +47,31 @@ public class RecentUnlocksCard extends Fragment {
     PrefManager prefMan;
 
     Context mContext;
-    private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mContext = context;
-            if (Build.VERSION.SDK_INT >= 11)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            else
-                new LoadTask().execute();
-        }
-    };
-    RecentUnlocksCardListener mListener;
+
     TextView mCardTitle;
     ListView mRecentUnlocksList;
     RelativeLayout mMoreItemsButton;
-    RecentUnlocksArrayAdapter mRecentUnlocksAdapter;
     ViewFlipper mViewFlipper;
     ViewFlipper mMessageViewFlipper;
     LinearLayout mCard;
     ImageView mMessageIcon;
     TextView mMessageTitle;
     TextView mMessageSummary;
+
+    RecentUnlocksCardListener mListener;
+
     List<UnlockItem> recentUnlocksList = null;
+
+    RecentUnlocksArrayAdapter mRecentUnlocksAdapter;
+
+    private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mContext = context;
+            new RecentUnlocksListGetTask(context, prefMan.getDashboardRecentUnlocksNumber(),
+                    RecentUnlocksCard.this).executeParallel();
+        }
+    };
 
     public void setListener(RecentUnlocksCardListener listener, Context context) {
         mListener = listener;
@@ -149,69 +152,63 @@ public class RecentUnlocksCard extends Fragment {
         return dp * mContext.getResources().getDisplayMetrics().density;
     }
 
-    public interface RecentUnlocksCardListener {
-        public void onRecentUnlocksCardSyncFinishedListener(int height, String result);
+    @Override
+    public void onRecentUnlocksListGetTaskPreExecute() {
+        /* Do nothing */
     }
 
-    private class LoadTask extends AsyncTask<String, Void, List<UnlockItem>> {
+    @Override
+    public void onRecentUnlocksListGetTaskPostExecute(List<UnlockItem> list) {
+        int height;
 
-        @Override
-        protected List<UnlockItem> doInBackground(String... strings) {
-            try {
-                recentUnlocksList = api.getRecentUnlocksList(prefMan.getDashboardRecentUnlocksNumber());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return recentUnlocksList;
-        }
+        if (list != null) {
+            recentUnlocksList = list;
 
-        @Override
-        protected void onPostExecute(List<UnlockItem> result) {
-            int height;
+            mRecentUnlocksAdapter = new RecentUnlocksArrayAdapter(mContext,
+                    R.layout.item_recent_unlock, list, new Fonts().getKanjiFont(mContext));
 
-            if (result != null) {
-                mRecentUnlocksAdapter = new RecentUnlocksArrayAdapter(mContext,
-                        R.layout.item_recent_unlock, result, new Fonts().getKanjiFont(mContext));
+            if (mRecentUnlocksAdapter.getCount() != 0) {
+                mRecentUnlocksList.setAdapter(mRecentUnlocksAdapter);
 
-                if (mRecentUnlocksAdapter.getCount() != 0) {
-                    mRecentUnlocksList.setAdapter(mRecentUnlocksAdapter);
-
-                    if (mMessageViewFlipper.getDisplayedChild() == 1) {
-                        mMessageViewFlipper.showPrevious();
-                    }
-
-                    height = setRecentUnlocksHeightBasedOnListView(mRecentUnlocksList);
-                } else {
-                    mMessageIcon.setImageResource(R.drawable.ic_folder_open_black_36dp);
-                    mMessageTitle.setText(R.string.card_content_unlocks_no_items_title);
-                    mMessageSummary.setText(R.string.card_content_unlocks_no_items_summary);
-
-                    if (mMessageViewFlipper.getDisplayedChild() == 0) {
-                        mMessageViewFlipper.showNext();
-                    }
-
-                    height = (int) pxFromDp(158);
+                if (mMessageViewFlipper.getDisplayedChild() == 1) {
+                    mMessageViewFlipper.showPrevious();
                 }
 
-                mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);
+                height = setRecentUnlocksHeightBasedOnListView(mRecentUnlocksList);
             } else {
-                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
-                mMessageTitle.setText(R.string.error_oops);
-                mMessageSummary.setText(R.string.error_display_items);
+                mMessageIcon.setImageResource(R.drawable.ic_folder_open_black_36dp);
+                mMessageTitle.setText(R.string.card_content_unlocks_no_items_title);
+                mMessageSummary.setText(R.string.card_content_unlocks_no_items_summary);
 
                 if (mMessageViewFlipper.getDisplayedChild() == 0) {
                     mMessageViewFlipper.showNext();
                 }
 
                 height = (int) pxFromDp(158);
-
-                mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_FAILED);
             }
 
-            if (mViewFlipper.getDisplayedChild() == 0) {
-                mViewFlipper.showNext();
+            mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);
+        } else {
+            mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
+            mMessageTitle.setText(R.string.error_oops);
+            mMessageSummary.setText(R.string.error_display_items);
+
+            if (mMessageViewFlipper.getDisplayedChild() == 0) {
+                mMessageViewFlipper.showNext();
             }
+
+            height = (int) pxFromDp(158);
+
+            mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_FAILED);
         }
+
+        if (mViewFlipper.getDisplayedChild() == 0) {
+            mViewFlipper.showNext();
+        }
+    }
+
+    public interface RecentUnlocksCardListener {
+        public void onRecentUnlocksCardSyncFinishedListener(int height, String result);
     }
 
     private class recentUnlocksListItemClickListener implements android.widget.AdapterView.OnItemClickListener {

@@ -38,6 +38,12 @@ import tr.xip.wanikani.api.response.RadicalItem;
 import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.KanjiListGetTask;
+import tr.xip.wanikani.tasks.RadicalsListGetTask;
+import tr.xip.wanikani.tasks.VocabularyListGetTask;
+import tr.xip.wanikani.tasks.callbacks.KanjiListGetTaskCallbacks;
+import tr.xip.wanikani.tasks.callbacks.RadicalsListGetTaskCallbacks;
+import tr.xip.wanikani.tasks.callbacks.VocabularyListGetTaskCallbacks;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.widget.RelativeTimeTextView;
 
@@ -570,51 +576,73 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                 /** In case of a radical item */
                 if (type.equals(BaseItem.TYPE_RADICAL)) {
-                    List<RadicalItem> list = api.getRadicalsList(level);
+                    new RadicalsListGetTask(ItemDetailsActivity.this, level, new RadicalsListGetTaskCallbacks() {
+                        @Override
+                        public void onRadicalsListGetTaskPreExecute() {
+                            /* Do nothing */
+                        }
 
-                    if (character != null) {
-                        for (RadicalItem item : list) {
-                            if (item.getCharacter() != null) {
-                                if (item.getCharacter().equals(character)) {
-                                    mItem = item;
-                                    break;
+                        @Override
+                        public void onRadicalsListGetTaskPostExecute(List<RadicalItem> list) {
+                            if (list != null) {
+                                if (character != null) {
+                                    for (RadicalItem item : list)
+                                        if (item.getCharacter() != null)
+                                            if (item.getCharacter().equals(character)) {
+                                                mItem = item;
+                                                break;
+                                            }
+                                } else {
+                                    for (RadicalItem item : list)
+                                        if (item.getImage() != null)
+                                            if (item.getImage().equals(image)) {
+                                                mItem = item;
+                                                break;
+                                            }
                                 }
                             }
                         }
-                    } else {
-                        for (RadicalItem item : list) {
-                            if (item.getImage() != null) {
-                                if (item.getImage().equals(image)) {
-                                    mItem = item;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    }).executeParallel();
                 }
 
                 /** In case of a Kanji item */
                 if (type.equals(BaseItem.TYPE_KANJI)) {
-                    List<KanjiItem> list = api.getKanjiList(level);
-
-                    for (KanjiItem item : list) {
-                        if (item.getCharacter().equals(character)) {
-                            mItem = item;
-                            break;
+                    new KanjiListGetTask(ItemDetailsActivity.this, level, new KanjiListGetTaskCallbacks() {
+                        @Override
+                        public void onKanjiListGetTaskPreExecute() {
+                            /* Do nothing */
                         }
-                    }
+
+                        @Override
+                        public void onKanjiListGetTaskPostExecute(List<KanjiItem> list) {
+                            if (list != null)
+                                for (KanjiItem item : list)
+                                    if (item.getCharacter().equals(character)) {
+                                        mItem = item;
+                                        break;
+                                    }
+                        }
+                    }).executeParallel();
                 }
 
                 /** In case of a vocabulary item */
                 if (type.equals(BaseItem.TYPE_VOCABULARY)) {
-                    List<VocabularyItem> list = api.getVocabularyList(level);
-
-                    for (VocabularyItem item : list) {
-                        if (item.getCharacter().equals(character)) {
-                            mItem = item;
-                            break;
+                    new VocabularyListGetTask(ItemDetailsActivity.this, level, new VocabularyListGetTaskCallbacks() {
+                        @Override
+                        public void onVocabularyListGetTaskPreExecute() {
+                            /* Do nothing */
                         }
-                    }
+
+                        @Override
+                        public void onVocabularyListGetTaskPostExecute(List<VocabularyItem> list) {
+                            if (list != null)
+                                for (VocabularyItem item : list)
+                                    if (item.getCharacter().equals(character)) {
+                                        mItem = item;
+                                        break;
+                                    }
+                        }
+                    }).executeParallel();
                 }
 
                 return true;

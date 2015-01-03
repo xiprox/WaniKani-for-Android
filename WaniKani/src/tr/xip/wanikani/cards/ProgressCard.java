@@ -24,12 +24,14 @@ import tr.xip.wanikani.api.response.LevelProgression;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.LevelProgressionGetTask;
+import tr.xip.wanikani.tasks.callbacks.LevelProgressionGetTaskCallbacks;
 import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class ProgressCard extends Fragment {
+public class ProgressCard extends Fragment implements LevelProgressionGetTaskCallbacks {
 
     WaniKaniApi api;
     PrefManager prefMan;
@@ -55,14 +57,6 @@ public class ProgressCard extends Fragment {
 
     LinearLayout mCard;
 
-    int userLevel;
-    int radicalPercentage;
-    int radicalProgress;
-    int radicalTotal;
-    int kanjiPercentage;
-    int kanjiProgress;
-    int kanjiTotal;
-
     public void setListener(ProgressCardListener listener, Context context) {
         mListener = listener;
         LocalBroadcastManager.getInstance(context).registerReceiver(mDoLoad,
@@ -72,10 +66,7 @@ public class ProgressCard extends Fragment {
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (Build.VERSION.SDK_INT >= 11)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            else
-                new LoadTask().execute();
+            load();
         }
     };
 
@@ -127,64 +118,44 @@ public class ProgressCard extends Fragment {
         mKanjiProgressBar.setProgress(dataMan.getKanjiPercentage());
     }
 
-    private void saveOfflineValues() {
-        dataMan.setLevel(userLevel);
-        dataMan.setRadicalsPercentage(radicalPercentage);
-        dataMan.setRadicalsProgress(radicalProgress);
-        dataMan.setRadicalsTotal(radicalTotal);
-        dataMan.setKanjiPercentage(kanjiPercentage);
-        dataMan.setKanjiProgress(kanjiProgress);
-        dataMan.setKanjiTotal(kanjiTotal);
+    private void saveOfflineValues(LevelProgression progression) {
+        dataMan.setLevel(progression.getUserInfo().getLevel());
+        dataMan.setRadicalsPercentage(progression.getRadicalsPercentage());
+        dataMan.setRadicalsProgress(progression.getRadicalsProgress());
+        dataMan.setRadicalsTotal(progression.getRadicalsTotal());
+        dataMan.setKanjiPercentage(progression.getKanjiPercentage());
+        dataMan.setKanjiProgress(progression.getKanjiProgress());
+        dataMan.setKanjiTotal(progression.getKanjiTotal());
     }
 
     public void load() {
-        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new LevelProgressionGetTask(context, ProgressCard.this).executeParallel();
     }
 
-    private class LoadTask extends AsyncTask<String, Void, String> {
-        User user;
-        LevelProgression progression;
+    @Override
+    public void onLevelProgressionGetTaskPreExecute() {
+        /* Do nothing */
+    }
 
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                user = api.getUser();
-                progression = api.getLevelProgression();
+    @Override
+    public void onLevelProgressionGetTaskPostExecute(LevelProgression progression) {
+        if (progression != null) {
+            mUserLevel.setText(progression.getUserInfo().getLevel() + "");
+            mRadicalPercentage.setText(progression.getRadicalsPercentage() + "");
+            mRadicalsProgress.setText(progression.getRadicalsProgress() + "");
+            mRadicalsTotal.setText(progression.getRadicalsTotal() + "");
+            mKanjiPercentage.setText(progression.getKanjiPercentage() + "");
+            mKanjiProgress.setText(progression.getKanjiProgress() + "");
+            mKanjiTotal.setText(progression.getKanjiTotal() + "");
 
-                userLevel = user.getLevel();
-                radicalProgress = progression.getRadicalsProgress();
-                radicalTotal = progression.getRadicalsTotal();
-                kanjiProgress = progression.getKanjiProgress();
-                kanjiTotal = progression.getKanjiTotal();
-                radicalPercentage = progression.getRadicalsPercentage();
-                kanjiPercentage = progression.getKanjiPercentage();
-                return "success";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "failure";
-            }
-        }
+            mRadicalProgressBar.setProgress(progression.getRadicalsPercentage());
+            mKanjiProgressBar.setProgress(progression.getKanjiPercentage());
 
-        @Override
-        protected void onPostExecute(String result) {
-            if (result.equals("success")) {
-                mUserLevel.setText(userLevel + "");
-                mRadicalPercentage.setText(radicalPercentage + "");
-                mRadicalsProgress.setText(radicalProgress + "");
-                mRadicalsTotal.setText(radicalTotal + "");
-                mKanjiPercentage.setText(kanjiPercentage + "");
-                mKanjiProgress.setText(kanjiProgress + "");
-                mKanjiTotal.setText(kanjiTotal + "");
+            mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
 
-                mRadicalProgressBar.setProgress(radicalPercentage);
-                mKanjiProgressBar.setProgress(kanjiPercentage);
-
-                mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-
-                saveOfflineValues();
-            } else
-                mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
-        }
+            saveOfflineValues(progression);
+        } else
+            mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
     }
 
     public interface ProgressCardListener {

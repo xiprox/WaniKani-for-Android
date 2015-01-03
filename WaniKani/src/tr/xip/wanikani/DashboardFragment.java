@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.cards.AvailableCard;
 import tr.xip.wanikani.cards.CriticalItemsCard;
 import tr.xip.wanikani.cards.MessageCard;
@@ -29,14 +30,24 @@ import tr.xip.wanikani.cards.ReviewsCard;
 import tr.xip.wanikani.cards.SRSCard;
 import tr.xip.wanikani.cards.VacationModeCard;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.UserInfoGetTask;
+import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
 
 public class DashboardFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener, AvailableCard.AvailableCardListener, ReviewsCard.ReviewsCardListener,
-        SRSCard.StatusCardListener, ProgressCard.ProgressCardListener, RecentUnlocksCard.RecentUnlocksCardListener,
-        CriticalItemsCard.CriticalItemsCardListener, MessageCard.MessageCardListener, View.OnClickListener {
+        implements SwipeRefreshLayout.OnRefreshListener,
+        AvailableCard.AvailableCardListener,
+        ReviewsCard.ReviewsCardListener,
+        SRSCard.StatusCardListener,
+        ProgressCard.ProgressCardListener,
+        RecentUnlocksCard.RecentUnlocksCardListener,
+        CriticalItemsCard.CriticalItemsCardListener,
+        MessageCard.MessageCardListener,
+        View.OnClickListener {
 
     public static final String SYNC_RESULT_SUCCESS = "success";
     public static final String SYNC_RESULT_FAILED = "failed";
+
+    private Context context;
 
     View rootView;
     ActionBarActivity activity;
@@ -108,6 +119,7 @@ public class DashboardFragment extends Fragment
 
     @Override
     public void onCreate(Bundle paramBundle) {
+        this.context = getActivity();
         api = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
         super.onCreate(paramBundle);
@@ -171,12 +183,12 @@ public class DashboardFragment extends Fragment
             mSwipeToRefreshLayout.setRefreshing(true);
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-            new VacationModeCheckTask().execute();
+            checkVacationMode();
             MainActivity.isFirstSyncDashboardDone = true;
         } else {
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-            new VacationModeCheckTask().execute();
+            checkVacationMode();
         }
 
         return rootView;
@@ -258,6 +270,28 @@ public class DashboardFragment extends Fragment
         ViewGroup.LayoutParams params = mRecentUnlocksFragmentHolder.getLayoutParams();
         params.height = height;
         mRecentUnlocksFragmentHolder.setLayoutParams(params);
+    }
+
+    private void checkVacationMode() {
+        new UserInfoGetTask(context, new UserInfoGetTaskCallbacks() {
+            @Override
+            public void onUserInfoGetTaskPreExecute() {
+                /* Do nothing */
+            }
+
+            @Override
+            public void onUserInfoGetTaskPostExecute(User user) {
+                if (user.isVacationModeActive()) {
+                    mAvailableHolder.setVisibility(View.GONE);
+                    mReviewsHolder.setVisibility(View.GONE);
+                    mVacationModeCardHolder.setVisibility(View.VISIBLE);
+                } else {
+                    mAvailableHolder.setVisibility(View.VISIBLE);
+                    mReviewsHolder.setVisibility(View.VISIBLE);
+                    mVacationModeCardHolder.setVisibility(View.GONE);
+                }
+            }
+        }).executeParallel();
     }
 
     @Override
@@ -361,7 +395,7 @@ public class DashboardFragment extends Fragment
 
         Intent intent = new Intent(BroadcastIntents.SYNC());
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
-        new VacationModeCheckTask().execute();
+        checkVacationMode();
     }
 
     @Override
@@ -378,33 +412,5 @@ public class DashboardFragment extends Fragment
         ERROR_CONNECTION_TIMEOUT,
         ERROR_NO_CONNECTION,
         ERROR_UNKNOWN
-    }
-
-    private class VacationModeCheckTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                return api.getUser().getVacationDate() != 0;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean isVacationModeActive) {
-            super.onPostExecute(isVacationModeActive);
-
-            if (isVacationModeActive) {
-                mAvailableHolder.setVisibility(View.GONE);
-                mReviewsHolder.setVisibility(View.GONE);
-                mVacationModeCardHolder.setVisibility(View.VISIBLE);
-            } else {
-                mAvailableHolder.setVisibility(View.VISIBLE);
-                mReviewsHolder.setVisibility(View.VISIBLE);
-                mVacationModeCardHolder.setVisibility(View.GONE);
-            }
-        }
     }
 }

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import java.text.SimpleDateFormat;
 
 import tr.xip.wanikani.BroadcastIntents;
@@ -25,13 +24,15 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.StudyQueueGetTask;
+import tr.xip.wanikani.tasks.callbacks.StudyQueueGetTaskCallbacks;
 import tr.xip.wanikani.utils.Utils;
 import tr.xip.wanikani.widget.RelativeTimeTextView;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class ReviewsCard extends Fragment {
+public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks {
 
     Context context;
 
@@ -51,18 +52,10 @@ public class ReviewsCard extends Fragment {
     LinearLayout mMoreReviewsHolder;
     TextView mMoreReviews;
 
-    long nextReview;
-    int nextHour;
-    int nextDay;
-    boolean isVacationModeActive;
-    int reviewsAvailable;
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (Build.VERSION.SDK_INT >= 11)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            else
-                new LoadTask().execute();
+            new StudyQueueGetTask(context, ReviewsCard.this).executeParallel();
         }
     };
 
@@ -116,46 +109,28 @@ public class ReviewsCard extends Fragment {
         }
     }
 
-    private void saveOfflineValues() {
-        dataMan.setNextReviewDate(nextReview);
-        dataMan.setReviewsAvailableNextHour(nextHour);
-        dataMan.setReviewsAvailableNextDay(nextDay);
+    private void saveOfflineValues(StudyQueue queue) {
+        dataMan.setNextReviewDate(queue.getNextReviewDate());
+        dataMan.setReviewsAvailableNextHour(queue.getAvailableReviewsNextHourCount());
+        dataMan.setReviewsAvailableNextDay(queue.getAvailableReviewsNextDayCount());
     }
 
-    public interface ReviewsCardListener {
-        public void onReviewsCardSyncFinishedListener(String result);
+    @Override
+    public void onStudyQueueGetTaskPreExecute() {
+        /* Do nothing */
     }
 
-    private class LoadTask extends AsyncTask<String, Void, String> {
-        StudyQueue studyQueue;
+    @Override
+    public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
+        if (queue != null) {
+            if (!queue.getUserInfo().isVacationModeActive()) {
+                mNextHour.setText(queue.getAvailableReviewsNextHourCount() + "");
+                mNextDay.setText(queue.getAvailableReviewsNextDayCount() + "");
 
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                studyQueue = api.getStudyQueue();
-                nextReview = studyQueue.getNextReviewDate();
-                nextHour = studyQueue.getAvailableReviewsNextHourCount();
-                nextDay = studyQueue.getAvailableReviewsNextDayCount();
-                reviewsAvailable = studyQueue.getAvailableReviewsCount();
-                isVacationModeActive = api.isVacationModeActive(studyQueue.getUserInfo());
-                return "success";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "failure";
-            }
-        }
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
 
-        @Override
-        protected void onPostExecute(String result) {
-            if (!isVacationModeActive) {
-                if (result.equals("success")) {
-                    mNextHour.setText(nextHour + "");
-                    mNextDay.setText(nextDay + "");
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
-
-                    if (reviewsAvailable != 0) {
-                        mNextReview.setText(R.string.card_content_reviews_available_now);
+                if (queue.getAvailableReviewsCount() != 0) {
+                    mNextReview.setText(R.string.card_content_reviews_available_now);
 
                         /*
 
@@ -174,24 +149,27 @@ public class ReviewsCard extends Fragment {
                         }
 
                         */
-                    } else {
-                        if (prefMan.isUseSpecificDates()) {
-                            mNextReview.setText(sdf.format(nextReview));
-                        } else {
-                            mNextReview.setReferenceTime(nextReview);
-                        }
-                    }
-
-                    mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-
-                    saveOfflineValues();
                 } else {
-                    mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+                    if (prefMan.isUseSpecificDates()) {
+                        mNextReview.setText(sdf.format(queue.getNextReviewDate()));
+                    } else {
+                        mNextReview.setReferenceTime(queue.getNextReviewDate());
+                    }
                 }
+
+                mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
+
+                saveOfflineValues(queue);
             } else {
                 // Vacation mode is handled in DashboardFragment
                 mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
             }
+        } else {
+            mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
         }
+    }
+
+    public interface ReviewsCardListener {
+        public void onReviewsCardSyncFinishedListener(String result);
     }
 }

@@ -16,14 +16,15 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.CriticalItemsGridAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.CriticalItem;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.CriticalItemsListGetTask;
+import tr.xip.wanikani.tasks.callbacks.CriticalItemsListGetTaskCallbacks;
 
 /**
  * Created by Hikari on 10/2/14.
  */
-public class CriticalItemsActivity extends ActionBarActivity {
+public class CriticalItemsActivity extends ActionBarActivity implements CriticalItemsListGetTaskCallbacks {
 
     WaniKaniApi api;
     PrefManager prefMan;
@@ -53,7 +54,8 @@ public class CriticalItemsActivity extends ActionBarActivity {
         mGrid = (GridView) findViewById(R.id.activity_critical_items_grid);
         mFlipper = (ViewFlipper) findViewById(R.id.activity_critical_items_view_flipper);
 
-        new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new CriticalItemsListGetTask(this, prefMan.getDashboardCriticalItemsPercentage(), this)
+                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -62,41 +64,31 @@ public class CriticalItemsActivity extends ActionBarActivity {
         return true;
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, List<CriticalItem>> {
+    @Override
+    public void onCriticalItemsListGetTaskPreExecute() {
+        /* Do nothing */
+    }
 
-        @Override
-        protected List<CriticalItem> doInBackground(Void... voids) {
-            try {
-                mList = api.getCriticalItemsList(prefMan.getDashboardCriticalItemsPercentage());
-                return mList;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+    @Override
+    public void onCriticalItemsListGetTaskPostExecute(List<CriticalItem> list) {
+        if (list != null) {
+            mAdapter = new CriticalItemsGridAdapter(
+                    CriticalItemsActivity.this,
+                    R.layout.item_critical_grid,
+                    mList
+            );
+
+            mGrid.setAdapter(mAdapter);
+
+            mGrid.setOnItemClickListener(new GridItemClickListener());
+
+            if (mFlipper.getDisplayedChild() == 0) {
+                mFlipper.showNext();
             }
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
+            finish();
         }
-
-        @Override
-        protected void onPostExecute(List<CriticalItem> result) {
-            if (result != null) {
-                mAdapter = new CriticalItemsGridAdapter(
-                        CriticalItemsActivity.this,
-                        R.layout.item_critical_grid,
-                        mList
-                );
-
-                mGrid.setAdapter(mAdapter);
-
-                mGrid.setOnItemClickListener(new GridItemClickListener());
-
-                if (mFlipper.getDisplayedChild() == 0) {
-                    mFlipper.showNext();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-
     }
 
     private class GridItemClickListener implements android.widget.AdapterView.OnItemClickListener {

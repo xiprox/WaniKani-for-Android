@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -36,10 +35,12 @@ import tr.xip.wanikani.dialogs.LogoutDialogFragment;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.settings.SettingsActivity;
+import tr.xip.wanikani.tasks.UserInfoGetTask;
+import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
 import tr.xip.wanikani.utils.BlurTransformation;
 import tr.xip.wanikani.utils.CircleTransformation;
 
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements UserInfoGetTaskCallbacks {
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
@@ -140,7 +141,7 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         setOldValues();
-        new LoadTask().execute();
+        new UserInfoGetTask(context, this).executeParallel();
 
         selectItem(mCurrentSelectedPosition);
 
@@ -299,46 +300,31 @@ public class NavigationDrawerFragment extends Fragment {
         new LogoutDialogFragment().show(getActivity().getSupportFragmentManager(), "logout-dialog");
     }
 
-    public static interface NavigationDrawerCallbacks {
-        void onNavigationDrawerItemSelected(int position);
+    @Override
+    public void onUserInfoGetTaskPreExecute() {
+        /* Do nothing */
     }
 
-    public class LoadTask extends AsyncTask<Void, Void, String> {
-        User user;
-        String gravatar = dataMan.getGravatar();
-        String username;
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                user = api.getUser();
-                gravatar = user.getGravatar();
-                username = user.getUsername();
-                return "success";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "failure";
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+    @Override
+    public void onUserInfoGetTaskPostExecute(User user) {
+        if (user != null) {
             Picasso.with(context)
-                    .load("http://www.gravatar.com/avatar/" + gravatar + "?s=100")
+                    .load("http://www.gravatar.com/avatar/" + user.getGravatar() + "?s=100")
                     .fit()
                     .transform(new CircleTransformation())
                     .into(mAvatar);
 
             Picasso.with(context)
-                    .load("http://www.gravatar.com/avatar/" + gravatar)
+                    .load("http://www.gravatar.com/avatar/" + user.getGravatar())
                     .transform(new BlurTransformation(context))
                     .into(mAvatarBg);
 
-            if (result.equals("success")) {
-                mUsername.setText(username);
-            }
+            mUsername.setText(user.getUsername());
         }
+    }
+
+    public static interface NavigationDrawerCallbacks {
+        void onNavigationDrawerItemSelected(int position);
     }
 
     private class SecondaryNavigationItemClickListener implements AdapterView.OnItemClickListener {

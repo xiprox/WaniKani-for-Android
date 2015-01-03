@@ -52,4 +52,8 @@ public class User implements Serializable {
     public long getVacationDate() {
         return user_information.getVacationDate();
     }
+
+    public boolean isVacationModeActive() {
+        return user_information.isVacationModeActive();
+    }
 }

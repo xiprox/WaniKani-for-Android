@@ -63,4 +63,12 @@ public class SRSDistribution implements Serializable {
     public RequestedInformation.Level getBurned() {
         return requested_information.burned;
     }
+
+    public int getTotal() {
+        return getAprentice().getTotalCount()
+                + getGuru().getTotalCount()
+                + getMaster().getTotalCount()
+                + getEnlighten().getTotalCount()
+                + getBurned().getTotalCount();
+    }
 }

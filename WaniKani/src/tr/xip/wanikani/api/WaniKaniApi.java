@@ -53,10 +53,6 @@ public class WaniKaniApi {
         return service.getUser(API_KEY);
     }
 
-    public boolean isVacationModeActive(UserInfo userInfo) {
-        return userInfo.getVacationDate() != 0;
-    }
-
     public StudyQueue getStudyQueue() {
         return service.getStudyQueue(API_KEY);
     }

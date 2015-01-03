@@ -30,12 +30,17 @@ import java.util.List;
 import tr.xip.wanikani.adapters.KanjiAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.KanjiItem;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.KanjiListGetTask;
+import tr.xip.wanikani.tasks.UserInfoGetTask;
+import tr.xip.wanikani.tasks.callbacks.KanjiListGetTaskCallbacks;
+import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
 
 public class KanjiFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, KanjiListGetTaskCallbacks {
 
     Context context;
 
@@ -53,7 +58,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     LevelPickerDialogFragment mLevelPickerDialog;
 
     KanjiAdapter mKanjiAdapter;
-    List<KanjiItem> kanjiList = null;
 
     View rootView;
 
@@ -114,31 +118,58 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
             showLegend();
         }
 
-        if (Build.VERSION.SDK_INT >= 11)
-            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new UserLevelTask().execute();
+        fetchLevelAndData();
 
         setHasOptionsMenu(true);
 
         return rootView;
     }
 
+    public void fetchLevelAndData() {
+        new UserInfoGetTask(context, new UserInfoGetTaskCallbacks() {
+            @Override
+            public void onUserInfoGetTaskPreExecute() {
+                /* Do nothing */
+            }
+
+            @Override
+            public void onUserInfoGetTaskPostExecute(User user) {
+                if (user != null) {
+                    LEVEL = user.getLevel() + "";
+
+                    fetchData();
+
+                    mLevelPickerDialog = new LevelPickerDialogFragment();
+                } else {
+                    mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
+                    mMessageTitle.setText(R.string.no_items_title);
+                    mMessageSummary.setText(R.string.no_items_summary);
+
+                    if (mMessageFlipper.getDisplayedChild() == 0)
+                        mMessageFlipper.showNext();
+
+                    mMessageSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                if (mListFlipper.getDisplayedChild() == 0)
+                    mListFlipper.showNext();
+            }
+        }).executeParallel();
+    }
+
+    public void fetchData() {
+        new KanjiListGetTask(context, LEVEL, this).executeParallel();
+    }
+
     @Override
     public void onLevelDialogPositiveClick(DialogFragment dialog, String level) {
         LEVEL = level;
-        if (Build.VERSION.SDK_INT >= 11)
-            new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new FetchTask().execute();
+        fetchData();
     }
 
     @Override
     public void onLevelDialogResetClick(DialogFragment dialogFragment, String level) {
-        if (Build.VERSION.SDK_INT >= 11)
-            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new UserLevelTask().execute();
+        fetchLevelAndData();
     }
 
     @Override
@@ -164,108 +195,47 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
     @Override
     public void onRefresh() {
-        if (Build.VERSION.SDK_INT >= 11)
-            new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new FetchTask().execute();
+        fetchData();
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, List<KanjiItem>> {
+    @Override
+    public void onKanjiListGetTaskPreExecute() {
+        if (mListFlipper.getDisplayedChild() == 1)
+            mListFlipper.showPrevious();
+    }
 
-        @Override
-        protected List<KanjiItem> doInBackground(Void... voids) {
-            try {
-                kanjiList = apiMan.getKanjiList(LEVEL);
-                return kanjiList;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return kanjiList;
-        }
-
-        @Override
-        protected void onPostExecute(List<KanjiItem> list) {
-            super.onPostExecute(list);
-
-            if (list != null) {
-                Collections.sort(list, new Comparator<KanjiItem>() {
-                    public int compare(KanjiItem item1, KanjiItem item2) {
-                        return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
-                    }
-                });
-
-                mKanjiAdapter = new KanjiAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
-                mGrid.setAdapter(mKanjiAdapter);
-
-                if (mMessageFlipper.getDisplayedChild() == 1)
-                    mMessageFlipper.showPrevious();
-            } else {
-                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
-                mMessageTitle.setText(R.string.no_items_title);
-                mMessageSummary.setText(R.string.no_items_summary);
-
-                mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
-
-                if (mMessageFlipper.getDisplayedChild() == 0) {
-                    mMessageFlipper.showNext();
+    @Override
+    public void onKanjiListGetTaskPostExecute(List<KanjiItem> list) {
+        if (list != null) {
+            Collections.sort(list, new Comparator<KanjiItem>() {
+                public int compare(KanjiItem item1, KanjiItem item2) {
+                    return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                 }
-            }
+            });
 
-            ((ActionBarActivity) context).invalidateOptionsMenu();
+            mKanjiAdapter = new KanjiAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
+            mGrid.setAdapter(mKanjiAdapter);
 
-            if (mListFlipper.getDisplayedChild() == 0)
-                mListFlipper.showNext();
+            if (mMessageFlipper.getDisplayedChild() == 1)
+                mMessageFlipper.showPrevious();
+        } else {
+            mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
+            mMessageTitle.setText(R.string.no_items_title);
+            mMessageSummary.setText(R.string.no_items_summary);
 
-            mMessageSwipeRefreshLayout.setRefreshing(false);
-        }
+            mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (mListFlipper.getDisplayedChild() == 1)
-                mListFlipper.showPrevious();
-        }
-    }
-
-    private class UserLevelTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void[] voids) {
-            try {
-                LEVEL = apiMan.getUser().getLevel() + "";
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+            if (mMessageFlipper.getDisplayedChild() == 0) {
+                mMessageFlipper.showNext();
             }
         }
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+        ((ActionBarActivity) context).invalidateOptionsMenu();
 
-            if (success) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else
-                    new FetchTask().execute();
+        if (mListFlipper.getDisplayedChild() == 0)
+            mListFlipper.showNext();
 
-                mLevelPickerDialog = new LevelPickerDialogFragment();
-            } else {
-                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
-                mMessageTitle.setText(R.string.no_items_title);
-                mMessageSummary.setText(R.string.no_items_summary);
-
-                if (mMessageFlipper.getDisplayedChild() == 0)
-                    mMessageFlipper.showNext();
-
-                mMessageSwipeRefreshLayout.setRefreshing(false);
-            }
-
-            if (mListFlipper.getDisplayedChild() == 0)
-                mListFlipper.showNext();
-        }
+        mMessageSwipeRefreshLayout.setRefreshing(false);
     }
 
     private class gridItemClickListener implements AdapterView.OnItemClickListener {

@@ -26,12 +26,14 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.SRSDistributionGetTask;
+import tr.xip.wanikani.tasks.callbacks.SRSDistributionGetTaskCallbacks;
 import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class SRSCard extends Fragment {
+public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks {
 
     WaniKaniApi api;
     PrefManager prefMan;
@@ -83,19 +85,10 @@ public class SRSCard extends Fragment {
 
     SRSDistribution srs;
 
-    int apprentice;
-    int guru;
-    int master;
-    int enlightened;
-    int burned;
-
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (Build.VERSION.SDK_INT >= 11)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            else
-                new LoadTask().execute();
+            new SRSDistributionGetTask(context, SRSCard.this).executeParallel();
         }
     };
 
@@ -201,12 +194,12 @@ public class SRSCard extends Fragment {
                 + "");
     }
 
-    private void saveOfflineValues() {
-        dataMan.setApprenticeTotalCount(apprentice);
-        dataMan.setGuruTotalCount(guru);
-        dataMan.setMasterTotalCount(master);
-        dataMan.setEnlightenTotalCount(enlightened);
-        dataMan.setBurnedTotalCount(burned);
+    private void saveOfflineValues(SRSDistribution distribution) {
+        dataMan.setApprenticeTotalCount(distribution.getAprentice().getTotalCount());
+        dataMan.setGuruTotalCount(distribution.getGuru().getTotalCount());
+        dataMan.setMasterTotalCount(distribution.getMaster().getTotalCount());
+        dataMan.setEnlightenTotalCount(distribution.getEnlighten().getTotalCount());
+        dataMan.setBurnedTotalCount(distribution.getBurned().getTotalCount());
     }
 
     private void setOnClickListeners() {
@@ -324,45 +317,31 @@ public class SRSCard extends Fragment {
             mDetailsSuperFlipper.showPrevious();
     }
 
-    public interface StatusCardListener {
-        public void onStatusCardSyncFinishedListener(String result);
+    @Override
+    public void onSRSDistributionGetTaskPreExecute() {
+
     }
 
-    private class LoadTask extends AsyncTask<String, Void, String> {
+    @Override
+    public void onSRSDistributionGetTaskPostExecute(SRSDistribution distribution) {
+        if (distribution != null) {
+            mApprentice.setText(distribution.getAprentice().getTotalCount() + "");
+            mGuru.setText(distribution.getGuru().getTotalCount() + "");
+            mMaster.setText(distribution.getMaster().getTotalCount() + "");
+            mEnlightened.setText(distribution.getMaster().getTotalCount() + "");
+            mBurned.setText(distribution.getBurned().getTotalCount() + "");
 
-        @Override
-        protected String doInBackground(String... strings) {
-            try {
-                srs = api.getSRSDistribution();
-                apprentice = srs.getAprentice().getTotalCount();
-                guru = srs.getGuru().getTotalCount();
-                master = srs.getMaster().getTotalCount();
-                enlightened = srs.getEnlighten().getTotalCount();
-                burned = srs.getBurned().getTotalCount();
-                return "success";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "failure";
-            }
-        }
+            mTotalItems.setText(distribution.getTotal() + "");
 
-        @Override
-        protected void onPostExecute(String result) {
-            if (result.equals("success")) {
-                mApprentice.setText(apprentice + "");
-                mGuru.setText(guru + "");
-                mMaster.setText(master + "");
-                mEnlightened.setText(enlightened + "");
-                mBurned.setText(burned + "");
+            saveOfflineValues(distribution);
 
-                mTotalItems.setText(apprentice + guru + master + enlightened + burned + "");
+            mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
+        } else
+            mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+    }
 
-                saveOfflineValues();
-
-                mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-            } else
-                mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
-        }
+    public interface StatusCardListener {
+        public void onStatusCardSyncFinishedListener(String result);
     }
 
     private class DetailsLoadTask extends AsyncTask<String, Void, String> {

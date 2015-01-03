@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -28,12 +27,15 @@ import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.UserInfoGetTask;
+import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
 import tr.xip.wanikani.utils.CircleTransformation;
 
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        UserInfoGetTaskCallbacks {
 
     Context context;
 
@@ -58,8 +60,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     WaniKaniApi api;
     OfflineDataManager dataMan;
     PrefManager prefMan;
-
-    User user;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -143,20 +143,18 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         if (!MainActivity.isFirstSyncProfileDone) {
             mSwipeRefreshLayout.setRefreshing(true);
 
-            if (Build.VERSION.SDK_INT >= 11)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            else
-                new LoadTask().execute();
+            fetchData();
 
             MainActivity.isFirstSyncProfileDone = true;
         } else {
-            if (Build.VERSION.SDK_INT >= 11)
-                new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            else
-                new LoadTask().execute();
+            fetchData();
         }
 
         return rootView;
+    }
+
+    public void fetchData() {
+        new UserInfoGetTask(context, this).executeParallel();
     }
 
     private void registerReceivers() {
@@ -206,7 +204,7 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         }
     }
 
-    private void saveOfflineValues() {
+    private void saveOfflineValues(User user) {
         dataMan.setUsername(user.getUsername());
         dataMan.setTitle(user.getTitle());
         dataMan.setLevel(user.getLevel());
@@ -220,111 +218,64 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     @Override
     public void onRefresh() {
-        if (Build.VERSION.SDK_INT >= 11)
-            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new LoadTask().execute();
-
+        fetchData();
     }
 
-    public class LoadTask extends AsyncTask<Void, Void, String> {
-        String gravatar = dataMan.getGravatar();
-        String username;
-        String title;
-        int level;
-        int topicsCount;
-        int postsCount;
-        String creationDate;
-        String about;
-        String website;
-        String twitter;
+    @Override
+    public void onUserInfoGetTaskPreExecute() {
+        Picasso.with(context)
+                .load(R.drawable.profile_loading)
+                .fit()
+                .transform(new CircleTransformation())
+                .into(mAvatar);
+    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Picasso.with(context)
-                    .load(R.drawable.profile_loading)
-                    .fit()
-                    .transform(new CircleTransformation())
-                    .into(mAvatar);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                user = api.getUser();
-                gravatar = user.getGravatar();
-                username = user.getUsername();
-                title = user.getTitle();
-                level = user.getLevel();
-                topicsCount = user.getTopicsCount();
-                postsCount = user.getPostsCount();
-                website = user.getWebsite();
-                twitter = user.getTwitter();
-
-                SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
-                creationDate = sdf.format(user.getCreationDate());
-
-                about = user.getAbout();
-
-                return "success";
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "failure";
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+    @Override
+    public void onUserInfoGetTaskPostExecute(User user) {
+        if (user != null) {
             Picasso.with(getActivity())
-                    .load("http://www.gravatar.com/avatar/" + gravatar + "?s=200")
+                    .load("http://www.gravatar.com/avatar/" + user.getGravatar() + "?s=200")
                     .error(R.drawable.profile_error)
                     .fit()
                     .transform(new CircleTransformation())
                     .into(mAvatar);
 
-            if (result.equals("success")) {
-                mUsername.setText(username);
-                mTitle.setText(title);
-                mLevel.setText(level + "");
-                mTopicsCount.setText(topicsCount + "");
-                mPostsCount.setText(postsCount + "");
-                mCreationDate.setText(creationDate + "");
+            mUsername.setText(user.getUsername());
+            mTitle.setText(user.getTitle());
+            mLevel.setText(user.getLevel() + "");
+            mTopicsCount.setText(user.getTopicsCount() + "");
+            mPostsCount.setText(user.getPostsCount() + "");
+            mCreationDate.setText(new SimpleDateFormat("MMMM d, yyyy").format(user.getCreationDate()));
 
-                if (about.length() != 0) {
-                    mAbout.setText(about);
-                    mAboutCard.setVisibility(View.VISIBLE);
-                } else {
-                    mAboutCard.setVisibility(View.GONE);
-                }
+            if (user.getAbout().length() != 0) {
+                mAbout.setText(user.getAbout());
+                mAboutCard.setVisibility(View.VISIBLE);
+            } else
+                mAboutCard.setVisibility(View.GONE);
 
-                if (website != null && website.length() != 0) {
-                    mWebsite.setText(website);
-                    mWebsiteHolder.setVisibility(View.VISIBLE);
-                } else {
-                    mWebsiteHolder.setVisibility(View.GONE);
-                }
+            if (user.getWebsite() != null && user.getWebsite().trim().length() != 0) {
+                mWebsite.setText(user.getWebsite());
+                mWebsiteHolder.setVisibility(View.VISIBLE);
+            } else
+                mWebsiteHolder.setVisibility(View.GONE);
 
-                if (twitter != null && twitter.length() != 0) {
-                    mTwitter.setText(twitter);
-                    mTwitterHolder.setVisibility(View.VISIBLE);
-                } else {
-                    mTwitterHolder.setVisibility(View.GONE);
-                }
+            if (user.getTwitter() != null && user.getTwitter().trim().length() != 0) {
+                mTwitter.setText(user.getTwitter());
+                mTwitterHolder.setVisibility(View.VISIBLE);
+            } else
+                mTwitterHolder.setVisibility(View.GONE);
 
-                if (mViewFlipper.getDisplayedChild() == 1) {
-                    mViewFlipper.showPrevious();
-                }
-
-                if (prefMan.isProfileFirstTime()) {
-                    prefMan.setProfileFirstTime(false);
-                }
-
-                saveOfflineValues();
+            if (mViewFlipper.getDisplayedChild() == 1) {
+                mViewFlipper.showPrevious();
             }
 
-            mSwipeRefreshLayout.setRefreshing(false);
+            if (prefMan.isProfileFirstTime()) {
+                prefMan.setProfileFirstTime(false);
+            }
+
+            saveOfflineValues(user);
         }
+
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

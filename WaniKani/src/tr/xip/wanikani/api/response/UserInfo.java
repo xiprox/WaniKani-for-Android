@@ -61,4 +61,8 @@ public class UserInfo implements Serializable {
     public long getVacationDate() {
         return vacation_date * 1000;
     }
+
+    public boolean isVacationModeActive() {
+        return getVacationDate() != 0;
+    }
 }

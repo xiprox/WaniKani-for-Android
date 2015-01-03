@@ -2,7 +2,6 @@ package tr.xip.wanikani;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -17,13 +16,14 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.RecentUnlocksStickyHeaderGridViewArrayAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.api.response.UnlockItem;
+import tr.xip.wanikani.tasks.RecentUnlocksListGetTask;
+import tr.xip.wanikani.tasks.callbacks.RecentUnlocksListGetTaskCallbacks;
 
 /**
  * Created by xihsa_000 on 3/25/14.
  */
-public class RecentUnlocksActivity extends ActionBarActivity {
+public class RecentUnlocksActivity extends ActionBarActivity implements RecentUnlocksListGetTaskCallbacks {
 
     WaniKaniApi api;
 
@@ -58,7 +58,7 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         mViewFlipper.setInAnimation(this, R.anim.abc_fade_in);
         mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);
 
-        new LoadTask().execute();
+        new RecentUnlocksListGetTask(this, 100, this).executeParallel();
     }
 
     @Override
@@ -67,35 +67,26 @@ public class RecentUnlocksActivity extends ActionBarActivity {
         return true;
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, List<UnlockItem>> {
+    @Override
+    public void onRecentUnlocksListGetTaskPreExecute() {
+        /* Do nothing */
+    }
 
-        @Override
-        protected List<UnlockItem> doInBackground(Void... voids) {
-            try {
-                recentUnlocksList = api.getRecentUnlocksList(100); // Get the maximum amount of unlocks which is 100
-                return recentUnlocksList;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+    @Override
+    public void onRecentUnlocksListGetTaskPostExecute(List<UnlockItem> list) {
+        if (list != null) {
+            mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
+                    list, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
+            mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
+
+            mRecentUnlocksGrid.setOnItemClickListener(new recentUnlocksListItemClickListener());
+
+            if (mViewFlipper.getDisplayedChild() == 0) {
+                mViewFlipper.showNext();
             }
-        }
-
-        @Override
-        protected void onPostExecute(List<UnlockItem> result) {
-            if (result != null) {
-                mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
-                        result, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
-                mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
-
-                mRecentUnlocksGrid.setOnItemClickListener(new recentUnlocksListItemClickListener());
-
-                if (mViewFlipper.getDisplayedChild() == 0) {
-                    mViewFlipper.showNext();
-                }
-            } else {
-                Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 

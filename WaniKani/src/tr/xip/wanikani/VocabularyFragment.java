@@ -29,14 +29,20 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.VocabularyAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.tasks.RadicalsListGetTask;
+import tr.xip.wanikani.tasks.UserInfoGetTask;
+import tr.xip.wanikani.tasks.VocabularyListGetTask;
+import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
+import tr.xip.wanikani.tasks.callbacks.VocabularyListGetTaskCallbacks;
 
 public class VocabularyFragment extends Fragment implements LevelPickerDialogFragment.LevelDialogListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, VocabularyListGetTaskCallbacks {
 
     Context context;
 
@@ -115,31 +121,58 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             showLegend();
         }
 
-        if (Build.VERSION.SDK_INT >= 11)
-            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new UserLevelTask().execute();
+        fetchLevelAndData();
 
         setHasOptionsMenu(true);
 
         return rootView;
     }
 
+    public void fetchLevelAndData() {
+        new UserInfoGetTask(context, new UserInfoGetTaskCallbacks() {
+            @Override
+            public void onUserInfoGetTaskPreExecute() {
+                /* Do nothing */
+            }
+
+            @Override
+            public void onUserInfoGetTaskPostExecute(User user) {
+                if (user != null) {
+                    LEVEL = user.getLevel() + "";
+
+                    fetchData();
+
+                    mLevelPickerDialog = new LevelPickerDialogFragment();
+                } else {
+                    mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
+                    mMessageTitle.setText(R.string.no_items_title);
+                    mMessageSummary.setText(R.string.no_items_summary);
+
+                    if (mMessageFlipper.getDisplayedChild() == 0)
+                        mMessageFlipper.showNext();
+
+                    mMessageSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                if (mListFlipper.getDisplayedChild() == 0)
+                    mListFlipper.showNext();
+            }
+        }).executeParallel();
+    }
+
+    public void fetchData() {
+        new VocabularyListGetTask(context, LEVEL, this).executeParallel();
+    }
+
     @Override
     public void onLevelDialogPositiveClick(DialogFragment dialog, String level) {
         LEVEL = level;
-        if (Build.VERSION.SDK_INT >= 11)
-            new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new FetchTask().execute();
+        fetchData();
     }
 
     @Override
     public void onLevelDialogResetClick(DialogFragment dialogFragment, String level) {
-        if (Build.VERSION.SDK_INT >= 11)
-            new UserLevelTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new UserLevelTask().execute();
+        fetchLevelAndData();
     }
 
     @Override
@@ -165,106 +198,47 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
     @Override
     public void onRefresh() {
-        if (Build.VERSION.SDK_INT >= 11)
-            new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        else
-            new FetchTask().execute();
+        fetchData();
     }
 
-    private class FetchTask extends AsyncTask<Void, Void, List<VocabularyItem>> {
+    @Override
+    public void onVocabularyListGetTaskPreExecute() {
+        if (mListFlipper.getDisplayedChild() == 1)
+            mListFlipper.showPrevious();
+    }
 
-        @Override
-        protected List<VocabularyItem> doInBackground(Void... voids) {
-            try {
-                vocabularyList = apiMan.getVocabularyList(LEVEL);
-                return vocabularyList;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return vocabularyList;
-        }
-
-        @Override
-        protected void onPostExecute(List<VocabularyItem> list) {
-            super.onPostExecute(list);
-
-            if (list != null) {
-                Collections.sort(list, new Comparator<VocabularyItem>() {
-                    public int compare(VocabularyItem item1, VocabularyItem item2) {
-                        return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
-                    }
-                });
-
-                mVocabularyAdapter = new VocabularyAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
-                mGrid.setAdapter(mVocabularyAdapter);
-
-                if (mMessageFlipper.getDisplayedChild() == 1)
-                    mMessageFlipper.showPrevious();
-            } else {
-                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
-                mMessageTitle.setText(R.string.no_items_title);
-                mMessageSummary.setText(R.string.no_items_summary);
-
-                mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
-
-                if (mMessageFlipper.getDisplayedChild() == 0) {
-                    mMessageFlipper.showNext();
+    @Override
+    public void onVocabularyListGetTaskPostExecute(List<VocabularyItem> list) {
+        if (list != null) {
+            Collections.sort(list, new Comparator<VocabularyItem>() {
+                public int compare(VocabularyItem item1, VocabularyItem item2) {
+                    return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                 }
-            }
+            });
 
-            ((ActionBarActivity) context).invalidateOptionsMenu();
+            mVocabularyAdapter = new VocabularyAdapter(context, list, R.layout.header_level, R.layout.item_kanji);
+            mGrid.setAdapter(mVocabularyAdapter);
 
-            if (mListFlipper.getDisplayedChild() == 0)
-                mListFlipper.showNext();
+            if (mMessageFlipper.getDisplayedChild() == 1)
+                mMessageFlipper.showPrevious();
+        } else {
+            mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
+            mMessageTitle.setText(R.string.no_items_title);
+            mMessageSummary.setText(R.string.no_items_summary);
 
-            mMessageSwipeRefreshLayout.setRefreshing(false);
-        }
+            mGrid.setAdapter(new ArrayAdapter(context, R.layout.item_radical));
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (mListFlipper.getDisplayedChild() == 1)
-                mListFlipper.showPrevious();
-        }
-    }
-
-    private class UserLevelTask extends AsyncTask<Void, Void, Boolean> {
-
-        protected Boolean doInBackground(Void[] voids) {
-            try {
-                LEVEL = apiMan.getUser().getLevel() + "";
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+            if (mMessageFlipper.getDisplayedChild() == 0) {
+                mMessageFlipper.showNext();
             }
         }
 
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+        ((ActionBarActivity) context).invalidateOptionsMenu();
 
-            if (success) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new FetchTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                else
-                    new FetchTask().execute();
+        if (mListFlipper.getDisplayedChild() == 0)
+            mListFlipper.showNext();
 
-                mLevelPickerDialog = new LevelPickerDialogFragment();
-            } else {
-                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
-                mMessageTitle.setText(R.string.no_items_title);
-                mMessageSummary.setText(R.string.no_items_summary);
-
-                if (mMessageFlipper.getDisplayedChild() == 0)
-                    mMessageFlipper.showNext();
-
-                mMessageSwipeRefreshLayout.setRefreshing(false);
-            }
-
-            if (mListFlipper.getDisplayedChild() == 0)
-                mListFlipper.showNext();
-        }
+        mMessageSwipeRefreshLayout.setRefreshing(false);
     }
 
     private class gridItemClickListener implements AdapterView.OnItemClickListener {

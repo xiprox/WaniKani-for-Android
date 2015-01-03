@@ -4,15 +4,15 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 
-import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
+import tr.xip.wanikani.tasks.StudyQueueGetTask;
+import tr.xip.wanikani.tasks.callbacks.StudyQueueGetTaskCallbacks;
 
-public class NotificationScheduler {
+public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
     private Context context;
 
     private NotificationPreferences prefs;
@@ -23,53 +23,41 @@ public class NotificationScheduler {
     }
 
     public void schedule() {
-        new LoadTask().execute();
+        new StudyQueueGetTask(context, this).executeParallel();
     }
 
-    private class LoadTask extends AsyncTask<Void, Void, Boolean> {
-        StudyQueue queue;
+    @Override
+    public void onStudyQueueGetTaskPreExecute() {
+        /* Do nothing */
+    }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                queue = new WaniKaniApi(context).getStudyQueue();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+    @Override
+    public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
+        if (queue != null) {
+            if (queue.getNextReviewDate() <= System.currentTimeMillis()) {
+                new NotificationPublisher().publish(context);
+                return;
             }
-        }
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+            if (!prefs.isAlarmSet()) {
+                Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        NotificationPublisher.REQUEST_CODE,
+                        notificationIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
-            if (success) {
-                if (queue.getNextReviewDate() <= System.currentTimeMillis()) {
-                    new NotificationPublisher().publish(context);
-                    return;
-                }
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(
+                        AlarmManager.RTC_WAKEUP,
+                        queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
+                        pendingIntent
+                );
 
-                if (!prefs.isAlarmSet()) {
-                    Intent notificationIntent = new Intent(context, NotificationPublisher.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                            context,
-                            NotificationPublisher.REQUEST_CODE,
-                            notificationIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                    );
+                Log.d("NOTIFICATION SCHEDULER", "SCHEDULED NOTIFICATION FOR " + new SimpleDateFormat("HH:mm:ss").format(queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY));
 
-                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(
-                            AlarmManager.RTC_WAKEUP,
-                            queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
-                            pendingIntent
-                    );
-
-                    Log.d("NOTIFICATION SCHEDULER", "SCHEDULED NOTIFICATION FOR " + new SimpleDateFormat("HH:mm:ss").format(queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY));
-
-                    prefs.setAlarmSet(true);
-                }
+                prefs.setAlarmSet(true);
             }
         }
     }
