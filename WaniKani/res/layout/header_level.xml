@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="58dp"
+        android:layout_marginLeft="@dimen/margin_left_toolbar_content"
         android:orientation="horizontal">
 
         <TextView

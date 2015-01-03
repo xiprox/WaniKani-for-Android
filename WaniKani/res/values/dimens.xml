@@ -12,4 +12,6 @@
     <dimen name="margin_card_side">8dp</dimen>
     <dimen name="margin_card_end">8dp</dimen>
     <dimen name="margin_card_between">0dp</dimen>
+
+    <dimen name="margin_left_toolbar_content">62dp</dimen>
 </resources>
