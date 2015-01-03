@@ -17,6 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="@string/action_level"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
@@ -24,6 +25,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text=" "
             android:textSize="18sp" />
 
@@ -31,9 +33,9 @@
             android:id="@+id/header_level"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="0"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
-
     </LinearLayout>
 </RelativeLayout>
