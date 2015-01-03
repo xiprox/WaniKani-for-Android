@@ -208,7 +208,7 @@ public class CriticalItemsCard extends Fragment {
 
                     height = setCriticalItemsHeightBasedOnListView(mCriticalItemsList);
                 } else {
-                    mMessageIcon.setImageResource(R.drawable.ic_action_good);
+                    mMessageIcon.setImageResource(R.drawable.ic_thumb_up_black_36dp);
                     mMessageTitle.setText(R.string.card_content_critical_no_items_title);
                     mMessageSummary.setText(R.string.card_content_critical_no_items_summary);
 
@@ -221,7 +221,7 @@ public class CriticalItemsCard extends Fragment {
 
                 mListener.onCriticalItemsCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);
             } else {
-                mMessageIcon.setImageResource(R.drawable.ic_action_warning);
+                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
                 mMessageTitle.setText(R.string.error_oops);
                 mMessageSummary.setText(R.string.error_display_items);
 

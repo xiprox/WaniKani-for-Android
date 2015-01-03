@@ -696,8 +696,8 @@ public class WebReviewActivity extends ActionBarActivity {
         selectedColor = res.getColor (R.color.apptheme_main);
         unselectedColor = res.getColor (R.color.text_gray_light);
 
-        muteDrawable = res.getDrawable(R.drawable.ic_sound_mute_gray);
-        notMutedDrawable = res.getDrawable(R.drawable.ic_sound_gray);
+        muteDrawable = res.getDrawable(R.drawable.ic_volume_off_black_24dp);
+        notMutedDrawable = res.getDrawable(R.drawable.ic_volume_up_black_24dp);
 
         kbstatus = KeyboardStatus.INVISIBLE;
 

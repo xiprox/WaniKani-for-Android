@@ -182,7 +182,7 @@ public class RecentUnlocksCard extends Fragment {
 
                     height = setRecentUnlocksHeightBasedOnListView(mRecentUnlocksList);
                 } else {
-                    mMessageIcon.setImageResource(R.drawable.ic_review_box);
+                    mMessageIcon.setImageResource(R.drawable.ic_folder_open_black_36dp);
                     mMessageTitle.setText(R.string.card_content_unlocks_no_items_title);
                     mMessageSummary.setText(R.string.card_content_unlocks_no_items_summary);
 
@@ -195,7 +195,7 @@ public class RecentUnlocksCard extends Fragment {
 
                 mListener.onRecentUnlocksCardSyncFinishedListener(height, DashboardFragment.SYNC_RESULT_SUCCESS);
             } else {
-                mMessageIcon.setImageResource(R.drawable.ic_action_warning);
+                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
                 mMessageTitle.setText(R.string.error_oops);
                 mMessageSummary.setText(R.string.error_display_items);
 

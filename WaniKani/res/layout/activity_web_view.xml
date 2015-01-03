@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -38,9 +39,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dip"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="0dip"
-                android:visibility="gone">
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_error_red_48dp" />
 
                 <TextView
                     android:id="@+id/tv_message"
@@ -48,15 +57,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0dip"
                     android:gravity="center_vertical|center_horizontal"
-                    android:padding="0dip" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_action_warning" />
-
+                    android:padding="0dip"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp"
+                    tools:text="There was an error" />
             </LinearLayout>
 
             <LinearLayout
@@ -151,9 +155,10 @@
                             <ImageButton
                                 android:id="@+id/kb_mute_h"
                                 android:layout_width="36dp"
-                                android:background="@android:color/transparent"
                                 android:layout_height="36dp"
-                                android:src="@drawable/ic_sound_gray"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/ic_volume_up_black_24dp"
+                                android:tint="@color/text_gray"
                                 android:visibility="gone" />
                         </android.support.v7.widget.CardView>
 

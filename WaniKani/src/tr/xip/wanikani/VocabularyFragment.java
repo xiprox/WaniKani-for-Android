@@ -202,7 +202,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                 if (mMessageFlipper.getDisplayedChild() == 1)
                     mMessageFlipper.showPrevious();
             } else {
-                mMessageIcon.setImageResource(R.drawable.ic_action_warning);
+                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
                 mMessageTitle.setText(R.string.no_items_title);
                 mMessageSummary.setText(R.string.no_items_summary);
 
@@ -252,7 +252,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
                 mLevelPickerDialog = new LevelPickerDialogFragment();
             } else {
-                mMessageIcon.setImageResource(R.drawable.ic_action_warning);
+                mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
                 mMessageTitle.setText(R.string.no_items_title);
                 mMessageSummary.setText(R.string.no_items_summary);
 

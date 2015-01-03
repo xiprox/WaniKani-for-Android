@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_level"
-        android:icon="@drawable/ic_action_level"
-        app:showAsAction="always"
-        android:title="@string/action_level" />
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:title="@string/action_level"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_legend"
-        app:showAsAction="never"
-        android:title="@string/content_radicals_legend" />
+        android:title="@string/content_radicals_legend"
+        app:showAsAction="never" />
 </menu>

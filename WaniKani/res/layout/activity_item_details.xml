@@ -353,7 +353,8 @@
                                         android:layout_width="36dp"
                                         android:layout_height="36dp"
                                         android:layout_gravity="center_horizontal"
-                                        android:src="@drawable/ic_action_secure" />
+                                        android:src="@drawable/ic_lock_black_36dp"
+                                        android:tint="@color/text_gray" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
