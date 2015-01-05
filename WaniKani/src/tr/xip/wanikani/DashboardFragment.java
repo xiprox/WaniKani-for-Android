@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,41 +45,33 @@ public class DashboardFragment extends Fragment
 
     public static final String SYNC_RESULT_SUCCESS = "success";
     public static final String SYNC_RESULT_FAILED = "failed";
-
-    private Context context;
-
     View rootView;
     ActionBarActivity activity;
     PrefManager prefMan;
     WaniKaniApi api;
-
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
     boolean isStatusCardSynced = false;
     boolean isProgressCardSynced = false;
     boolean isRecentUnlocksCardSynced = false;
     boolean isCriticalItemsCardSynced = false;
-
     boolean isAvailableCardSyncedSuccess = false;
     boolean isReviewsCardSyncedSuccess = false;
     boolean isStatusCardSyncedSuccess = false;
     boolean isProgressCardSyncedSuccess = false;
     boolean isRecentUnlocksCardSyncedSuccess = false;
     boolean isCriticalItemsCardSyncedSuccess = false;
-
     LinearLayout mAvailableHolder;
     CardView mReviewsHolder;
     CardView mProgressHolder;
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
-
     CardView mMessageCardHolder;
     CardView mVacationModeCardHolder;
-
     FrameLayout mVacationModeCard;
     FrameLayout mReviewsCard;
     FrameLayout mProgressCard;
-
+    private Context context;
     private SwipeRefreshLayout mSwipeToRefreshLayout;
 
     private BroadcastReceiver mSyncCalled = new BroadcastReceiver() {
@@ -281,14 +272,16 @@ public class DashboardFragment extends Fragment
 
             @Override
             public void onUserInfoGetTaskPostExecute(User user) {
-                if (user.isVacationModeActive()) {
-                    mAvailableHolder.setVisibility(View.GONE);
-                    mReviewsHolder.setVisibility(View.GONE);
-                    mVacationModeCardHolder.setVisibility(View.VISIBLE);
-                } else {
-                    mAvailableHolder.setVisibility(View.VISIBLE);
-                    mReviewsHolder.setVisibility(View.VISIBLE);
-                    mVacationModeCardHolder.setVisibility(View.GONE);
+                if (user != null) {
+                    if (user.isVacationModeActive()) {
+                        mAvailableHolder.setVisibility(View.GONE);
+                        mReviewsHolder.setVisibility(View.GONE);
+                        mVacationModeCardHolder.setVisibility(View.VISIBLE);
+                    } else {
+                        mAvailableHolder.setVisibility(View.VISIBLE);
+                        mReviewsHolder.setVisibility(View.VISIBLE);
+                        mVacationModeCardHolder.setVisibility(View.GONE);
+                    }
                 }
             }
         }).executeParallel();
