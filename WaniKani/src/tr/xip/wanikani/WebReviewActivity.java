@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -670,20 +671,23 @@ public class WebReviewActivity extends ActionBarActivity {
     {
         super.onCreate (bundle);
 
-        mActionBar = getSupportActionBar();
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-
         prefMan = new PrefManager(this);
         Resources res;
 
         CookieSyncManager.createInstance (this);
         setVolumeControlStream (AudioManager.STREAM_MUSIC);
 
+        setContentView (R.layout.activity_web_view);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mActionBar = getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+
         if (prefMan.getReviewsLessonsFullscreen()) {
             mActionBar.hide();
         }
-
-        setContentView (R.layout.activity_web_view);
 
         String intentData = getIntent().getData().toString();
         if (intentData.contains("review"))
