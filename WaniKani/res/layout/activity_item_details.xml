@@ -30,9 +30,7 @@
                 <ViewFlipper
                     android:id="@+id/details_view_flipper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inAnimation="@anim/abc_fade_in"
-                    android:outAnimation="@anim/abc_fade_out">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/details_content"
