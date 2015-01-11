@@ -171,7 +171,6 @@ public class DashboardFragment extends Fragment
         transaction.commit();
 
         if (!MainActivity.isFirstSyncDashboardDone) {
-            mSwipeToRefreshLayout.setRefreshing(true);
             Intent intent = new Intent(BroadcastIntents.SYNC());
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
             checkVacationMode();
@@ -182,8 +181,20 @@ public class DashboardFragment extends Fragment
             checkVacationMode();
         }
 
+        setRefreshing();
+
         return rootView;
 
+    }
+
+    private void setRefreshing() {
+        if (mSwipeToRefreshLayout != null)
+            mSwipeToRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeToRefreshLayout.setRefreshing(true);
+                }
+            });
     }
 
     private void updateSyncStatus() {
