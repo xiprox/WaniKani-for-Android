@@ -107,7 +107,7 @@ public class ProgressCard extends Fragment implements LevelProgressionGetTaskCal
 
     @Override
     public void onLevelProgressionGetTaskPostExecute(LevelProgression progression) {
-        if (progression != null) {
+        if (progression != null && progression.getUserInfo() != null) {
             mUserLevel.setText(progression.getUserInfo().getLevel() + "");
             mRadicalPercentage.setText(progression.getRadicalsPercentage() + "");
             mRadicalsProgress.setText(progression.getRadicalsProgress() + "");

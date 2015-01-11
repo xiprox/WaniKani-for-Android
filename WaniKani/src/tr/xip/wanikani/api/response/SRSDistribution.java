@@ -54,24 +54,24 @@ public class SRSDistribution implements Serializable {
         return user_information;
     }
 
-    public RequestedInformation.Level getAprentice() {
-        return requested_information.apprentice;
+    public Level getAprentice() {
+        return requested_information != null ? requested_information.apprentice : new Level(0, 0, 0);
     }
 
-    public RequestedInformation.Level getGuru() {
-        return requested_information.guru;
+    public Level getGuru() {
+        return requested_information != null ? requested_information.guru : new Level(0, 0, 0);
     }
 
-    public RequestedInformation.Level getMaster() {
-        return requested_information.master;
+    public Level getMaster() {
+        return requested_information != null ? requested_information.master : new Level(0, 0, 0);
     }
 
-    public RequestedInformation.Level getEnlighten() {
-        return requested_information.enlighten;
+    public Level getEnlighten() {
+        return requested_information != null ? requested_information.enlighten : new Level(0, 0, 0);
     }
 
-    public RequestedInformation.Level getBurned() {
-        return requested_information.burned;
+    public Level getBurned() {
+        return requested_information != null ? requested_information.burned : new Level(0, 0, 0);
     }
 
     public int getTotal() {
@@ -110,35 +110,35 @@ public class SRSDistribution implements Serializable {
             this.enlighten = new Level(enlightenedRadicals, enlightenedKanji, enlightenedVocabulary);
             this.burned = new Level(burnedRadicals, burnedKanji, burnedVocabulary);
         }
+    }
 
-        public class Level implements Serializable {
-            private int radicals;
-            private int kanji;
-            private int vocabulary;
-            private int total;
+    public class Level implements Serializable {
+        private int radicals;
+        private int kanji;
+        private int vocabulary;
+        private int total;
 
-            public Level(int radicals, int kanji, int vocabulary) {
-                this.radicals = radicals;
-                this.kanji = kanji;
-                this.vocabulary = vocabulary;
-                this.total = radicals + kanji + vocabulary;
-            }
+        public Level(int radicals, int kanji, int vocabulary) {
+            this.radicals = radicals;
+            this.kanji = kanji;
+            this.vocabulary = vocabulary;
+            this.total = radicals + kanji + vocabulary;
+        }
 
-            public int getRadicalsCount() {
-                return radicals;
-            }
+        public int getRadicalsCount() {
+            return radicals;
+        }
 
-            public int getKanjiCount() {
-                return kanji;
-            }
+        public int getKanjiCount() {
+            return kanji;
+        }
 
-            public int getVocabularyCount() {
-                return vocabulary;
-            }
+        public int getVocabularyCount() {
+            return vocabulary;
+        }
 
-            public int getTotalCount() {
-                return total;
-            }
+        public int getTotalCount() {
+            return total;
         }
     }
 }

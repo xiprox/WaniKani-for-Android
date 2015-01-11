@@ -33,27 +33,31 @@ public class LevelProgression implements Serializable {
     }
 
     public int getRadicalsProgress() {
-        return requested_information.radicals_progress;
+        return requested_information != null ? requested_information.radicals_progress : 0;
     }
 
     public int getRadicalsTotal() {
-        return requested_information.radicals_total;
+        return requested_information != null ? requested_information.radicals_total : 0;
     }
 
     public int getRadicalsPercentage() {
-        return (int) ((double) requested_information.radicals_progress / requested_information.radicals_total * 100);
+        return requested_information != null
+                ? (int) ((double) requested_information.radicals_progress / requested_information.radicals_total * 100)
+                : 0;
     }
 
     public int getKanjiProgress() {
-        return requested_information.kanji_progress;
+        return requested_information != null ? requested_information.kanji_progress : 0;
     }
 
     public int getKanjiTotal() {
-        return requested_information.kanji_total;
+        return requested_information != null ? requested_information.kanji_total : 0;
     }
 
     public int getKanjiPercentage() {
-        return (int) ((double) requested_information.kanji_progress / requested_information.kanji_total * 100);
+        return requested_information != null
+                ? (int) ((double) requested_information.kanji_progress / requested_information.kanji_total * 100)
+                : 0;
     }
 
     private class RequestedInformation implements Serializable {

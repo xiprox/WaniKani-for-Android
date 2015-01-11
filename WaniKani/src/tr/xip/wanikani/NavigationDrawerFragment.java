@@ -309,7 +309,7 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
 
     @Override
     public void onUserInfoGetTaskPostExecute(User user) {
-        if (user != null) {
+        if (user != null && user.getUserInformation() != null) {
             Picasso.with(context)
                     .load("http://www.gravatar.com/avatar/" + user.getGravatar() + "?s=100")
                     .fit()

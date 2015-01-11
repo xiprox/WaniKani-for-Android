@@ -93,7 +93,7 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
 
     @Override
     public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
-        if (queue != null) {
+        if (queue != null && queue.getUserInfo() != null) {
             if (!queue.getUserInfo().isVacationModeActive()) {
                 mNextHour.setText(queue.getAvailableReviewsNextHourCount() + "");
                 mNextDay.setText(queue.getAvailableReviewsNextDayCount() + "");

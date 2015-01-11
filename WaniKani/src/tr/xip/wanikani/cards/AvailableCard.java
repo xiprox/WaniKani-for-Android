@@ -124,7 +124,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
 
     @Override
     public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
-        if (queue != null) {
+        if (queue != null && queue.getUserInfo() != null) {
             if (!queue.getUserInfo().isVacationModeActive()) {
                 mLessonsAvailable.setText(queue.getAvailableLesonsCount() + "");
                 mReviewsAvailable.setText(queue.getAvailableReviewsCount() + "");

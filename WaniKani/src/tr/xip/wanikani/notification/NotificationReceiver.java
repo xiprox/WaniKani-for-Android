@@ -24,7 +24,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         NotificationPreferences prefs = new NotificationPreferences(context);
         PrefManager prefManager = new PrefManager(context);
 
-        if (prefManager.notificationsEnabled()) {
+        if (!prefManager.isFirstLaunch() && prefManager.notificationsEnabled()) {
             /** Schedule an alarm if none is scheduled yet */
             if (!prefs.isAlarmSet() && new DatabaseManager(context).getStudyQueue().getAvailableReviewsCount() == 0)
                 new NotificationScheduler(context).schedule();

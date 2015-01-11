@@ -31,58 +31,58 @@ public class User implements Serializable {
     }
 
     public String getUsername() {
-        return user_information.getUsername();
+        return user_information != null ? user_information.getUsername() : null;
     }
 
     public String getGravatar() {
-        return user_information.getGravatar();
+        return user_information != null ? user_information.getGravatar() : null;
     }
 
     public int getLevel() {
-        return user_information.getLevel();
+        return user_information != null ? user_information.getLevel() : 0;
     }
 
     public String getTitle() {
-        return user_information.getTitle();
+        return user_information != null ? user_information.getTitle() : null;
     }
 
     public String getAbout() {
-        return user_information.getAbout();
+        return user_information != null ? user_information.getAbout() : null;
     }
 
     public String getWebsite() {
-        return user_information.getWebsite();
+        return user_information != null ? user_information.getWebsite() : null;
     }
 
     public String getTwitter() {
-        return user_information.getTwitter();
+        return user_information != null ? user_information.getTwitter() : null;
     }
 
     public int getTopicsCount() {
-        return user_information.getTopicsCount();
+        return user_information != null ? user_information.getTopicsCount() : 0;
     }
 
     public int getPostsCount() {
-        return user_information.getPostsCount();
+        return user_information != null ? user_information.getPostsCount() : 0;
     }
 
     public long getCreationDate() {
-        return user_information.getCreationDate();
+        return user_information != null ? user_information.getCreationDate() : 0;
     }
 
     public long getCreationDateInSeconds() {
-        return user_information.getCreationDateInSeconds();
+        return user_information != null ? user_information.getCreationDateInSeconds() : 0;
     }
 
     public long getVacationDate() {
-        return user_information.getVacationDate();
+        return user_information != null ? user_information.getVacationDate() : 0;
     }
 
     public long getVacationDateInSeconds() {
-        return user_information.getVacationDateInSeconds();
+        return user_information != null ? user_information.getVacationDateInSeconds() : 0;
     }
 
     public boolean isVacationModeActive() {
-        return user_information.isVacationModeActive();
+        return user_information != null ? user_information.isVacationModeActive() : false;
     }
 }
