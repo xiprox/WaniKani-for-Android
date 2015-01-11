@@ -13,20 +13,20 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.RadicalItem;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.utils.Fonts;
 
 /**
  * Created by Hikari on 9/18/14.
  */
-public class RemainingRadicalsAdapter extends ArrayAdapter<RadicalItem> {
+public class RemainingRadicalsAdapter extends ArrayAdapter<BaseItem> {
 
     View rootView;
     Context context;
 
-    List<RadicalItem> mList;
+    List<BaseItem> mList;
 
-    public RemainingRadicalsAdapter(Context context, int resource, List<RadicalItem> objects) {
+    public RemainingRadicalsAdapter(Context context, int resource, List<BaseItem> objects) {
         super(context, resource, objects);
         this.context = context;
         mList = objects;
@@ -34,7 +34,7 @@ public class RemainingRadicalsAdapter extends ArrayAdapter<RadicalItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        RadicalItem item = mList.get(position);
+        BaseItem item = mList.get(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

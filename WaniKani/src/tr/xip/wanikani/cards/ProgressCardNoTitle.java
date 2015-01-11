@@ -34,8 +34,6 @@ public class ProgressCardNoTitle extends ProgressCard {
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_progress_card);
 
-        loadOfflineValues();
-
         return rootView;
     }
 }

@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -25,7 +23,6 @@ import java.text.SimpleDateFormat;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.tasks.UserInfoGetTask;
 import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
@@ -58,7 +55,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
     ViewFlipper mViewFlipper;
 
     WaniKaniApi api;
-    OfflineDataManager dataMan;
     PrefManager prefMan;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -105,7 +101,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         context = getActivity();
 
         api = new WaniKaniApi(getActivity());
-        dataMan = new OfflineDataManager(getActivity());
         prefMan = new PrefManager(getActivity());
 
         mAvatar = (ImageView) rootView.findViewById(R.id.profile_avatar);
@@ -138,8 +133,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
             }
         }
 
-        loadOfflineValues();
-
         if (!MainActivity.isFirstSyncProfileDone) {
             mSwipeRefreshLayout.setRefreshing(true);
 
@@ -170,50 +163,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
         LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitConnectionErorReceiver);
         LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitUnknownErrorReceiver);
-    }
-
-    private void loadOfflineValues() {
-        mUsername.setText(dataMan.getUsername());
-        mTitle.setText(dataMan.getTitle());
-        mLevel.setText(dataMan.getLevel() + "");
-        mTopicsCount.setText(dataMan.getTopicsCount() + "");
-        mPostsCount.setText(dataMan.getPostsCount() + "");
-
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy");
-        mCreationDate.setText(sdf.format(dataMan.getCreationDate()));
-
-        if (dataMan.getAbout().length() != 0) {
-            mAbout.setText(dataMan.getAbout());
-            mAboutCard.setVisibility(View.VISIBLE);
-        } else {
-            mAboutCard.setVisibility(View.GONE);
-        }
-
-        if (dataMan.getWebsite().length() != 0) {
-            mWebsite.setText(dataMan.getWebsite());
-            mWebsiteHolder.setVisibility(View.VISIBLE);
-        } else {
-            mWebsiteHolder.setVisibility(View.GONE);
-        }
-
-        if (dataMan.getTwitter().length() != 0) {
-            mTwitter.setText(dataMan.getTwitter());
-            mTwitterHolder.setVisibility(View.VISIBLE);
-        } else {
-            mTwitterHolder.setVisibility(View.GONE);
-        }
-    }
-
-    private void saveOfflineValues(User user) {
-        dataMan.setUsername(user.getUsername());
-        dataMan.setTitle(user.getTitle());
-        dataMan.setLevel(user.getLevel());
-        dataMan.setTopicsCount(user.getTopicsCount());
-        dataMan.setPostsCount(user.getPostsCount());
-        dataMan.setCreationDate(user.getCreationDate());
-        dataMan.setAbout(user.getAbout());
-        dataMan.setWebsite(user.getWebsite());
-        dataMan.setTwitter(user.getTwitter());
     }
 
     @Override
@@ -272,8 +221,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
             if (prefMan.isProfileFirstTime()) {
                 prefMan.setProfileFirstTime(false);
             }
-
-            saveOfflineValues(user);
         }
 
         mSwipeRefreshLayout.setRefreshing(false);

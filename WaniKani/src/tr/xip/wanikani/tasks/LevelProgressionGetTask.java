@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.LevelProgression;
+import tr.xip.wanikani.db.tasks.LevelProgressionLoadTask;
+import tr.xip.wanikani.db.tasks.LevelProgressionSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.LevelProgressionLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.LevelProgressionGetTaskCallbacks;
 
 /**
@@ -48,16 +51,25 @@ public class LevelProgressionGetTask extends AsyncTask<Void, Void, LevelProgress
     }
 
     @Override
-    protected void onPostExecute(LevelProgression progression) {
+    protected void onPostExecute(final LevelProgression progression) {
         super.onPostExecute(progression);
-/*
-        if (progression != null)
-            // TODO: Save to database
-        else
-            progression = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onLevelProgressionGetTaskPostExecute(progression);
+        if (progression != null) {
+            new LevelProgressionSaveTask(context, progression, null).executeParallel();
+
+            if (mCallbacks != null)
+                mCallbacks.onLevelProgressionGetTaskPostExecute(progression);
+        } else
+            try {
+                new LevelProgressionLoadTask(context, new LevelProgressionLoadTaskCallbacks() {
+                    @Override
+                    public void onLevelProgressLoaded(LevelProgression progress) {
+                        if (mCallbacks != null)
+                            mCallbacks.onLevelProgressionGetTaskPostExecute(progress);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

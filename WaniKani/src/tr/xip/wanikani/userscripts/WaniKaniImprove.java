@@ -1,7 +1,6 @@
 package tr.xip.wanikani.userscripts;
 
 import android.app.Dialog;
-
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.view.View;

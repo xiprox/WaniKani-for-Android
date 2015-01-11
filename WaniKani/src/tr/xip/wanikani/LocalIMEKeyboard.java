@@ -1,10 +1,6 @@
 package tr.xip.wanikani;
 
 
-import java.util.EnumMap;
-import java.util.Hashtable;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -30,10 +26,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+
+import java.util.EnumMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import tr.xip.wanikani.items.WaniKaniItem;
 import tr.xip.wanikani.managers.PrefManager;

@@ -6,15 +6,21 @@ import android.os.AsyncTask;
 import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.RadicalItem;
+import tr.xip.wanikani.api.response.BaseItem;
+import tr.xip.wanikani.db.DatabaseManager;
+import tr.xip.wanikani.db.tasks.ItemsLoadTask;
+import tr.xip.wanikani.db.tasks.ItemsSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.ItemsLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.RadicalsListGetTaskCallbacks;
 
 /**
  * Created by Hikari on 1/3/15.
  */
-public class RadicalsListGetTask extends AsyncTask<Void, Void, List<RadicalItem>> {
+public class RadicalsListGetTask extends AsyncTask<Void, Void, List<BaseItem>> {
 
     private Context context;
+
+    private DatabaseManager db;
 
     private RadicalsListGetTaskCallbacks mCallbacks;
 
@@ -24,6 +30,8 @@ public class RadicalsListGetTask extends AsyncTask<Void, Void, List<RadicalItem>
         this.context = context;
         this.level = level;
         this.mCallbacks = callbacks;
+
+        this.db = new DatabaseManager(context);
     }
 
     public void executeSerial() {
@@ -43,7 +51,7 @@ public class RadicalsListGetTask extends AsyncTask<Void, Void, List<RadicalItem>
     }
 
     @Override
-    protected List<RadicalItem> doInBackground(Void... params) {
+    protected List<BaseItem> doInBackground(Void... params) {
         try {
             return new WaniKaniApi(context).getRadicalsList(level);
         } catch (Exception e) {
@@ -53,16 +61,30 @@ public class RadicalsListGetTask extends AsyncTask<Void, Void, List<RadicalItem>
     }
 
     @Override
-    protected void onPostExecute(List<RadicalItem> list) {
+    protected void onPostExecute(final List<BaseItem> list) {
         super.onPostExecute(list);
-/*
-        if (list != null)
-            // TODO: Save to database
-        else
-            list = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onRadicalsListGetTaskPostExecute(list);
+        if (list != null) {
+            new ItemsSaveTask(context, BaseItem.ItemType.RADICAL, list, null).executeParallel();
+
+            if (mCallbacks != null)
+                mCallbacks.onRadicalsListGetTaskPostExecute(list);
+        } else
+            try {
+                String[] levelStrings = level.split(",");
+                int[] levels = new int[levelStrings.length];
+                for (int i = 0; i < levelStrings.length; i++)
+                    levels[i] = Integer.parseInt(levelStrings[i]);
+
+                new ItemsLoadTask(context, BaseItem.ItemType.RADICAL, levels, new ItemsLoadTaskCallbacks() {
+                    @Override
+                    public void onItemsLoaded(List<BaseItem> items) {
+                        if (mCallbacks != null)
+                            mCallbacks.onRadicalsListGetTaskPostExecute(items);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

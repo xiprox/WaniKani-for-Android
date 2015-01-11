@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -22,7 +20,6 @@ import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.tasks.StudyQueueGetTask;
 import tr.xip.wanikani.tasks.callbacks.StudyQueueGetTaskCallbacks;
@@ -37,7 +34,6 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
     Context context;
 
     WaniKaniApi api;
-    OfflineDataManager dataMan;
     PrefManager prefMan;
     Utils utils;
 
@@ -68,7 +64,6 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        dataMan = new OfflineDataManager(getActivity());
         prefMan = new PrefManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
@@ -88,31 +83,7 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
         mMoreReviewsHolder = (LinearLayout) rootView.findViewById(R.id.card_reviews_more_reviews_holder);
         mMoreReviews = (TextView) rootView.findViewById(R.id.card_reviews_more_reviews);
 
-        loadOfflineValues();
-
         return rootView;
-    }
-
-    private void loadOfflineValues() {
-        mNextHour.setText(dataMan.getReviewsAvailableNextHour() + "");
-        mNextDay.setText(dataMan.getReviewsAvailableNextDay() + "");
-
-        if (dataMan.getReviewsAvailable() != 0) {
-            mNextReview.setText(getString(R.string.card_content_reviews_available_now));
-        } else {
-            if (prefMan.isUseSpecificDates()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
-                mNextReview.setText(sdf.format(dataMan.getNextReviewDate()));
-            } else {
-                mNextReview.setReferenceTime(dataMan.getNextReviewDate());
-            }
-        }
-    }
-
-    private void saveOfflineValues(StudyQueue queue) {
-        dataMan.setNextReviewDate(queue.getNextReviewDate());
-        dataMan.setReviewsAvailableNextHour(queue.getAvailableReviewsNextHourCount());
-        dataMan.setReviewsAvailableNextDay(queue.getAvailableReviewsNextDayCount());
     }
 
     @Override
@@ -158,8 +129,6 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
                 }
 
                 mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-
-                saveOfflineValues(queue);
             } else {
                 // Vacation mode is handled in DashboardFragment
                 mListener.onReviewsCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);

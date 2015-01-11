@@ -8,14 +8,17 @@ import java.util.List;
  */
 public class KanjiList implements Serializable {
     private UserInfo user_information;
-    private List<KanjiItem> requested_information;
+    private List<BaseItem> requested_information;
     private Error error;
 
     public UserInfo getUserInfo() {
         return user_information;
     }
 
-    public List<KanjiItem> getList() {
+    public List<BaseItem> getList() {
+        for (BaseItem item : requested_information)
+            item.setType(BaseItem.ItemType.KANJI);
+
         return requested_information;
     }
 

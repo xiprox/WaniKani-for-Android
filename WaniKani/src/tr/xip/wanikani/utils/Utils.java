@@ -6,8 +6,6 @@ import android.net.NetworkInfo;
 
 import java.util.Date;
 
-import tr.xip.wanikani.R;
-
 /**
  * Created by xihsa_000 on 3/15/14.
  */

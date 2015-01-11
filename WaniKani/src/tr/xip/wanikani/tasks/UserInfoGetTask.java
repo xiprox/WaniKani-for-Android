@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
+import tr.xip.wanikani.db.tasks.UserLoadTask;
+import tr.xip.wanikani.db.tasks.UserSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.UserLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
 
 /**
@@ -50,14 +53,23 @@ public class UserInfoGetTask extends AsyncTask<Void, Void, User> {
     @Override
     protected void onPostExecute(User user) {
         super.onPostExecute(user);
-/*
-        if (user != null)
-            // TODO: Save to database
-        else
-            user = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onUserInfoGetTaskPostExecute(user);
+        if (user != null) {
+            new UserSaveTask(context, user, null).executeParallell();
+
+            if (mCallbacks != null)
+                mCallbacks.onUserInfoGetTaskPostExecute(user);
+        } else
+            try {
+                new UserLoadTask(context, new UserLoadTaskCallbacks() {
+                    @Override
+                    public void onUserLoaded(User user) {
+                        if (mCallbacks != null)
+                            mCallbacks.onUserInfoGetTaskPostExecute(user);
+                    }
+                }).executeParallell();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

@@ -7,6 +7,9 @@ import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.UnlockItem;
+import tr.xip.wanikani.db.tasks.RecentUnlocksLoadTask;
+import tr.xip.wanikani.db.tasks.RecentUnlocksSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.RecentUnlocksLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.RecentUnlocksListGetTaskCallbacks;
 
 /**
@@ -55,14 +58,23 @@ public class RecentUnlocksListGetTask extends AsyncTask<Void, Void, List<UnlockI
     @Override
     protected void onPostExecute(List<UnlockItem> list) {
         super.onPostExecute(list);
-/*
-        if (list != null)
-            // TODO: Save to database
-        else
-            list = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onRecentUnlocksListGetTaskPostExecute(list);
+        if (list != null) {
+            new RecentUnlocksSaveTask(context, list, null).executeParallell();
+
+            if (mCallbacks != null)
+                mCallbacks.onRecentUnlocksListGetTaskPostExecute(list);
+        } else
+            try {
+                new RecentUnlocksLoadTask(context, limit, new RecentUnlocksLoadTaskCallbacks() {
+                    @Override
+                    public void onRecentUnlocksLoaded(List<UnlockItem> items) {
+                        if (mCallbacks != null)
+                            mCallbacks.onRecentUnlocksListGetTaskPostExecute(items);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

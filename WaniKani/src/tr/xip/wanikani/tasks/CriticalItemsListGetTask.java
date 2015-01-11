@@ -7,6 +7,9 @@ import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.CriticalItem;
+import tr.xip.wanikani.db.tasks.CriticalItemsLoadTask;
+import tr.xip.wanikani.db.tasks.CriticalItemsSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.CriticalItemsLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.CriticalItemsListGetTaskCallbacks;
 
 /**
@@ -18,11 +21,11 @@ public class CriticalItemsListGetTask extends AsyncTask<Void, Void, List<Critica
 
     private CriticalItemsListGetTaskCallbacks mCallbacks;
 
-    private int precentage;
+    private int percentage;
 
     public CriticalItemsListGetTask(Context context, int percentage, CriticalItemsListGetTaskCallbacks callbacks) {
         this.context = context;
-        this.precentage = percentage;
+        this.percentage = percentage;
         this.mCallbacks = callbacks;
     }
 
@@ -45,7 +48,7 @@ public class CriticalItemsListGetTask extends AsyncTask<Void, Void, List<Critica
     @Override
     protected List<CriticalItem> doInBackground(Void... params) {
         try {
-            return new WaniKaniApi(context).getCriticalItemsList(precentage);
+            return new WaniKaniApi(context).getCriticalItemsList(percentage);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -55,14 +58,24 @@ public class CriticalItemsListGetTask extends AsyncTask<Void, Void, List<Critica
     @Override
     protected void onPostExecute(List<CriticalItem> list) {
         super.onPostExecute(list);
-/*
-        if (list != null)
-            // TODO: Save to database
-        else
-            list = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onCriticalItemsListGetTaskPostExecute(list);
+        if (list != null) {
+            new CriticalItemsSaveTask(context, list, null).executeParallel();
+
+            if (mCallbacks != null)
+                mCallbacks.onCriticalItemsListGetTaskPostExecute(list);
+        } else
+            try {
+                new CriticalItemsLoadTask(context, percentage, new CriticalItemsLoadTaskCallbacks() {
+
+                    @Override
+                    public void onCriticalItemsLoaded(List<CriticalItem> items) {
+                        if (mCallbacks != null)
+                            mCallbacks.onCriticalItemsListGetTaskPostExecute(items);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

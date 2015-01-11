@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.RecentUnlocksList;
 import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;

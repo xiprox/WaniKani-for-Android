@@ -2,8 +2,6 @@ package tr.xip.wanikani;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -29,7 +27,7 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.KanjiAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.KanjiItem;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
@@ -205,10 +203,10 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     }
 
     @Override
-    public void onKanjiListGetTaskPostExecute(List<KanjiItem> list) {
+    public void onKanjiListGetTaskPostExecute(List<BaseItem> list) {
         if (list != null) {
-            Collections.sort(list, new Comparator<KanjiItem>() {
-                public int compare(KanjiItem item1, KanjiItem item2) {
+            Collections.sort(list, new Comparator<BaseItem>() {
+                public int compare(BaseItem item1, BaseItem item2) {
                     return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                 }
             });
@@ -242,7 +240,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            KanjiItem kanjiItem = mKanjiAdapter.getItem(position);
+            BaseItem kanjiItem = mKanjiAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_ITEM, kanjiItem);

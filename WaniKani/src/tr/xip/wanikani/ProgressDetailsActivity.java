@@ -19,10 +19,7 @@ import java.util.List;
 import tr.xip.wanikani.adapters.RemainingKanjiAdapter;
 import tr.xip.wanikani.adapters.RemainingRadicalsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.KanjiItem;
-import tr.xip.wanikani.api.response.KanjiList;
-import tr.xip.wanikani.api.response.RadicalItem;
-import tr.xip.wanikani.api.response.RadicalsList;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.cards.ProgressCard;
 import tr.xip.wanikani.cards.ProgressCardNoTitle;
@@ -36,8 +33,8 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
 
     Toolbar mToolbar;
 
-    List<RadicalItem> mRemainingRadicals = new ArrayList<RadicalItem>();
-    List<KanjiItem> mRemainingKanji = new ArrayList<KanjiItem>();
+    List<BaseItem> mRemainingRadicals = new ArrayList<>();
+    List<BaseItem> mRemainingKanji = new ArrayList<>();
 
     GridView mRadicalsGrid;
     GridView mKanjiGrid;
@@ -105,8 +102,8 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
     }
 
     private class RemainingItemsLoadTask extends AsyncTask<Void, Void, Boolean> {
-        List<RadicalItem> mRadicals;
-        List<KanjiItem> mKanji;
+        List<BaseItem> mRadicals;
+        List<BaseItem> mKanji;
 
         @Override
         protected Boolean doInBackground(Void... voids) {
@@ -173,14 +170,14 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
         }
 
         private void filterRemaining() {
-            for (RadicalItem item : mRadicals)
+            for (BaseItem item : mRadicals)
                 if (item.isUnlocked()) {
                     if (item.getSrsLevel().equals("apprentice"))
                         mRemainingRadicals.add(item);
                 } else
                     mRemainingRadicals.add(item);
 
-            for (KanjiItem item : mKanji)
+            for (BaseItem item : mKanji)
                 if (item.isUnlocked()) {
                     if (item.getSrsLevel().equals("apprentice"))
                         mRemainingKanji.add(item);
@@ -193,7 +190,7 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            RadicalItem item = mRemainingRadicals.get(position);
+            BaseItem item = mRemainingRadicals.get(position);
 
             Intent intent = new Intent(ProgressDetailsActivity.this, ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);
@@ -205,7 +202,7 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            KanjiItem item = mRemainingKanji.get(position);
+            BaseItem item = mRemainingKanji.get(position);
 
             Intent intent = new Intent(ProgressDetailsActivity.this, ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);

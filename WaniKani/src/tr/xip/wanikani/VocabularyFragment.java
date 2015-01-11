@@ -2,8 +2,6 @@ package tr.xip.wanikani;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -29,13 +27,11 @@ import java.util.List;
 
 import tr.xip.wanikani.adapters.VocabularyAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.User;
-import tr.xip.wanikani.api.response.VocabularyItem;
-import tr.xip.wanikani.api.response.VocabularyList;
 import tr.xip.wanikani.dialogs.LegendDialogFragment;
 import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.tasks.RadicalsListGetTask;
 import tr.xip.wanikani.tasks.UserInfoGetTask;
 import tr.xip.wanikani.tasks.VocabularyListGetTask;
 import tr.xip.wanikani.tasks.callbacks.UserInfoGetTaskCallbacks;
@@ -60,7 +56,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     LevelPickerDialogFragment mLevelPickerDialog;
 
     VocabularyAdapter mVocabularyAdapter;
-    List<VocabularyItem> vocabularyList = null;
+    List<BaseItem> vocabularyList = null;
 
     View rootView;
 
@@ -208,10 +204,10 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     }
 
     @Override
-    public void onVocabularyListGetTaskPostExecute(List<VocabularyItem> list) {
+    public void onVocabularyListGetTaskPostExecute(List<BaseItem> list) {
         if (list != null) {
-            Collections.sort(list, new Comparator<VocabularyItem>() {
-                public int compare(VocabularyItem item1, VocabularyItem item2) {
+            Collections.sort(list, new Comparator<BaseItem>() {
+                public int compare(BaseItem item1, BaseItem item2) {
                     return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
                 }
             });
@@ -245,7 +241,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            VocabularyItem vocabularyItem = mVocabularyAdapter.getItem(position);
+            BaseItem vocabularyItem = mVocabularyAdapter.getItem(position);
 
             Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
             intent.putExtra(ItemDetailsActivity.ARG_ITEM, vocabularyItem);

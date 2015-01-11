@@ -18,19 +18,18 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.util.List;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.api.response.RadicalItem;
-import tr.xip.wanikani.api.response.RadicalsList;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
 
-public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<RadicalItem> {
+public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<BaseItem> {
     Context context;
 
     int headerResourceId;
     Typeface typeface;
-    private List<RadicalItem> items;
+    private List<BaseItem> items;
 
-    public RadicalsAdapter(Context context, List<RadicalItem> list, int headerResId, int itemResId) {
+    public RadicalsAdapter(Context context, List<BaseItem> list, int headerResId, int itemResId) {
         super(context, list, headerResId, itemResId);
         this.items = list;
         this.context = context;
@@ -41,7 +40,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
-        RadicalItem radicalItem = items.get(position);
+        BaseItem radicalItem = items.get(position);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -129,7 +128,7 @@ public class RadicalsAdapter extends StickyGridHeadersSimpleArrayAdapter<Radical
             holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        RadicalItem item = getItem(position);
+        BaseItem item = getItem(position);
 
         holder.textView.setText(item.getLevel() + "");
 

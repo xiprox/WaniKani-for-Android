@@ -17,10 +17,6 @@ package tr.xip.wanikani;
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Vector;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -28,6 +24,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Vector;
 
 /**
  * A webview that allows activities to disable the soft keyboard even

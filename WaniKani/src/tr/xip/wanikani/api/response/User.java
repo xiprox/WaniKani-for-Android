@@ -5,9 +5,30 @@ import java.io.Serializable;
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-
 public class User implements Serializable {
     public UserInfo user_information;
+
+    public User(String username, String gravatar, int level, String title, String about,
+                String website, String twitter, int topicsCount, int postsCount, long creationDate,
+                long vacationDate) {
+        this.user_information = new UserInfo(
+                username,
+                gravatar,
+                level,
+                title,
+                about,
+                website,
+                twitter,
+                topicsCount,
+                postsCount,
+                creationDate,
+                vacationDate
+        );
+    }
+
+    public UserInfo getUserInformation() {
+        return user_information;
+    }
 
     public String getUsername() {
         return user_information.getUsername();
@@ -49,8 +70,16 @@ public class User implements Serializable {
         return user_information.getCreationDate();
     }
 
+    public long getCreationDateInSeconds() {
+        return user_information.getCreationDateInSeconds();
+    }
+
     public long getVacationDate() {
         return user_information.getVacationDate();
+    }
+
+    public long getVacationDateInSeconds() {
+        return user_information.getVacationDateInSeconds();
     }
 
     public boolean isVacationModeActive() {

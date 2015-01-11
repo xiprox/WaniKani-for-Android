@@ -23,7 +23,6 @@ import tr.xip.wanikani.R;
 import tr.xip.wanikani.WebReviewActivity;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.tasks.StudyQueueGetTask;
 import tr.xip.wanikani.tasks.callbacks.StudyQueueGetTaskCallbacks;
@@ -40,7 +39,6 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
     Context context;
 
     WaniKaniApi api;
-    OfflineDataManager dataMan;
     Utils utils;
 
     ImageView mLessonsGo;
@@ -68,7 +66,6 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
-        dataMan = new OfflineDataManager(getActivity());
         super.onCreate(state);
     }
 
@@ -94,19 +91,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
 
         setUpParentOnClicks();
 
-        loadOfflineValues();
-
         return rootView;
-    }
-
-    private void loadOfflineValues() {
-        mLessonsAvailable.setText(dataMan.getLessonsAvailable() + "");
-        mReviewsAvailable.setText(dataMan.getReviewsAvailable() + "");
-    }
-
-    private void saveOfflineValues(StudyQueue queue) {
-        dataMan.setLessonsAvailable(queue.getAvailableLesonsCount());
-        dataMan.setReviewsAvailable(queue.getAvailableReviewsCount());
     }
 
     private void setUpParentOnClicks() {
@@ -145,8 +130,6 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
                 mReviewsAvailable.setText(queue.getAvailableReviewsCount() + "");
 
                 mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-
-                saveOfflineValues(queue);
             } else
                 // Vacation mode is handled in DashboardFragment
                 mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);

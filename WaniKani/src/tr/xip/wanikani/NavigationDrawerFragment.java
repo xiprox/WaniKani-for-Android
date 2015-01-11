@@ -32,7 +32,6 @@ import tr.xip.wanikani.adapters.NavigationSecondaryItemsAdapter;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.User;
 import tr.xip.wanikani.dialogs.LogoutDialogFragment;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.settings.SettingsActivity;
 import tr.xip.wanikani.tasks.UserInfoGetTask;
@@ -49,7 +48,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
     Context context;
 
     WaniKaniApi api;
-    OfflineDataManager dataMan;
     PrefManager prefMan;
 
     ImageView mAvatar;
@@ -59,6 +57,8 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
     FrameLayout mProfile;
 
     NavigationItemsAdapter mNavigationItemsAdapter;
+
+    private UserInfoGetTask mUserInfoFetchTask;
 
     private NavigationDrawerCallbacks mCallbacks;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -76,7 +76,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
         super.onCreate(savedInstanceState);
 
         api = new WaniKaniApi(getActivity());
-        dataMan = new OfflineDataManager(getActivity());
         prefMan = new PrefManager(getActivity());
 
         context = getActivity();
@@ -140,16 +139,19 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
             }
         });
 
-        setOldValues();
-        new UserInfoGetTask(context, this).executeParallel();
+        fetchUserInfo();
 
         selectItem(mCurrentSelectedPosition);
 
         return rootView;
     }
 
-    public void setOldValues() {
-        mUsername.setText(dataMan.getUsername());
+    public void fetchUserInfo() {
+        if (mUserInfoFetchTask != null)
+            mUserInfoFetchTask.cancel(true);
+
+        mUserInfoFetchTask = new UserInfoGetTask(context, this);
+        mUserInfoFetchTask.executeParallel();
     }
 
     public boolean isDrawerOpen() {

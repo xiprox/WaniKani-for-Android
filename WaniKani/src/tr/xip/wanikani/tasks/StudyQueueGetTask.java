@@ -5,6 +5,13 @@ import android.os.AsyncTask;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.StudyQueue;
+import tr.xip.wanikani.api.response.User;
+import tr.xip.wanikani.db.tasks.StudyQueueLoadTask;
+import tr.xip.wanikani.db.tasks.StudyQueueSaveTask;
+import tr.xip.wanikani.db.tasks.UserLoadTask;
+import tr.xip.wanikani.db.tasks.UserSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.StudyQueueLoadTaskCallbacks;
+import tr.xip.wanikani.db.tasks.callbacks.UserLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.StudyQueueGetTaskCallbacks;
 
 /**
@@ -50,14 +57,23 @@ public class StudyQueueGetTask extends AsyncTask<Void, Void, StudyQueue> {
     @Override
     protected void onPostExecute(StudyQueue queue) {
         super.onPostExecute(queue);
-/*
-        if (queue != null)
-            // TODO: Save to database
-        else
-            queue = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onStudyQueueGetTaskPostExecute(queue);
+        if (queue != null) {
+            new StudyQueueSaveTask(context, queue, null).executeParallel();
+
+            if (mCallbacks != null)
+                mCallbacks.onStudyQueueGetTaskPostExecute(queue);
+        } else
+            try {
+                new StudyQueueLoadTask(context, new StudyQueueLoadTaskCallbacks() {
+                    @Override
+                    public void onStudyQueueLoaded(StudyQueue queue) {
+                        if (mCallbacks != null)
+                            mCallbacks.onStudyQueueGetTaskPostExecute(queue);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

@@ -1,13 +1,13 @@
 package tr.xip.wanikani.userscripts;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.regex.Pattern;
-
-import android.content.Context;
-import android.content.res.AssetManager;
 
 import tr.xip.wanikani.FocusWebView;
 

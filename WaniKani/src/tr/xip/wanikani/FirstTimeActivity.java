@@ -15,7 +15,6 @@ import android.widget.ViewSwitcher;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.dialogs.HowToGetKeyDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.notification.NotificationPreferences;
 import tr.xip.wanikani.notification.NotificationScheduler;
 
 public class FirstTimeActivity extends ActionBarActivity {

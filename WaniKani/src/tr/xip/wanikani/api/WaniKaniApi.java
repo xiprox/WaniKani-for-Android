@@ -6,16 +6,13 @@ import java.util.List;
 
 import retrofit.RestAdapter;
 import tr.xip.wanikani.api.error.RetrofitErrorHandler;
+import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.CriticalItem;
-import tr.xip.wanikani.api.response.KanjiItem;
 import tr.xip.wanikani.api.response.LevelProgression;
-import tr.xip.wanikani.api.response.RadicalItem;
 import tr.xip.wanikani.api.response.SRSDistribution;
 import tr.xip.wanikani.api.response.StudyQueue;
 import tr.xip.wanikani.api.response.UnlockItem;
 import tr.xip.wanikani.api.response.User;
-import tr.xip.wanikani.api.response.UserInfo;
-import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.managers.PrefManager;
 
 /**
@@ -73,15 +70,15 @@ public class WaniKaniApi {
         return service.getCriticalItemsList(API_KEY, percentage).getList();
     }
 
-    public List<RadicalItem> getRadicalsList(String level) {
+    public List<BaseItem> getRadicalsList(String level) {
         return service.getRadicalsList(API_KEY, level).getList();
     }
 
-    public List<KanjiItem> getKanjiList(String level) {
+    public List<BaseItem> getKanjiList(String level) {
         return service.getKanjiList(API_KEY, level).getList();
     }
 
-    public List<VocabularyItem> getVocabularyList(String level) {
+    public List<BaseItem> getVocabularyList(String level) {
         return service.getVocabularyList(API_KEY, level).getList();
     }
 }

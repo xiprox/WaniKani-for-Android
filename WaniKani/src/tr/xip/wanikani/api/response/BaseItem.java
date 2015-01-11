@@ -10,34 +10,64 @@ public class BaseItem implements Serializable {
     public static final String TYPE_KANJI = "kanji";
     public static final String TYPE_VOCABULARY = "vocabulary";
 
-    private String character;
-    private String kana;
-    private String meaning;
-    private String image;
-    private String onyomi;
-    private String kunyomi;
-    private String important_reading;
-    private int level;
-    private UserSpecific user_specific;
+    int id;
 
-    private ItemType typeEnum;
+    String character;
+    String kana;
+    String meaning;
+    String image;
+    String onyomi;
+    String kunyomi;
+    String important_reading;
+    int level;
+    UserSpecific user_specific;
+
+    ItemType typeEnum;
 
     public BaseItem() {
-
     }
 
-    public BaseItem(ItemType type) {
-        switch (type) {
-            case RADICAL:
-                setType(ItemType.RADICAL);
-                break;
-            case KANJI:
-                setType(ItemType.KANJI);
-                break;
-            case VOCABULARY:
-                setType(ItemType.VOCABULARY);
-                break;
-        }
+    public BaseItem(int id, String character, String kana, String meaning, String image, String onyomi,
+                    String kunyomi, String importantReading, int level, String type, String srs,
+                    long unlockDate, long availableDate, boolean burned, long burnedDate,
+                    int meaningCorrect, int meaningIncorrect, int meaningMaxStreak,
+                    int meaningCurrentStreak, int readingCorrect, int readingIncorrect,
+                    int readingMaxStreak, int readingCurrentStreak, String meaningNote,
+                    String[] userSynonyms, String readingNote) {
+        this.id = id;
+        this.character = character;
+        this.kana = kana;
+        this.meaning = meaning;
+        this.image = image;
+        this.onyomi = onyomi;
+        this.kunyomi = kunyomi;
+        this.important_reading = importantReading;
+        this.level = level;
+        this.typeEnum = ItemType.fromString(type);
+
+        if (unlockDate != 0)
+            this.user_specific = new UserSpecific(
+                    srs,
+                    unlockDate,
+                    availableDate,
+                    burned,
+                    burnedDate,
+                    meaningCorrect,
+                    meaningIncorrect,
+                    meaningMaxStreak,
+                    meaningCurrentStreak,
+                    readingCorrect,
+                    readingIncorrect,
+                    readingMaxStreak,
+                    readingCurrentStreak,
+                    meaningNote,
+                    userSynonyms,
+                    readingNote
+            );
+    }
+
+    public int getId() {
+        return id;
     }
 
     public ItemType getType() {
@@ -46,26 +76,6 @@ public class BaseItem implements Serializable {
 
     public void setType(ItemType type) {
         this.typeEnum = type;
-    }
-
-    public String getTypeString() {
-        if (typeEnum == ItemType.RADICAL)
-            return TYPE_RADICAL;
-        if (typeEnum == ItemType.KANJI)
-            return TYPE_KANJI;
-        if (typeEnum == ItemType.VOCABULARY)
-            return TYPE_VOCABULARY;
-        else return null;
-    }
-
-    public ItemType getTypeFromString(String type) {
-        if (type.equals(TYPE_RADICAL))
-            return ItemType.RADICAL;
-        if (type.equals(TYPE_KANJI))
-            return ItemType.KANJI;
-        if (type.equals(TYPE_VOCABULARY))
-            return ItemType.VOCABULARY;
-        else return null;
     }
 
     public String getCharacter() {
@@ -105,101 +115,149 @@ public class BaseItem implements Serializable {
     }
 
     public String getSrsLevel() {
-        return user_specific.srs;
+        return isUnlocked() ? user_specific.srs : null;
     }
 
     public long getUnlockDate() {
-        return user_specific.unlocked_date * 1000;
+        return isUnlocked() ? user_specific.unlocked_date * 1000 : 0;
+    }
+
+    public long getUnlockDateInSeconds() {
+        return isUnlocked() ? user_specific.unlocked_date : 0;
     }
 
     public long getAvailableDate() {
-        return user_specific.available_date * 1000;
+        return isUnlocked() ? user_specific.available_date * 1000 : 0;
+    }
+
+    public long getAvailableDateInSeconds() {
+        return isUnlocked() ? user_specific.available_date : 0;
     }
 
     public boolean isBurned() {
-        return user_specific.burned;
+        return isUnlocked() ? user_specific.burned : false;
     }
 
     public long getBurnedDate() {
-        return user_specific.burned_date * 1000;
+        return isUnlocked() ? user_specific.burned_date * 1000 : 0;
+    }
+
+    public long getBurnedDateInSeconds() {
+        return isUnlocked() ? user_specific.burned_date : 0;
     }
 
     public int getMeaningCorrect() {
-        return user_specific.meaning_correct;
+        return isUnlocked() ? user_specific.meaning_correct : 0;
     }
 
     public int getMeaningIncorrect() {
-        return user_specific.meaning_incorrect;
+        return isUnlocked() ? user_specific.meaning_incorrect : 0;
     }
 
     public int getMeaningMaxStreak() {
-        return user_specific.meaning_max_streak;
+        return isUnlocked() ? user_specific.meaning_max_streak : 0;
     }
 
     public int getMeaningCurrentStreak() {
-        return user_specific.meaning_current_streak;
+        return isUnlocked() ? user_specific.meaning_current_streak : 0;
     }
 
     public int getMeaningAnswersCount() {
-        return user_specific.meaning_correct + user_specific.meaning_incorrect;
+        return isUnlocked() ? user_specific.meaning_correct + user_specific.meaning_incorrect : 0;
     }
 
     public int getMeaningCorrectPercentage() {
-        return (int) ((double) user_specific.meaning_correct / getMeaningAnswersCount() * 100);
+        return isUnlocked() ? (int) ((double) user_specific.meaning_correct / getMeaningAnswersCount() * 100) : 0;
     }
 
     public int getMeaningIncorrectPercentage() {
-        return (int) ((double) user_specific.meaning_incorrect / getMeaningAnswersCount() * 100);
+        return isUnlocked() ? (int) ((double) user_specific.meaning_incorrect / getMeaningAnswersCount() * 100) : 0;
     }
 
     public int getReadingCorrect() {
-        return getType() == ItemType.KANJI ? user_specific.reading_correct : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ? user_specific.reading_correct : 0 : 0;
     }
 
     public int getReadingIncorrect() {
-        return getType() == ItemType.KANJI ? user_specific.reading_incorrect : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ? user_specific.reading_incorrect : 0 : 0;
     }
 
     public int getReadingMaxStreak() {
-        return getType() == ItemType.KANJI ? user_specific.reading_max_streak : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ? user_specific.reading_max_streak : 0 : 0;
     }
 
     public int getReadingCurrentStreak() {
-        return getType() == ItemType.KANJI ? user_specific.reading_current_streak : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ? user_specific.reading_current_streak : 0 : 0;
     }
 
     public int getReadingAnswersCount() {
-        return getType() == ItemType.KANJI ?
-                user_specific.reading_correct + user_specific.reading_incorrect : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ?
+                user_specific.reading_correct + user_specific.reading_incorrect : 0 : 0;
     }
 
     public int getReadingCorrectPercentage() {
-        return getType() == ItemType.KANJI ?
-                (int) ((double) user_specific.reading_correct / getReadingAnswersCount() * 100) : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ?
+                (int) ((double) user_specific.reading_correct / getReadingAnswersCount() * 100) : 0 : 0;
     }
 
     public int getReadingIncorrectPercentage() {
-        return getType() == ItemType.KANJI ?
-                (int) ((double) user_specific.reading_incorrect / getReadingAnswersCount() * 100) : 0;
+        return isUnlocked() ? getType() == ItemType.KANJI ?
+                (int) ((double) user_specific.reading_incorrect / getReadingAnswersCount() * 100) : 0 : 0;
     }
 
     public String getMeaningNote() {
-        return user_specific.meaning_note;
+        return isUnlocked() ? user_specific.meaning_note : null;
     }
 
     public String[] getUserSynonyms() {
-        return user_specific.user_synonyms;
+        return isUnlocked() ? user_specific.user_synonyms : null;
+    }
+
+    public String getUserSynonymsAsString() {
+        if (getUserSynonyms() == null)
+            return null;
+
+        String synonyms = "";
+        for (int i = 0; i < getUserSynonyms().length; i++)
+            if (i == 0)
+                synonyms = getUserSynonyms()[i];
+            else
+                synonyms += ", " + getUserSynonyms()[i];
+        return synonyms;
     }
 
     public String getReadingNote() {
-        return getType() == ItemType.KANJI ? user_specific.reading_note : null;
+        return isUnlocked() ? getType() == ItemType.KANJI ? user_specific.reading_note : null : null;
     }
 
     public enum ItemType implements Serializable {
-        RADICAL, KANJI, VOCABULARY
+        RADICAL, KANJI, VOCABULARY;
+
+        public static ItemType fromString(String type) {
+            if (type.equals(TYPE_RADICAL))
+                return ItemType.RADICAL;
+            if (type.equals(TYPE_KANJI))
+                return ItemType.KANJI;
+            if (type.equals(TYPE_VOCABULARY))
+                return ItemType.VOCABULARY;
+            else return null;
+        }
+
+        public String toString() {
+            switch (this) {
+                case RADICAL:
+                    return TYPE_RADICAL;
+                case KANJI:
+                    return TYPE_KANJI;
+                case VOCABULARY:
+                    return TYPE_VOCABULARY;
+                default:
+                    return null;
+            }
+        }
     }
 
-    private class UserSpecific implements Serializable {
+    class UserSpecific implements Serializable {
         private String srs;
         private long unlocked_date;
         private long available_date;
@@ -216,5 +274,28 @@ public class BaseItem implements Serializable {
         private String meaning_note;
         private String[] user_synonyms;
         private String reading_note;
+
+        public UserSpecific(String srs, long unlockDate, long availableDate, boolean burned, long burnedDate,
+                            int meaningCorrect, int meaningIncorrect, int meaningMaxStreak,
+                            int meaningCurrentStreak, int readingCorrect, int readingIncorrect,
+                            int readingMaxStreak, int readingCurrentStreak, String meaningNote,
+                            String[] userSynonyms, String readingNote) {
+            this.srs = srs;
+            this.unlocked_date = unlockDate;
+            this.available_date = availableDate;
+            this.burned = burned;
+            this.burned_date = burnedDate;
+            this.meaning_correct = meaningCorrect;
+            this.meaning_incorrect = meaningIncorrect;
+            this.meaning_max_streak = meaningMaxStreak;
+            this.meaning_current_streak = meaningCurrentStreak;
+            this.reading_correct = readingCorrect;
+            this.reading_incorrect = readingIncorrect;
+            this.reading_max_streak = readingMaxStreak;
+            this.reading_current_streak = readingCurrentStreak;
+            this.meaning_note = meaningNote;
+            this.user_synonyms = userSynonyms;
+            this.reading_note = readingNote;
+        }
     }
 }

@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import tr.xip.wanikani.managers.OfflineDataManager;
+import tr.xip.wanikani.db.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
 
 /**
@@ -26,7 +26,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         if (prefManager.notificationsEnabled()) {
             /** Schedule an alarm if none is scheduled yet */
-            if (!prefs.isAlarmSet() && new OfflineDataManager(context).getReviewsAvailable() == 0)
+            if (!prefs.isAlarmSet() && new DatabaseManager(context).getStudyQueue().getAvailableReviewsCount() == 0)
                 new NotificationScheduler(context).schedule();
 
             /** Show a notification anyways if a given period of time has passed */

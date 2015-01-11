@@ -6,13 +6,16 @@ import android.os.AsyncTask;
 import java.util.List;
 
 import tr.xip.wanikani.api.WaniKaniApi;
-import tr.xip.wanikani.api.response.KanjiItem;
+import tr.xip.wanikani.api.response.BaseItem;
+import tr.xip.wanikani.db.tasks.ItemsLoadTask;
+import tr.xip.wanikani.db.tasks.ItemsSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.ItemsLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.KanjiListGetTaskCallbacks;
 
 /**
  * Created by Hikari on 1/3/15.
  */
-public class KanjiListGetTask extends AsyncTask<Void, Void, List<KanjiItem>> {
+public class KanjiListGetTask extends AsyncTask<Void, Void, List<BaseItem>> {
 
     private Context context;
 
@@ -43,7 +46,7 @@ public class KanjiListGetTask extends AsyncTask<Void, Void, List<KanjiItem>> {
     }
 
     @Override
-    protected List<KanjiItem> doInBackground(Void... params) {
+    protected List<BaseItem> doInBackground(Void... params) {
         try {
             return new WaniKaniApi(context).getKanjiList(level);
         } catch (Exception e) {
@@ -53,16 +56,30 @@ public class KanjiListGetTask extends AsyncTask<Void, Void, List<KanjiItem>> {
     }
 
     @Override
-    protected void onPostExecute(List<KanjiItem> list) {
+    protected void onPostExecute(List<BaseItem> list) {
         super.onPostExecute(list);
-/*
-        if (list != null)
-            // TODO: Save to database
-        else
-            list = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onKanjiListGetTaskPostExecute(list);
+        if (list != null) {
+            new ItemsSaveTask(context, BaseItem.ItemType.KANJI, list, null).executeParallel();
+
+            if (mCallbacks != null)
+                mCallbacks.onKanjiListGetTaskPostExecute(list);
+        } else
+            try {
+                String[] levelStrings = level.split(",");
+                int[] levels = new int[levelStrings.length];
+                for (int i = 0; i < levelStrings.length; i++)
+                    levels[i] = Integer.parseInt(levelStrings[i]);
+
+                new ItemsLoadTask(context, BaseItem.ItemType.KANJI, levels, new ItemsLoadTaskCallbacks() {
+                    @Override
+                    public void onItemsLoaded(List<BaseItem> items) {
+                        if (mCallbacks != null)
+                            mCallbacks.onKanjiListGetTaskPostExecute(items);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

@@ -24,7 +24,6 @@ import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.SRSDistribution;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.tasks.SRSDistributionGetTask;
 import tr.xip.wanikani.tasks.callbacks.SRSDistributionGetTaskCallbacks;
@@ -37,7 +36,6 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
 
     WaniKaniApi api;
     PrefManager prefMan;
-    OfflineDataManager dataMan;
     Utils utils;
 
     View rootView;
@@ -102,7 +100,6 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
-        dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -169,37 +166,12 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
 
         setOnClickListeners();
 
-        loadOfflineValues();
-
         return rootView;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    private void loadOfflineValues() {
-        mApprentice.setText(dataMan.getApprenticeTotalCount() + "");
-        mGuru.setText(dataMan.getGuruTotalCount() + "");
-        mMaster.setText(dataMan.getMasterTotalCount() + "");
-        mEnlightened.setText(dataMan.getEnlightenTotalCount() + "");
-        mBurned.setText(dataMan.getBurnedTotalCount() + "");
-
-        mTotalItems.setText(dataMan.getApprenticeTotalCount()
-                + dataMan.getGuruTotalCount()
-                + dataMan.getMasterTotalCount()
-                + dataMan.getEnlightenTotalCount()
-                + dataMan.getBurnedTotalCount()
-                + "");
-    }
-
-    private void saveOfflineValues(SRSDistribution distribution) {
-        dataMan.setApprenticeTotalCount(distribution.getAprentice().getTotalCount());
-        dataMan.setGuruTotalCount(distribution.getGuru().getTotalCount());
-        dataMan.setMasterTotalCount(distribution.getMaster().getTotalCount());
-        dataMan.setEnlightenTotalCount(distribution.getEnlighten().getTotalCount());
-        dataMan.setBurnedTotalCount(distribution.getBurned().getTotalCount());
     }
 
     private void setOnClickListeners() {
@@ -333,8 +305,6 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
 
             mTotalItems.setText(distribution.getTotal() + "");
 
-            saveOfflineValues(distribution);
-
             mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
         } else
             mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
@@ -354,92 +324,39 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
 
         @Override
         protected String doInBackground(String... strings) {
-            srsLevel = strings[0];
-
             try {
                 if (strings[0].equals("apprentice")) {
                     radicals = srs.getAprentice().getRadicalsCount();
                     kanji = srs.getAprentice().getKanjiCount();
                     vocabulary = srs.getAprentice().getVocabularyCount();
                     total = srs.getAprentice().getTotalCount();
-
-                    dataMan.setApprenticeRadicalsCount(radicals);
-                    dataMan.setApprenticeKanjiCount(kanji);
-                    dataMan.setApprentiveVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("guru")) {
                     radicals = srs.getGuru().getRadicalsCount();
                     kanji = srs.getGuru().getKanjiCount();
                     vocabulary = srs.getGuru().getVocabularyCount();
                     total = srs.getGuru().getTotalCount();
-
-                    dataMan.setGuruRadicalsCount(radicals);
-                    dataMan.setGuruKanjiCount(kanji);
-                    dataMan.setGuruVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("master")) {
                     radicals = srs.getMaster().getRadicalsCount();
                     kanji = srs.getMaster().getKanjiCount();
                     vocabulary = srs.getMaster().getVocabularyCount();
                     total = srs.getMaster().getTotalCount();
-
-                    dataMan.setMasterRadicalsCount(radicals);
-                    dataMan.setMasterKanjiCount(kanji);
-                    dataMan.setMasterVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("enlighten")) {
                     radicals = srs.getEnlighten().getRadicalsCount();
                     kanji = srs.getEnlighten().getKanjiCount();
                     vocabulary = srs.getEnlighten().getVocabularyCount();
                     total = srs.getEnlighten().getTotalCount();
-
-                    dataMan.setEnlightenRadicalsCount(radicals);
-                    dataMan.setEnlightenKanjiCount(kanji);
-                    dataMan.setEnlightenVocabularyCount(vocabulary);
                 }
                 if (strings[0].equals("burned")) {
                     radicals = srs.getBurned().getRadicalsCount();
                     kanji = srs.getBurned().getKanjiCount();
                     vocabulary = srs.getBurned().getVocabularyCount();
                     total = srs.getBurned().getTotalCount();
-
-                    dataMan.setBurnedRadicalsCount(radicals);
-                    dataMan.setBurnedKanjiCount(kanji);
-                    dataMan.setBurnedVocabularyCount(vocabulary);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-
-                if (strings[0].equals("apprentice")) {
-                    radicals = dataMan.getApprenticeRadicalsCount();
-                    kanji = dataMan.getApprenticeKanjiCount();
-                    vocabulary = dataMan.getApprenticeVocabularyCount();
-                    total = dataMan.getApprenticeTotalCount();
-                }
-                if (strings[0].equals("guru")) {
-                    radicals = dataMan.getGuruRadicalsCount();
-                    kanji = dataMan.getGuruKanjiCount();
-                    vocabulary = dataMan.getGuruVocabularyCount();
-                    total = dataMan.getGuruTotalCount();
-                }
-                if (strings[0].equals("master")) {
-                    radicals = dataMan.getMasterRadicalsCount();
-                    kanji = dataMan.getMasterKanjiCount();
-                    vocabulary = dataMan.getMasterVocabularyCount();
-                    total = dataMan.getMasterTotalCount();
-                }
-                if (strings[0].equals("enlighten")) {
-                    radicals = dataMan.getEnlightenRadicalsCount();
-                    kanji = dataMan.getEnlightenKanjiCount();
-                    vocabulary = dataMan.getEnlightenVocabularyCount();
-                    total = dataMan.getEnlightenTotalCount();
-                }
-                if (strings[0].equals("burned")) {
-                    radicals = dataMan.getBurnedRadicalsCount();
-                    kanji = dataMan.getBurnedKanjiCount();
-                    vocabulary = dataMan.getBurnedVocabularyCount();
-                    total = dataMan.getBurnedTotalCount();
-                }
             }
 
             return null;

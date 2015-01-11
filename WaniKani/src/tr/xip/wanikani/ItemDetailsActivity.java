@@ -33,10 +33,7 @@ import java.util.List;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.BaseItem;
 import tr.xip.wanikani.api.response.CriticalItem;
-import tr.xip.wanikani.api.response.KanjiItem;
-import tr.xip.wanikani.api.response.RadicalItem;
 import tr.xip.wanikani.api.response.UnlockItem;
-import tr.xip.wanikani.api.response.VocabularyItem;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.tasks.KanjiListGetTask;
 import tr.xip.wanikani.tasks.RadicalsListGetTask;
@@ -239,7 +236,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         if (mItem instanceof UnlockItem || mItem instanceof CriticalItem) {
             new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-                    mItem.getTypeString(),
+                    mItem.getType().toString(),
                     mItem.getLevel() + "",
                     mItem.getCharacter(),
                     mItem.getImage()
@@ -583,17 +580,17 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         }
 
                         @Override
-                        public void onRadicalsListGetTaskPostExecute(List<RadicalItem> list) {
+                        public void onRadicalsListGetTaskPostExecute(List<BaseItem> list) {
                             if (list != null) {
                                 if (character != null) {
-                                    for (RadicalItem item : list)
+                                    for (BaseItem item : list)
                                         if (item.getCharacter() != null)
                                             if (item.getCharacter().equals(character)) {
                                                 mItem = item;
                                                 break;
                                             }
                                 } else {
-                                    for (RadicalItem item : list)
+                                    for (BaseItem item : list)
                                         if (item.getImage() != null)
                                             if (item.getImage().equals(image)) {
                                                 mItem = item;
@@ -614,9 +611,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         }
 
                         @Override
-                        public void onKanjiListGetTaskPostExecute(List<KanjiItem> list) {
+                        public void onKanjiListGetTaskPostExecute(List<BaseItem> list) {
                             if (list != null)
-                                for (KanjiItem item : list)
+                                for (BaseItem item : list)
                                     if (item.getCharacter().equals(character)) {
                                         mItem = item;
                                         break;
@@ -634,9 +631,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
                         }
 
                         @Override
-                        public void onVocabularyListGetTaskPostExecute(List<VocabularyItem> list) {
+                        public void onVocabularyListGetTaskPostExecute(List<BaseItem> list) {
                             if (list != null)
-                                for (VocabularyItem item : list)
+                                for (BaseItem item : list)
                                     if (item.getCharacter().equals(character)) {
                                         mItem = item;
                                         break;

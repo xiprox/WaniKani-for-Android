@@ -1,5 +1,7 @@
 package tr.xip.wanikani;
 
+import android.os.Handler;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -7,8 +9,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-
-import android.os.Handler;
 
 /*
  *  Copyright (c) 2013 Alberto Cuda

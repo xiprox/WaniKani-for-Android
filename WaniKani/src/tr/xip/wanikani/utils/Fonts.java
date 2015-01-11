@@ -2,7 +2,6 @@ package tr.xip.wanikani.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 
 import tr.xip.wanikani.managers.PrefManager;
 

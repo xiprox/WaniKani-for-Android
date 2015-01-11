@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -21,8 +19,6 @@ import tr.xip.wanikani.DashboardFragment;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.LevelProgression;
-import tr.xip.wanikani.api.response.User;
-import tr.xip.wanikani.managers.OfflineDataManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.tasks.LevelProgressionGetTask;
 import tr.xip.wanikani.tasks.callbacks.LevelProgressionGetTaskCallbacks;
@@ -35,7 +31,6 @@ public class ProgressCard extends Fragment implements LevelProgressionGetTaskCal
 
     WaniKaniApi api;
     PrefManager prefMan;
-    OfflineDataManager dataMan;
     Utils utils;
 
     View rootView;
@@ -74,7 +69,6 @@ public class ProgressCard extends Fragment implements LevelProgressionGetTaskCal
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         prefMan = new PrefManager(getActivity());
-        dataMan = new OfflineDataManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -99,33 +93,7 @@ public class ProgressCard extends Fragment implements LevelProgressionGetTaskCal
 
         mCard = (LinearLayout) rootView.findViewById(R.id.card_progress_card);
 
-        loadOfflineValues();
-
         return rootView;
-    }
-
-    public void loadOfflineValues() {
-        mUserLevel.setText(dataMan.getLevel() + "");
-        mRadicalsProgress.setText(dataMan.getRadicalsProgress() + "");
-        mRadicalsTotal.setText(dataMan.getRadicalsProgress() + "");
-        mKanjiProgress.setText(dataMan.getKanjiProgress() + "");
-        mKanjiTotal.setText(dataMan.getKanjiTotal() + "");
-
-        mRadicalPercentage.setText(dataMan.getRadicalsPercentage() + "");
-        mKanjiPercentage.setText(dataMan.getKanjiPercentage() + "");
-
-        mRadicalProgressBar.setProgress(dataMan.getRadicalsPercentage());
-        mKanjiProgressBar.setProgress(dataMan.getKanjiPercentage());
-    }
-
-    private void saveOfflineValues(LevelProgression progression) {
-        dataMan.setLevel(progression.getUserInfo().getLevel());
-        dataMan.setRadicalsPercentage(progression.getRadicalsPercentage());
-        dataMan.setRadicalsProgress(progression.getRadicalsProgress());
-        dataMan.setRadicalsTotal(progression.getRadicalsTotal());
-        dataMan.setKanjiPercentage(progression.getKanjiPercentage());
-        dataMan.setKanjiProgress(progression.getKanjiProgress());
-        dataMan.setKanjiTotal(progression.getKanjiTotal());
     }
 
     public void load() {
@@ -152,8 +120,6 @@ public class ProgressCard extends Fragment implements LevelProgressionGetTaskCal
             mKanjiProgressBar.setProgress(progression.getKanjiPercentage());
 
             mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-
-            saveOfflineValues(progression);
         } else
             mListener.onProgressCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
     }

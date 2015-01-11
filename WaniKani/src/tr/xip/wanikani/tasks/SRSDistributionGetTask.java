@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import tr.xip.wanikani.api.WaniKaniApi;
 import tr.xip.wanikani.api.response.SRSDistribution;
+import tr.xip.wanikani.db.tasks.SrsDistributionLoadTask;
+import tr.xip.wanikani.db.tasks.SrsDistributionSaveTask;
+import tr.xip.wanikani.db.tasks.callbacks.SrsDistributionLoadTaskCallbacks;
 import tr.xip.wanikani.tasks.callbacks.SRSDistributionGetTaskCallbacks;
 
 /**
@@ -50,14 +53,23 @@ public class SRSDistributionGetTask extends AsyncTask<Void, Void, SRSDistributio
     @Override
     protected void onPostExecute(SRSDistribution distribution) {
         super.onPostExecute(distribution);
-/*
-        if (distribution != null)
-            // TODO: Save to database
-        else
-            distribution = // TODO: Get from database
-*/
 
-        if (mCallbacks != null)
-            mCallbacks.onSRSDistributionGetTaskPostExecute(distribution);
+        if (distribution != null) {
+            new SrsDistributionSaveTask(context, distribution, null).executeParallel();
+
+            if (mCallbacks != null)
+                mCallbacks.onSRSDistributionGetTaskPostExecute(distribution);
+        } else
+            try {
+                new SrsDistributionLoadTask(context, new SrsDistributionLoadTaskCallbacks() {
+                    @Override
+                    public void onSrsDistributionLoaded(SRSDistribution distribution) {
+                        if (mCallbacks != null)
+                            mCallbacks.onSRSDistributionGetTaskPostExecute(distribution);
+                    }
+                }).executeParallel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }
