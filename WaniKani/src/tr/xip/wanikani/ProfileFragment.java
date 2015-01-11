@@ -1,13 +1,8 @@
 package tr.xip.wanikani;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +26,7 @@ import tr.xip.wanikani.utils.CircleTransformation;
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-        UserInfoGetTaskCallbacks {
+public class ProfileFragment extends Fragment implements UserInfoGetTaskCallbacks {
 
     Context context;
 
@@ -56,35 +50,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     WaniKaniApi api;
     PrefManager prefMan;
-
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
-    private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-        }
-    };
-
-    private BroadcastReceiver mRetrofitConnectionErorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-        }
-    };
-
-    private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-        }
-    };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        registerReceivers();
-    }
-
-    @Override
-    public void onPause() {
-        unregisterReceivers();
-        super.onPause();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,12 +85,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         mTwitterHolder = (RelativeLayout) rootView.findViewById(R.id.profile_twitter_holder);
 
         mViewFlipper = (ViewFlipper) rootView.findViewById(R.id.profile_view_flipper);
-        mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_in);
-        mViewFlipper.setInAnimation(getActivity(), R.anim.abc_fade_out);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_pull_to_refresh);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_refresh);
 
         if (prefMan.isProfileFirstTime()) {
             if (mViewFlipper.getDisplayedChild() == 0) {
@@ -134,8 +93,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         }
 
         if (!MainActivity.isFirstSyncProfileDone) {
-            mSwipeRefreshLayout.setRefreshing(true);
-
             fetchData();
 
             MainActivity.isFirstSyncProfileDone = true;
@@ -150,33 +107,9 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         new UserInfoGetTask(context, this).executeParallel();
     }
 
-    private void registerReceivers() {
-        LocalBroadcastManager.getInstance(context).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
-        LocalBroadcastManager.getInstance(context).registerReceiver(mRetrofitConnectionErorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
-        LocalBroadcastManager.getInstance(context).registerReceiver(mRetrofitUnknownErrorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_UNKNOWN()));
-    }
-
-    private void unregisterReceivers() {
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitConnectionErorReceiver);
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(mRetrofitUnknownErrorReceiver);
-    }
-
-    @Override
-    public void onRefresh() {
-        fetchData();
-    }
-
     @Override
     public void onUserInfoGetTaskPreExecute() {
-        Picasso.with(context)
-                .load(R.drawable.profile_loading)
-                .fit()
-                .transform(new CircleTransformation())
-                .into(mAvatar);
+        /* Do nothing */
     }
 
     @Override
@@ -184,7 +117,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         if (user != null) {
             Picasso.with(getActivity())
                     .load("http://www.gravatar.com/avatar/" + user.getGravatar() + "?s=200")
-                    .error(R.drawable.profile_error)
                     .fit()
                     .transform(new CircleTransformation())
                     .into(mAvatar);
@@ -222,7 +154,5 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 prefMan.setProfileFirstTime(false);
             }
         }
-
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
