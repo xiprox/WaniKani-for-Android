@@ -10,10 +10,10 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import tr.xip.wanikani.FocusWebView;
+import tr.xip.wanikani.app.activity.FocusWebView;
 import tr.xip.wanikani.LocalIMEKeyboard;
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.WebReviewActivity;
+import tr.xip.wanikani.app.activity.WebReviewActivity;
 
 /**
  * This is an integration of Seiji's "WaniKani Improve":

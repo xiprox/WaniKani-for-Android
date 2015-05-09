@@ -1,5 +1,7 @@
 package tr.xip.wanikani;
 
+import tr.xip.wanikani.app.activity.FocusWebView;
+
 /*
  * I've basically copied here only the contents of unsafeWindow.WKO_ignoreAnswer, while the
  * triggering is made by users of this class (only LocalIMEKeyboard, so far).

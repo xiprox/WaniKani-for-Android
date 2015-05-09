@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.regex.Pattern;
 
-import tr.xip.wanikani.FocusWebView;
+import tr.xip.wanikani.app.activity.FocusWebView;
 
 public class PartOfSpeech {
 

@@ -20,7 +20,7 @@ package tr.xip.wanikani;
 /**
  * Implementation of this class correspond to entries of the "Reviews/Lessons kbd" menu entry.
  * Each one provides a different way to insert readings/meaning into the reviews and lesson quizzes.
- * Note that instances of this class are instantiated by {@link WebReviewActivity} only once, and
+ * Note that instances of this class are instantiated by {@link tr.xip.wanikani.app.activity.WebReviewActivity} only once, and
  * they are switched by calling {@link #hide()} and {@link #show(boolean)}.
  */
 public interface Keyboard {

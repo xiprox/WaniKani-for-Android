@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <tr.xip.wanikani.SynchronizedScrollView
+        <tr.xip.wanikani.widget.SynchronizedScrollView
             android:id="@+id/details_scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -797,6 +797,6 @@
                     android:background="@drawable/actionbar_shadow" />
             </FrameLayout>
 
-        </tr.xip.wanikani.SynchronizedScrollView>
+        </tr.xip.wanikani.widget.SynchronizedScrollView>
     </RelativeLayout>
 </LinearLayout>

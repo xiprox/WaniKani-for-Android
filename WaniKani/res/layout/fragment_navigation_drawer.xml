@@ -78,7 +78,7 @@
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0px"
                 android:listSelector="@drawable/selector_background_neutral"
-                tools:context="tr.xip.wanikani.NavigationDrawerFragment" />
+                tools:context="tr.xip.wanikani.app.fragment.NavigationDrawerFragment" />
 
             <LinearLayout
                 android:layout_width="match_parent"

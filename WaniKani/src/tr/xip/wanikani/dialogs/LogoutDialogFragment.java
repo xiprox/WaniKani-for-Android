@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
-import tr.xip.wanikani.FirstTimeActivity;
+import tr.xip.wanikani.app.activity.FirstTimeActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.managers.PrefManager;
 

@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="tr.xip.wanikani.MainActivity"
+            android:name=".app.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme_NavigationDrawerActivity">
             <intent-filter>
@@ -23,101 +23,101 @@
         </activity>
 
         <activity
-            android:name=".Browser"
-            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            android:name=".app.activity.Browser"
+            android:parentActivityName=".app.activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ItemDetailsActivity"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"
+            android:name=".app.activity.ItemDetailsActivity"
+            android:parentActivityName=".app.activity.MainActivity"
             android:theme="@style/AppTheme_NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".RecentUnlocksActivity"
+            android:name=".app.activity.RecentUnlocksActivity"
             android:label="@string/card_title_recent_unlocks"
-            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            android:parentActivityName=".app.activity.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".FirstTimeActivity"
+            android:name=".app.activity.FirstTimeActivity"
             android:icon="@drawable/ic_wanikani_stamp" />
 
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".preference.SettingsActivity"
             android:label="@string/title_settings"
-            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            android:parentActivityName=".app.activity.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".WebReviewActivity"
+            android:name=".app.activity.WebReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"
+            android:parentActivityName=".app.activity.MainActivity"
             android:process=":webview"
             android:theme="@style/AppTheme_NoActionBar"
             android:windowSoftInputMode="adjustResize">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".SWWebReviewActivity"
+            android:name=".app.activity.SWWebReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="false"
             android:launchMode="singleTop"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"
+            android:parentActivityName=".app.activity.MainActivity"
             android:process=":swwebview"
             android:theme="@style/AppTheme_NoActionBar"
             android:windowSoftInputMode="adjustResize">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ProgressDetailsActivity"
+            android:name=".app.activity.ProgressDetailsActivity"
             android:label="@string/card_title_progress"
-            android:parentActivityName="tr.xip.wanikani.MainActivity"
+            android:parentActivityName=".app.activity.MainActivity"
             android:theme="@style/AppTheme_NoActionBar">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
         <activity
-            android:name=".CriticalItemsActivity"
+            android:name=".app.activity.CriticalItemsActivity"
             android:label="@string/card_title_progress"
-            android:parentActivityName="tr.xip.wanikani.MainActivity">
+            android:parentActivityName=".app.activity.MainActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="tr.xip.wanikani.MainActivity" />
+                android:value=".app.activity.MainActivity" />
         </activity>
 
-        <receiver android:name=".notification.NotificationPublisher" />
+        <receiver android:name=".content.notification.NotificationPublisher" />
 
-        <receiver android:name=".notification.NotificationReceiver">
+        <receiver android:name=".content.notification.NotificationReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>

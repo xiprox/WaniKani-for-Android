@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.adapters.LevelPickerCheckBoxAdapter;
+import tr.xip.wanikani.widget.adapter.LevelPickerCheckBoxAdapter;
 
 public class LevelPickerDialogFragment extends DialogFragment implements LevelPickerCheckBoxAdapter.LevelPickerCheckBoxAdapterListener {
 

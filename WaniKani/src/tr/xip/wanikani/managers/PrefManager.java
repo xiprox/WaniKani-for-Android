@@ -14,9 +14,9 @@ import java.io.File;
 import java.io.IOException;
 
 import tr.xip.wanikani.ExternalFramePlacer;
-import tr.xip.wanikani.SWWebReviewActivity;
-import tr.xip.wanikani.WebReviewActivity;
-import tr.xip.wanikani.notification.NotificationPublisher;
+import tr.xip.wanikani.app.activity.SWWebReviewActivity;
+import tr.xip.wanikani.app.activity.WebReviewActivity;
+import tr.xip.wanikani.content.notification.NotificationPublisher;
 
 /**
  * Created by xihsa_000 on 3/11/14.

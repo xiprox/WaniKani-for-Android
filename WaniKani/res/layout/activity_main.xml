@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="tr.xip.wanikani.MainActivity">
+    tools:context="tr.xip.wanikani.app.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
 
         <fragment
             android:id="@+id/navigation_drawer"
-            android:name="tr.xip.wanikani.NavigationDrawerFragment"
+            android:name="tr.xip.wanikani.app.fragment.NavigationDrawerFragment"
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"

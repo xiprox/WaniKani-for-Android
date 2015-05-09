@@ -80,7 +80,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1">
 
-                    <tr.xip.wanikani.FocusWebView
+                    <tr.xip.wanikani.app.activity.FocusWebView
                         android:id="@+id/wv_reviews"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />

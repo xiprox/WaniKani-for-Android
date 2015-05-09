@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
+import tr.xip.wanikani.app.activity.FocusWebView;
+import tr.xip.wanikani.app.activity.WebReviewActivity;
+
 /**
  * Implementation of the {@link Keyboard} interface that uses the default android keyboard.
  * This is more or less like using an external browser: the main difference being

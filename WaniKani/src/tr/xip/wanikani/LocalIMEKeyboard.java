@@ -34,7 +34,9 @@ import java.util.EnumMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import tr.xip.wanikani.items.WaniKaniItem;
+import tr.xip.wanikani.app.activity.FocusWebView;
+import tr.xip.wanikani.app.activity.WebReviewActivity;
+import tr.xip.wanikani.models.WaniKaniItem;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.userscripts.IgnoreButton;
 import tr.xip.wanikani.userscripts.LessonOrder;

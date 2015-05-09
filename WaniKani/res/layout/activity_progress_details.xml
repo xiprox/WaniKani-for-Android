@@ -56,7 +56,7 @@
 
                         <fragment
                             android:id="@+id/progress_details_progress_card"
-                            android:name="tr.xip.wanikani.cards.ProgressCardNoTitle"
+                            android:name="tr.xip.wanikani.app.fragment.card.ProgressCardNoTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:layout="@layout/card_progress_no_title" />
