@@ -88,7 +88,6 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
         ((ProgressCardNoTitle) mProgressCard).setListener(this, this);
 
         new RemainingItemsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
     }
 
     @Override

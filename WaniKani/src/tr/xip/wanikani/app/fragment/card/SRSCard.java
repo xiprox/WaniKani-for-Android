@@ -297,6 +297,8 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
     @Override
     public void onSRSDistributionGetTaskPostExecute(SRSDistribution distribution) {
         if (distribution != null) {
+            srs = distribution;
+
             mApprentice.setText(distribution.getAprentice().getTotalCount() + "");
             mGuru.setText(distribution.getGuru().getTotalCount() + "");
             mMaster.setText(distribution.getMaster().getTotalCount() + "");
@@ -324,32 +326,34 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
 
         @Override
         protected String doInBackground(String... strings) {
+            srsLevel = strings[0];
+
             try {
-                if (strings[0].equals("apprentice")) {
+                if (srsLevel.equals("apprentice")) {
                     radicals = srs.getAprentice().getRadicalsCount();
                     kanji = srs.getAprentice().getKanjiCount();
                     vocabulary = srs.getAprentice().getVocabularyCount();
                     total = srs.getAprentice().getTotalCount();
                 }
-                if (strings[0].equals("guru")) {
+                if (srsLevel.equals("guru")) {
                     radicals = srs.getGuru().getRadicalsCount();
                     kanji = srs.getGuru().getKanjiCount();
                     vocabulary = srs.getGuru().getVocabularyCount();
                     total = srs.getGuru().getTotalCount();
                 }
-                if (strings[0].equals("master")) {
+                if (srsLevel.equals("master")) {
                     radicals = srs.getMaster().getRadicalsCount();
                     kanji = srs.getMaster().getKanjiCount();
                     vocabulary = srs.getMaster().getVocabularyCount();
                     total = srs.getMaster().getTotalCount();
                 }
-                if (strings[0].equals("enlighten")) {
+                if (srsLevel.equals("enlighten")) {
                     radicals = srs.getEnlighten().getRadicalsCount();
                     kanji = srs.getEnlighten().getKanjiCount();
                     vocabulary = srs.getEnlighten().getVocabularyCount();
                     total = srs.getEnlighten().getTotalCount();
                 }
-                if (strings[0].equals("burned")) {
+                if (srsLevel.equals("burned")) {
                     radicals = srs.getBurned().getRadicalsCount();
                     kanji = srs.getBurned().getKanjiCount();
                     vocabulary = srs.getBurned().getVocabularyCount();
