@@ -215,10 +215,10 @@
     <string name="pref_summary_hw_accel">Enables HW acceleration. You may need disable this if
         reviews are rendered incorrectly.</string>
     <string name="pref_title_custom_fonts">Use custom fonts</string>
-    <string name="pref_summary_custom_fonts">Use custom fotns for Japanese text instead of the system ones</string>
+    <string name="pref_summary_custom_fonts">Use custom fonts for Japanese text instead of the system ones</string>
     <string name="pref_category_lessons_and_reviews">Lessons and reviews</string>
     <string name="pref_title_fullscreen">Fullscreen</string>
-    <string name="pref_summary_fullscreen">Hides the Action Bar (title bar) while in reviews or lesons</string>
+    <string name="pref_summary_fullscreen">Hides the Action Bar (title bar) while in reviews or lessons</string>
 
     <!-- Screen Orientation -->
     <string name="screen_orientation_auto">Auto-rotate</string>
