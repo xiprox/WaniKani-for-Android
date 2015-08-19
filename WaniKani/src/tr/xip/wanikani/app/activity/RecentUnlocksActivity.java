@@ -76,6 +76,8 @@ public class RecentUnlocksActivity extends ActionBarActivity implements RecentUn
     @Override
     public void onRecentUnlocksListGetTaskPostExecute(List<UnlockItem> list) {
         if (list != null) {
+            recentUnlocksList = list;
+
             mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
                     list, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
             mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
