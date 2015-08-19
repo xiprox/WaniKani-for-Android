@@ -7,9 +7,14 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/navigation_drawer_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:layout_marginBottom="-2dp"
         android:fadingEdge="none"
+        android:fillViewport="true"
         android:scrollbars="none">
 
         <LinearLayout
@@ -80,29 +85,30 @@
                 android:dividerHeight="0px"
                 android:listSelector="@drawable/selector_background_neutral"
                 tools:context="tr.xip.wanikani.app.fragment.NavigationDrawerFragment" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/separator_light" />
-
-                <ListView
-                    android:id="@+id/navigation_drawer_list_secondary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:choiceMode="singleChoice"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="0dp"
-                    android:listSelector="@drawable/selector_background_neutral" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        tools:layout_height="124dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:alpha="0.4"
+            android:background="@drawable/shadow_bottom" />
+
+        <ListView
+            android:id="@+id/navigation_drawer_list_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:listSelector="@drawable/selector_background_neutral" />
+    </LinearLayout>
 </LinearLayout>
