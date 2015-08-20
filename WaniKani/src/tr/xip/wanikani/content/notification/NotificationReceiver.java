@@ -9,6 +9,7 @@ import tr.xip.wanikani.content.notification.NotificationPublisher;
 import tr.xip.wanikani.content.notification.NotificationScheduler;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.models.StudyQueue;
 
 /**
  * This receiver is called on every screen unlock. It schedules an alarm to set off on the next review
@@ -29,12 +30,15 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         if (!prefManager.isFirstLaunch() && prefManager.notificationsEnabled()) {
             /** Schedule an alarm if none is scheduled yet */
-            if (!prefs.isAlarmSet() && new DatabaseManager(context).getStudyQueue().getAvailableReviewsCount() == 0)
+            StudyQueue queue = new DatabaseManager(context).getStudyQueue();
+            //noinspection SimplifiableConditionalExpression
+            if (!prefs.isAlarmSet() && queue != null ? queue.getAvailableReviewsCount() == 0 : true) {
                 new NotificationScheduler(context).schedule();
-
+            }
             /** Show a notification anyways if a given period of time has passed */
-            if (prefs.shouldShowNotification())
+            if (prefs.shouldShowNotification()) {
                 new NotificationPublisher().publish(context);
+            }
         }
     }
 }
