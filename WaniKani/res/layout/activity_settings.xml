@@ -479,13 +479,15 @@
                     android:layout_height="1dp"
                     android:background="@color/separator_light" />
 
+                <!-- TODO -->
                 <RelativeLayout
                     android:id="@+id/settings_userscripts_review_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selector_background_neutral"
                     android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -516,18 +518,22 @@
                         android:layout_marginRight="16dp" />
                 </RelativeLayout>
 
+                <!-- TODO -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/separator_light" />
+                    android:background="@color/separator_light"
+                    android:visibility="gone" />
 
+                <!-- TODO -->
                 <RelativeLayout
                     android:id="@+id/settings_userscripts_lesson_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selector_background_neutral"
                     android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -558,10 +564,12 @@
                         android:layout_marginRight="16dp" />
                 </RelativeLayout>
 
+                <!-- TODO -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/separator_light" />
+                    android:background="@color/separator_light"
+                    android:visibility="gone" />
 
                 <!-- TODO -->
                 <RelativeLayout
