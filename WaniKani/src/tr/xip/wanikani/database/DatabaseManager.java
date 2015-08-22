@@ -396,6 +396,7 @@ public class DatabaseManager {
         );
 
         if (c != null && c.moveToFirst()) {
+            User user = getUser();
             return new StudyQueue(
                     c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_ID)),
                     c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_LESSONS_AVAILABLE)),
@@ -403,7 +404,7 @@ public class DatabaseManager {
                     c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_HOUR)),
                     c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_DAY)),
                     c.getLong(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE)),
-                    getUser().getUserInformation()
+                    user != null ? user.getUserInformation() : null
             );
         } else {
             Log.e(TAG, "No study queue found; returning null");
