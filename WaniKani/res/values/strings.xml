@@ -219,6 +219,22 @@
     <string name="pref_category_lessons_and_reviews">Lessons and reviews</string>
     <string name="pref_title_fullscreen">Fullscreen</string>
     <string name="pref_summary_fullscreen">Hides the Action Bar (title bar) while in reviews or lessons</string>
+    <string name="pref_category_notifications">Notifications</string>
+    <string name="pref_title_notifications">Enable notifications</string>
+    <string name="pref_summary_notifications">Display notifications when new reviews or lessons are available</string>
+    <string name="pref_title_reminder_notification">Enable reminder notification</string>
+    <string name="pref_summary_reminder_notification">When you have some reviews or lessons waiting for you, the app will remind you whenever you unlock your device as long as a specific amount of time has passed.</string>
+    <string name="pref_title_reminder_notification_interval">Reminder notification interval</string>
+    <string name="pref_summary_reminder_notification_interval">The time it takes for a new reminder notification to be shown</string>
+    <string name="pref_entry_reminder_notification_interval_30_minutes">30 minutes</string>
+    <string name="pref_entry_reminder_notification_interval_45_minutes">45 minutes</string>
+    <string name="pref_entry_reminder_notification_interval_1_hour">1 hour</string>
+    <string name="pref_entry_reminder_notification_interval_1_hour_30_minutes">1 hour and 30 minutes</string>
+    <string name="pref_entry_reminder_notification_interval_2_hours">2 hours</string>
+    <string name="pref_entry_reminder_notification_interval_3_hours">3 hours</string>
+    <string name="pref_entry_reminder_notification_interval_4_hours">4 hours</string>
+    <string name="pref_entry_reminder_notification_interval_5_hours">5 hours</string>
+    <string name="pref_entry_reminder_notification_interval_6_hours">6 hours</string>
 
     <!-- Screen Orientation -->
     <string name="screen_orientation_auto">Auto-rotate</string>

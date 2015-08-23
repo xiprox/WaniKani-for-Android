@@ -42,7 +42,7 @@ public class NotificationPreferences {
 
     public long getLastNotificationShown() {
         return prefs.getLong(PREF_LAST_NOTIFICATION_SHOWN,
-                System.currentTimeMillis() + prefMan.getNotificationReminderInterval());
+                System.currentTimeMillis() + prefMan.getReminderNotificationInterval());
     }
 
     public void saveLastNotificationShown(long lastShown) {
@@ -50,6 +50,6 @@ public class NotificationPreferences {
     }
 
     public boolean shouldShowNotification() {
-        return (System.currentTimeMillis() - getLastNotificationShown()) > prefMan.getNotificationReminderInterval();
+        return (System.currentTimeMillis() - getLastNotificationShown()) > prefMan.getReminderNotificationInterval();
     }
 }

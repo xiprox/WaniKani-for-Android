@@ -1,16 +1,21 @@
 package tr.xip.wanikani.preference;
 
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.dialogs.OpenSourceLicensesDialogFragment;
@@ -36,6 +41,11 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
     LinearLayout mCriticalItemsNumber;
     RelativeLayout mReviewsLessonsFullscreen;
     CheckBox mReviewsLessonsFullscreenCheckBox;
+    RelativeLayout mNotificationsEnable;
+    CheckBox mNotificationsEnableCheckBox;
+    RelativeLayout mNotificationsReminderEnable;
+    CheckBox mNotificationsReminderEnableCheckBox;
+    LinearLayout mNotificationsReminderInterval;
     RelativeLayout mReviewImprovements;
     CheckBox mReviewImprovementsCheckBox;
     RelativeLayout mIgnoreButton;
@@ -91,6 +101,11 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         mCriticalItemsNumber = (LinearLayout) findViewById(R.id.settings_dashboard_critical_items_number);
         mReviewsLessonsFullscreen = (RelativeLayout) findViewById(R.id.settings_rev_les_fullscreen);
         mReviewsLessonsFullscreenCheckBox = (CheckBox) findViewById(R.id.settings_rev_les_fullscreen_check_box);
+        mNotificationsEnable = (RelativeLayout) findViewById(R.id.settings_notifications_enable_notifications);
+        mNotificationsEnableCheckBox = (CheckBox) findViewById(R.id.settings_notifications_enable_notifications_check_box);
+        mNotificationsReminderEnable = (RelativeLayout) findViewById(R.id.settings_notifications_enable_reminder_notifications);
+        mNotificationsReminderEnableCheckBox = (CheckBox) findViewById(R.id.settings_notifications_enable_reminder_notification_check_box);
+        mNotificationsReminderInterval = (LinearLayout) findViewById(R.id.settings_notifications_reminder_notification_interval);
         mReviewImprovements = (RelativeLayout) findViewById(R.id.settings_userscripts_review_improvements);
         mReviewImprovementsCheckBox = (CheckBox) findViewById(R.id.settings_userscripts_review_improvements_check_box);
         mIgnoreButton = (RelativeLayout) findViewById(R.id.settings_userscripts_ignore_button);
@@ -138,6 +153,20 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 prefMan.setUseSpecificDates(isChecked);
+            }
+        });
+
+        mNotificationsEnableCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefMan.setNotificationsEnabled(isChecked);
+            }
+        });
+
+        mNotificationsReminderEnableCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                prefMan.setReminderNotificationEnabled(isChecked);
             }
         });
 
@@ -288,6 +317,8 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         loadGeneralUseSpecificDates();
         loadReviewsImprovements();
         loadReviewsLessonsFullscreen();
+        loadNotificationsEnable();
+        loadNotificationsReminderEnable();
         loadIgnoreButton();
         loadSingleButton();
         loadPortraitMode();
@@ -314,6 +345,9 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
         mCriticalItemsNumber.setOnClickListener(this);
         mReviewImprovements.setOnClickListener(this);
         mReviewsLessonsFullscreen.setOnClickListener(this);
+        mNotificationsEnable.setOnClickListener(this);
+        mNotificationsReminderEnable.setOnClickListener(this);
+        mNotificationsReminderInterval.setOnClickListener(this);
         mIgnoreButton.setOnClickListener(this);
         mSingleButton.setOnClickListener(this);
         mPortraitMode.setOnClickListener(this);
@@ -358,6 +392,14 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
 
     private void loadReviewsLessonsFullscreen() {
         mReviewsLessonsFullscreenCheckBox.setChecked(prefMan.getReviewsLessonsFullscreen());
+    }
+
+    private void loadNotificationsEnable() {
+        mNotificationsEnableCheckBox.setChecked(prefMan.notificationsEnabled());
+    }
+
+    private void loadNotificationsReminderEnable() {
+        mNotificationsReminderEnableCheckBox.setChecked(prefMan.reminderNotificationEnabled());
     }
 
     private void loadIgnoreButton() {
@@ -465,6 +507,15 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
             case R.id.settings_rev_les_fullscreen:
                 mReviewsLessonsFullscreenCheckBox.toggle();
                 break;
+            case R.id.settings_notifications_enable_notifications:
+                mNotificationsEnableCheckBox.toggle();
+                break;
+            case R.id.settings_notifications_enable_reminder_notifications:
+                mNotificationsReminderEnableCheckBox.toggle();
+                break;
+            case R.id.settings_notifications_reminder_notification_interval:
+                showReminderNotificationIntervalDialog();
+                break;
             case R.id.settings_userscripts_ignore_button:
                 mIgnoreButtonCheckBox.toggle();
                 break;
@@ -518,6 +569,39 @@ public class SettingsActivity extends ActionBarActivity implements View.OnClickL
                         "open-source-licenses-preference-dialog");
                 break;
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void showReminderNotificationIntervalDialog() {
+        final ArrayAdapter<Integer> adapter
+                = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice);
+        adapter.addAll(getReminderNotificationIntervals());
+        int currentSelection = adapter.getPosition((int) (prefMan.getReminderNotificationInterval() / 60000));
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.minutes))
+                .setSingleChoiceItems(adapter, currentSelection, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        prefMan.setReminderNotificationInterval(adapter.getItem(position) * 60000);
+                    }
+                })
+                .setPositiveButton(R.string.ok, null)
+                .create().show();
+    }
+
+    private ArrayList<Integer> getReminderNotificationIntervals() {
+        //noinspection unchecked
+        ArrayList<Integer> list = new ArrayList();
+        list.add(30);
+        list.add(45);
+        list.add(60);
+        list.add(90);
+        list.add(120);
+        list.add(180);
+        list.add(240);
+        list.add(300);
+        list.add(360);
+        return list;
     }
 
     @Override
