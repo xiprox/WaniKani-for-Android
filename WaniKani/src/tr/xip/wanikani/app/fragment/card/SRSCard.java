@@ -302,7 +302,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
             mApprentice.setText(distribution.getAprentice().getTotalCount() + "");
             mGuru.setText(distribution.getGuru().getTotalCount() + "");
             mMaster.setText(distribution.getMaster().getTotalCount() + "");
-            mEnlightened.setText(distribution.getMaster().getTotalCount() + "");
+            mEnlightened.setText(distribution.getEnlighten().getTotalCount() + "");
             mBurned.setText(distribution.getBurned().getTotalCount() + "");
 
             mTotalItems.setText(distribution.getTotal() + "");
