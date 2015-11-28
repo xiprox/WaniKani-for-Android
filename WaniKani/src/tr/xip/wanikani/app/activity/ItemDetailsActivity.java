@@ -589,6 +589,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                         if (item.getCharacter() != null)
                                             if (item.getCharacter().equals(character)) {
                                                 mItem = item;
+                                                loadData();
                                                 break;
                                             }
                                 } else {
@@ -596,6 +597,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                         if (item.getImage() != null)
                                             if (item.getImage().equals(image)) {
                                                 mItem = item;
+                                                loadData();
                                                 break;
                                             }
                                 }
@@ -618,6 +620,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                 for (BaseItem item : list)
                                     if (item.getCharacter().equals(character)) {
                                         mItem = item;
+                                        loadData();
                                         break;
                                     }
                         }
@@ -638,9 +641,12 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                 for (BaseItem item : list)
                                     if (item.getCharacter().equals(character)) {
                                         mItem = item;
+                                        loadData();
                                         break;
                                     }
                         }
+
+
                     }).executeParallel();
                 }
 
@@ -655,9 +661,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
 
-            if (success)
-                loadData();
-            else {
+            if (!success) {
                 Log.e(TAG, "Failed to fetch item info; exiting...");
                 Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
                 finish();
