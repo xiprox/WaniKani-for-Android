@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.UnlockItem;
 import tr.xip.wanikani.utils.Animations;
 import tr.xip.wanikani.utils.Fonts;
@@ -68,15 +69,15 @@ public class RecentUnlocksStickyHeaderGridViewArrayAdapter extends StickyGridHea
 
         mUnlockCharacter.setTypeface(typeface);
 
-        if (item.getType().equals("radical")) {
+        if (item.getType() == BaseItem.ItemType.RADICAL) {
             mUnlockType.setBackgroundResource(R.drawable.oval_radical);
         }
 
-        if (item.getType().equals("kanji")) {
+        if (item.getType() == BaseItem.ItemType.KANJI) {
             mUnlockType.setBackgroundResource(R.drawable.oval_kanji);
         }
 
-        if (item.getType().equals("vocabulary")) {
+        if (item.getType() == BaseItem.ItemType.VOCABULARY) {
             mUnlockType.setBackgroundResource(R.drawable.oval_vocabulary);
         }
 
