@@ -645,8 +645,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
                                         break;
                                     }
                         }
-
-
                     }).executeParallel();
                 }
 

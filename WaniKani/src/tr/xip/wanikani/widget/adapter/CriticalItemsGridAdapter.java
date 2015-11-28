@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.CriticalItem;
 import tr.xip.wanikani.utils.Fonts;
 
@@ -57,15 +58,15 @@ public class CriticalItemsGridAdapter extends ArrayAdapter<CriticalItem> {
 
         mItemCharacter.setTypeface(typeface);
 
-        if (item.getType().equals("radical")) {
+        if (item.getType() == BaseItem.ItemType.RADICAL) {
             mItemType.setBackgroundResource(R.drawable.oval_radical);
         }
 
-        if (item.getType().equals("kanji")) {
+        if (item.getType() == BaseItem.ItemType.KANJI) {
             mItemType.setBackgroundResource(R.drawable.oval_kanji);
         }
 
-        if (item.getType().equals("vocabulary")) {
+        if (item.getType() == BaseItem.ItemType.VOCABULARY) {
             mItemType.setBackgroundResource(R.drawable.oval_vocabulary);
         }
 
