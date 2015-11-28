@@ -73,6 +73,7 @@ public class CriticalItemsActivity extends ActionBarActivity implements Critical
     @Override
     public void onCriticalItemsListGetTaskPostExecute(List<CriticalItem> list) {
         if (list != null) {
+            mList = list;
             mAdapter = new CriticalItemsGridAdapter(
                     CriticalItemsActivity.this,
                     R.layout.item_critical_grid,
