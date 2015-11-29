@@ -12,12 +12,12 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion '20.0.0'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 10
         versionName "1.2.1"
     }
@@ -69,7 +69,7 @@ android {
         compile 'com.android.support:appcompat-v7:+'
         compile 'com.android.support:cardview-v7:+'
         compile 'com.tonicartos:stickygridheaders:+'
-        compile 'com.squareup.retrofit:retrofit:+'
+        compile 'com.squareup.retrofit:retrofit:1.9.0'
         compile 'com.squareup.picasso:picasso:+'
         compile files('libs/commons-io-2.4.jar')
         compile files('libs/commons-lang3-3.3.1.jar')
