@@ -19,4 +19,24 @@
     </style>
 
     <style name="AppTheme_NavigationDrawerActivity" parent="AppTheme_NoActionBar" />
+
+    <style name="AppTheme_Item" parent="AppTheme_NoActionBar" >
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="AppTheme_Radical" parent="AppTheme_Item" >
+        <item name="colorPrimary">@color/wanikani_radical</item>
+        <item name="colorPrimaryDark">@color/wanikani_radical_dark</item>
+    </style>
+
+    <style name="AppTheme_Kanji" parent="AppTheme_Item" >
+        <item name="colorPrimary">@color/wanikani_kanji</item>
+        <item name="colorPrimaryDark">@color/wanikani_kanji</item>
+    </style>
+
+    <style name="AppTheme_Vocabulary" parent="AppTheme_Item" >
+        <item name="colorPrimary">@color/wanikani_vocabulary</item>
+        <item name="colorPrimaryDark">@color/wanikani_vocabulary_dark</item>
+    </style>
 </resources>
