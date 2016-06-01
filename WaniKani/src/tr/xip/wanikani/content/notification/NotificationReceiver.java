@@ -29,11 +29,13 @@ public class NotificationReceiver extends BroadcastReceiver {
         PrefManager prefManager = new PrefManager(context);
 
         if (!prefManager.isFirstLaunch() && prefManager.notificationsEnabled()) {
-            /** Schedule an alarm if none is scheduled yet */
-            StudyQueue queue = new DatabaseManager(context).getStudyQueue();
-            //noinspection SimplifiableConditionalExpression
-            if (!prefs.isAlarmSet() && queue != null ? queue.getAvailableReviewsCount() == 0 : true) {
-                new NotificationScheduler(context).schedule();
+            if (!prefs.isAlarmSet()) {
+                /** Schedule an alarm if none is scheduled yet */
+                StudyQueue queue = new DatabaseManager(context).getStudyQueue();
+                //noinspection SimplifiableConditionalExpression
+                if (queue != null ? queue.getAvailableReviewsCount() == 0 : true) {
+                    new NotificationScheduler(context).schedule();
+                }
             }
             /** Show a notification anyways if a given period of time has passed */
             if (prefs.shouldShowNotification()) {
