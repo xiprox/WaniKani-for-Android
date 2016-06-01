@@ -17,6 +17,7 @@ import tr.xip.wanikani.ExternalFramePlacer;
 import tr.xip.wanikani.app.activity.SWWebReviewActivity;
 import tr.xip.wanikani.app.activity.WebReviewActivity;
 import tr.xip.wanikani.content.notification.NotificationPublisher;
+import tr.xip.wanikani.content.notification.NotificationScheduler;
 
 /**
  * Created by xihsa_000 on 3/11/14.
@@ -340,6 +341,9 @@ public class PrefManager {
 
     public void setNotificationsEnabled(boolean value) {
         prefeditor.putBoolean(PREF_SHOW_NOTIFICATIONS, value).commit();
+        if (!value) {
+            new NotificationScheduler(context).cancelNotifications();
+        }
     }
 
     public boolean notificationsEnabled() {
