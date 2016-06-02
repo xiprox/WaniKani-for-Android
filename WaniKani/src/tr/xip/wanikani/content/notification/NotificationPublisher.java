@@ -111,12 +111,11 @@ public class NotificationPublisher extends BroadcastReceiver implements StudyQue
                 NotificationManager mNotificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-
-                notifPrefs.saveLastNotificationShown(System.currentTimeMillis());
             }
         }
 
         notifPrefs.setAlarmSet(false);
+        notifPrefs.saveLastNotificationShown(System.currentTimeMillis());
         new NotificationReceiver().handleSituation(context);
 
         Log.d("NOTIFICATION PUBLISHER", "PUBLISHED A NOTIFICATION");
