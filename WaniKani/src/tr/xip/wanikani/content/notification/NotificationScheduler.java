@@ -26,6 +26,13 @@ public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
         new StudyQueueGetTask(context, this).executeParallel();
     }
 
+    public void cancelNotifications() {
+        PendingIntent pendingIntent = getPendingIntent();
+        AlarmManager alarmManager = getAlarmManager();
+        alarmManager.cancel(pendingIntent);
+        prefs.setAlarmSet(false);
+    }
+
     @Override
     public void onStudyQueueGetTaskPreExecute() {
         /* Do nothing */
@@ -40,15 +47,8 @@ public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
             }
 
             if (!prefs.isAlarmSet()) {
-                Intent notificationIntent = new Intent(context, NotificationPublisher.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                        context,
-                        NotificationPublisher.REQUEST_CODE,
-                        notificationIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pendingIntent = getPendingIntent();
+                AlarmManager alarmManager = getAlarmManager();
                 alarmManager.set(
                         AlarmManager.RTC_WAKEUP,
                         queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
@@ -60,5 +60,19 @@ public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
                 prefs.setAlarmSet(true);
             }
         }
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent notificationIntent = new Intent(context, NotificationPublisher.class);
+        return PendingIntent.getBroadcast(
+                context,
+                NotificationPublisher.REQUEST_CODE,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+    }
+
+    private  AlarmManager getAlarmManager() {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 }
