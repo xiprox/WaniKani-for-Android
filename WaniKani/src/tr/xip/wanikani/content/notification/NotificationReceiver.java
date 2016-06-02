@@ -22,6 +22,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         handleSituation(context);
+        abortBroadcast();
     }
 
     public void handleSituation(Context context) {
