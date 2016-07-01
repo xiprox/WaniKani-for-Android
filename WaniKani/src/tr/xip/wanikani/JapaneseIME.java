@@ -44,7 +44,7 @@ public class JapaneseIME {
 
     public JapaneseIME ()
     {
-        map = new Hashtable<String, String> ();
+        map = new Hashtable<> ();
 
         populateTable ();
     }
@@ -105,7 +105,7 @@ public class JapaneseIME {
         s = s.substring (i, pos);
         xlated = parse (s);
 
-        return s != xlated ? new Replacement (i, pos, xlated) : null;
+        return !(s.equals(xlated)) ? new Replacement (i, pos, xlated) : null;
     }
 
     private void populateTable ()
