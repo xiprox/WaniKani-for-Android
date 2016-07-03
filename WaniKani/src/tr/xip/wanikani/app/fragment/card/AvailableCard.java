@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
@@ -126,8 +127,11 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
     public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
         if (queue != null && queue.getUserInfo() != null) {
             if (!queue.getUserInfo().isVacationModeActive()) {
-                mLessonsAvailable.setText(queue.getAvailableLesonsCount() + "");
-                mReviewsAvailable.setText(queue.getAvailableReviewsCount() + "");
+                int lessonsAvailable = queue.getAvailableLesonsCount();
+                int reviewsAvailable = queue.getAvailableReviewsCount();
+                Resources res = getResources();
+                mLessonsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_lessons_capital, lessonsAvailable, lessonsAvailable));
+                mReviewsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_reviews_capital, reviewsAvailable, reviewsAvailable));
 
                 mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
             } else
