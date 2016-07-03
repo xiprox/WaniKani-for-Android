@@ -38,19 +38,6 @@
                     android:id="@+id/card_available_lessons"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="@color/text_gray" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" "
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/card_content_available_lessons_capital"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="@color/text_gray" />
@@ -66,19 +53,6 @@
 
                 <TextView
                     android:id="@+id/card_available_reviews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textColor="@color/text_gray" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" "
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/card_content_available_reviews_capital"
