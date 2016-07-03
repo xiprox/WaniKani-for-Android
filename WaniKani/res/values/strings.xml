@@ -53,6 +53,15 @@
     <string name="card_title_critical_items">Critical Items</string>
 
     <!-- Card Content (Available) Strings -->
+    <plurals name="card_content_available_lessons_capital">
+        <item quantity="one">%d LESSON</item>
+        <item quantity="other">%d LESSONS</item>
+    </plurals>
+
+    <plurals name="card_content_available_reviews_capital">
+        <item quantity="one">%d REVIEW</item>
+        <item quantity="other">%d REVIEWS</item>
+    </plurals>
     <string name="card_content_available_lessons">Lessons</string>
     <string name="card_content_available_lessons_capital">LESSONS</string>
     <string name="card_content_available_reviews">Reviews</string>
