@@ -127,12 +127,13 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
     public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
         if (queue != null && queue.getUserInfo() != null) {
             if (!queue.getUserInfo().isVacationModeActive()) {
-                int lessonsAvailable = queue.getAvailableLesonsCount();
-                int reviewsAvailable = queue.getAvailableReviewsCount();
-                Resources res = getResources();
-                mLessonsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_lessons_capital, lessonsAvailable, lessonsAvailable));
-                mReviewsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_reviews_capital, reviewsAvailable, reviewsAvailable));
-
+                if (isAdded()) {
+                    int lessonsAvailable = queue.getAvailableLesonsCount();
+                    int reviewsAvailable = queue.getAvailableReviewsCount();
+                    Resources res = getResources();
+                    mLessonsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_lessons_capital, lessonsAvailable, lessonsAvailable));
+                    mReviewsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_reviews_capital, reviewsAvailable, reviewsAvailable));
+                }
                 mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
             } else
                 // Vacation mode is handled in DashboardFragment
