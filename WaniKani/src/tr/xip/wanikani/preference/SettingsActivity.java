@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -27,7 +28,7 @@ import tr.xip.wanikani.preference.custom.RecentUnlocksNumberPreference;
 /**
  * Created by xihsa_000 on 4/4/14.
  */
-public class SettingsActivity extends ActionBarActivity implements View.OnClickListener {
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
     PrefManager prefMan;
 
