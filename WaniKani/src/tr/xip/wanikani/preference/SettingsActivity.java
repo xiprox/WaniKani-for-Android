@@ -3,9 +3,7 @@ package tr.xip.wanikani.preference;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -469,15 +467,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             mDeveloperAppVersionSummary.setText(packageInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (Build.VERSION.SDK_INT >= 16) {
-            super.onNavigateUp();
-        } else {
-            super.onBackPressed();
         }
     }
 
