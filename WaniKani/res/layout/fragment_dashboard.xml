@@ -98,6 +98,22 @@
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
+                        android:id="@+id/fragment_dashboard_progress_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_card_between"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:foreground="@drawable/selector_background_neutral">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_progress_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutAnimation="@anim/fade_controller" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:id="@+id/fragment_dashboard_reviews_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -128,22 +144,6 @@
 
                         <FrameLayout
                             android:id="@+id/fragment_dashboard_status_card"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutAnimation="@anim/fade_controller" />
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/fragment_dashboard_progress_holder"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/margin_card_between"
-                        android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:foreground="@drawable/selector_background_neutral">
-
-                        <FrameLayout
-                            android:id="@+id/fragment_dashboard_progress_card"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layoutAnimation="@anim/fade_controller" />

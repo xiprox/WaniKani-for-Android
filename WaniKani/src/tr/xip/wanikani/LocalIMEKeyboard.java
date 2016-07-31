@@ -125,7 +125,7 @@ public class LocalIMEKeyboard implements Keyboard {
         boolean translate;
 
         /// The list of chars are not allowed when entering a meaning
-        private static final String M_BANNED_CHARS = ",/;[]\\`\"=+";
+        private static final String M_BANNED_CHARS = ",/;[]\\`\"=+.?!";
 
         /// The list of chars are not allowed when entering a reading
         private static final String R_BANNED_CHARS = M_BANNED_CHARS + " ";
