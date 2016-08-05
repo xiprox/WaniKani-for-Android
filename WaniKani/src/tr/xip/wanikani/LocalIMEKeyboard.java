@@ -163,6 +163,14 @@ public class LocalIMEKeyboard implements Keyboard {
                 return;
             }
 
+            // Aralox: Pressing backspace after a wrong answer will trigger the 'ignore' button.
+            if (canIgnore && et.length() < previousLength) {
+                ignore();
+                if (et.length() <= 0)   // Have at least one character so we can easily move to next Q.
+                    et.append(previousLastCharacter);
+                return;
+            }
+
             if (!translate)
                 return;
 
@@ -172,11 +180,19 @@ public class LocalIMEKeyboard implements Keyboard {
                 et.replace (repl.start, repl.end, repl.text);
         }
 
+        //Aralox: used for checking backspace press (used to trigger 'ignore' button).
+        int previousLength;
+        char previousLastCharacter = ' ';
+
         @Override
         public void beforeTextChanged (CharSequence cs, int start, int count, int after)
         {
-	    	/* empty */
+            //Aralox: used for checking backspace press (used to trigger 'ignore' button).
+	    	previousLength = cs.length();
+            if (previousLength > 0)
+                previousLastCharacter = cs.charAt(previousLength-1);
         }
+
 
         @Override
         public void onTextChanged (CharSequence cs, int start, int before, int count)
