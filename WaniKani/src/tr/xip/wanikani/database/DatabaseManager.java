@@ -35,9 +35,9 @@ public class DatabaseManager {
 
     private SQLiteDatabase db;
 
-    public DatabaseManager(Context context) {
-        this.context = context;
-        db = new DatabaseHelper(context).getWritableDatabase();
+    public DatabaseManager(Context ctx) {
+        this.context = ctx;
+        db = DatabaseHelper.getInstance(this.context).getWritableDatabase();
     }
 
     private void addItem(BaseItem item) {
