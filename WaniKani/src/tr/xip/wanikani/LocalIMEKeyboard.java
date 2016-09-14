@@ -125,7 +125,7 @@ public class LocalIMEKeyboard implements Keyboard {
         boolean translate;
 
         /// The list of chars are not allowed when entering a meaning
-        private static final String M_BANNED_CHARS = ",/;[]\\`\"=+";
+        private static final String M_BANNED_CHARS = ",/;[]\\`\"=+.?!";
 
         /// The list of chars are not allowed when entering a reading
         private static final String R_BANNED_CHARS = M_BANNED_CHARS + " ";
@@ -163,6 +163,14 @@ public class LocalIMEKeyboard implements Keyboard {
                 return;
             }
 
+            // Aralox: Pressing backspace after a wrong answer will trigger the 'ignore' button.
+            if (canIgnore && et.length() < previousLength) {
+                ignore();
+                if (et.length() <= 0)   // Have at least one character so we can easily move to next Q.
+                    et.append(previousLastCharacter);
+                return;
+            }
+
             if (!translate)
                 return;
 
@@ -172,11 +180,19 @@ public class LocalIMEKeyboard implements Keyboard {
                 et.replace (repl.start, repl.end, repl.text);
         }
 
+        //Aralox: used for checking backspace press (used to trigger 'ignore' button).
+        int previousLength;
+        char previousLastCharacter = ' ';
+
         @Override
         public void beforeTextChanged (CharSequence cs, int start, int count, int after)
         {
-	    	/* empty */
+            //Aralox: used for checking backspace press (used to trigger 'ignore' button).
+	    	previousLength = cs.length();
+            if (previousLength > 0)
+                previousLastCharacter = cs.charAt(previousLength-1);
         }
+
 
         @Override
         public void onTextChanged (CharSequence cs, int start, int before, int count)
@@ -200,8 +216,9 @@ public class LocalIMEKeyboard implements Keyboard {
         @Override
         public boolean onEditorAction (TextView tv, int actionId, KeyEvent event)
         {
-
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_DONE
+                    || (actionId == EditorInfo.IME_NULL && event != null &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
                 next ();
                 return true;
             }

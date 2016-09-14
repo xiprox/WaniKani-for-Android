@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
@@ -218,7 +219,8 @@ public class WebReviewActivity extends ActionBarActivity {
             if (curl.contains ("www.wanikani.com/lesson") ||
                     curl.contains ("www.wanikani.com/review")) {
 
-                if (url.contains ("/kanji/") || url.contains ("/radicals/"))
+                // @Aralox added 'vocabulary' so that vocab examples in lessons can be opened externally.
+                if (url.contains ("/kanji/") || url.contains ("/radicals/") || url.contains ("/vocabulary/"))
                     return true;
 
             }
@@ -650,7 +652,7 @@ public class WebReviewActivity extends ActionBarActivity {
     private Button singleb;
 
     /** Single mode is on? */
-    private boolean single;
+    private boolean single = true;  // Added by @Aralox. Default: single mode selected.
 
     /** Shall we download a file? */
     private boolean download;
@@ -754,6 +756,10 @@ public class WebReviewActivity extends ActionBarActivity {
         reaper = new TimerThreadsReaper ();
         rtask = reaper.createTask (new Handler (), 2, 7000);
         rtask.setListener (new ReaperTaskListener ());
+
+        // Added by @Aralox to keep the screen awake during reviews. Technique from http://stackoverflow.com/questions/8442079/keep-the-screen-awake-throughout-my-activity
+        // TODO: Make this an option in the app's settings.
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -887,8 +893,24 @@ public class WebReviewActivity extends ActionBarActivity {
             wv.loadUrl (Browser.LESSON_URL);
         else if (wv.canGoBack () && backIsSafe ())
             wv.goBack ();
-        else
-            super.onBackPressed ();
+        else {
+            // Dialog box added by Aralox, based on http://stackoverflow.com/a/9901871/1072869
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to exit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            WebReviewActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 
     protected void selectKeyboard ()
