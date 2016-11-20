@@ -1,16 +1,10 @@
 package tr.xip.wanikani.dialogs;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
+import android.support.v7.app.AlertDialog;
 
 import tr.xip.wanikani.R;
 
@@ -19,36 +13,17 @@ import tr.xip.wanikani.R;
  */
 public class HowToGetKeyDialogFragment extends DialogFragment {
 
-    Context context;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = getActivity();
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_how_to_get_key, null);
-
-        TextView mWaniKaniLink = (TextView) view.findViewById(R.id.wanikani_go_link_text);
-        mWaniKaniLink.setMovementMethod(LinkMovementMethod.getInstance());
-        Button mOk = (Button) view.findViewById(R.id.button1);
-
-        mOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        return view;
+        return new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.action_how_to_api_key)
+                .setView(R.layout.dialog_how_to_get_key)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dismiss();
+                    }
+                })
+                .create();
     }
 }
