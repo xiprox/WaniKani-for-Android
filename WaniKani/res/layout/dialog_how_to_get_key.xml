@@ -27,6 +27,7 @@
                 android:textColor="@color/text_gray_dark"/>
 
             <TextView
+                android:id="@+id/wanikani_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
