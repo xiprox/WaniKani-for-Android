@@ -67,7 +67,7 @@
 
         <activity
             android:name=".app.activity.WebReviewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:parentActivityName=".app.activity.MainActivity"
@@ -82,7 +82,7 @@
 
         <activity
             android:name=".app.activity.SWWebReviewActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:hardwareAccelerated="false"
             android:launchMode="singleTop"
             android:parentActivityName=".app.activity.MainActivity"
