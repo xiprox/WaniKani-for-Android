@@ -8,13 +8,14 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-alpha1'
+        classpath 'com.android.tools.build:gradle:2.3.0-beta1'
+        classpath 'com.google.gms:google-services:3.0.0'
     }
 }
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         minSdkVersion 14
@@ -72,7 +73,12 @@ android {
         compile 'com.tonicartos:stickygridheaders:+'
         compile 'com.squareup.retrofit:retrofit:1.9.0'
         compile 'com.squareup.picasso:picasso:+'
+        compile 'com.google.firebase:firebase-core:10.0.1'
+        compile 'com.google.firebase:firebase-messaging:10.0.1'
+
         compile files('libs/commons-io-2.4.jar')
         compile files('libs/commons-lang3-3.3.1.jar')
     }
 }
+
+apply plugin: 'com.google.gms.google-services'

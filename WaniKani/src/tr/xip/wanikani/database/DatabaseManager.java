@@ -10,20 +10,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import tr.xip.wanikani.models.BaseItem;
-import tr.xip.wanikani.models.CriticalItem;
-import tr.xip.wanikani.models.LevelProgression;
-import tr.xip.wanikani.models.SRSDistribution;
-import tr.xip.wanikani.models.StudyQueue;
-import tr.xip.wanikani.models.UnlockItem;
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.database.table.CriticalItemsTable;
 import tr.xip.wanikani.database.table.ItemsTable;
 import tr.xip.wanikani.database.table.LevelProgressionTable;
+import tr.xip.wanikani.database.table.NotificationsTable;
 import tr.xip.wanikani.database.table.RecentUnlocksTable;
 import tr.xip.wanikani.database.table.SRSDistributionTable;
 import tr.xip.wanikani.database.table.StudyQueueTable;
 import tr.xip.wanikani.database.table.UsersTable;
+import tr.xip.wanikani.models.BaseItem;
+import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.models.LevelProgression;
+import tr.xip.wanikani.models.Notification;
+import tr.xip.wanikani.models.SRSDistribution;
+import tr.xip.wanikani.models.StudyQueue;
+import tr.xip.wanikani.models.UnlockItem;
+import tr.xip.wanikani.models.User;
 
 /**
  * Created by Hikari on 1/5/15.
@@ -577,5 +579,80 @@ public class DatabaseManager {
 
     public void deleteUsers() {
         db.delete(UsersTable.TABLE_NAME, null, null);
+    }
+
+    public void saveNotification(Notification item) {
+        db.delete(
+                NotificationsTable.TABLE_NAME,
+                NotificationsTable.COLUMN_NAME_ID + " = ?",
+                new String[]{ String.valueOf(item.getId()) }
+        );
+
+        ContentValues values = new ContentValues();
+        values.put(NotificationsTable.COLUMN_NAME_ID, item.getId());
+        values.put(NotificationsTable.COLUMN_NAME_TITLE, item.getTitle());
+        values.put(NotificationsTable.COLUMN_NAME_SHORT_TEXT, item.getShortText());
+        values.put(NotificationsTable.COLUMN_NAME_TEXT, item.getText());
+        values.put(NotificationsTable.COLUMN_NAME_IMAGE, item.getImage());
+        values.put(NotificationsTable.COLUMN_NAME_ACTION_URL, item.getActionUrl());
+        values.put(NotificationsTable.COLUMN_NAME_READ, item.isRead() ? 1 : 0);
+        values.put(NotificationsTable.COLUMN_NAME_ACTION_TEXT, item.getActionText());
+
+        db.insert(NotificationsTable.TABLE_NAME, NotificationsTable.COLUMN_NAME_NULLABLE, values);
+    }
+
+    public void saveNotifications(List<Notification> list) {
+        deleteSameNotifications(list);
+
+        for (Notification item : list)
+            saveNotification(item);
+    }
+
+    public List<Notification> getNotifications() {
+        List<Notification> list = new ArrayList<>();
+
+        String whereClause = NotificationsTable.COLUMN_NAME_READ + " = ?";
+        String[] whereArgs = {
+                "0"
+        };
+
+        Cursor c = db.query(
+                NotificationsTable.TABLE_NAME,
+                NotificationsTable.COLUMNS,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                Notification item = new Notification(
+                        c.getInt(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_ID)),
+                        c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_SHORT_TEXT)),
+                        c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_TEXT)),
+                        c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_IMAGE)),
+                        c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_ACTION_URL)),
+                        c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_ACTION_TEXT)),
+                        c.getInt(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_READ)) == 1
+                );
+                list.add(item);
+            } while (c.moveToNext());
+        }
+
+        return list;
+    }
+
+    private void deleteSameNotifications(List<Notification> list) {
+        for (Notification item : list) {
+            String whereClause = NotificationsTable.COLUMN_NAME_ID + " = ?";
+            String[] whereArgs = {
+                    String.valueOf(item.getId())
+            };
+
+            db.delete(NotificationsTable.TABLE_NAME, whereClause, whereArgs);
+        }
     }
 }

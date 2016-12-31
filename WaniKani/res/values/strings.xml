@@ -46,6 +46,7 @@
     <!-- Card Title Strings -->
     <string name="card_title_about">About</string>
     <string name="card_title_available">Available</string>
+    <string name="card_title_notifications">Notifications</string>
     <string name="card_title_reviews">Reviews</string>
     <string name="card_title_status">SRS</string>
     <string name="card_title_progress">Progress</string>

@@ -3,6 +3,7 @@ package tr.xip.wanikani.database;
 import tr.xip.wanikani.database.table.CriticalItemsTable;
 import tr.xip.wanikani.database.table.ItemsTable;
 import tr.xip.wanikani.database.table.LevelProgressionTable;
+import tr.xip.wanikani.database.table.NotificationsTable;
 import tr.xip.wanikani.database.table.RecentUnlocksTable;
 import tr.xip.wanikani.database.table.SRSDistributionTable;
 import tr.xip.wanikani.database.table.StudyQueueTable;
@@ -12,6 +13,7 @@ public class SQL {
 
     public static final String TEXT_TYPE = " TEXT";
     public static final String INTEGER_TYPE = " INTEGER";
+    public static final String INTEGER_PRIMARY_KEY = " INTEGER PRIMARY KEY";
     public static final String INTEGER_PRIMARY_KEY_AUTOINCREMENT = " INTEGER PRIMARY KEY AUTOINCREMENT";
     public static final String COMMA_SEP = ", ";
 
@@ -181,4 +183,19 @@ public class SQL {
 
     public static final String DELETE_TABLE_USERS = "DROP TABLE IF EXISTS "
             + UsersTable.TABLE_NAME;
+
+    public static final String CREATE_TABLE_NOTIFICATIONS = "CREATE TABLE "
+            + NotificationsTable.TABLE_NAME + " ("
+            + NotificationsTable.COLUMN_NAME_ID + INTEGER_PRIMARY_KEY + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_SHORT_TEXT+ TEXT_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_TEXT + TEXT_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_IMAGE + TEXT_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_ACTION_URL + TEXT_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_ACTION_TEXT + TEXT_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_READ + INTEGER_TYPE + COMMA_SEP
+            + NotificationsTable.COLUMN_NAME_NULLABLE + TEXT_TYPE + ")";
+
+    public static final String DELETE_TABLE_NOTIFICATIONS = "DROP TABLE IF EXISTS "
+            + NotificationsTable.TABLE_NAME;
 }

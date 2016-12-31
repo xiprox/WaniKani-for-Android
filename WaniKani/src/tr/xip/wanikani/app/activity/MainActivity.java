@@ -12,15 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.R;
 import tr.xip.wanikani.app.fragment.DashboardFragment;
 import tr.xip.wanikani.app.fragment.KanjiFragment;
 import tr.xip.wanikani.app.fragment.NavigationDrawerFragment;
-import tr.xip.wanikani.R;
 import tr.xip.wanikani.app.fragment.RadicalsFragment;
 import tr.xip.wanikani.app.fragment.VocabularyFragment;
 import tr.xip.wanikani.app.fragment.card.AvailableCard;
+import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.models.Notification;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -53,6 +55,8 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handleNotification(getIntent());
 
         prefMan = new PrefManager(this);
 
@@ -151,5 +155,36 @@ public class MainActivity extends ActionBarActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(STATE_ACTIONBAR_TITLE, mTitle.toString());
+    }
+
+    private void handleNotification(Intent intent) {
+        if (intent == null || intent.getExtras() == null) return;
+
+        Bundle bundle = getIntent().getExtras();
+
+        String idString = bundle.getString(Notification.DATA_NOTIFICATION_ID);
+
+        if (idString == null) return; // Return if no id - basically not a notification Intent
+
+        int id = Integer.valueOf(idString);
+        String title = bundle.getString(Notification.DATA_NOTIFICATION_TITLE);
+        String shortText = bundle.getString(Notification.DATA_NOTIFICATION_SHORT_TEXT);
+        String text = bundle.getString(Notification.DATA_NOTIFICATION_TEXT);
+        String image = bundle.getString(Notification.DATA_NOTIFICATION_IMAGE);
+        String actionUrl = bundle.getString(Notification.DATA_NOTIFICATION_ACTION_URL);
+        String actionText = bundle.getString(Notification.DATA_NOTIFICATION_ACTION_TEXT);
+
+        new DatabaseManager(this).saveNotification(new Notification(
+                id,
+                title,
+                shortText,
+                text,
+                image,
+                actionUrl,
+                actionText,
+                false
+        ));
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(BroadcastIntents.NOTIFICATION()));
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tr.xip.wanikani">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,6 +12,14 @@
         android:imeOptions="flagNoExtractUi"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_school_white_24dp" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/apptheme_main" />
 
         <activity
             android:name=".app.activity.MainActivity"
@@ -116,6 +125,17 @@
                 android:value=".app.activity.MainActivity" />
         </activity>
 
+        <activity
+            android:name=".app.activity.NotificationDetailsActivity"
+            android:label="@string/card_title_notifications"
+            android:parentActivityName=".app.activity.MainActivity"
+            tools:ignore="UnusedAttribute">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".app.activity.MainActivity" />
+        </activity>
+
         <receiver android:name=".content.notification.NotificationPublisher" />
 
         <receiver android:name=".content.notification.NotificationReceiver">
@@ -123,5 +143,11 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

@@ -45,6 +45,21 @@
                     android:orientation="vertical">
 
                     <android.support.v7.widget.CardView
+                        android:id="@+id/fragment_dashboard_notifications_card_holder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_card_side"
+                        android:layout_marginRight="@dimen/margin_card_side"
+                        android:layout_marginTop="@dimen/margin_card_end"
+                        android:visibility="gone">
+
+                        <FrameLayout
+                            android:id="@+id/fragment_dashboard_notifications_card"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:id="@+id/fragment_dashboard_message_card_holder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
