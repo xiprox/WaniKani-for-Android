@@ -75,6 +75,7 @@ android {
         compile 'com.squareup.picasso:picasso:+'
         compile 'com.google.firebase:firebase-core:10.0.1'
         compile 'com.google.firebase:firebase-messaging:10.0.1'
+        compile 'com.google.firebase:firebase-crash:10.0.1'
 
         compile files('libs/commons-io-2.4.jar')
         compile files('libs/commons-lang3-3.3.1.jar')
