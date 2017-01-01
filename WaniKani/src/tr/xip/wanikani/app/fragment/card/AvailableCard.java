@@ -53,7 +53,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new StudyQueueGetTask(context, AvailableCard.this).executeParallel();
+            new StudyQueueGetTask(context, AvailableCard.this).executeSerial();
         }
     };
 

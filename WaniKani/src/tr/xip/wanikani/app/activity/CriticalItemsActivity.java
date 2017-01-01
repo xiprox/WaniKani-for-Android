@@ -55,8 +55,7 @@ public class CriticalItemsActivity extends ActionBarActivity implements Critical
         mGrid = (GridView) findViewById(R.id.activity_critical_items_grid);
         mFlipper = (ViewFlipper) findViewById(R.id.activity_critical_items_view_flipper);
 
-        new CriticalItemsListGetTask(this, prefMan.getDashboardCriticalItemsPercentage(), this)
-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        new CriticalItemsListGetTask(this, prefMan.getDashboardCriticalItemsPercentage(), this).executeParallel();
     }
 
     @Override

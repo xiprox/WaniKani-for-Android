@@ -51,7 +51,7 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new StudyQueueGetTask(context, ReviewsCard.this).executeParallel();
+            new StudyQueueGetTask(context, ReviewsCard.this).executeSerial();
         }
     };
 
