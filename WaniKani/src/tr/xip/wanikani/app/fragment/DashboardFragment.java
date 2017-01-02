@@ -157,7 +157,6 @@ public class DashboardFragment extends Fragment
         mReviewsCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_card);
         mProgressCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_progress_card);
 
-        mReviewsHolder.setOnClickListener(this);
         mProgressHolder.setOnClickListener(this);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();

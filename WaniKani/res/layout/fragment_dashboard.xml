@@ -118,8 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_card_between"
                         android:layout_marginLeft="@dimen/margin_card_side"
-                        android:layout_marginRight="@dimen/margin_card_side"
-                        android:foreground="@drawable/selector_background_neutral">
+                        android:layout_marginRight="@dimen/margin_card_side">
 
                         <LinearLayout
                             android:layout_width="match_parent"
