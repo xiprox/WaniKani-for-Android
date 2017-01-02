@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
-        android:inAnimation="@anim/abc_fade_in"
-        android:outAnimation="@anim/abc_fade_out">
+        android:inAnimation="@anim/fade_in"
+        android:outAnimation="@anim/fade_out">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -28,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            android:inAnimation="@anim/abc_fade_in"
-            android:outAnimation="@anim/abc_fade_out"
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out"
             android:paddingBottom="2dp">
 
             <RelativeLayout

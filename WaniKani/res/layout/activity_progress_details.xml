@@ -88,8 +88,8 @@
                                 android:id="@+id/progress_details_radicals_flipper"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:inAnimation="@anim/abc_fade_in"
-                                android:outAnimation="@anim/abc_fade_out">
+                                android:inAnimation="@anim/fade_in"
+                                android:outAnimation="@anim/fade_out">
 
                                 <ProgressBar
                                     android:layout_width="wrap_content"
@@ -101,8 +101,8 @@
                                     android:id="@+id/progress_details_radicals_message_flipper"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:inAnimation="@anim/abc_fade_in"
-                                    android:outAnimation="@anim/abc_fade_out">
+                                    android:inAnimation="@anim/fade_in"
+                                    android:outAnimation="@anim/fade_out">
 
                                     <tr.xip.wanikani.widget.ScrollableGridView
                                         android:id="@+id/progress_details_radicals_grid"
@@ -160,8 +160,8 @@
                                 android:id="@+id/progress_details_kanji_flipper"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:inAnimation="@anim/abc_fade_in"
-                                android:outAnimation="@anim/abc_fade_out">
+                                android:inAnimation="@anim/fade_in"
+                                android:outAnimation="@anim/fade_out">
 
                                 <ProgressBar
                                     android:layout_width="wrap_content"
@@ -173,8 +173,8 @@
                                     android:id="@+id/progress_details_kanji_message_flipper"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:inAnimation="@anim/abc_fade_in"
-                                    android:outAnimation="@anim/abc_fade_out">
+                                    android:inAnimation="@anim/fade_in"
+                                    android:outAnimation="@anim/fade_out">
 
                                     <tr.xip.wanikani.widget.ScrollableGridView
                                         android:id="@+id/progress_details_kanji_grid"
