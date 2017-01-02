@@ -9,7 +9,11 @@
 ![](https://cloud.githubusercontent.com/assets/2550945/21590010/1997cdde-d0f8-11e6-8116-3ace674dd77f.png)
 
 <p align="right">
-<a href='https://play.google.com/store/apps/details?id=tr.xip.wanikani&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="62" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a></p>
+<a href='https://play.google.com/store/apps/details?id=tr.xip.wanikani&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="48" alt='Get it on Google Play' src='https://cloud.githubusercontent.com/assets/2550945/21590908/dd7857a8-d0ff-11e6-9d0c-a8ce8ba883d4.png'/></a>
+</p>
+<p align="right">
+<a href='https://github.com/xiprox/WaniKani-for-Android/releases/latest/WaniKani-release-latest.apk'><img height="48" alt='Get apk' src='https://cloud.githubusercontent.com/assets/2550945/21590907/dd74e0f0-d0ff-11e6-971f-d429148fd03d.png'/></a>
+</p>
 
 ## Development
 This app is no longer in active development. While this means that no new features will be added and no big changes will be made (probably), I will continue to maintain it on some level.
