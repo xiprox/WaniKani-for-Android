@@ -652,7 +652,7 @@ public class WebReviewActivity extends ActionBarActivity {
     private Button singleb;
 
     /** Single mode is on? */
-    private boolean single = false;  // Added by @Aralox. Default: single mode selected.
+    private boolean single = false;
 
     /** Shall we download a file? */
     private boolean download;
