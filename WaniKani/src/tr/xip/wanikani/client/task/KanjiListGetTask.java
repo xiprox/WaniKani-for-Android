@@ -60,7 +60,7 @@ public class KanjiListGetTask extends AsyncTask<Void, Void, List<BaseItem>> {
         super.onPostExecute(list);
 
         if (list != null) {
-            new ItemsSaveTask(context, BaseItem.ItemType.KANJI, list, null).executeParallel();
+            new ItemsSaveTask(context, BaseItem.ItemType.KANJI, list, null).executeSerial();
 
             if (mCallbacks != null)
                 mCallbacks.onKanjiListGetTaskPostExecute(list);

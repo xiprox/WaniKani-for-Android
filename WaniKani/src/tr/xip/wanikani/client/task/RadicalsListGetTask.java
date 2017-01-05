@@ -65,7 +65,7 @@ public class RadicalsListGetTask extends AsyncTask<Void, Void, List<BaseItem>> {
         super.onPostExecute(list);
 
         if (list != null) {
-            new ItemsSaveTask(context, BaseItem.ItemType.RADICAL, list, null).executeParallel();
+            new ItemsSaveTask(context, BaseItem.ItemType.RADICAL, list, null).executeSerial();
 
             if (mCallbacks != null)
                 mCallbacks.onRadicalsListGetTaskPostExecute(list);
