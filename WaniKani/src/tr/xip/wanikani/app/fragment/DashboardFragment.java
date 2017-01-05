@@ -248,6 +248,8 @@ public class DashboardFragment extends Fragment
     }
 
     private void showMessage(MESSAGE_TYPE msgType) {
+        if (getActivity() == null) return;
+
         try {
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
