@@ -248,38 +248,44 @@ public class DashboardFragment extends Fragment
     }
 
     private void showMessage(MESSAGE_TYPE msgType) {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        MessageCard fragment = new MessageCard();
-        fragment.setListener(this);
+        try {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            MessageCard fragment = new MessageCard();
+            fragment.setListener(this);
 
-        String title = "";
-        String prefix = "";
+            String title = "";
+            String prefix = "";
 
-        if (msgType == MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT) {
-            title = getString(R.string.error_connection_timeout);
-            prefix = getString(R.string.content_last_updated) + " ";
+            if (msgType == MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT) {
+                title = getString(R.string.error_connection_timeout);
+                prefix = getString(R.string.content_last_updated) + " ";
+            }
+
+            if (msgType == MESSAGE_TYPE.ERROR_NO_CONNECTION) {
+                title = getString(R.string.error_no_connection);
+                prefix = getString(R.string.content_last_updated) + " ";
+            }
+
+            if (msgType == MESSAGE_TYPE.ERROR_UNKNOWN) {
+                title = getString(R.string.error_unknown_error);
+                prefix = getString(R.string.content_last_updated) + " ";
+            }
+
+            Bundle args = new Bundle();
+            args.putString(MessageCard.ARG_TITLE, title);
+            args.putString(MessageCard.ARG_PREFIX, prefix);
+            args.putLong(MessageCard.ARG_TIME, prefMan.getDashboardLastUpdateTime());
+            fragment.setArguments(args);
+
+            transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();
+
+            mMessageCardHolder.setVisibility(View.VISIBLE);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            // Probably http://www.androiddesignpatterns.com/2013/08/fragment-transaction-commit-state-loss.html
+            // Ignore. No need to show message if Activity has been killed.
         }
-
-        if (msgType == MESSAGE_TYPE.ERROR_NO_CONNECTION) {
-            title = getString(R.string.error_no_connection);
-            prefix = getString(R.string.content_last_updated) + " ";
-        }
-
-        if (msgType == MESSAGE_TYPE.ERROR_UNKNOWN) {
-            title = getString(R.string.error_unknown_error);
-            prefix = getString(R.string.content_last_updated) + " ";
-        }
-
-        Bundle args = new Bundle();
-        args.putString(MessageCard.ARG_TITLE, title);
-        args.putString(MessageCard.ARG_PREFIX, prefix);
-        args.putLong(MessageCard.ARG_TIME, prefMan.getDashboardLastUpdateTime());
-        fragment.setArguments(args);
-
-        transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();
-
-        mMessageCardHolder.setVisibility(View.VISIBLE);
     }
 
     private void showNotificationIfExists() {
