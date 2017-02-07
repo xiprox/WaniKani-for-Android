@@ -39,7 +39,7 @@ public class ItemsLoadTask extends AsyncTask<Void, Void, List<BaseItem>> {
 
     @Override
     protected List<BaseItem> doInBackground(Void... params) {
-        return new DatabaseManager(context).getItems(type, levels);
+        return DatabaseManager.getItems(type, levels);
     }
 
     @Override

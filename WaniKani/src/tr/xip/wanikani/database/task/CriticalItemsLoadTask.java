@@ -36,7 +36,7 @@ public class CriticalItemsLoadTask extends AsyncTask<Void, Void, List<CriticalIt
 
     @Override
     protected List<CriticalItem> doInBackground(Void... params) {
-        return new DatabaseManager(context).getCriticalItems(percentage);
+        return DatabaseManager.getCriticalItems(percentage);
     }
 
     @Override

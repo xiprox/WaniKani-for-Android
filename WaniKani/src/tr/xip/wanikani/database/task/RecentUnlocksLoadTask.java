@@ -36,7 +36,7 @@ public class RecentUnlocksLoadTask extends AsyncTask<Void, Void, List<UnlockItem
 
     @Override
     protected List<UnlockItem> doInBackground(Void... params) {
-        return new DatabaseManager(context).getRecentUnlocks(limit);
+        return DatabaseManager.getRecentUnlocks(limit);
     }
 
     @Override

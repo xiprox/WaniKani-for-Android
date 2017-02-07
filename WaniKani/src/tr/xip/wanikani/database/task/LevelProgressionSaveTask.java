@@ -34,7 +34,7 @@ public class LevelProgressionSaveTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        new DatabaseManager(context).saveLevelProgression(progression);
+        DatabaseManager.saveLevelProgression(progression);
         return null;
     }
 

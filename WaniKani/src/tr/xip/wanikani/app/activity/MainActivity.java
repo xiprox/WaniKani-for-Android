@@ -170,7 +170,7 @@ public class MainActivity extends ActionBarActivity
         String actionUrl = bundle.getString(Notification.DATA_NOTIFICATION_ACTION_URL);
         String actionText = bundle.getString(Notification.DATA_NOTIFICATION_ACTION_TEXT);
 
-        new DatabaseManager(this).saveNotification(new Notification(
+        DatabaseManager.saveNotification(new Notification(
                 id,
                 title,
                 shortText,

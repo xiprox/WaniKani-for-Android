@@ -3,7 +3,6 @@ package tr.xip.wanikani.database.task;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.database.task.callback.UserSaveTaskCallbacks;
 
@@ -34,7 +33,7 @@ public class UserSaveTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        new DatabaseManager(context).saveUser(mUser);
+        DatabaseManager.saveUser(mUser);
         return null;
     }
 

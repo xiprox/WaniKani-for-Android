@@ -31,7 +31,7 @@ public class LevelProgressionLoadTask extends AsyncTask<Void, Void, LevelProgres
 
     @Override
     protected LevelProgression doInBackground(Void... params) {
-        return new DatabaseManager(context).getLevelProgression();
+        return DatabaseManager.getLevelProgression();
     }
 
     @Override

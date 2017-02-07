@@ -36,7 +36,7 @@ public class RecentUnlocksSaveTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        new DatabaseManager(context).saveRecentUnlocks(list);
+        DatabaseManager.saveRecentUnlocks(list);
         return null;
     }
 

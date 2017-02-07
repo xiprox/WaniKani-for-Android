@@ -27,22 +27,16 @@ import tr.xip.wanikani.models.StudyQueue;
 import tr.xip.wanikani.models.UnlockItem;
 import tr.xip.wanikani.models.User;
 
-/**
- * Created by Hikari on 1/5/15.
- */
 public class DatabaseManager {
     private static final String TAG = "Database Manager";
 
-    private Context context;
+    private static SQLiteDatabase db;
 
-    private SQLiteDatabase db;
-
-    public DatabaseManager(Context ctx) {
-        this.context = ctx;
-        db = DatabaseHelper.getInstance(this.context).getWritableDatabase();
+    public static void init(Context context) {
+        db = DatabaseHelper.getInstance(context).getWritableDatabase();
     }
 
-    private void addItem(BaseItem item) {
+    private static void addItem(BaseItem item) {
         ContentValues values = new ContentValues();
         values.put(ItemsTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(ItemsTable.COLUMN_NAME_KANA, item.getKana());
@@ -73,14 +67,14 @@ public class DatabaseManager {
         db.insert(ItemsTable.TABLE_NAME, ItemsTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveItems(List<BaseItem> list, BaseItem.ItemType type) {
+    public static void saveItems(List<BaseItem> list, BaseItem.ItemType type) {
         deleteAllItemsFromSameLevelAndType(list, type);
 
         for (BaseItem item : list)
             addItem(item);
     }
 
-    public List<BaseItem> getItems(BaseItem.ItemType itemType, int[] levels) {
+    public static List<BaseItem> getItems(BaseItem.ItemType itemType, int[] levels) {
         List<BaseItem> list = new ArrayList<>();
 
         for (int level : levels) {
@@ -149,7 +143,7 @@ public class DatabaseManager {
         return list.size() != 0 ? list : null;
     }
 
-    private void deleteAllItemsFromSameLevelAndType(List<BaseItem> list, BaseItem.ItemType type) {
+    private static void deleteAllItemsFromSameLevelAndType(List<BaseItem> list, BaseItem.ItemType type) {
         HashSet<Integer> levels = new HashSet();
 
         for (BaseItem item : list)
@@ -167,7 +161,7 @@ public class DatabaseManager {
         }
     }
 
-    private void addRecentUnlock(UnlockItem item) {
+    private static void addRecentUnlock(UnlockItem item) {
         ContentValues values = new ContentValues();
         values.put(RecentUnlocksTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(RecentUnlocksTable.COLUMN_NAME_KANA, item.getKana());
@@ -198,14 +192,14 @@ public class DatabaseManager {
         db.insert(RecentUnlocksTable.TABLE_NAME, RecentUnlocksTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveRecentUnlocks(List<UnlockItem> list) {
+    public static void saveRecentUnlocks(List<UnlockItem> list) {
         deleteSameRecentUnlocks(list);
 
         for (UnlockItem item : list)
             addRecentUnlock(item);
     }
 
-    public List<UnlockItem> getRecentUnlocks(int limit) {
+    public static List<UnlockItem> getRecentUnlocks(int limit) {
         List<UnlockItem> list = new ArrayList<>();
 
         Cursor c = null;
@@ -266,7 +260,7 @@ public class DatabaseManager {
         return list.size() != 0 ? list : null;
     }
 
-    public void deleteSameRecentUnlocks(List<UnlockItem> list) {
+    public static void deleteSameRecentUnlocks(List<UnlockItem> list) {
         for (UnlockItem item : list) {
             String whereClause = item.getImage() == null
                     ? RecentUnlocksTable.COLUMN_NAME_CHARACTER + " = ?"
@@ -279,7 +273,7 @@ public class DatabaseManager {
         }
     }
 
-    private void addCriticalItem(CriticalItem item) {
+    private static void addCriticalItem(CriticalItem item) {
         ContentValues values = new ContentValues();
         values.put(CriticalItemsTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(CriticalItemsTable.COLUMN_NAME_KANA, item.getKana());
@@ -311,14 +305,14 @@ public class DatabaseManager {
         db.insert(CriticalItemsTable.TABLE_NAME, CriticalItemsTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveCriticalItems(List<CriticalItem> list) {
+    public static void saveCriticalItems(List<CriticalItem> list) {
         deleteSameCriticalItems(list);
 
         for (CriticalItem item : list)
             addCriticalItem(item);
     }
 
-    public List<CriticalItem> getCriticalItems(int percentage) {
+    public static List<CriticalItem> getCriticalItems(int percentage) {
         List<CriticalItem> list = new ArrayList<>();
 
         String whereClause = CriticalItemsTable.COLUMN_NAME_PERCENTAGE + " < ?";
@@ -384,7 +378,7 @@ public class DatabaseManager {
         return list;
     }
 
-    private void deleteSameCriticalItems(List<CriticalItem> list) {
+    private static void deleteSameCriticalItems(List<CriticalItem> list) {
         for (CriticalItem item : list) {
             String whereClause = item.getImage() == null
                     ? CriticalItemsTable.COLUMN_NAME_CHARACTER + " = ?"
@@ -397,7 +391,7 @@ public class DatabaseManager {
         }
     }
 
-    public void saveStudyQueue(StudyQueue queue) {
+    public static void saveStudyQueue(StudyQueue queue) {
         deleteStudyQueue();
 
         ContentValues values = new ContentValues();
@@ -410,7 +404,7 @@ public class DatabaseManager {
         db.insert(StudyQueueTable.TABLE_NAME, StudyQueueTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public StudyQueue getStudyQueue() {
+    public static StudyQueue getStudyQueue() {
         Cursor c = null;
 
         try {
@@ -446,11 +440,11 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteStudyQueue() {
+    public static void deleteStudyQueue() {
         db.delete(StudyQueueTable.TABLE_NAME, null, null);
     }
 
-    public void saveLevelProgression(LevelProgression progression) {
+    public static void saveLevelProgression(LevelProgression progression) {
         deleteLevelProgression();
 
         ContentValues values = new ContentValues();
@@ -462,7 +456,7 @@ public class DatabaseManager {
         db.insert(LevelProgressionTable.TABLE_NAME, LevelProgressionTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public LevelProgression getLevelProgression() {
+    public static LevelProgression getLevelProgression() {
         Cursor c = null;
 
         try {
@@ -496,11 +490,11 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteLevelProgression() {
+    public static void deleteLevelProgression() {
         db.delete(SRSDistributionTable.TABLE_NAME, null, null);
     }
 
-    public void saveSrsDistribution(SRSDistribution distribution) {
+    public static void saveSrsDistribution(SRSDistribution distribution) {
         deleteSrsDistribution();
 
         ContentValues values = new ContentValues();
@@ -523,7 +517,7 @@ public class DatabaseManager {
         db.insert(SRSDistributionTable.TABLE_NAME, SRSDistributionTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public SRSDistribution getSrsDistribution() {
+    public static SRSDistribution getSrsDistribution() {
         Cursor c = null;
 
         try {
@@ -568,11 +562,11 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteSrsDistribution() {
+    public static void deleteSrsDistribution() {
         db.delete(SRSDistributionTable.TABLE_NAME, null, null);
     }
 
-    private void addUser(User user) {
+    private static void addUser(User user) {
         ContentValues values = new ContentValues();
         values.put(UsersTable.COLUMN_NAME_USERNAME, user.getUsername());
         values.put(UsersTable.COLUMN_NAME_GRAVATAR, user.getGravatar());
@@ -588,13 +582,13 @@ public class DatabaseManager {
         db.insert(UsersTable.TABLE_NAME, UsersTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveUser(User user) {
+    public static void saveUser(User user) {
         deleteUsers();
 
         addUser(user);
     }
 
-    public User getUser() {
+    public static User getUser() {
         Cursor c = null;
 
         try {
@@ -633,11 +627,11 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteUsers() {
+    public static void deleteUsers() {
         db.delete(UsersTable.TABLE_NAME, null, null);
     }
 
-    public void saveNotification(Notification item) {
+    public static void saveNotification(Notification item) {
         db.delete(
                 NotificationsTable.TABLE_NAME,
                 NotificationsTable.COLUMN_NAME_ID + " = ?",
@@ -657,14 +651,14 @@ public class DatabaseManager {
         db.insert(NotificationsTable.TABLE_NAME, NotificationsTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveNotifications(List<Notification> list) {
+    public static void saveNotifications(List<Notification> list) {
         deleteSameNotifications(list);
 
         for (Notification item : list)
             saveNotification(item);
     }
 
-    public List<Notification> getNotifications() {
+    public static List<Notification> getNotifications() {
         List<Notification> list = new ArrayList<>();
 
         String whereClause = NotificationsTable.COLUMN_NAME_READ + " = ?";
@@ -709,7 +703,7 @@ public class DatabaseManager {
         return list;
     }
 
-    private void deleteSameNotifications(List<Notification> list) {
+    private static void deleteSameNotifications(List<Notification> list) {
         for (Notification item : list) {
             String whereClause = NotificationsTable.COLUMN_NAME_ID + " = ?";
             String[] whereArgs = {

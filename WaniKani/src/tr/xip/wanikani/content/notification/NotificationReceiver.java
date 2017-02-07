@@ -30,7 +30,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         if (!PrefManager.isFirstLaunch() && PrefManager.notificationsEnabled()) {
             if (!prefs.isAlarmSet()) {
                 /** Schedule an alarm if none is scheduled yet */
-                StudyQueue queue = new DatabaseManager(context).getStudyQueue();
+                StudyQueue queue = DatabaseManager.getStudyQueue();
                 //noinspection SimplifiableConditionalExpression
                 if (queue != null ? queue.getAvailableReviewsCount() == 0 : true) {
                     new NotificationScheduler(context).schedule();

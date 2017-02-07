@@ -34,7 +34,7 @@ public class SrsDistributionSaveTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        new DatabaseManager(context).saveSrsDistribution(distribution);
+        DatabaseManager.saveSrsDistribution(distribution);
         return null;
     }
 

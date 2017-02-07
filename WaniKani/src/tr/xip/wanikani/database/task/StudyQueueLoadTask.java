@@ -31,7 +31,7 @@ public class StudyQueueLoadTask extends AsyncTask<Void, Void, StudyQueue> {
 
     @Override
     protected StudyQueue doInBackground(Void... params) {
-        return new DatabaseManager(context).getStudyQueue();
+        return DatabaseManager.getStudyQueue();
     }
 
     @Override

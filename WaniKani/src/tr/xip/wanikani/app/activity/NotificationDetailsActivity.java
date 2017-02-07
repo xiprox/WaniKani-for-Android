@@ -82,6 +82,6 @@ public class NotificationDetailsActivity extends AppCompatActivity {
 
         /* Mark notification as read */
         item.setRead(true);
-        new DatabaseManager(this).saveNotification(item);
+        DatabaseManager.saveNotification(item);
     }
 }

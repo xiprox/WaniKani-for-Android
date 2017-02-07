@@ -31,7 +31,7 @@ public class SrsDistributionLoadTask extends AsyncTask<Void, Void, SRSDistributi
 
     @Override
     protected SRSDistribution doInBackground(Void... params) {
-        return new DatabaseManager(context).getSrsDistribution();
+        return DatabaseManager.getSrsDistribution();
     }
 
     @Override

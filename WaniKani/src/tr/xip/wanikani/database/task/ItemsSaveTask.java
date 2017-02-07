@@ -39,7 +39,7 @@ public class ItemsSaveTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        new DatabaseManager(context).saveItems(mList, type);
+        DatabaseManager.saveItems(mList, type);
         return null;
     }
 

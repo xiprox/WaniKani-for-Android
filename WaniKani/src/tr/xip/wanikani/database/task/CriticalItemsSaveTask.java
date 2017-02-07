@@ -36,7 +36,7 @@ public class CriticalItemsSaveTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        new DatabaseManager(context).saveCriticalItems(list);
+        DatabaseManager.saveCriticalItems(list);
         return null;
     }
 

@@ -3,7 +3,6 @@ package tr.xip.wanikani.database.task;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.database.task.callback.UserLoadTaskCallbacks;
 
@@ -31,7 +30,7 @@ public class UserLoadTask extends AsyncTask<Void, Void, User> {
 
     @Override
     protected User doInBackground(Void... params) {
-        return new DatabaseManager(context).getUser();
+        return DatabaseManager.getUser();
     }
 
     @Override
