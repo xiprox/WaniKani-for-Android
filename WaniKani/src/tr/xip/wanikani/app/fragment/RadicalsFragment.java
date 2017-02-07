@@ -45,7 +45,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
     Context context;
 
     WaniKaniApi apiMan;
-    PrefManager prefMan;
 
     TextView mMessageTitle;
     TextView mMessageSummary;
@@ -77,7 +76,6 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         super.onCreate(bundle);
         context = getActivity();
         apiMan = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
     }
 
     @Override
@@ -115,7 +113,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         mMessageTitle = (TextView) rootView.findViewById(R.id.radicals_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.radicals_message_summary);
 
-        if (!prefMan.isLegendLearned()) {
+        if (!PrefManager.isLegendLearned()) {
             showLegend();
         }
 

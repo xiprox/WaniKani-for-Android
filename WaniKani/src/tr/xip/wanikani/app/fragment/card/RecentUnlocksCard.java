@@ -44,7 +44,6 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
 
     WaniKaniApi api;
     Utils utils;
-    PrefManager prefMan;
 
     Context mContext;
 
@@ -68,7 +67,7 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
         @Override
         public void onReceive(Context context, Intent intent) {
             mContext = context;
-            new RecentUnlocksListGetTask(context, prefMan.getDashboardRecentUnlocksNumber(),
+            new RecentUnlocksListGetTask(context, PrefManager.getDashboardRecentUnlocksNumber(),
                     RecentUnlocksCard.this).executeSerial();
         }
     };
@@ -83,7 +82,6 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
-        prefMan = new PrefManager(getActivity());
         super.onCreate(state);
     }
 

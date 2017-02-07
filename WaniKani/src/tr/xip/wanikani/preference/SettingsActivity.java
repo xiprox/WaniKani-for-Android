@@ -27,9 +27,6 @@ import tr.xip.wanikani.preference.custom.RecentUnlocksNumberPreference;
  * Created by xihsa_000 on 4/4/14.
  */
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
-
-    PrefManager prefMan;
-
     TextView mApiKey;
     RelativeLayout mCustomFonts;
     CheckBox mCustomFontsCheckBox;
@@ -88,8 +85,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        prefMan = new PrefManager(this);
-
         mApiKey = (TextView) findViewById(R.id.settings_api_key);
         mCustomFonts = (RelativeLayout) findViewById(R.id.settings_general_use_custom_fonts);
         mCustomFontsCheckBox = (CheckBox) findViewById(R.id.settings_general_use_custom_fonts_check_box);
@@ -144,42 +139,42 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mCustomFontsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setUseCUstomFonts(isChecked);
+                PrefManager.setUseCUstomFonts(isChecked);
             }
         });
 
         mGeneralUseSpecificDatesCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setUseSpecificDates(isChecked);
+                PrefManager.setUseSpecificDates(isChecked);
             }
         });
 
         mNotificationsEnableCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefMan.setNotificationsEnabled(isChecked);
+                PrefManager.setNotificationsEnabled(SettingsActivity.this, isChecked);
             }
         });
 
         mNotificationsReminderEnableCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefMan.setReminderNotificationEnabled(isChecked);
+                PrefManager.setReminderNotificationEnabled(isChecked);
             }
         });
 
         mReviewsLessonsFullscreenCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setReviewsLessonsFullscreen(isChecked);
+                PrefManager.setReviewsLessonsFullscreen(isChecked);
             }
         });
 
         mReviewImprovementsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setReviewsImprovements(isChecked);
+                PrefManager.setReviewsImprovements(isChecked);
                 mIgnoreButton.setEnabled(isChecked);
                 mIgnoreButtonCheckBox.setEnabled(isChecked);
                 mWaniKaniImprove.setEnabled(isChecked);
@@ -200,49 +195,49 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mIgnoreButtonCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setIgnoreButton(isChecked);
+                PrefManager.setIgnoreButton(isChecked);
             }
         });
 
         mSingleButtonCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setSingleButton(isChecked);
+                PrefManager.setSingleButton(isChecked);
             }
         });
 
         mPortraitModeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setPortraitMode(isChecked);
+                PrefManager.setPortraitMode(isChecked);
             }
         });
 
         mWaniKaniImproveCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setWaniKaniImprove(isChecked);
+                PrefManager.setWaniKaniImprove(isChecked);
             }
         });
 
         mReviewOrderCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setReviewOrder(isChecked);
+                PrefManager.setReviewOrder(isChecked);
             }
         });
 
         mLessonOrderCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setLessonOrder(isChecked);
+                PrefManager.setLessonOrder(isChecked);
             }
         });
 
         mExternalFramePlacerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setExternalFramePlacer(isChecked);
+                PrefManager.setExternalFramePlacer(isChecked);
                 mExternalFramePlacerDictionary.setEnabled(isChecked);
             }
         });
@@ -250,56 +245,56 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mPartOfSpeechCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setPartOfSpeech(isChecked);
+                PrefManager.setPartOfSpeech(isChecked);
             }
         });
 
         mAutoPopupCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setAutoPopup(isChecked);
+                PrefManager.setAutoPopup(isChecked);
             }
         });
 
         mMistakeDelayCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setMistakeDelay(isChecked);
+                PrefManager.setMistakeDelay(isChecked);
             }
         });
 
         mRomajiCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setRomaji(isChecked);
+                PrefManager.setRomaji(isChecked);
             }
         });
 
         mNoSuggestionCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setNoSuggestion(isChecked);
+                PrefManager.setNoSuggestion(isChecked);
             }
         });
 
         mMuteButtonCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setMuteButton(isChecked);
+                PrefManager.setMuteButton(isChecked);
             }
         });
 
         mSRSIndicationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setSRSIndication(isChecked);
+                PrefManager.setSRSIndication(isChecked);
             }
         });
 
         mHWAccelCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                prefMan.setHWAccel(isChecked);
+                PrefManager.setHWAccel(isChecked);
             }
         });
         setUp();
@@ -367,7 +362,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void loadApiKey() {
-        String apiKey = prefMan.getApiKey();
+        String apiKey = PrefManager.getApiKey();
         String maskedApiKey = "************************";
 
         for (int i = 25; i < apiKey.length(); i++) {
@@ -378,87 +373,87 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void loadUseCustomFonts() {
-        mCustomFontsCheckBox.setChecked(prefMan.isUseCustomFonts());
+        mCustomFontsCheckBox.setChecked(PrefManager.isUseCustomFonts());
     }
 
     private void loadGeneralUseSpecificDates() {
-        mGeneralUseSpecificDatesCheckBox.setChecked(prefMan.isUseSpecificDates());
+        mGeneralUseSpecificDatesCheckBox.setChecked(PrefManager.isUseSpecificDates());
     }
 
     private void loadReviewsImprovements() {
-        mReviewImprovementsCheckBox.setChecked(prefMan.getReviewsImprovements());
+        mReviewImprovementsCheckBox.setChecked(PrefManager.getReviewsImprovements());
     }
 
     private void loadReviewsLessonsFullscreen() {
-        mReviewsLessonsFullscreenCheckBox.setChecked(prefMan.getReviewsLessonsFullscreen());
+        mReviewsLessonsFullscreenCheckBox.setChecked(PrefManager.getReviewsLessonsFullscreen());
     }
 
     private void loadNotificationsEnable() {
-        mNotificationsEnableCheckBox.setChecked(prefMan.notificationsEnabled());
+        mNotificationsEnableCheckBox.setChecked(PrefManager.notificationsEnabled());
     }
 
     private void loadNotificationsReminderEnable() {
-        mNotificationsReminderEnableCheckBox.setChecked(prefMan.reminderNotificationEnabled());
+        mNotificationsReminderEnableCheckBox.setChecked(PrefManager.reminderNotificationEnabled());
     }
 
     private void loadIgnoreButton() {
-        mIgnoreButtonCheckBox.setChecked(prefMan.getIgnoreButton());
+        mIgnoreButtonCheckBox.setChecked(PrefManager.getIgnoreButton());
     }
 
     private void loadSingleButton() {
-        mSingleButtonCheckBox.setChecked(prefMan.getSingleButton());
+        mSingleButtonCheckBox.setChecked(PrefManager.getSingleButton());
     }
 
     private void loadPortraitMode() {
-        mPortraitModeCheckBox.setChecked(prefMan.getPortraitMode());
+        mPortraitModeCheckBox.setChecked(PrefManager.getPortraitMode());
     }
 
     private void loadWaniKaniImprove() {
-        mWaniKaniImproveCheckBox.setChecked(prefMan.getWaniKaniImprove());
+        mWaniKaniImproveCheckBox.setChecked(PrefManager.getWaniKaniImprove());
     }
 
     private void loadReviewOrder() {
-        mReviewOrderCheckBox.setChecked(prefMan.getReviewOrder());
+        mReviewOrderCheckBox.setChecked(PrefManager.getReviewOrder());
     }
 
     private void loadLessonOrder() {
-        mLessonOrderCheckBox.setChecked(prefMan.getLessonOrder());
+        mLessonOrderCheckBox.setChecked(PrefManager.getLessonOrder());
     }
 
     private void loadExternalFramePlacer() {
-        mExternalFramePlacerCheckBox.setChecked(prefMan.getExternalFramePlacer());
+        mExternalFramePlacerCheckBox.setChecked(PrefManager.getExternalFramePlacer());
     }
 
     private void loadPartOfSpeech() {
-        mPartOfSpeechCheckBox.setChecked(prefMan.getPartOfSpeech());
+        mPartOfSpeechCheckBox.setChecked(PrefManager.getPartOfSpeech());
     }
 
     private void loadAutoPopup() {
-        mAutoPopupCheckBox.setChecked(prefMan.getAutoPopup());
+        mAutoPopupCheckBox.setChecked(PrefManager.getAutoPopup());
     }
 
     private void loadMistakeDelay() {
-        mMistakeDelayCheckBox.setChecked(prefMan.getMistakeDelay());
+        mMistakeDelayCheckBox.setChecked(PrefManager.getMistakeDelay());
     }
 
     private void loadRomaji() {
-        mRomajiCheckBox.setChecked(prefMan.getRomaji());
+        mRomajiCheckBox.setChecked(PrefManager.getRomaji());
     }
 
     private void loadNoSuggestion() {
-        mNoSuggestionCheckBox.setChecked(prefMan.getNoSuggestion());
+        mNoSuggestionCheckBox.setChecked(PrefManager.getNoSuggestion());
     }
 
     private void loadMuteButton() {
-        mMuteButtonCheckBox.setChecked(prefMan.getMuteButton());
+        mMuteButtonCheckBox.setChecked(PrefManager.getMuteButton());
     }
 
     private void loadSRSIndication() {
-        mSRSIndicationCheckBox.setChecked(prefMan.getSRSIndication());
+        mSRSIndicationCheckBox.setChecked(PrefManager.getSRSIndication());
     }
 
     private void loadHWAccel() {
-        mHWAccelCheckBox.setChecked(prefMan.getHWAccel());
+        mHWAccelCheckBox.setChecked(PrefManager.getHWAccel());
     }
 
     private void loadAppVersionSummary() {
@@ -566,13 +561,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         final ArrayAdapter<Integer> adapter
                 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice);
         adapter.addAll(getReminderNotificationIntervals());
-        int currentSelection = adapter.getPosition((int) (prefMan.getReminderNotificationInterval() / 60000));
+        int currentSelection = adapter.getPosition((int) (PrefManager.getReminderNotificationInterval() / 60000));
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.minutes))
                 .setSingleChoiceItems(adapter, currentSelection, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position) {
-                        prefMan.setReminderNotificationInterval(adapter.getItem(position) * 60000);
+                        PrefManager.setReminderNotificationInterval(adapter.getItem(position) * 60000);
                     }
                 })
                 .setPositiveButton(R.string.ok, null)

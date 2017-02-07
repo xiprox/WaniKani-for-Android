@@ -34,7 +34,6 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
     Context context;
 
     WaniKaniApi api;
-    PrefManager prefMan;
     Utils utils;
 
     View rootView;
@@ -64,7 +63,6 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -121,7 +119,7 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
 
                         */
                 } else {
-                    if (prefMan.isUseSpecificDates()) {
+                    if (PrefManager.isUseSpecificDates()) {
                         mNextReview.setText(sdf.format(queue.getNextReviewDate()));
                     } else {
                         mNextReview.setReferenceTime(queue.getNextReviewDate());

@@ -45,7 +45,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
     Context context;
 
     WaniKaniApi apiMan;
-    PrefManager prefMan;
 
     TextView mMessageTitle;
     TextView mMessageSummary;
@@ -76,7 +75,6 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         super.onCreate(bundle);
         context = getActivity();
         apiMan = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
     }
 
     @Override
@@ -114,7 +112,7 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         mMessageTitle = (TextView) rootView.findViewById(R.id.kanji_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.kanji_message_summary);
 
-        if (!prefMan.isLegendLearned()) {
+        if (!PrefManager.isLegendLearned()) {
             showLegend();
         }
 

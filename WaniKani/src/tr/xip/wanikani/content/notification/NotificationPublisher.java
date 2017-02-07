@@ -35,8 +35,6 @@ public class NotificationPublisher extends BroadcastReceiver implements StudyQue
 
     private NotificationPreferences notifPrefs;
 
-    private PrefManager prefMan;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         publish(context);
@@ -44,7 +42,6 @@ public class NotificationPublisher extends BroadcastReceiver implements StudyQue
 
     public void publish(Context context) {
         this.context = context;
-        this.prefMan = new PrefManager(context);
         this.notifPrefs = new NotificationPreferences(context);
 
         new StudyQueueGetTask(context, this).executeParallel();
@@ -122,7 +119,7 @@ public class NotificationPublisher extends BroadcastReceiver implements StudyQue
     }
 
     private PendingIntent getBrowserPendingIntent(int type) {
-        Intent browserIntent = prefMan.getWebViewIntent();
+        Intent browserIntent = PrefManager.getWebViewIntent();
         browserIntent.setAction(WebReviewActivity.OPEN_ACTION);
 
         switch (type) {
@@ -136,7 +133,7 @@ public class NotificationPublisher extends BroadcastReceiver implements StudyQue
 
         TaskStackBuilder browserStackBuilder = TaskStackBuilder.create(context);
         browserStackBuilder.addParentStack(
-                prefMan.getHWAccel() ? WebReviewActivity.class : SWWebReviewActivity.class);
+                PrefManager.getHWAccel() ? WebReviewActivity.class : SWWebReviewActivity.class);
         browserStackBuilder.addNextIntent(browserIntent);
 
         return browserStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

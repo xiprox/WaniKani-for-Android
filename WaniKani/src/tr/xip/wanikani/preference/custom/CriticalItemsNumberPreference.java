@@ -17,7 +17,6 @@ import tr.xip.wanikani.managers.PrefManager;
 public class CriticalItemsNumberPreference extends DialogFragment {
 
     Context context;
-    PrefManager prefMan;
 
     NumberPicker mNumberPicker;
 
@@ -27,7 +26,6 @@ public class CriticalItemsNumberPreference extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        prefMan = new PrefManager(context);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class CriticalItemsNumberPreference extends DialogFragment {
         mNumberPicker.setMaxValue(15);
         mNumberPicker.setWrapSelectorWheel(false);
 
-        mNumberPicker.setValue(prefMan.getCriticalItemsNumber());
+        mNumberPicker.setValue(PrefManager.getCriticalItemsNumber());
 
         Button mOk = (Button) view.findViewById(R.id.button1);
         Button mCancel = (Button) view.findViewById(R.id.button2);
@@ -54,7 +52,7 @@ public class CriticalItemsNumberPreference extends DialogFragment {
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefMan.setCriticalItemsNumber(mNumberPicker.getValue());
+                PrefManager.setCriticalItemsNumber(mNumberPicker.getValue());
                 dismiss();
             }
         });

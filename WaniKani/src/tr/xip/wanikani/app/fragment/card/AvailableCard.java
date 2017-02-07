@@ -100,7 +100,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
         mLessonsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new PrefManager(context).getWebViewIntent();
+                Intent intent = PrefManager.getWebViewIntent(context);
                 intent.setAction(WebReviewActivity.OPEN_ACTION);
                 intent.setData(Uri.parse(Browser.LESSON_URL));
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
@@ -110,7 +110,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
         mReviewsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new PrefManager(context).getWebViewIntent();
+                Intent intent = PrefManager.getWebViewIntent(context);
                 intent.setAction(WebReviewActivity.OPEN_ACTION);
                 intent.setData(Uri.parse(Browser.REVIEW_URL));
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);

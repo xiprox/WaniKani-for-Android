@@ -51,7 +51,6 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
     ViewFlipper mViewFlipper;
 
     WaniKaniApi api;
-    PrefManager prefMan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,6 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
         context = getActivity();
 
         api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
 
         mAvatar = (ImageView) rootView.findViewById(R.id.profile_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.profile_username);
@@ -88,7 +86,7 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
 
         mViewFlipper = (ViewFlipper) rootView.findViewById(R.id.profile_view_flipper);
 
-        if (prefMan.isProfileFirstTime()) {
+        if (PrefManager.isProfileFirstTime()) {
             if (mViewFlipper.getDisplayedChild() == 0) {
                 mViewFlipper.showNext();
             }
@@ -152,8 +150,8 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
                 mViewFlipper.showPrevious();
             }
 
-            if (prefMan.isProfileFirstTime()) {
-                prefMan.setProfileFirstTime(false);
+            if (PrefManager.isProfileFirstTime()) {
+                PrefManager.setProfileFirstTime(false);
             }
         }
     }

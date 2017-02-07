@@ -21,7 +21,6 @@ import tr.xip.wanikani.content.notification.NotificationScheduler;
 public class FirstTimeActivity extends ActionBarActivity {
 
     WaniKaniApi api;
-    PrefManager prefMan;
 
     EditText mApiKey;
     Button mHowTo;
@@ -38,7 +37,6 @@ public class FirstTimeActivity extends ActionBarActivity {
 
         context = this;
         api = new WaniKaniApi(getApplicationContext());
-        prefMan = new PrefManager(getApplicationContext());
 
         mApiKey = (EditText) findViewById(R.id.first_time_api_key);
         mHowTo = (Button) findViewById(R.id.first_time_how_to_api_key);
@@ -94,8 +92,8 @@ public class FirstTimeActivity extends ActionBarActivity {
             super.onPostExecute(result);
 
             if (result.equals("success")) {
-                prefMan.setApiKey(key);
-                prefMan.setFirstLaunch(false);
+                PrefManager.setApiKey(key);
+                PrefManager.setFirstLaunch(false);
                 startActivity(new Intent(context, MainActivity.class));
 
                 // Set an alarm for notifications for the first time

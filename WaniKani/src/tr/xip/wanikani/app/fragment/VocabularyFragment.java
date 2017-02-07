@@ -45,7 +45,6 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
     Context context;
 
     WaniKaniApi apiMan;
-    PrefManager prefMan;
 
     TextView mMessageTitle;
     TextView mMessageSummary;
@@ -77,7 +76,6 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         super.onCreate(bundle);
         context = getActivity();
         apiMan = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
     }
 
     @Override
@@ -115,7 +113,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         mMessageTitle = (TextView) rootView.findViewById(R.id.vocabulary_message_title);
         mMessageSummary = (TextView) rootView.findViewById(R.id.vocabulary_message_summary);
 
-        if (!prefMan.isLegendLearned()) {
+        if (!PrefManager.isLegendLearned()) {
             showLegend();
         }
 

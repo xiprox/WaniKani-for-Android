@@ -57,7 +57,6 @@ public class DashboardFragment extends Fragment
     public static final String SYNC_RESULT_FAILED = "failed";
     View rootView;
     ActionBarActivity activity;
-    PrefManager prefMan;
     WaniKaniApi api;
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
@@ -128,7 +127,6 @@ public class DashboardFragment extends Fragment
     public void onCreate(Bundle paramBundle) {
         this.context = getActivity();
         api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
         super.onCreate(paramBundle);
     }
 
@@ -220,7 +218,7 @@ public class DashboardFragment extends Fragment
 
             if (isAvailableCardSyncedSuccess && isReviewsCardSyncedSuccess && isStatusCardSyncedSuccess && isRecentUnlocksCardSyncedSuccess
                     && isCriticalItemsCardSyncedSuccess) {
-                prefMan.setDashboardLastUpdateDate(System.currentTimeMillis());
+                PrefManager.setDashboardLastUpdateDate(System.currentTimeMillis());
                 onMessageCardOkButtonClick();
             }
         }
@@ -277,7 +275,7 @@ public class DashboardFragment extends Fragment
             Bundle args = new Bundle();
             args.putString(MessageCard.ARG_TITLE, title);
             args.putString(MessageCard.ARG_PREFIX, prefix);
-            args.putLong(MessageCard.ARG_TIME, prefMan.getDashboardLastUpdateTime());
+            args.putLong(MessageCard.ARG_TIME, PrefManager.getDashboardLastUpdateTime());
             fragment.setArguments(args);
 
             transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();

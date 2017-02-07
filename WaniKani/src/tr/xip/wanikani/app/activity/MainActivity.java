@@ -34,8 +34,6 @@ public class MainActivity extends ActionBarActivity
 
     public static CharSequence mTitle;
 
-    PrefManager prefMan;
-
     ActionBar mActionBar;
     Toolbar mToolbar;
 
@@ -58,8 +56,6 @@ public class MainActivity extends ActionBarActivity
 
         handleNotification(getIntent());
 
-        prefMan = new PrefManager(this);
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -70,7 +66,7 @@ public class MainActivity extends ActionBarActivity
             mActionBar.setTitle(mTitle.toString());
         }
 
-        if (prefMan.isFirstLaunch()) {
+        if (PrefManager.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
             finish();
         }

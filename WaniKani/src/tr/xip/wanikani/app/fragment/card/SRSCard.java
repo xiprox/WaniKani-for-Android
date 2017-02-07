@@ -35,7 +35,6 @@ import tr.xip.wanikani.utils.Utils;
 public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks {
 
     WaniKaniApi api;
-    PrefManager prefMan;
     Utils utils;
 
     View rootView;
@@ -99,7 +98,6 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
     @Override
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }

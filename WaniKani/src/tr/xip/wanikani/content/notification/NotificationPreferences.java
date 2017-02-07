@@ -23,13 +23,10 @@ public class NotificationPreferences {
     private SharedPreferences prefs;
     private SharedPreferences.Editor editor;
 
-    private PrefManager prefMan;
 
     public NotificationPreferences(Context context) {
         prefs = context.getSharedPreferences(PREFS_NOTIF, 0);
         editor = prefs.edit();
-
-        prefMan = new PrefManager(context);
     }
 
     public boolean isAlarmSet() {
@@ -42,7 +39,7 @@ public class NotificationPreferences {
 
     public long getLastNotificationShown() {
         return prefs.getLong(PREF_LAST_NOTIFICATION_SHOWN,
-                System.currentTimeMillis() + prefMan.getReminderNotificationInterval());
+                System.currentTimeMillis() + PrefManager.getReminderNotificationInterval());
     }
 
     public void saveLastNotificationShown(long lastShown) {
@@ -50,6 +47,6 @@ public class NotificationPreferences {
     }
 
     public boolean shouldShowNotification() {
-        return (System.currentTimeMillis() - getLastNotificationShown()) > prefMan.getReminderNotificationInterval();
+        return (System.currentTimeMillis() - getLastNotificationShown()) > PrefManager.getReminderNotificationInterval();
     }
 }

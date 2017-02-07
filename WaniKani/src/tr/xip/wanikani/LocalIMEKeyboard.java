@@ -319,7 +319,7 @@ public class LocalIMEKeyboard implements Keyboard {
          */
         public JSListenerSetClass (String clazz, boolean reviews)
         {
-            this.clazz = clazz;
+            this.clazz = clazz;prefMan
             this.reviews = reviews;
 
             enable = true;
@@ -372,7 +372,7 @@ public class LocalIMEKeyboard implements Keyboard {
                 divw.setVisibility (View.VISIBLE);
                 if (!hwkeyb) {
                     imm.showSoftInput (wv, InputMethodManager.SHOW_FORCED);
-                    if (prefMan.getPortraitMode())
+                    if (PrefManager.getPortraitMode())
                         wav.setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }
                 ew.requestFocus ();
@@ -380,7 +380,7 @@ public class LocalIMEKeyboard implements Keyboard {
                     imm.hideSoftInputFromWindow (ew.getWindowToken (), 0);
             } else {
                 if (!hwkeyb) {
-                    if (prefMan.getPortraitMode())
+                    if (PrefManager.getPortraitMode())
                         wav.setRequestedOrientation (orientation);
                 }
                 divw.setVisibility (View.GONE);
@@ -862,9 +862,6 @@ public class LocalIMEKeyboard implements Keyboard {
             "if (window.wkAutoplay != null) " +
                     "	audioAutoplay = window.wkAutoplay;";
 
-    /// Preferences Manager
-    PrefManager prefMan;
-
     /// Parent activity
     WebReviewActivity wav;
 
@@ -960,14 +957,13 @@ public class LocalIMEKeyboard implements Keyboard {
 
         this.wav = wav;
         this.wv = wv;
-        this.prefMan = new PrefManager(wav);
 
         editable = true;
         bpos = new BoxPosition ();
 
         imm = (InputMethodManager) wav.getSystemService (Context.INPUT_METHOD_SERVICE);
 
-        disableSuggestions = prefMan.getNoSuggestion() | prefMan.getRomaji();
+        disableSuggestions = PrefManager.getNoSuggestion() | PrefManager.getRomaji();
 
         dm = wav.getResources ().getDisplayMetrics ();
 
@@ -1053,13 +1049,13 @@ public class LocalIMEKeyboard implements Keyboard {
 
         orientation = wav.getRequestedOrientation ();
 
-        if (prefMan.getReviewOrder())
+        if (PrefManager.getReviewOrder())
             wv.js (ifReviews (ReviewOrder.JS_CODE));
-        if (prefMan.getLessonOrder())
+        if (PrefManager.getLessonOrder())
             wv.js (ifLessons (LessonOrder.JS_CODE));
         wv.js (MistakeDelay.JS_INIT);
 
-        isWKIEnabled = prefMan.getWaniKaniImprove();
+        isWKIEnabled = PrefManager.getWaniKaniImprove();
         if (isWKIEnabled)
             wki.initPage ();
 
@@ -1091,11 +1087,11 @@ public class LocalIMEKeyboard implements Keyboard {
         wv.js(JS_STOP_TRIGGERS);
         if (isWKIEnabled)
             wki.uninitPage ();
-        if (prefMan.getPortraitMode())
+        if (PrefManager.getPortraitMode())
             wav.setRequestedOrientation(orientation);
-        if (prefMan.getReviewOrder())
+        if (PrefManager.getReviewOrder())
             wv.js (ifReviews (ReviewOrder.JS_UNINIT_CODE));
-        if (prefMan.getLessonOrder())
+        if (PrefManager.getLessonOrder())
             wv.js (ifReviews (LessonOrder.JS_UNINIT_CODE));
     }
 
@@ -1228,11 +1224,11 @@ public class LocalIMEKeyboard implements Keyboard {
             enableIgnoreButton (false);
             disable (correctFG, correctBG);
         } else if (clazz.equals ("incorrect")) {
-            if (prefMan.getAutoPopup())
+            if (PrefManager.getAutoPopup())
                 errorPopup ();
-            if (prefMan.getMistakeDelay())
+            if (PrefManager.getMistakeDelay())
                 wv.js (MistakeDelay.JS_MISTAKE);
-            enableIgnoreButton (reviews && prefMan.getIgnoreButton());
+            enableIgnoreButton (reviews && PrefManager.getIgnoreButton());
             disable (incorrectFG, incorrectBG);
         } else if (clazz.equals ("WKO_ignored")) {
             enableIgnoreButton (false);
@@ -1262,7 +1258,7 @@ public class LocalIMEKeyboard implements Keyboard {
         wv.js (ifReviews (WaniKaniKunOn.JS_CODE));
 
         res = srsCols.get (level);
-        if (prefMan.getSRSIndication() && res != null) {
+        if (PrefManager.getSRSIndication() && res != null) {
             srsv.setVisibility (View.VISIBLE);
             srsv.setBackgroundResource(res);
         } else
@@ -1382,8 +1378,8 @@ public class LocalIMEKeyboard implements Keyboard {
     protected void setInputType ()
     {
         boolean tren, trjp;
-        trjp = prefMan.getNoSuggestion();
-        tren = prefMan.getRomaji();
+        trjp = PrefManager.getNoSuggestion();
+        tren = PrefManager.getRomaji();
 
         if (trjp || tren) {
             disableSuggestions = true;

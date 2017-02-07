@@ -20,7 +20,6 @@ import tr.xip.wanikani.managers.PrefManager;
 public class RecentUnlocksNumberPreference extends DialogFragment {
 
     Context context;
-    PrefManager prefMan;
 
     NumberPicker mNumberPicker;
 
@@ -30,7 +29,6 @@ public class RecentUnlocksNumberPreference extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        prefMan = new PrefManager(context);
     }
 
     @Override
@@ -49,7 +47,7 @@ public class RecentUnlocksNumberPreference extends DialogFragment {
         mNumberPicker.setMaxValue(30);
         mNumberPicker.setWrapSelectorWheel(false);
 
-        mNumberPicker.setValue(prefMan.getDashboardRecentUnlocksNumber());
+        mNumberPicker.setValue(PrefManager.getDashboardRecentUnlocksNumber());
 
         Button mOk = (Button) view.findViewById(R.id.button1);
         Button mCancel = (Button) view.findViewById(R.id.button2);
@@ -57,7 +55,7 @@ public class RecentUnlocksNumberPreference extends DialogFragment {
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefMan.setDashboardRecentUnlocksNumber(mNumberPicker.getValue());
+                PrefManager.setDashboardRecentUnlocksNumber(mNumberPicker.getValue());
                 dismiss();
             }
         });

@@ -60,7 +60,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
     private static final int FLIPPER_PROGRESS_BAR = 1;
 
     WaniKaniApi api;
-    PrefManager prefMan;
 
     Toolbar mToolbar;
 
@@ -162,7 +161,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_item_details);
 
         api = new WaniKaniApi(this);
-        prefMan = new PrefManager(this);
 
         setUpActionBar();
 
@@ -473,7 +471,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
         /** Next available */
         SimpleDateFormat availableDateFormat = new SimpleDateFormat("dd MMMM HH:mm");
 
-        if (prefMan.isUseSpecificDates()) {
+        if (PrefManager.isUseSpecificDates()) {
             mNextAvailable.setText(availableDateFormat.format(mItem.getAvailableDate()) + "");
         } else {
             mNextAvailable.setReferenceTime(mItem.getAvailableDate());

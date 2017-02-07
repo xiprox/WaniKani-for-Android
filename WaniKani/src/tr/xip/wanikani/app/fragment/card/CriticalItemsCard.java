@@ -45,7 +45,6 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
 
     WaniKaniApi api;
     Utils utils;
-    PrefManager prefMan;
 
     Context mContext;
 
@@ -73,7 +72,7 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
         @Override
         public void onReceive(Context context, Intent intent) {
             mContext = context;
-            new CriticalItemsListGetTask(context, prefMan.getDashboardCriticalItemsPercentage(), CriticalItemsCard.this).executeSerial();
+            new CriticalItemsListGetTask(context, PrefManager.getDashboardCriticalItemsPercentage(), CriticalItemsCard.this).executeSerial();
         }
     };
 
@@ -87,7 +86,6 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
     public void onCreate(Bundle state) {
         api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
-        prefMan = new PrefManager(getActivity());
         super.onCreate(state);
     }
 
@@ -167,7 +165,7 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
             List<CriticalItem> mNewList = new ArrayList<CriticalItem>();
 
             for (int i = 0; i < list.size(); i++)
-                if (i < prefMan.getCriticalItemsNumber())
+                if (i < PrefManager.getCriticalItemsNumber())
                     mNewList.add(list.get(i));
 
             criticalItemsList = mNewList;

@@ -28,7 +28,6 @@ import tr.xip.wanikani.client.task.callback.CriticalItemsListGetTaskCallbacks;
 public class CriticalItemsActivity extends ActionBarActivity implements CriticalItemsListGetTaskCallbacks {
 
     WaniKaniApi api;
-    PrefManager prefMan;
 
     ActionBar mActionBar;
 
@@ -45,7 +44,6 @@ public class CriticalItemsActivity extends ActionBarActivity implements Critical
         setContentView(R.layout.activity_critical_items);
 
         api = new WaniKaniApi(this);
-        prefMan = new PrefManager(this);
 
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
@@ -55,7 +53,7 @@ public class CriticalItemsActivity extends ActionBarActivity implements Critical
         mGrid = (GridView) findViewById(R.id.activity_critical_items_grid);
         mFlipper = (ViewFlipper) findViewById(R.id.activity_critical_items_view_flipper);
 
-        new CriticalItemsListGetTask(this, prefMan.getDashboardCriticalItemsPercentage(), this).executeParallel();
+        new CriticalItemsListGetTask(this, PrefManager.getDashboardCriticalItemsPercentage(), this).executeParallel();
     }
 
     @Override

@@ -26,9 +26,8 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     public void handleSituation(Context context) {
         NotificationPreferences prefs = new NotificationPreferences(context);
-        PrefManager prefManager = new PrefManager(context);
 
-        if (!prefManager.isFirstLaunch() && prefManager.notificationsEnabled()) {
+        if (!PrefManager.isFirstLaunch() && PrefManager.notificationsEnabled()) {
             if (!prefs.isAlarmSet()) {
                 /** Schedule an alarm if none is scheduled yet */
                 StudyQueue queue = new DatabaseManager(context).getStudyQueue();

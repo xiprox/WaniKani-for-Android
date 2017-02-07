@@ -1,5 +1,6 @@
 package tr.xip.wanikani.managers;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,356 +20,345 @@ import tr.xip.wanikani.app.activity.WebReviewActivity;
 import tr.xip.wanikani.content.notification.NotificationPublisher;
 import tr.xip.wanikani.content.notification.NotificationScheduler;
 
-/**
- * Created by xihsa_000 on 3/11/14.
- */
-public class PrefManager {
+@SuppressLint("CommitPrefEdits")
+public abstract class PrefManager {
     public static final String PREF_API_KEY = "pref_api_key";
-    public static final String PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER = "pref_dashboard_recent_unlock_number";
-    public static final String PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE = "pref_dashboard_critical_items_percentage";
-    public static final String PREF_CRITICAL_ITEMS_NUMBER = "pref_critical_items_number";
-    public static final String PREF_USE_CUSTOM_FONTS = "pref_use_custom_fonts";
-    public static final String PREF_USE_SPECIFIC_DATES = "pref_use_specific_dates";
-    public static final String PREF_REVIEWS_IMPROVEMENTS = "pref_reviews_improvements";
-    public static final String PREF_IGNORE_BUTTON = "pref_ignore_button";
-    public static final String PREF_SINGLE_BUTTON = "pref_single_button";
-    public static final String PREF_PORTRAIT_MODE = "pref_portrait_mode";
-    public static final String PREF_WANIKANI_IMPROVE = "pref_wanikani_improve";
-    public static final String PREF_REVIEW_ORDER = "pref_review_order";
-    public static final String PREF_LESSON_ORDER = "pref_lesson_order";
-    public static final String PREF_EXTERNAL_FRAME_PLACER = "pref_eternal_frame_placer";
-    public static final String PREF_EXTERNAL_FRAME_PLACER_DICTIONARY = "pref_external_frame_placer_dictionary";
-    public static final String PREF_PART_OF_SPEECH = "pref_part_of_speech";
-    public static final String PREF_AUTO_POPUP = "pref_auto_popup";
-    public static final String PREF_MISTAKE_DELAY = "pref_mistake_delay";
-    public static final String PREF_ROMAJI = "pref_romaji";
-    public static final String PREF_NO_SUGGESTION = "pref_no_suggestions";
-    public static final String PREF_MUTE_BUTTON = "pref_mute_button";
-    public static final String PREF_SRS_INDCATION = "pref_srs_indication";
-    public static final String PREF_IGNORE_BUTTON_MESSAGE = "pref_ignore_button_message";
-    public static final String PREF_HW_ACCEL_MESSAGE = "pref_hw_accel_message";
-    public static final String PREF_MUTE = "pref_mute";
-    public static final String PREF_HW_ACCEL = "pref_hw_accel";
-    public static final String PREF_REVIEWS_LESSONS_FULLSCREEN = "pref_rev_les_fullscreen";
-    public static final String PREF_SHOW_NOTIFICATIONS = "pref_show_notifications";
-    public static final String PREF_ENABLE_REMINDER_NOTIFICATION = "pref_enable_reminder_notification";
-    public static final String PREF_REMINDER_NOTIFICATION_INTERVAL = "pref_reminder_notification_interval";
+    private static final String PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER = "pref_dashboard_recent_unlock_number";
+    private static final String PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE = "pref_dashboard_critical_items_percentage";
+    private static final String PREF_CRITICAL_ITEMS_NUMBER = "pref_critical_items_number";
+    private static final String PREF_USE_CUSTOM_FONTS = "pref_use_custom_fonts";
+    private static final String PREF_USE_SPECIFIC_DATES = "pref_use_specific_dates";
+    private static final String PREF_REVIEWS_IMPROVEMENTS = "pref_reviews_improvements";
+    private static final String PREF_IGNORE_BUTTON = "pref_ignore_button";
+    private static final String PREF_SINGLE_BUTTON = "pref_single_button";
+    private static final String PREF_PORTRAIT_MODE = "pref_portrait_mode";
+    private static final String PREF_WANIKANI_IMPROVE = "pref_wanikani_improve";
+    private static final String PREF_REVIEW_ORDER = "pref_review_order";
+    private static final String PREF_LESSON_ORDER = "pref_lesson_order";
+    private static final String PREF_EXTERNAL_FRAME_PLACER = "pref_eternal_frame_placer";
+    private static final String PREF_EXTERNAL_FRAME_PLACER_DICTIONARY = "pref_external_frame_placer_dictionary";
+    private static final String PREF_PART_OF_SPEECH = "pref_part_of_speech";
+    private static final String PREF_AUTO_POPUP = "pref_auto_popup";
+    private static final String PREF_MISTAKE_DELAY = "pref_mistake_delay";
+    private static final String PREF_ROMAJI = "pref_romaji";
+    private static final String PREF_NO_SUGGESTION = "pref_no_suggestions";
+    private static final String PREF_MUTE_BUTTON = "pref_mute_button";
+    private static final String PREF_SRS_INDCATION = "pref_srs_indication";
+    private static final String PREF_IGNORE_BUTTON_MESSAGE = "pref_ignore_button_message";
+    private static final String PREF_HW_ACCEL_MESSAGE = "pref_hw_accel_message";
+    private static final String PREF_MUTE = "pref_mute";
+    private static final String PREF_HW_ACCEL = "pref_hw_accel";
+    private static final String PREF_REVIEWS_LESSONS_FULLSCREEN = "pref_rev_les_fullscreen";
+    private static final String PREF_SHOW_NOTIFICATIONS = "pref_show_notifications";
+    private static final String PREF_ENABLE_REMINDER_NOTIFICATION = "pref_enable_reminder_notification";
+    private static final String PREF_REMINDER_NOTIFICATION_INTERVAL = "pref_reminder_notification_interval";
 
-    private static Context context;
     private static SharedPreferences prefs;
-    private static SharedPreferences.Editor prefeditor;
     private static SharedPreferences reviewsPrefs;
-    private static SharedPreferences.Editor reviewsPrefsEditor;
 
-    public PrefManager(Context context) {
-        this.context = context;
+    public static void init(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefeditor = prefs.edit();
         reviewsPrefs = context.getSharedPreferences("review-lessons_prefs", Context.MODE_PRIVATE);
-        reviewsPrefsEditor = reviewsPrefs.edit();
     }
 
-    public String getApiKey() {
+    public static String getApiKey() {
         return prefs.getString("api_key", "0");
     }
 
-    public void setApiKey(String key) {
-        prefeditor.putString("api_key", key).commit();
+    public static void setApiKey(String key) {
+        prefs.edit().putString("api_key", key).commit();
     }
 
-    public boolean isFirstLaunch() {
+    public static boolean isFirstLaunch() {
         return prefs.getBoolean("first_launch", true);
     }
 
-    public void setFirstLaunch(boolean value) {
-        prefeditor.putBoolean("first_launch", value).commit();
+    public static void setFirstLaunch(boolean value) {
+        prefs.edit().putBoolean("first_launch", value).commit();
     }
 
-    public boolean isProfileFirstTime() {
+    public static boolean isProfileFirstTime() {
         return prefs.getBoolean("first_time_profile", true);
     }
 
-    public void setProfileFirstTime(boolean value) {
-        prefeditor.putBoolean("first_time_profile", value).commit();
+    public static void setProfileFirstTime(boolean value) {
+        prefs.edit().putBoolean("first_time_profile", value).commit();
     }
 
-    public int getDashboardRecentUnlocksNumber() {
+    public static int getDashboardRecentUnlocksNumber() {
         return prefs.getInt(PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER, 5);
     }
 
-    public void setDashboardRecentUnlocksNumber(int number) {
-        prefeditor.putInt(PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER, number).commit();
+    public static void setDashboardRecentUnlocksNumber(int number) {
+        prefs.edit().putInt(PREF_DASHBOARD_RECENT_UNLOCKS_NUMBER, number).commit();
     }
 
-    public int getDashboardCriticalItemsPercentage() {
+    public static int getDashboardCriticalItemsPercentage() {
         return prefs.getInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, 75);
     }
 
-    public void setDashboardCriticalItemsPercentage(int number) {
-        prefeditor.putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
+    public static void setDashboardCriticalItemsPercentage(int number) {
+        prefs.edit().putInt(PREF_DASHBOARD_CRITICAL_ITEMS_PERCENTAGE, number).commit();
     }
 
-    public int getCriticalItemsNumber() {
+    public static int getCriticalItemsNumber() {
         return prefs.getInt(PREF_CRITICAL_ITEMS_NUMBER, 5);
     }
 
-    public void setCriticalItemsNumber(int value) {
-        prefeditor.putInt(PREF_CRITICAL_ITEMS_NUMBER, value).commit();
+    public static void setCriticalItemsNumber(int value) {
+        prefs.edit().putInt(PREF_CRITICAL_ITEMS_NUMBER, value).commit();
     }
 
-    public boolean isLegendLearned() {
-        return PrefManager.prefs.getBoolean("pref_legend_learned", false);
+    public static boolean isLegendLearned() {
+        return prefs.getBoolean("pref_legend_learned", false);
     }
 
-    public void setLegendLearned(boolean value) {
-        PrefManager.prefeditor.putBoolean("pref_legend_learned", value).commit();
+    public static void setLegendLearned(boolean value) {
+        prefs.edit().putBoolean("pref_legend_learned", value).commit();
     }
 
-    public void setDashboardLastUpdateDate(long date) {
-        prefeditor.putLong("pref_update_date_dashboard", date).commit();
+    public static void setDashboardLastUpdateDate(long date) {
+        prefs.edit().putLong("pref_update_date_dashboard", date).commit();
     }
 
-    public long getDashboardLastUpdateTime() {
+    public static long getDashboardLastUpdateTime() {
         return prefs.getLong("pref_update_date_dashboard", 0);
     }
 
-    public boolean isUseCustomFonts() {
+    public static boolean isUseCustomFonts() {
         return prefs.getBoolean(PREF_USE_CUSTOM_FONTS, true);
     }
 
-    public void setUseCUstomFonts(boolean value) {
-        prefeditor.putBoolean(PREF_USE_CUSTOM_FONTS, value).commit();
+    public static void setUseCUstomFonts(boolean value) {
+        prefs.edit().putBoolean(PREF_USE_CUSTOM_FONTS, value).commit();
     }
 
-    public boolean isUseSpecificDates() {
+    public static boolean isUseSpecificDates() {
         return prefs.getBoolean(PREF_USE_SPECIFIC_DATES, false);
     }
 
-    public void setUseSpecificDates(boolean value) {
-        prefeditor.putBoolean(PREF_USE_SPECIFIC_DATES, value).commit();
+    public static void setUseSpecificDates(boolean value) {
+        prefs.edit().putBoolean(PREF_USE_SPECIFIC_DATES, value).commit();
     }
 
-    public boolean getReviewsImprovements() {
+    public static boolean getReviewsImprovements() {
         return prefs.getBoolean(PREF_REVIEWS_IMPROVEMENTS, true);
     }
 
-    public void setReviewsImprovements(boolean value) {
-        prefeditor.putBoolean(PREF_REVIEWS_IMPROVEMENTS, value).commit();
+    public static void setReviewsImprovements(boolean value) {
+        prefs.edit().putBoolean(PREF_REVIEWS_IMPROVEMENTS, value).commit();
     }
 
-    public boolean getIgnoreButton() {
+    public static boolean getIgnoreButton() {
         return prefs.getBoolean(PREF_IGNORE_BUTTON, true);
     }
 
-    public void setIgnoreButton(boolean value) {
-        prefeditor.putBoolean(PREF_IGNORE_BUTTON, value).commit();
+    public static void setIgnoreButton(boolean value) {
+        prefs.edit().putBoolean(PREF_IGNORE_BUTTON, value).commit();
     }
 
-    public boolean getSingleButton() {
+    public static boolean getSingleButton() {
         return prefs.getBoolean(PREF_SINGLE_BUTTON, true);
     }
 
-    public void setSingleButton(boolean value) {
-        prefeditor.putBoolean(PREF_SINGLE_BUTTON, value).commit();
+    public static void setSingleButton(boolean value) {
+        prefs.edit().putBoolean(PREF_SINGLE_BUTTON, value).commit();
     }
 
-    public boolean getPortraitMode() {
+    public static boolean getPortraitMode() {
         return prefs.getBoolean(PREF_PORTRAIT_MODE, true);
     }
 
-    public void setPortraitMode(boolean value) {
-        prefeditor.putBoolean(PREF_PORTRAIT_MODE, value).commit();
+    public static void setPortraitMode(boolean value) {
+        prefs.edit().putBoolean(PREF_PORTRAIT_MODE, value).commit();
     }
 
-    public boolean getWaniKaniImprove() {
+    public static boolean getWaniKaniImprove() {
         return prefs.getBoolean(PREF_WANIKANI_IMPROVE, false);
     }
 
-    public void setWaniKaniImprove(boolean value) {
-        prefeditor.putBoolean(PREF_WANIKANI_IMPROVE, value).commit();
+    public static void setWaniKaniImprove(boolean value) {
+        prefs.edit().putBoolean(PREF_WANIKANI_IMPROVE, value).commit();
     }
 
-    public boolean getReviewOrder() {
+    public static boolean getReviewOrder() {
         return prefs.getBoolean(PREF_REVIEW_ORDER, false);
     }
 
-    public void setReviewOrder(boolean value) {
-        prefeditor.putBoolean(PREF_REVIEW_ORDER, value).commit();
+    public static void setReviewOrder(boolean value) {
+        prefs.edit().putBoolean(PREF_REVIEW_ORDER, value).commit();
     }
 
-    public boolean getLessonOrder() {
+    public static boolean getLessonOrder() {
         return prefs.getBoolean(PREF_LESSON_ORDER, false);
     }
 
-    public void setLessonOrder(boolean value) {
-        prefeditor.putBoolean(PREF_LESSON_ORDER, value).commit();
+    public static void setLessonOrder(boolean value) {
+        prefs.edit().putBoolean(PREF_LESSON_ORDER, value).commit();
     }
 
-    public boolean getExternalFramePlacer() {
+    public static boolean getExternalFramePlacer() {
         return prefs.getBoolean(PREF_EXTERNAL_FRAME_PLACER, false);
     }
 
-    public void setExternalFramePlacer(boolean value) {
-        prefeditor.putBoolean(PREF_EXTERNAL_FRAME_PLACER, value).commit();
+    public static void setExternalFramePlacer(boolean value) {
+        prefs.edit().putBoolean(PREF_EXTERNAL_FRAME_PLACER, value).commit();
     }
 
-    public ExternalFramePlacer.Dictionary getExternalFramePlacerDictionary() {
+    public static ExternalFramePlacer.Dictionary getExternalFramePlacerDictionary() {
         ExternalFramePlacer.Dictionary dict;
         String tag = prefs.getString(PREF_EXTERNAL_FRAME_PLACER_DICTIONARY,
                 ExternalFramePlacer.Dictionary.JISHO.name());
-
         dict = ExternalFramePlacer.Dictionary.valueOf(tag);
-        if (dict == null)
-            dict = ExternalFramePlacer.Dictionary.JISHO;
-
+        dict = ExternalFramePlacer.Dictionary.JISHO;
         return dict;
     }
 
-    public void setExternalFramePlacerDictionary(String value) {
-        prefeditor.putString(PREF_EXTERNAL_FRAME_PLACER_DICTIONARY, value).commit();
+    public static void setExternalFramePlacerDictionary(String value) {
+        prefs.edit().putString(PREF_EXTERNAL_FRAME_PLACER_DICTIONARY, value).commit();
     }
 
-    public boolean getPartOfSpeech() {
+    public static boolean getPartOfSpeech() {
         return prefs.getBoolean(PREF_PART_OF_SPEECH, false); // TODO - Make true after integration
     }
 
-    public void setPartOfSpeech(boolean value) {
-        prefeditor.putBoolean(PREF_PART_OF_SPEECH, value).commit();
+    public static void setPartOfSpeech(boolean value) {
+        prefs.edit().putBoolean(PREF_PART_OF_SPEECH, value).commit();
     }
 
-    public boolean getAutoPopup() {
+    public static boolean getAutoPopup() {
         return prefs.getBoolean(PREF_AUTO_POPUP, false);
     }
 
-    public void setAutoPopup(boolean value) {
-        prefeditor.putBoolean(PREF_AUTO_POPUP, value).commit();
+    public static void setAutoPopup(boolean value) {
+        prefs.edit().putBoolean(PREF_AUTO_POPUP, value).commit();
     }
 
-    public boolean getMistakeDelay() {
+    public static boolean getMistakeDelay() {
         return prefs.getBoolean(PREF_MISTAKE_DELAY, false);
     }
 
-    public void setMistakeDelay(boolean value) {
-        prefeditor.putBoolean(PREF_MISTAKE_DELAY, value).commit();
+    public static void setMistakeDelay(boolean value) {
+        prefs.edit().putBoolean(PREF_MISTAKE_DELAY, value).commit();
     }
 
-    public boolean getRomaji() {
+    public static boolean getRomaji() {
         return prefs.getBoolean(PREF_ROMAJI, false);
     }
 
-    public void setRomaji(boolean value) {
-        prefeditor.putBoolean(PREF_ROMAJI, value).commit();
+    public static void setRomaji(boolean value) {
+        prefs.edit().putBoolean(PREF_ROMAJI, value).commit();
     }
 
-    public boolean getNoSuggestion() {
+    public static boolean getNoSuggestion() {
         return prefs.getBoolean(PREF_NO_SUGGESTION, true);
     }
 
-    public void setNoSuggestion(boolean value) {
-        prefeditor.putBoolean(PREF_NO_SUGGESTION, value).commit();
+    public static void setNoSuggestion(boolean value) {
+        prefs.edit().putBoolean(PREF_NO_SUGGESTION, value).commit();
     }
 
-    public boolean getMuteButton() {
+    public static boolean getMuteButton() {
         return prefs.getBoolean(PREF_MUTE_BUTTON, true);
     }
 
-    public void setMuteButton(boolean value) {
-        prefeditor.putBoolean(PREF_MUTE_BUTTON, value).commit();
+    public static void setMuteButton(boolean value) {
+        prefs.edit().putBoolean(PREF_MUTE_BUTTON, value).commit();
     }
 
-    public boolean getSRSIndication() {
+    public static boolean getSRSIndication() {
         return prefs.getBoolean(PREF_SRS_INDCATION, true);
     }
 
-    public void setSRSIndication(boolean value) {
-        prefeditor.putBoolean(PREF_SRS_INDCATION, value).commit();
+    public static void setSRSIndication(boolean value) {
+        prefs.edit().putBoolean(PREF_SRS_INDCATION, value).commit();
     }
 
-    public Keyboard getReviewsKeyboard() {
+    public static Keyboard getReviewsKeyboard() {
         return getReviewsImprovements() ? Keyboard.LOCAL_IME : Keyboard.NATIVE;
     }
 
-    public Intent getWebViewIntent() {
+    public static Intent getWebViewIntent(Context context) {
         boolean accel = getHWAccel();
         return new Intent(context, accel ? WebReviewActivity.class : SWWebReviewActivity.class);
     }
 
-    public boolean getIgnoreButtonMessage() {
+    public static boolean getIgnoreButtonMessage() {
         return reviewsPrefs.getBoolean(PREF_IGNORE_BUTTON_MESSAGE, true);
     }
 
-    public void setIgnoreButtonMessage(boolean value) {
-        reviewsPrefsEditor.putBoolean(PREF_IGNORE_BUTTON_MESSAGE, value).commit();
+    public static void setIgnoreButtonMessage(boolean value) {
+        reviewsPrefs.edit().putBoolean(PREF_IGNORE_BUTTON_MESSAGE, value).commit();
     }
 
-    public boolean getHWAccelMessage() {
+    public static boolean getHWAccelMessage() {
         return reviewsPrefs.getBoolean(PREF_HW_ACCEL_MESSAGE, true);
     }
 
-    public void setHWAccelMessage(boolean value) {
-        reviewsPrefsEditor.putBoolean(PREF_HW_ACCEL_MESSAGE, value).commit();
+    public static void setHWAccelMessage(boolean value) {
+        reviewsPrefs.edit().putBoolean(PREF_HW_ACCEL_MESSAGE, value).commit();
     }
 
-    public boolean getHWAccel() {
+    public static boolean getHWAccel() {
         return prefs.getBoolean(PREF_HW_ACCEL, true);
     }
 
-    public void setHWAccel(boolean value) {
-        prefeditor.putBoolean(PREF_HW_ACCEL, value).commit();
+    public static void setHWAccel(boolean value) {
+        prefs.edit().putBoolean(PREF_HW_ACCEL, value).commit();
     }
 
-    public boolean toggleMute() {
+    public static boolean toggleMute() {
         boolean mute = !getMute();
         setMute(mute);
         return mute;
     }
 
-    public boolean getMute() {
+    public static boolean getMute() {
         return prefs.getBoolean(PREF_MUTE, false);
     }
 
-    public void setMute(boolean value) {
-        prefeditor.putBoolean(PREF_MUTE, value).commit();
+    public static void setMute(boolean value) {
+        prefs.edit().putBoolean(PREF_MUTE, value).commit();
     }
 
-    public boolean getReviewsLessonsFullscreen() {
+    public static boolean getReviewsLessonsFullscreen() {
         return prefs.getBoolean(PREF_REVIEWS_LESSONS_FULLSCREEN, false);
     }
 
-    public void setReviewsLessonsFullscreen(boolean value) {
-        prefeditor.putBoolean(PREF_REVIEWS_LESSONS_FULLSCREEN, value).commit();
+    public static void setReviewsLessonsFullscreen(boolean value) {
+        prefs.edit().putBoolean(PREF_REVIEWS_LESSONS_FULLSCREEN, value).commit();
     }
 
-    public void setNotificationsEnabled(boolean value) {
-        prefeditor.putBoolean(PREF_SHOW_NOTIFICATIONS, value).commit();
+    public static void setNotificationsEnabled(Context context, boolean value) {
+        prefs.edit().putBoolean(PREF_SHOW_NOTIFICATIONS, value).commit();
         if (!value) {
             new NotificationScheduler(context).cancelNotifications();
         }
     }
 
-    public boolean notificationsEnabled() {
+    public static boolean notificationsEnabled() {
         return prefs.getBoolean(PREF_SHOW_NOTIFICATIONS, true);
     }
 
-    public boolean reminderNotificationEnabled() {
+    public static boolean reminderNotificationEnabled() {
         return prefs.getBoolean(PREF_ENABLE_REMINDER_NOTIFICATION, true);
     }
 
-    public void setReminderNotificationEnabled(boolean value) {
-        prefeditor.putBoolean(PREF_ENABLE_REMINDER_NOTIFICATION, value).commit();
+    public static void setReminderNotificationEnabled(boolean value) {
+        prefs.edit().putBoolean(PREF_ENABLE_REMINDER_NOTIFICATION, value).commit();
     }
 
-    public long getReminderNotificationInterval() {
+    public static long getReminderNotificationInterval() {
         return prefs.getLong(PREF_REMINDER_NOTIFICATION_INTERVAL, 7200000); // 2 hours by default
     }
 
-    public void setReminderNotificationInterval(long milliseconds) {
-        prefeditor.putLong(PREF_REMINDER_NOTIFICATION_INTERVAL, milliseconds).commit();
+    public static void setReminderNotificationInterval(long milliseconds) {
+        prefs.edit().putLong(PREF_REMINDER_NOTIFICATION_INTERVAL, milliseconds).commit();
     }
 
-    public void logout() {
-        prefeditor.clear().commit();
-        reviewsPrefsEditor.clear().commit();
+    public static void logout(Context context) {
+        prefs.edit().clear().commit();
+        reviewsPrefs.edit().clear().commit();
 
         File offlineData = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/shared_prefs/offline_data.xml");
         File cacheDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/cache");
@@ -396,7 +386,7 @@ public class PrefManager {
         alarmManager.cancel(pendingIntent);
     }
 
-    public static enum Keyboard {
+    public enum Keyboard {
         LOCAL_IME, NATIVE
     }
 }

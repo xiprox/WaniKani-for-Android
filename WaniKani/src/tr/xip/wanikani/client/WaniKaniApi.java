@@ -1,11 +1,17 @@
 package tr.xip.wanikani.client;
 
-import android.content.Context;
-
+import java.io.IOException;
 import java.util.List;
 
-import retrofit.RestAdapter;
-import tr.xip.wanikani.client.error.RetrofitErrorHandler;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import tr.xip.wanikani.BuildConfig;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.CriticalItem;
 import tr.xip.wanikani.models.LevelProgression;
@@ -13,37 +19,52 @@ import tr.xip.wanikani.models.SRSDistribution;
 import tr.xip.wanikani.models.StudyQueue;
 import tr.xip.wanikani.models.UnlockItem;
 import tr.xip.wanikani.models.User;
-import tr.xip.wanikani.managers.PrefManager;
 
-/**
- * Created by xihsa_000 on 3/11/14.
- */
 public class WaniKaniApi {
     private static final String API_HOST = "https://www.wanikani.com/api/user";
 
-    Context context;
-    WaniKaniService service;
-    String API_KEY;
+    private static WaniKaniService service;
+    private static String API_KEY;
 
-
-    public WaniKaniApi(Context context) {
-        PrefManager prefManager = new PrefManager(context);
-        API_KEY = prefManager.getApiKey();
-        this.context = context;
-        setupService();
+    static {
+        if (API_KEY == null) {
+            API_KEY = PrefManager.getApiKey();
+        }
+        if (service == null) {
+            setupService();
+        }
     }
 
-    private void setupService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(API_HOST)
-                .setErrorHandler(new RetrofitErrorHandler(context))
+    private static void setupService() {
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            clientBuilder.addInterceptor(httpLoggingInterceptor);
+        }
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(clientBuilder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(API_HOST)
                 .build();
 
-        service = restAdapter.create(WaniKaniService.class);
+        service = retrofit.create(WaniKaniService.class);
     }
 
     public boolean isApiKeyValid(String key) {
-        return service.getUser(key).user_information != null;
+        boolean result = false;
+
+        try {
+            User res = service.getUser(key).execute().body();
+            if (res != null && res.user_information != null) {
+                result = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public User getUser() {

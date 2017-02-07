@@ -50,7 +50,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
     Context context;
 
     WaniKaniApi api;
-    PrefManager prefMan;
 
     ImageView mAvatar;
     ImageView mAvatarBg;
@@ -78,7 +77,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
         super.onCreate(savedInstanceState);
 
         api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
 
         context = getActivity();
 
