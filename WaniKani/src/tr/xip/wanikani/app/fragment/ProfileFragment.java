@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment {
                 mLevel.setText(user.level + "");
                 mTopicsCount.setText(user.topics_count + "");
                 mPostsCount.setText(user.posts_count + "");
-                mCreationDate.setText(new SimpleDateFormat("MMMM d, yyyy").format(user.creation_date));
+                mCreationDate.setText(new SimpleDateFormat("MMMM d, yyyy").format(user.getCreationDateInMillis()));
 
                 if (user.about.length() != 0) {
                     mAbout.setText(user.about);
