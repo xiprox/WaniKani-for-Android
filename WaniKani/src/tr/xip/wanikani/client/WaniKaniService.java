@@ -14,31 +14,31 @@ import tr.xip.wanikani.models.User;
 
 public interface WaniKaniService {
 
-    @GET("/{api_key}/user-information")
+    @GET("{api_key}/user-information")
     Call<Request<User>> getUser(@Path("api_key") String api_key);
 
-    @GET("/{api_key}/study-queue")
+    @GET("{api_key}/study-queue")
     Call<Request<StudyQueue>> getStudyQueue(@Path("api_key") String api_key);
 
-    @GET("/{api_key}/level-progression")
+    @GET("{api_key}/level-progression")
     Call<Request<LevelProgression>> getLevelProgression(@Path("api_key") String api_key);
 
-    @GET("/{api_key}/srs-distribution")
+    @GET("{api_key}/srs-distribution")
     Call<Request<SRSDistribution>> getSRSDistribution(@Path("api_key") String api_key);
 
-    @GET("/{api_key}/recent-unlocks/{limit}")
+    @GET("{api_key}/recent-unlocks/{limit}")
     Call<Request<RecentUnlocksList>> getRecentUnlocksList(@Path("api_key") String api_key, @Path("limit") int limit);
 
-    @GET("/{api_key}/critical-items/{percentage}")
+    @GET("{api_key}/critical-items/{percentage}")
     Call<Request<CriticalItemsList>> getCriticalItemsList(@Path("api_key") String api_key, @Path("percentage") int percentage);
 
-    @GET("/{api_key}/radicals/{level}")
+    @GET("{api_key}/radicals/{level}")
     Call<Request<ItemsList>> getRadicalsList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
 
-    @GET("/{api_key}/kanji/{level}")
+    @GET("{api_key}/kanji/{level}")
     Call<Request<ItemsList>> getKanjiList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
 
-    @GET("/{api_key}/vocabulary/{level}")
+    @GET("{api_key}/vocabulary/{level}")
     Call<Request<ItemsList>> getVocabularyList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
 
 }

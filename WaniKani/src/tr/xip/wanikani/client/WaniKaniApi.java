@@ -20,7 +20,7 @@ import tr.xip.wanikani.models.StudyQueue;
 import tr.xip.wanikani.models.User;
 
 public abstract class WaniKaniApi {
-    private static final String API_HOST = "https://www.wanikani.com/api/user";
+    private static final String API_HOST = "https://www.wanikani.com/api/user/";
 
     private static WaniKaniService service;
     private static String API_KEY;
