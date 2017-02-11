@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 
 import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.managers.PrefManager;
 
 public class App extends Application {
     @SuppressLint("StaticFieldLeak")
@@ -14,6 +15,7 @@ public class App extends Application {
     public void onCreate() {
         context = getApplicationContext();
         DatabaseManager.init(getApplicationContext());
+        PrefManager.init(getApplicationContext());
         super.onCreate();
     }
 
