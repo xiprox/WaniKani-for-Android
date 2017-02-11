@@ -25,6 +25,8 @@ import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.KanjiList;
+import tr.xip.wanikani.models.RadicalsList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.widget.adapter.RemainingKanjiAdapter;
@@ -109,9 +111,9 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
         final User user = DatabaseManager.getUser();
         if (user == null) return;
 
-        WaniKaniApi.getRadicalsList(user.level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+        WaniKaniApi.getRadicalsList(user.level + "").enqueue(new ThroughDbCallback<Request<RadicalsList>, RadicalsList>() {
             @Override
-            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+            public void onResponse(Call<Request<RadicalsList>> call, Response<Request<RadicalsList>> response) {
                 super.onResponse(call, response);
                 if (response.isSuccessful() && response.body().requested_information != null) {
                     load(response.body().requested_information);
@@ -122,9 +124,11 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
             }
 
             @Override
-            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                ItemsList items = DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[] {user.level});
-                if (items != null) {
+            public void onFailure(Call<Request<RadicalsList>> call, Throwable t) {
+                RadicalsList items = new RadicalsList();
+                items.addAll(DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[] {user.level}));
+
+                if (items.size() != 0) {
                     load(items);
                 } else {
                     radicalsLoaded = LoadState.FAILED;
@@ -145,9 +149,9 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
             }
         });
 
-        WaniKaniApi.getKanjiList(user.level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+        WaniKaniApi.getKanjiList(user.level + "").enqueue(new ThroughDbCallback<Request<KanjiList>, KanjiList>() {
             @Override
-            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+            public void onResponse(Call<Request<KanjiList>> call, Response<Request<KanjiList>> response) {
                 super.onResponse(call, response);
                 if (response.isSuccessful() && response.body().requested_information != null) {
                     load(response.body().requested_information);
@@ -158,9 +162,11 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
             }
 
             @Override
-            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                ItemsList items = DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[] {user.level});
-                if (items != null) {
+            public void onFailure(Call<Request<KanjiList>> call, Throwable t) {
+                KanjiList items = new KanjiList();
+                items.addAll(DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[] {user.level}));
+
+                if (items.size() != 0) {
                     load(items);
                 } else {
                     kanjiLoaded = LoadState.FAILED;

@@ -36,6 +36,7 @@ import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.KanjiList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.utils.Utils;
@@ -152,9 +153,9 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
         if (mListFlipper.getDisplayedChild() == 1)
             mListFlipper.showPrevious();
 
-        WaniKaniApi.getKanjiList(level).enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+        WaniKaniApi.getKanjiList(level).enqueue(new ThroughDbCallback<Request<KanjiList>, KanjiList>() {
             @Override
-            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+            public void onResponse(Call<Request<KanjiList>> call, Response<Request<KanjiList>> response) {
                 super.onResponse(call, response);
 
                 if (response.isSuccessful() && response.body().requested_information != null) {
@@ -172,9 +173,11 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
             }
 
             @Override
-            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.KANJI, Utils.convertStringArrayToIntArray(level.split(",")));
-                if (list != null) {
+            public void onFailure(Call<Request<KanjiList>> call, Throwable t) {
+                KanjiList list = new KanjiList();
+                list.addAll(DatabaseManager.getItems(BaseItem.ItemType.KANJI, Utils.convertStringArrayToIntArray(level.split(","))));
+
+                if (list.size() != 0) {
                     load(list);
                 } else {
                     mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);

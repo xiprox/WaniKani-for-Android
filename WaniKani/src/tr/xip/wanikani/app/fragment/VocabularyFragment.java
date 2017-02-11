@@ -38,6 +38,7 @@ import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.ItemsList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.User;
+import tr.xip.wanikani.models.VocabularyList;
 import tr.xip.wanikani.utils.Utils;
 import tr.xip.wanikani.widget.adapter.VocabularyAdapter;
 
@@ -152,9 +153,9 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
         if (mListFlipper.getDisplayedChild() == 1)
             mListFlipper.showPrevious();
 
-        WaniKaniApi.getVocabularyList(level).enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+        WaniKaniApi.getVocabularyList(level).enqueue(new ThroughDbCallback<Request<VocabularyList>, VocabularyList>() {
             @Override
-            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+            public void onResponse(Call<Request<VocabularyList>> call, Response<Request<VocabularyList>> response) {
                 super.onResponse(call, response);
 
                 if (response.isSuccessful() && response.body().requested_information != null) {
@@ -172,9 +173,11 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
             }
 
             @Override
-            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, Utils.convertStringArrayToIntArray(level.split(",")));
-                if (list != null) {
+            public void onFailure(Call<Request<VocabularyList>> call, Throwable t) {
+                VocabularyList list = new VocabularyList();
+                list.addAll(DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, Utils.convertStringArrayToIntArray(level.split(","))));
+
+                if (list.size() != 0) {
                     load(list);
                 } else {
                     mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);

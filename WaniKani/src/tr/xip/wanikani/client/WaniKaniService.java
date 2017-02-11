@@ -5,12 +5,15 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import tr.xip.wanikani.models.CriticalItemsList;
 import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.KanjiList;
 import tr.xip.wanikani.models.LevelProgression;
+import tr.xip.wanikani.models.RadicalsList;
 import tr.xip.wanikani.models.RecentUnlocksList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.SRSDistribution;
 import tr.xip.wanikani.models.StudyQueue;
 import tr.xip.wanikani.models.User;
+import tr.xip.wanikani.models.VocabularyList;
 
 public interface WaniKaniService {
 
@@ -33,12 +36,12 @@ public interface WaniKaniService {
     Call<Request<CriticalItemsList>> getCriticalItemsList(@Path("api_key") String api_key, @Path("percentage") int percentage);
 
     @GET("{api_key}/radicals/{level}")
-    Call<Request<ItemsList>> getRadicalsList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
+    Call<Request<RadicalsList>> getRadicalsList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
 
     @GET("{api_key}/kanji/{level}")
-    Call<Request<ItemsList>> getKanjiList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
+    Call<Request<KanjiList>> getKanjiList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
 
     @GET("{api_key}/vocabulary/{level}")
-    Call<Request<ItemsList>> getVocabularyList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
+    Call<Request<VocabularyList>> getVocabularyList(@Path("api_key") String api_key, @Path("level") String level); // We use a string to handle the level argument as the API accepts comma-delimited level argument
 
 }

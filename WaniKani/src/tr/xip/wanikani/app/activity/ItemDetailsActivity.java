@@ -37,8 +37,11 @@ import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.CriticalItem;
 import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.KanjiList;
+import tr.xip.wanikani.models.RadicalsList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.UnlockItem;
+import tr.xip.wanikani.models.VocabularyList;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.widget.ObservableScrollView;
 import tr.xip.wanikani.widget.RelativeTimeTextView;
@@ -529,9 +532,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         /** In case of a radical item */
         if (type.equals(BaseItem.TYPE_RADICAL)) {
-            WaniKaniApi.getRadicalsList(level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+            WaniKaniApi.getRadicalsList(level + "").enqueue(new ThroughDbCallback<Request<RadicalsList>, RadicalsList>() {
                 @Override
-                public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+                public void onResponse(Call<Request<RadicalsList>> call, Response<Request<RadicalsList>> response) {
                     super.onResponse(call, response);
                     if (response.isSuccessful() && response.body().requested_information != null) {
                         load(response.body().requested_information);
@@ -541,9 +544,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 }
 
                 @Override
-                public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                    ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[]{level});
-                    if (list != null) {
+                public void onFailure(Call<Request<RadicalsList>> call, Throwable t) {
+                    RadicalsList list = new RadicalsList();
+                    list.addAll(DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[]{level}));
+
+                    if (list.size() != 0) {
                         load(list);
                     } else {
                         showErrorAndExit();
@@ -578,9 +583,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
         /** In case of a Kanji item */
         if (type.equals(BaseItem.TYPE_KANJI)) {
-            WaniKaniApi.getKanjiList(level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+            WaniKaniApi.getKanjiList(level + "").enqueue(new ThroughDbCallback<Request<KanjiList>, KanjiList>() {
                 @Override
-                public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+                public void onResponse(Call<Request<KanjiList>> call, Response<Request<KanjiList>> response) {
                     super.onResponse(call, response);
                     if (response.isSuccessful() && response.body().requested_information != null) {
                         load(response.body().requested_information);
@@ -590,9 +595,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
                 }
 
                 @Override
-                public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                    ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[]{level});
-                    if (list != null) {
+                public void onFailure(Call<Request<KanjiList>> call, Throwable t) {
+                    KanjiList list = new KanjiList();
+                    list.addAll(DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[]{level}));
+
+                    if (list.size() != 0) {
                         load(list);
                     } else {
                         showErrorAndExit();
@@ -612,9 +619,9 @@ public class ItemDetailsActivity extends ActionBarActivity {
         }
 
         /** In case of a vocabulary item */
-        WaniKaniApi.getVocabularyList(level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+        WaniKaniApi.getVocabularyList(level + "").enqueue(new ThroughDbCallback<Request<VocabularyList>, VocabularyList>() {
             @Override
-            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+            public void onResponse(Call<Request<VocabularyList>> call, Response<Request<VocabularyList>> response) {
                 super.onResponse(call, response);
                 if (response.isSuccessful() && response.body().requested_information != null) {
                     load(response.body().requested_information);
@@ -624,9 +631,11 @@ public class ItemDetailsActivity extends ActionBarActivity {
             }
 
             @Override
-            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, new int[]{level});
-                if (list != null) {
+            public void onFailure(Call<Request<VocabularyList>> call, Throwable t) {
+                VocabularyList list = new VocabularyList();
+                list.addAll(DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, new int[]{level}));
+
+                if (list.size() != 0) {
                     load(list);
                 } else {
                     showErrorAndExit();

@@ -12,12 +12,15 @@ import tr.xip.wanikani.BuildConfig;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.CriticalItemsList;
 import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.KanjiList;
 import tr.xip.wanikani.models.LevelProgression;
+import tr.xip.wanikani.models.RadicalsList;
 import tr.xip.wanikani.models.RecentUnlocksList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.SRSDistribution;
 import tr.xip.wanikani.models.StudyQueue;
 import tr.xip.wanikani.models.User;
+import tr.xip.wanikani.models.VocabularyList;
 
 public abstract class WaniKaniApi {
     private static final String API_HOST = "https://www.wanikani.com/api/user/";
@@ -79,15 +82,15 @@ public abstract class WaniKaniApi {
         return service.getCriticalItemsList(API_KEY, percentage);
     }
 
-    public static Call<Request<ItemsList>> getRadicalsList(String level) {
+    public static Call<Request<RadicalsList>> getRadicalsList(String level) {
         return service.getRadicalsList(API_KEY, level);
     }
 
-    public static Call<Request<ItemsList>> getKanjiList(String level) {
+    public static Call<Request<KanjiList>> getKanjiList(String level) {
         return service.getKanjiList(API_KEY, level);
     }
 
-    public static Call<Request<ItemsList>> getVocabularyList(String level) {
+    public static Call<Request<VocabularyList>> getVocabularyList(String level) {
         return service.getVocabularyList(API_KEY, level);
     }
 }

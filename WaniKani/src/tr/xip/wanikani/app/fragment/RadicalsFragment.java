@@ -36,6 +36,7 @@ import tr.xip.wanikani.dialogs.LevelPickerDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.RadicalsList;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.utils.Utils;
@@ -153,9 +154,9 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
         if (mListFlipper.getDisplayedChild() == 1)
             mListFlipper.showPrevious();
 
-        WaniKaniApi.getRadicalsList(level).enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+        WaniKaniApi.getRadicalsList(level).enqueue(new ThroughDbCallback<Request<RadicalsList>, RadicalsList>() {
             @Override
-            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+            public void onResponse(Call<Request<RadicalsList>> call, Response<Request<RadicalsList>> response) {
                 super.onResponse(call, response);
 
                 if (response.isSuccessful() && response.body().requested_information != null) {
@@ -173,9 +174,11 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
             }
 
             @Override
-            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
-                ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.RADICAL, Utils.convertStringArrayToIntArray(level.split(",")));
-                if (list != null) {
+            public void onFailure(Call<Request<RadicalsList>> call, Throwable t) {
+                RadicalsList list = new RadicalsList();
+                list.addAll(DatabaseManager.getItems(BaseItem.ItemType.RADICAL, Utils.convertStringArrayToIntArray(level.split(","))));
+
+                if (list.size() != 0) {
                     load(list);
                 } else {
                     mMessageIcon.setImageResource(R.drawable.ic_error_red_36dp);
@@ -190,7 +193,7 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
                 }
             }
 
-            void load(ItemsList list) {
+            void load(RadicalsList list) {
                 Collections.sort(list, new Comparator<BaseItem>() {
                     public int compare(BaseItem item1, BaseItem item2) {
                         return Float.valueOf((item1.getLevel() + "")).compareTo(Float.valueOf(item2.getLevel() + ""));
