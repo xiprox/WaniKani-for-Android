@@ -9,7 +9,8 @@ public class RetrofitErrorHandler {
     public static void handleError(Throwable throwable) {
 
         if (throwable != null) {
-            if (throwable.getCause().toString().contains("GaiException")) {
+            String cause = throwable.getCause().toString();
+            if (cause.contains("GaiException") || cause.contains("UnknownHostException")) {
                 Intent intent = new Intent(BroadcastIntents.RETROFIT_ERROR_CONNECTION());
                 LocalBroadcastManager.getInstance(App.getContext()).sendBroadcast(intent);
             }
