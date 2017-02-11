@@ -159,7 +159,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                 super.onResponse(call, response);
 
                 if (response.isSuccessful() && response.body().requested_information != null) {
-
+                    load(response.body().requested_information);
                 } else {
                     onFailure(call, null);
                 }
