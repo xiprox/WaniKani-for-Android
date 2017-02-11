@@ -33,9 +33,6 @@ import tr.xip.wanikani.app.fragment.card.RecentUnlocksCard;
 import tr.xip.wanikani.app.fragment.card.ReviewsCard;
 import tr.xip.wanikani.app.fragment.card.SRSCard;
 import tr.xip.wanikani.app.fragment.card.VacationModeCard;
-import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.client.task.UserInfoGetTask;
-import tr.xip.wanikani.client.task.callback.UserInfoGetTaskCallbacks;
 import tr.xip.wanikani.content.receiver.BroadcastIntents;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
@@ -57,7 +54,6 @@ public class DashboardFragment extends Fragment
     public static final String SYNC_RESULT_FAILED = "failed";
     View rootView;
     ActionBarActivity activity;
-    WaniKaniApi api;
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
     boolean isStatusCardSynced = false;
@@ -88,11 +84,6 @@ public class DashboardFragment extends Fragment
         @Override
         public void onReceive(Context context, Intent intent) {
             mSwipeToRefreshLayout.setRefreshing(true);
-        }
-    };
-    private BroadcastReceiver mRetrofitConnectionTimeoutErrorReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            showMessage(MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT);
         }
     };
     private BroadcastReceiver mRetrofitConnectionErrorReceiver = new BroadcastReceiver() {
@@ -126,7 +117,6 @@ public class DashboardFragment extends Fragment
     @Override
     public void onCreate(Bundle paramBundle) {
         this.context = getActivity();
-        api = new WaniKaniApi(getActivity());
         super.onCreate(paramBundle);
     }
 
@@ -227,8 +217,6 @@ public class DashboardFragment extends Fragment
     private void registerReceivers() {
         LocalBroadcastManager.getInstance(activity).registerReceiver(mSyncCalled,
                 new IntentFilter(BroadcastIntents.SYNC()));
-        LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionTimeoutErrorReceiver,
-                new IntentFilter(BroadcastIntents.RETROFIT_ERROR_TIMEOUT()));
         LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitConnectionErrorReceiver,
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
         LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitUnknownErrorReceiver,
@@ -239,7 +227,6 @@ public class DashboardFragment extends Fragment
 
     private void unregisterReceivers() {
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mSyncCalled);
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionErrorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mNotificationsReceiver);
@@ -256,11 +243,6 @@ public class DashboardFragment extends Fragment
 
             String title = "";
             String prefix = "";
-
-            if (msgType == MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT) {
-                title = getString(R.string.error_connection_timeout);
-                prefix = getString(R.string.content_last_updated) + " ";
-            }
 
             if (msgType == MESSAGE_TYPE.ERROR_NO_CONNECTION) {
                 title = getString(R.string.error_no_connection);
@@ -289,7 +271,7 @@ public class DashboardFragment extends Fragment
     }
 
     private void showNotificationIfExists() {
-        List<Notification> notifications = new DatabaseManager(context).getNotifications();
+        List<Notification> notifications = DatabaseManager.getNotifications();
 
         if (notifications != null && notifications.size() != 0) {
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
@@ -317,27 +299,18 @@ public class DashboardFragment extends Fragment
     }
 
     private void checkVacationMode() {
-        new UserInfoGetTask(context, new UserInfoGetTaskCallbacks() {
-            @Override
-            public void onUserInfoGetTaskPreExecute() {
-                /* Do nothing */
-            }
+        User user = DatabaseManager.getUser();
+        if (user == null) return;
 
-            @Override
-            public void onUserInfoGetTaskPostExecute(User user) {
-                if (user != null) {
-                    if (user.isVacationModeActive()) {
-                        mAvailableHolder.setVisibility(View.GONE);
-                        mReviewsHolder.setVisibility(View.GONE);
-                        mVacationModeCardHolder.setVisibility(View.VISIBLE);
-                    } else {
-                        mAvailableHolder.setVisibility(View.VISIBLE);
-                        mReviewsHolder.setVisibility(View.VISIBLE);
-                        mVacationModeCardHolder.setVisibility(View.GONE);
-                    }
-                }
-            }
-        }).executeParallel();
+        if (user.isVacationModeActive()) {
+            mAvailableHolder.setVisibility(View.GONE);
+            mReviewsHolder.setVisibility(View.GONE);
+            mVacationModeCardHolder.setVisibility(View.VISIBLE);
+        } else {
+            mAvailableHolder.setVisibility(View.VISIBLE);
+            mReviewsHolder.setVisibility(View.VISIBLE);
+            mVacationModeCardHolder.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -457,7 +430,6 @@ public class DashboardFragment extends Fragment
     }
 
     enum MESSAGE_TYPE {
-        ERROR_CONNECTION_TIMEOUT,
         ERROR_NO_CONNECTION,
         ERROR_UNKNOWN
     }

@@ -22,28 +22,30 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 import java.util.List;
 
-import tr.xip.wanikani.content.receiver.BroadcastIntents;
-import tr.xip.wanikani.app.activity.CriticalItemsActivity;
-import tr.xip.wanikani.app.fragment.DashboardFragment;
-import tr.xip.wanikani.app.activity.ItemDetailsActivity;
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.widget.adapter.CriticalItemsAdapter;
+import tr.xip.wanikani.app.activity.CriticalItemsActivity;
+import tr.xip.wanikani.app.activity.ItemDetailsActivity;
+import tr.xip.wanikani.app.fragment.DashboardFragment;
 import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.CriticalItemsListGetTask;
-import tr.xip.wanikani.client.task.callback.CriticalItemsListGetTaskCallbacks;
+import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.models.CriticalItemsList;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
+import tr.xip.wanikani.widget.adapter.CriticalItemsAdapter;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class CriticalItemsCard extends Fragment implements CriticalItemsListGetTaskCallbacks {
+public class CriticalItemsCard extends Fragment {
 
     View rootView;
-
-    WaniKaniApi api;
     Utils utils;
 
     Context mContext;
@@ -72,7 +74,25 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
         @Override
         public void onReceive(Context context, Intent intent) {
             mContext = context;
-            new CriticalItemsListGetTask(context, PrefManager.getDashboardCriticalItemsPercentage(), CriticalItemsCard.this).executeSerial();
+
+            WaniKaniApi.getCriticalItemsList(PrefManager.getDashboardCriticalItemsPercentage()).enqueue(new ThroughDbCallback<Request<CriticalItemsList>, CriticalItemsList>() {
+                @Override
+                public void onResponse(Call<Request<CriticalItemsList>> call, Response<Request<CriticalItemsList>> response) {
+                    super.onResponse(call, response);
+
+                    if (response.isSuccessful()) {
+                        displayData(response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Request<CriticalItemsList>> call, Throwable t) {
+                    CriticalItemsList list = DatabaseManager.getCriticalItems(PrefManager.getDashboardCriticalItemsPercentage());
+                    displayData(list);
+                }
+            });
         }
     };
 
@@ -84,7 +104,6 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
 
     @Override
     public void onCreate(Bundle state) {
-        api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -152,13 +171,7 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
         return dp * mContext.getResources().getDisplayMetrics().density;
     }
 
-    @Override
-    public void onCriticalItemsListGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onCriticalItemsListGetTaskPostExecute(List<CriticalItem> list) {
+    private void displayData(CriticalItemsList list) {
         int height;
 
         if (list != null) {

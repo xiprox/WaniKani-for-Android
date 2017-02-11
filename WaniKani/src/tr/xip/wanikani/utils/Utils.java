@@ -38,4 +38,16 @@ public class Utils {
     public float pxFromDp(float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
     }
+
+    /**
+     * I hate myself for doing this but I really don't feel like looking at LevelPickerDialogFragment.
+     * Who the hell keeps an int array as comma-delimited string! Someone kill me pls. ugh
+     */
+    public static int[] convertStringArrayToIntArray(String[] strings) {
+        int[] ints = new int[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            ints[i] = Integer.parseInt(strings[i]);
+        }
+        return ints;
+    }
 }

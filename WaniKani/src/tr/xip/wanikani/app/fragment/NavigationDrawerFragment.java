@@ -28,28 +28,23 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.widget.adapter.NavigationItemsAdapter;
 import tr.xip.wanikani.widget.adapter.NavigationSecondaryItemsAdapter;
-import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.app.activity.MainActivity;
 import tr.xip.wanikani.dialogs.LogoutDialogFragment;
-import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.preference.SettingsActivity;
-import tr.xip.wanikani.client.task.UserInfoGetTask;
-import tr.xip.wanikani.client.task.callback.UserInfoGetTaskCallbacks;
 import tr.xip.wanikani.graphics.bitmap.transform.BlurTransformation;
 import tr.xip.wanikani.graphics.bitmap.transform.CircleTransformation;
 
-public class NavigationDrawerFragment extends Fragment implements UserInfoGetTaskCallbacks {
+public class NavigationDrawerFragment extends Fragment {
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     View rootView;
     Context context;
-
-    WaniKaniApi api;
 
     ImageView mAvatar;
     ImageView mAvatarBg;
@@ -58,8 +53,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
     FrameLayout mProfile;
 
     NavigationItemsAdapter mNavigationItemsAdapter;
-
-    private UserInfoGetTask mUserInfoFetchTask;
 
     private NavigationDrawerCallbacks mCallbacks;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -75,8 +68,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        api = new WaniKaniApi(getActivity());
 
         context = getActivity();
 
@@ -139,19 +130,29 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
             }
         });
 
-        fetchUserInfo();
+        loadUserInfo();
 
         selectItem(mCurrentSelectedPosition);
 
         return rootView;
     }
 
-    public void fetchUserInfo() {
-        if (mUserInfoFetchTask != null)
-            mUserInfoFetchTask.cancel(true);
+    public void loadUserInfo() {
+        User user = DatabaseManager.getUser();
+        if (user != null) {
+            Picasso.with(context)
+                    .load("http://www.gravatar.com/avatar/" + user.gravatar + "?s=100")
+                    .fit()
+                    .transform(new CircleTransformation())
+                    .into(mAvatar);
 
-        mUserInfoFetchTask = new UserInfoGetTask(context, this);
-        mUserInfoFetchTask.executeParallel();
+            Picasso.with(context)
+                    .load("http://www.gravatar.com/avatar/" + user.gravatar)
+                    .transform(new BlurTransformation(context))
+                    .into(mAvatarBg);
+
+            mUsername.setText(user.username);
+        }
     }
 
     public boolean isDrawerOpen() {
@@ -300,29 +301,6 @@ public class NavigationDrawerFragment extends Fragment implements UserInfoGetTas
 
     private void showlogoutDialog() {
         new LogoutDialogFragment().show(getActivity().getSupportFragmentManager(), "logout-dialog");
-    }
-
-    @Override
-    public void onUserInfoGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onUserInfoGetTaskPostExecute(User user) {
-        if (user != null && user.getUserInformation() != null) {
-            Picasso.with(context)
-                    .load("http://www.gravatar.com/avatar/" + user.getGravatar() + "?s=100")
-                    .fit()
-                    .transform(new CircleTransformation())
-                    .into(mAvatar);
-
-            Picasso.with(context)
-                    .load("http://www.gravatar.com/avatar/" + user.getGravatar())
-                    .transform(new BlurTransformation(context))
-                    .into(mAvatarBg);
-
-            mUsername.setText(user.getUsername());
-        }
     }
 
     public static interface NavigationDrawerCallbacks {

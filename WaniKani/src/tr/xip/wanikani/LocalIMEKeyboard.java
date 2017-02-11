@@ -319,7 +319,7 @@ public class LocalIMEKeyboard implements Keyboard {
          */
         public JSListenerSetClass (String clazz, boolean reviews)
         {
-            this.clazz = clazz;prefMan
+            this.clazz = clazz;
             this.reviews = reviews;
 
             enable = true;
@@ -657,7 +657,7 @@ public class LocalIMEKeyboard implements Keyboard {
         @JavascriptInterface ()
         public void refreshWKLO ()
         {
-            if (prefMan.getLessonOrder())
+            if (PrefManager.getLessonOrder())
                 wv.js (ifLessons (LessonOrder.JS_REFRESH_CODE));
         }
     }

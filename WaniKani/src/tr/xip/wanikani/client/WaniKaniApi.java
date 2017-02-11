@@ -6,21 +6,20 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import tr.xip.wanikani.BuildConfig;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.models.BaseItem;
-import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.models.CriticalItemsList;
+import tr.xip.wanikani.models.ItemsList;
 import tr.xip.wanikani.models.LevelProgression;
+import tr.xip.wanikani.models.RecentUnlocksList;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.SRSDistribution;
 import tr.xip.wanikani.models.StudyQueue;
-import tr.xip.wanikani.models.UnlockItem;
 import tr.xip.wanikani.models.User;
 
-public class WaniKaniApi {
+public abstract class WaniKaniApi {
     private static final String API_HOST = "https://www.wanikani.com/api/user";
 
     private static WaniKaniService service;
@@ -52,55 +51,44 @@ public class WaniKaniApi {
         service = retrofit.create(WaniKaniService.class);
     }
 
-    public boolean isApiKeyValid(String key) {
-        boolean result = false;
-
-        try {
-            User res = service.getUser(key).execute().body();
-            if (res != null && res.user_information != null) {
-                result = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public User getUser() {
+    public static Call<Request<User>> getUser() {
         return service.getUser(API_KEY);
     }
 
-    public StudyQueue getStudyQueue() {
+    public static Call<Request<User>> getUser(String apiKey) {
+        return service.getUser(apiKey);
+    }
+
+    public static Call<Request<StudyQueue>> getStudyQueue() {
         return service.getStudyQueue(API_KEY);
     }
 
-    public LevelProgression getLevelProgression() {
+    public static Call<Request<LevelProgression>> getLevelProgression() {
         return service.getLevelProgression(API_KEY);
     }
 
-    public SRSDistribution getSRSDistribution() {
+    public static Call<Request<SRSDistribution>> getSRSDistribution() {
         return service.getSRSDistribution(API_KEY);
     }
 
-    public List<UnlockItem> getRecentUnlocksList(int limit) {
-        return service.getRecentUnlocksList(API_KEY, limit).getList();
+    public static Call<Request<RecentUnlocksList>> getRecentUnlocksList(int limit) {
+        return service.getRecentUnlocksList(API_KEY, limit);
     }
 
-    public List<CriticalItem> getCriticalItemsList(int percentage) {
-        return service.getCriticalItemsList(API_KEY, percentage).getList();
+    public static Call<Request<CriticalItemsList>> getCriticalItemsList(int percentage) {
+        return service.getCriticalItemsList(API_KEY, percentage);
     }
 
-    public List<BaseItem> getRadicalsList(String level) {
-        return service.getRadicalsList(API_KEY, level).getList();
+    public static Call<Request<ItemsList>> getRadicalsList(String level) {
+        return service.getRadicalsList(API_KEY, level);
     }
 
-    public List<BaseItem> getKanjiList(String level) {
-        return service.getKanjiList(API_KEY, level).getList();
+    public static Call<Request<ItemsList>> getKanjiList(String level) {
+        return service.getKanjiList(API_KEY, level);
     }
 
-    public List<BaseItem> getVocabularyList(String level) {
-        return service.getVocabularyList(API_KEY, level).getList();
+    public static Call<Request<ItemsList>> getVocabularyList(String level) {
+        return service.getVocabularyList(API_KEY, level);
     }
 }
 

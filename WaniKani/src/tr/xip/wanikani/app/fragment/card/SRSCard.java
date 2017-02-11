@@ -1,5 +1,6 @@
 package tr.xip.wanikani.app.fragment.card;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,22 +20,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import tr.xip.wanikani.content.receiver.BroadcastIntents;
-import tr.xip.wanikani.app.fragment.DashboardFragment;
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.app.fragment.DashboardFragment;
 import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.models.LevelProgression;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.SRSDistribution;
-import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.SRSDistributionGetTask;
-import tr.xip.wanikani.client.task.callback.SRSDistributionGetTaskCallbacks;
 import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks {
-
-    WaniKaniApi api;
+public class SRSCard extends Fragment {
     Utils utils;
 
     View rootView;
@@ -85,7 +87,26 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new SRSDistributionGetTask(context, SRSCard.this).executeSerial();
+            WaniKaniApi.getSRSDistribution().enqueue(new ThroughDbCallback<Request<SRSDistribution>, SRSDistribution>() {
+                @Override
+                public void onResponse(Call<Request<SRSDistribution>> call, Response<Request<SRSDistribution>> response) {
+                    super.onResponse(call, response);
+
+                    if (response.isSuccessful() && response.body().requested_information != null) {
+                        displayData(response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Request<SRSDistribution>> call, Throwable t) {
+                    SRSDistribution distribution = DatabaseManager.getSrsDistribution();
+                    if (distribution != null) {
+                        displayData(distribution);
+                    }
+                }
+            });
         }
     };
 
@@ -97,7 +118,6 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
 
     @Override
     public void onCreate(Bundle state) {
-        api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -176,11 +196,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
         mApprenticeParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "apprentice");
-                else
-                    new DetailsLoadTask().execute("apprentice");
-
+                loadDetails("apprentice");
                 switchToDetails();
             }
         });
@@ -188,11 +204,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
         mGuruParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "guru");
-                else
-                    new DetailsLoadTask().execute("guru");
-
+                loadDetails("guru");
                 switchToDetails();
             }
         });
@@ -200,11 +212,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
         mMasterParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "master");
-                else
-                    new DetailsLoadTask().execute("master");
-
+                loadDetails("master");
                 switchToDetails();
             }
         });
@@ -212,11 +220,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
         mEnlightenedParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "enlighten");
-                else
-                    new DetailsLoadTask().execute("enlighten");
-
+                loadDetails("enlighten");
                 switchToDetails();
             }
         });
@@ -224,11 +228,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
         mBurnedParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 11)
-                    new DetailsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "burned");
-                else
-                    new DetailsLoadTask().execute("burned");
-
+                loadDetails("burned");
                 switchToDetails();
             }
         });
@@ -287,117 +287,94 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
             mDetailsSuperFlipper.showPrevious();
     }
 
-    @Override
-    public void onSRSDistributionGetTaskPreExecute() {
-
-    }
-
-    @Override
-    public void onSRSDistributionGetTaskPostExecute(SRSDistribution distribution) {
+    @SuppressLint("SetTextI18n")
+    private void displayData(SRSDistribution distribution) {
         if (distribution != null) {
             srs = distribution;
 
-            mApprentice.setText(distribution.getAprentice().getTotalCount() + "");
-            mGuru.setText(distribution.getGuru().getTotalCount() + "");
-            mMaster.setText(distribution.getMaster().getTotalCount() + "");
-            mEnlightened.setText(distribution.getEnlighten().getTotalCount() + "");
-            mBurned.setText(distribution.getBurned().getTotalCount() + "");
+            mApprentice.setText(distribution.apprentice.total + "");
+            mGuru.setText(distribution.guru.total + "");
+            mMaster.setText(distribution.master.total + "");
+            mEnlightened.setText(distribution.enlighten.total + "");
+            mBurned.setText(distribution.burned.total + "");
 
-            mTotalItems.setText(distribution.getTotal() + "");
+            mTotalItems.setText(distribution.total() + "");
 
             mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-        } else
+        } else {
             mListener.onStatusCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+        }
     }
 
     public interface StatusCardListener {
         public void onStatusCardSyncFinishedListener(String result);
     }
 
-    private class DetailsLoadTask extends AsyncTask<String, Void, String> {
-        int radicals;
-        int kanji;
-        int vocabulary;
-        int total;
+    @SuppressLint("SetTextI18n")
+    private void loadDetails(String level) {
+        int radicals = 0;
+        int kanji = 0;
+        int vocabulary = 0;
+        int total = 0;
 
-        String srsLevel;
+        switch (level) {
+            case "apprentice":
+                radicals = srs.apprentice.radicals;
+                kanji = srs.apprentice.kanji;
+                vocabulary = srs.apprentice.vocabulary;
+                total = srs.apprentice.total;
 
-        @Override
-        protected String doInBackground(String... strings) {
-            srsLevel = strings[0];
-
-            try {
-                if (srsLevel.equals("apprentice")) {
-                    radicals = srs.getAprentice().getRadicalsCount();
-                    kanji = srs.getAprentice().getKanjiCount();
-                    vocabulary = srs.getAprentice().getVocabularyCount();
-                    total = srs.getAprentice().getTotalCount();
-                }
-                if (srsLevel.equals("guru")) {
-                    radicals = srs.getGuru().getRadicalsCount();
-                    kanji = srs.getGuru().getKanjiCount();
-                    vocabulary = srs.getGuru().getVocabularyCount();
-                    total = srs.getGuru().getTotalCount();
-                }
-                if (srsLevel.equals("master")) {
-                    radicals = srs.getMaster().getRadicalsCount();
-                    kanji = srs.getMaster().getKanjiCount();
-                    vocabulary = srs.getMaster().getVocabularyCount();
-                    total = srs.getMaster().getTotalCount();
-                }
-                if (srsLevel.equals("enlighten")) {
-                    radicals = srs.getEnlighten().getRadicalsCount();
-                    kanji = srs.getEnlighten().getKanjiCount();
-                    vocabulary = srs.getEnlighten().getVocabularyCount();
-                    total = srs.getEnlighten().getTotalCount();
-                }
-                if (srsLevel.equals("burned")) {
-                    radicals = srs.getBurned().getRadicalsCount();
-                    kanji = srs.getBurned().getKanjiCount();
-                    vocabulary = srs.getBurned().getVocabularyCount();
-                    total = srs.getBurned().getTotalCount();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            mDetailsRadicals.setText(radicals + "");
-            mDetailsKanji.setText(kanji + "");
-            mDetailsVocabulary.setText(vocabulary + "");
-            mDetailsTotal.setText(total + "");
-
-            if (srsLevel.equals("apprentice")) {
                 mDetailsSRSLogo.setImageResource(R.drawable.apprentice);
                 mDetailsSRSLevel.setText(R.string.srs_title_apprentice);
-            }
-            if (srsLevel.equals("guru")) {
+                break;
+            case "guru":
+                radicals = srs.guru.radicals;
+                kanji = srs.guru.kanji;
+                vocabulary = srs.guru.vocabulary;
+                total = srs.guru.total;
+
                 mDetailsSRSLogo.setImageResource(R.drawable.guru);
                 mDetailsSRSLevel.setText(R.string.srs_title_guru);
-            }
-            if (srsLevel.equals("master")) {
+                break;
+            case "master":
+                radicals = srs.master.radicals;
+                kanji = srs.master.kanji;
+                vocabulary = srs.master.vocabulary;
+                total = srs.master.total;
+
                 mDetailsSRSLogo.setImageResource(R.drawable.master);
                 mDetailsSRSLevel.setText(R.string.srs_title_master);
-            }
-            if (srsLevel.equals("enlighten")) {
+                break;
+            case "enlighten":
+                radicals = srs.enlighten.radicals;
+                kanji = srs.enlighten.kanji;
+                vocabulary = srs.enlighten.vocabulary;
+                total = srs.enlighten.total;
+
                 mDetailsSRSLogo.setImageResource(R.drawable.enlighten);
                 mDetailsSRSLevel.setText(R.string.srs_title_enlightened);
-            }
-            if (srsLevel.equals("burned")) {
+                break;
+            case "burned":
+                radicals = srs.burned.radicals;
+                kanji = srs.burned.kanji;
+                vocabulary = srs.burned.vocabulary;
+                total = srs.burned.total;
+
                 mDetailsSRSLogo.setImageResource(R.drawable.burned);
                 mDetailsSRSLevel.setText(R.string.srs_title_burned);
-            }
+                break;
+        }
 
-            mDetailsSRSLogo.setColorFilter(getResources().getColor(R.color.apptheme_main),
-                    PorterDuff.Mode.SRC_ATOP);
+        mDetailsRadicals.setText(radicals + "");
+        mDetailsKanji.setText(kanji + "");
+        mDetailsVocabulary.setText(vocabulary + "");
+        mDetailsTotal.setText(total + "");
 
-            if (mDetailsSuperFlipper.getDisplayedChild() == 0) {
-                mDetailsSuperFlipper.showNext();
-            }
+        mDetailsSRSLogo.setColorFilter(getResources().getColor(R.color.apptheme_main),
+                PorterDuff.Mode.SRC_ATOP);
+
+        if (mDetailsSuperFlipper.getDisplayedChild() == 0) {
+            mDetailsSuperFlipper.showNext();
         }
     }
 }

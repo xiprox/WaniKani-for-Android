@@ -1,10 +1,7 @@
 package tr.xip.wanikani.app.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.PorterDuff;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -14,13 +11,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -31,20 +26,19 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.UnlockItem;
-import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.KanjiListGetTask;
-import tr.xip.wanikani.client.task.RadicalsListGetTask;
-import tr.xip.wanikani.client.task.VocabularyListGetTask;
-import tr.xip.wanikani.client.task.callback.KanjiListGetTaskCallbacks;
-import tr.xip.wanikani.client.task.callback.RadicalsListGetTaskCallbacks;
-import tr.xip.wanikani.client.task.callback.VocabularyListGetTaskCallbacks;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.widget.ObservableScrollView;
 import tr.xip.wanikani.widget.RelativeTimeTextView;
@@ -58,8 +52,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
     private static final String TAG = "ItemDetailsActivity";
     private static final int FLIPPER_CONTENT = 0;
     private static final int FLIPPER_PROGRESS_BAR = 1;
-
-    WaniKaniApi api;
 
     Toolbar mToolbar;
 
@@ -160,8 +152,6 @@ public class ItemDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_details);
 
-        api = new WaniKaniApi(this);
-
         setUpActionBar();
 
         mFlipper = (ViewFlipper) findViewById(R.id.details_view_flipper);
@@ -259,12 +249,7 @@ public class ItemDetailsActivity extends ActionBarActivity {
         }
 
         if (mItem instanceof UnlockItem || mItem instanceof CriticalItem) {
-            new LoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-                    mItem.getType().toString(),
-                    mItem.getLevel() + "",
-                    mItem.getCharacter(),
-                    mItem.getImage()
-            );
+            load(mItem.getType().toString(), mItem.getLevel(), mItem.getCharacter(), mItem.getImage());
         } else {
             if (mItem != null)
                 loadData();
@@ -537,121 +522,132 @@ public class ItemDetailsActivity extends ActionBarActivity {
         mLocked.setVisibility(View.VISIBLE);
     }
 
-    private class LoadTask extends AsyncTask<String, Void, Boolean> {
-
-        String type;
-        String level;
-        String character;
-        String image;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            if (mFlipper != null)
-                mFlipper.setDisplayedChild(FLIPPER_PROGRESS_BAR);
+    private void load(String type, final int level, final String character, final String image) {
+        if (mFlipper != null) {
+            mFlipper.setDisplayedChild(FLIPPER_PROGRESS_BAR);
         }
 
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            type = strings[0];
-            level = strings[1];
-            character = strings[2];
-            image = strings[3];
+        /** In case of a radical item */
+        if (type.equals(BaseItem.TYPE_RADICAL)) {
+            WaniKaniApi.getRadicalsList(level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+                @Override
+                public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+                    super.onResponse(call, response);
+                    if (response.isSuccessful() && response.body().requested_information != null) {
+                        load(response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
 
-            try {
+                @Override
+                public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
+                    ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[]{level});
+                    if (list != null) {
+                        load(list);
+                    } else {
+                        showErrorAndExit();
+                    }
+                }
 
-                /** In case of a radical item */
-                if (type.equals(BaseItem.TYPE_RADICAL)) {
-                    new RadicalsListGetTask(ItemDetailsActivity.this, level, new RadicalsListGetTaskCallbacks() {
-                        @Override
-                        public void onRadicalsListGetTaskPreExecute() {
-                            /* Do nothing */
-                        }
-
-                        @Override
-                        public void onRadicalsListGetTaskPostExecute(List<BaseItem> list) {
-                            if (list != null) {
-                                if (character != null) {
-                                    for (BaseItem item : list)
-                                        if (item.getCharacter() != null)
-                                            if (item.getCharacter().equals(character)) {
-                                                mItem = item;
-                                                loadData();
-                                                break;
-                                            }
-                                } else {
-                                    for (BaseItem item : list)
-                                        if (item.getImage() != null)
-                                            if (item.getImage().equals(image)) {
-                                                mItem = item;
-                                                loadData();
-                                                break;
-                                            }
+                void load(ItemsList list) {
+                    if (character != null) {
+                        for (BaseItem item : list) {
+                            if (item.getCharacter() != null) {
+                                if (item.getCharacter().equals(character)) {
+                                    mItem = item;
+                                    loadData();
+                                    break;
                                 }
                             }
                         }
-                    }).executeParallel();
+                    } else {
+                        for (BaseItem item : list) {
+                            if (item.getImage() != null) {
+                                if (item.getImage().equals(image)) {
+                                    mItem = item;
+                                    loadData();
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
-
-                /** In case of a Kanji item */
-                if (type.equals(BaseItem.TYPE_KANJI)) {
-                    new KanjiListGetTask(ItemDetailsActivity.this, level, new KanjiListGetTaskCallbacks() {
-                        @Override
-                        public void onKanjiListGetTaskPreExecute() {
-                            /* Do nothing */
-                        }
-
-                        @Override
-                        public void onKanjiListGetTaskPostExecute(List<BaseItem> list) {
-                            if (list != null)
-                                for (BaseItem item : list)
-                                    if (item.getCharacter().equals(character)) {
-                                        mItem = item;
-                                        loadData();
-                                        break;
-                                    }
-                        }
-                    }).executeParallel();
-                }
-
-                /** In case of a vocabulary item */
-                if (type.equals(BaseItem.TYPE_VOCABULARY)) {
-                    new VocabularyListGetTask(ItemDetailsActivity.this, level, new VocabularyListGetTaskCallbacks() {
-                        @Override
-                        public void onVocabularyListGetTaskPreExecute() {
-                            /* Do nothing */
-                        }
-
-                        @Override
-                        public void onVocabularyListGetTaskPostExecute(List<BaseItem> list) {
-                            if (list != null)
-                                for (BaseItem item : list)
-                                    if (item.getCharacter().equals(character)) {
-                                        mItem = item;
-                                        loadData();
-                                        break;
-                                    }
-                        }
-                    }).executeParallel();
-                }
-
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
+            });
         }
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+        /** In case of a Kanji item */
+        if (type.equals(BaseItem.TYPE_KANJI)) {
+            WaniKaniApi.getKanjiList(level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+                @Override
+                public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+                    super.onResponse(call, response);
+                    if (response.isSuccessful() && response.body().requested_information != null) {
+                        load(response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
 
-            if (!success) {
-                Log.e(TAG, "Failed to fetch item info; exiting...");
-                Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
-                finish();
-            }
+                @Override
+                public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
+                    ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[]{level});
+                    if (list != null) {
+                        load(list);
+                    } else {
+                        showErrorAndExit();
+                    }
+                }
+
+                void load(ItemsList list) {
+                    for (BaseItem item : list) {
+                        if (item.getCharacter().equals(character)) {
+                            mItem = item;
+                            loadData();
+                            break;
+                        }
+                    }
+                }
+            });
         }
+
+        /** In case of a vocabulary item */
+        WaniKaniApi.getVocabularyList(level + "").enqueue(new ThroughDbCallback<Request<ItemsList>, ItemsList>() {
+            @Override
+            public void onResponse(Call<Request<ItemsList>> call, Response<Request<ItemsList>> response) {
+                super.onResponse(call, response);
+                if (response.isSuccessful() && response.body().requested_information != null) {
+                    load(response.body().requested_information);
+                } else {
+                    onFailure(call, null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Request<ItemsList>> call, Throwable t) {
+                ItemsList list = DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, new int[]{level});
+                if (list != null) {
+                    load(list);
+                } else {
+                    showErrorAndExit();
+                }
+            }
+
+            void load(ItemsList list) {
+                for (BaseItem item : list) {
+                    if (item.getCharacter().equals(character)) {
+                        mItem = item;
+                        loadData();
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void showErrorAndExit() {
+        Log.e(TAG, "Failed to fetch item info; exiting...");
+        Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

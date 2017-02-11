@@ -135,7 +135,7 @@ public class BaseItem implements Serializable {
     }
 
     public boolean isBurned() {
-        return isUnlocked() ? user_specific.burned : false;
+        return isUnlocked() && user_specific.burned;
     }
 
     public long getBurnedDate() {

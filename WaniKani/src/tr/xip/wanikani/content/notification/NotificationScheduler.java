@@ -1,5 +1,6 @@
 package tr.xip.wanikani.content.notification;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,11 +9,15 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 
+import retrofit2.Call;
+import retrofit2.Response;
+import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.StudyQueue;
-import tr.xip.wanikani.client.task.StudyQueueGetTask;
-import tr.xip.wanikani.client.task.callback.StudyQueueGetTaskCallbacks;
 
-public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
+public class NotificationScheduler {
     private Context context;
 
     private NotificationPreferences prefs;
@@ -23,7 +28,48 @@ public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
     }
 
     public void schedule() {
-        new StudyQueueGetTask(context, this).executeParallel();
+        WaniKaniApi.getStudyQueue().enqueue(new ThroughDbCallback<Request<StudyQueue>, StudyQueue>() {
+            @SuppressLint("SimpleDateFormat")
+            @Override
+            public void onResponse(Call<Request<StudyQueue>> call, Response<Request<StudyQueue>> response) {
+                super.onResponse(call, response);
+
+                if (response.isSuccessful() && response.body().requested_information != null) {
+                    load(response.body().requested_information);
+                } else {
+                    onFailure(call, null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Request<StudyQueue>> call, Throwable t) {
+                StudyQueue queue = DatabaseManager.getStudyQueue();
+                if (queue != null) {
+                    load(queue);
+                }
+            }
+
+            void load(StudyQueue queue) {
+                if (queue.next_review_date <= System.currentTimeMillis()) {
+                    new NotificationPublisher().publish(context);
+                    return;
+                }
+
+                if (!prefs.isAlarmSet()) {
+                    PendingIntent pendingIntent = getPendingIntent();
+                    AlarmManager alarmManager = getAlarmManager();
+                    alarmManager.set(
+                            AlarmManager.RTC_WAKEUP,
+                            queue.next_review_date + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
+                            pendingIntent
+                    );
+
+                    Log.d("NOTIFICATION SCHEDULER", "SCHEDULED NOTIFICATION FOR " + new SimpleDateFormat("HH:mm:ss").format(queue.next_review_date + NotificationPreferences.NOTIFICATION_CHECK_DELAY));
+
+                    prefs.setAlarmSet(true);
+                }
+            }
+        });
     }
 
     public void cancelNotifications() {
@@ -31,35 +77,6 @@ public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
         AlarmManager alarmManager = getAlarmManager();
         alarmManager.cancel(pendingIntent);
         prefs.setAlarmSet(false);
-    }
-
-    @Override
-    public void onStudyQueueGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
-        if (queue != null) {
-            if (queue.getNextReviewDate() <= System.currentTimeMillis()) {
-                new NotificationPublisher().publish(context);
-                return;
-            }
-
-            if (!prefs.isAlarmSet()) {
-                PendingIntent pendingIntent = getPendingIntent();
-                AlarmManager alarmManager = getAlarmManager();
-                alarmManager.set(
-                        AlarmManager.RTC_WAKEUP,
-                        queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
-                        pendingIntent
-                );
-
-                Log.d("NOTIFICATION SCHEDULER", "SCHEDULED NOTIFICATION FOR " + new SimpleDateFormat("HH:mm:ss").format(queue.getNextReviewDate() + NotificationPreferences.NOTIFICATION_CHECK_DELAY));
-
-                prefs.setAlarmSet(true);
-            }
-        }
     }
 
     private PendingIntent getPendingIntent() {
@@ -72,7 +89,7 @@ public class NotificationScheduler implements StudyQueueGetTaskCallbacks {
         );
     }
 
-    private  AlarmManager getAlarmManager() {
+    private AlarmManager getAlarmManager() {
         return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 }
