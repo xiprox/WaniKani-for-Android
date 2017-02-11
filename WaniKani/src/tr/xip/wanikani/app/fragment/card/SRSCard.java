@@ -196,6 +196,7 @@ public class SRSCard extends Fragment {
         mApprenticeParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (srs == null) return;
                 loadDetails("apprentice");
                 switchToDetails();
             }
@@ -204,6 +205,7 @@ public class SRSCard extends Fragment {
         mGuruParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (srs == null) return;
                 loadDetails("guru");
                 switchToDetails();
             }
@@ -212,6 +214,7 @@ public class SRSCard extends Fragment {
         mMasterParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (srs == null) return;
                 loadDetails("master");
                 switchToDetails();
             }
@@ -220,6 +223,7 @@ public class SRSCard extends Fragment {
         mEnlightenedParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (srs == null) return;
                 loadDetails("enlighten");
                 switchToDetails();
             }
@@ -228,6 +232,7 @@ public class SRSCard extends Fragment {
         mBurnedParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (srs == null) return;
                 loadDetails("burned");
                 switchToDetails();
             }
