@@ -89,6 +89,8 @@ public class CriticalItemsCard extends Fragment {
 
                 @Override
                 public void onFailure(Call<Request<CriticalItemsList>> call, Throwable t) {
+                    super.onFailure(call, t);
+
                     CriticalItemsList list = DatabaseManager.getCriticalItems(PrefManager.getDashboardCriticalItemsPercentage());
                     displayData(list);
                 }

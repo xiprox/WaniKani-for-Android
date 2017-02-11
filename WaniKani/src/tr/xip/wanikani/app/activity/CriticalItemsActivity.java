@@ -65,6 +65,8 @@ public class CriticalItemsActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(Call<Request<CriticalItemsList>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 CriticalItemsList list = DatabaseManager.getCriticalItems(PrefManager.getDashboardCriticalItemsPercentage());
 
                 if (list != null) {

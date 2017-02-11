@@ -43,6 +43,8 @@ public class NotificationScheduler {
 
             @Override
             public void onFailure(Call<Request<StudyQueue>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 StudyQueue queue = DatabaseManager.getStudyQueue();
                 if (queue != null) {
                     load(queue);

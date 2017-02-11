@@ -175,6 +175,8 @@ public class RadicalsFragment extends Fragment implements LevelPickerDialogFragm
 
             @Override
             public void onFailure(Call<Request<RadicalsList>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 RadicalsList list = new RadicalsList();
                 list.addAll(DatabaseManager.getItems(BaseItem.ItemType.RADICAL, Utils.convertStringArrayToIntArray(level.split(","))));
 

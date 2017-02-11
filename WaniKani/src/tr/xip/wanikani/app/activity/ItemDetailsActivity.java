@@ -545,6 +545,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                 @Override
                 public void onFailure(Call<Request<RadicalsList>> call, Throwable t) {
+                    super.onFailure(call, t);
+
                     RadicalsList list = new RadicalsList();
                     list.addAll(DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[]{level}));
 
@@ -596,6 +598,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
                 @Override
                 public void onFailure(Call<Request<KanjiList>> call, Throwable t) {
+                    super.onFailure(call, t);
+
                     KanjiList list = new KanjiList();
                     list.addAll(DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[]{level}));
 
@@ -632,6 +636,8 @@ public class ItemDetailsActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(Call<Request<VocabularyList>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 VocabularyList list = new VocabularyList();
                 list.addAll(DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, new int[]{level}));
 

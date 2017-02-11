@@ -72,6 +72,8 @@ public class RecentUnlocksActivity extends ActionBarActivity {
 
             @Override
             public void onFailure(Call<Request<RecentUnlocksList>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 RecentUnlocksList list = DatabaseManager.getRecentUnlocks(100);
                 if (list != null) {
                     load(list);

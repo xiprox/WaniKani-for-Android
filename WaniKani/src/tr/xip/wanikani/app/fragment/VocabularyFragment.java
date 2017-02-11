@@ -174,6 +174,8 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
 
             @Override
             public void onFailure(Call<Request<VocabularyList>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 VocabularyList list = new VocabularyList();
                 list.addAll(DatabaseManager.getItems(BaseItem.ItemType.VOCABULARY, Utils.convertStringArrayToIntArray(level.split(","))));
 

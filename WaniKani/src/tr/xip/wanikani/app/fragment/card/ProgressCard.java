@@ -111,6 +111,8 @@ public class ProgressCard extends Fragment {
 
             @Override
             public void onFailure(Call<Request<LevelProgression>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 User user = DatabaseManager.getUser();
                 LevelProgression progression = DatabaseManager.getLevelProgression();
 

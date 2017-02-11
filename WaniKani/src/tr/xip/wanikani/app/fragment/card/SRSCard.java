@@ -101,6 +101,8 @@ public class SRSCard extends Fragment {
 
                 @Override
                 public void onFailure(Call<Request<SRSDistribution>> call, Throwable t) {
+                    super.onFailure(call, t);
+
                     SRSDistribution distribution = DatabaseManager.getSrsDistribution();
                     if (distribution != null) {
                         displayData(distribution);

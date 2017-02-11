@@ -174,6 +174,8 @@ public class KanjiFragment extends Fragment implements LevelPickerDialogFragment
 
             @Override
             public void onFailure(Call<Request<KanjiList>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 KanjiList list = new KanjiList();
                 list.addAll(DatabaseManager.getItems(BaseItem.ItemType.KANJI, Utils.convertStringArrayToIntArray(level.split(","))));
 

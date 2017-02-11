@@ -67,6 +67,8 @@ public class ReviewsCard extends Fragment {
 
                 @Override
                 public void onFailure(Call<Request<StudyQueue>> call, Throwable t) {
+                    super.onFailure(call, t);
+
                     User user = DatabaseManager.getUser();
                     StudyQueue queue = DatabaseManager.getStudyQueue();
 

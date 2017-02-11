@@ -119,6 +119,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Request<User>> call, Throwable t) {
+                super.onFailure(call, t);
+
                 User user = DatabaseManager.getUser();
                 if (user != null) {
                     load(user);

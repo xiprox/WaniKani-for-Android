@@ -84,6 +84,8 @@ public class RecentUnlocksCard extends Fragment {
 
                 @Override
                 public void onFailure(Call<Request<RecentUnlocksList>> call, Throwable t) {
+                    super.onFailure(call, t);
+
                     RecentUnlocksList list = DatabaseManager.getRecentUnlocks(PrefManager.getDashboardRecentUnlocksNumber());
                     if (list != null) {
                         displaydata(list);

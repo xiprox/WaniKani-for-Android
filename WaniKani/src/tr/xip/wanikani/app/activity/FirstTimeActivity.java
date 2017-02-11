@@ -83,6 +83,8 @@ public class FirstTimeActivity extends ActionBarActivity {
 
                         @Override
                         public void onFailure(Call<Request<User>> call, Throwable t) {
+                            super.onFailure(call, t);
+
                             if (mViewSwitcher.getDisplayedChild() == 1) {
                                 mViewSwitcher.showPrevious();
                             }
