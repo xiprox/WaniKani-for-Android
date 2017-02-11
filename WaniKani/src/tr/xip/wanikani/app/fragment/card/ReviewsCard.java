@@ -120,9 +120,9 @@ public class ReviewsCard extends Fragment {
                     mNextReview.setText(R.string.card_content_reviews_available_now);
                 } else {
                     if (PrefManager.isUseSpecificDates()) {
-                        mNextReview.setText(sdf.format(queue.next_review_date));
+                        mNextReview.setText(sdf.format(queue.getNextReviewDateInMillis()));
                     } else {
-                        mNextReview.setReferenceTime(queue.next_review_date);
+                        mNextReview.setReferenceTime(queue.getNextReviewDateInMillis());
                     }
                 }
 

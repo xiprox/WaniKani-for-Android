@@ -50,7 +50,7 @@ public class NotificationScheduler {
             }
 
             void load(StudyQueue queue) {
-                if (queue.next_review_date <= System.currentTimeMillis()) {
+                if (queue.getNextReviewDateInMillis() <= System.currentTimeMillis()) {
                     new NotificationPublisher().publish(context);
                     return;
                 }
@@ -60,11 +60,11 @@ public class NotificationScheduler {
                     AlarmManager alarmManager = getAlarmManager();
                     alarmManager.set(
                             AlarmManager.RTC_WAKEUP,
-                            queue.next_review_date + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
+                            queue.getNextReviewDateInMillis() + NotificationPreferences.NOTIFICATION_CHECK_DELAY,
                             pendingIntent
                     );
 
-                    Log.d("NOTIFICATION SCHEDULER", "SCHEDULED NOTIFICATION FOR " + new SimpleDateFormat("HH:mm:ss").format(queue.next_review_date + NotificationPreferences.NOTIFICATION_CHECK_DELAY));
+                    Log.d("NOTIFICATION SCHEDULER", "SCHEDULED NOTIFICATION FOR " + new SimpleDateFormat("HH:mm:ss").format(queue.getNextReviewDateInMillis() + NotificationPreferences.NOTIFICATION_CHECK_DELAY));
 
                     prefs.setAlarmSet(true);
                 }

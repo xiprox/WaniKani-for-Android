@@ -21,6 +21,10 @@ public class StudyQueue implements Serializable, Storable {
         this.next_review_date = nextReviewDate;
     }
 
+    public long getNextReviewDateInMillis() {
+        return next_review_date * 1000;
+    }
+
     @Override
     public void save() {
         DatabaseManager.saveStudyQueue(this);
