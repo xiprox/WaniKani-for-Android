@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
 
             void load(User user) {
                 Picasso.with(getActivity())
-                        .load("http://www.gravatar.com/avatar/" + user.username + "?s=200")
+                        .load("http://www.gravatar.com/avatar/" + user.gravatar + "?s=200")
                         .fit()
                         .transform(new CircleTransformation())
                         .into(mAvatar);
