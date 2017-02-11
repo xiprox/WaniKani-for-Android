@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment {
                 super.onResponse(call, response);
 
                 if (response.isSuccessful() && response.body().user_information != null) {
-                    load(response.body().requested_information);
+                    load(response.body().user_information);
                 } else {
                     onFailure(call, null);
                 }
