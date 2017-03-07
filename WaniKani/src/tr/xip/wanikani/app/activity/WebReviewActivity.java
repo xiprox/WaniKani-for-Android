@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -738,6 +739,10 @@ public class WebReviewActivity extends ActionBarActivity {
         wv.getSettings ().setDatabaseEnabled (true);
         wv.getSettings ().setDomStorageEnabled (true);
         wv.getSettings ().setDatabasePath (getFilesDir ().getPath () + "/wv");
+        if (Build.VERSION.SDK_INT >= 17) {
+            wv.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        }
+
         wv.addJavascriptInterface (new WKNKeyboard (), "wknKeyboard");
         wv.setScrollBarStyle (ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
         wv.setWebViewClient (new WebViewClientImpl ());
