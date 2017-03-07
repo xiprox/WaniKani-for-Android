@@ -105,6 +105,12 @@ public class WebReviewActivity extends ActionBarActivity {
         /** HTML id of the lessons quiz */
         static final String QUIZ = "quiz";
 
+        /** HTML id of the start quiz button (modal) */
+        static final String QUIZ_BUTTON1 = "quiz-ready-continue";
+
+        /** HTML id of the start quiz button (bottom green arrow) */
+        static final String QUIZ_BUTTON2 = "active-quiz";
+
         /** Any object on the lesson pages */
         static final String LESSONS_OBJ = "nav-lesson";
 
@@ -582,8 +588,12 @@ public class WebReviewActivity extends ActionBarActivity {
                     "textbox = document.getElementById (\"" + WKConfig.ANSWER_BOX + "\"); " +
                     "reviews = document.getElementById (\"" + WKConfig.REVIEWS_DIV + "\");" +
                     "quiz = document.getElementById (\"" + WKConfig.QUIZ + "\");" +
+                    "quiz_button = document.getElementById (\"" + WKConfig.QUIZ_BUTTON1 + "\");" +
+                    "function reload_quiz_arrow() { quiz_arrow = document.getElementsByClassName (\"" + WKConfig.QUIZ_BUTTON2 + "\")[0]; }; " +
                     "if (quiz != null) {" +
                     "   wknKeyboard.showLessonsNew ();" +
+                    "   quiz_button.addEventListener(\"click\", function(){ wknKeyboard.showLessonsNew (); });" +
+                    "   var interval = setInterval(function() { reload_quiz_arrow(); if (quiz_arrow != undefined) { quiz_arrow.addEventListener(\"click\", function() { wknKeyboard.showLessonsNew (); }); clearInterval(interval); } }, 200); " +
                     "} else if (textbox != null && !textbox.disabled) {" +
                     "   wknKeyboard.show (); " +
                     "} else {" +
