@@ -16,3 +16,4 @@ out/
 .classpath
 proguard-project.txt
 project.properties
+google-services.json

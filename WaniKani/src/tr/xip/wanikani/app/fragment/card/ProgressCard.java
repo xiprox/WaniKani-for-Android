@@ -97,7 +97,7 @@ public class ProgressCard extends Fragment implements LevelProgressionGetTaskCal
     }
 
     public void load() {
-        new LevelProgressionGetTask(context, ProgressCard.this).executeParallel();
+        new LevelProgressionGetTask(context, ProgressCard.this).executeSerial();
     }
 
     @Override

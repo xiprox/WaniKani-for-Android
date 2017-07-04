@@ -18,23 +18,29 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import java.io.Serializable;
+import java.util.List;
+
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.app.activity.MainActivity;
 import tr.xip.wanikani.app.activity.ProgressDetailsActivity;
 import tr.xip.wanikani.app.fragment.card.AvailableCard;
 import tr.xip.wanikani.app.fragment.card.CriticalItemsCard;
 import tr.xip.wanikani.app.fragment.card.MessageCard;
+import tr.xip.wanikani.app.fragment.card.NotificationsCard;
 import tr.xip.wanikani.app.fragment.card.ProgressCard;
 import tr.xip.wanikani.app.fragment.card.RecentUnlocksCard;
 import tr.xip.wanikani.app.fragment.card.ReviewsCard;
 import tr.xip.wanikani.app.fragment.card.SRSCard;
 import tr.xip.wanikani.app.fragment.card.VacationModeCard;
-import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.client.WaniKaniApi;
 import tr.xip.wanikani.client.task.UserInfoGetTask;
 import tr.xip.wanikani.client.task.callback.UserInfoGetTaskCallbacks;
+import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.models.Notification;
+import tr.xip.wanikani.models.User;
 
 public class DashboardFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,
@@ -71,6 +77,7 @@ public class DashboardFragment extends Fragment
     LinearLayout mCriticalItemsFragmentHolder;
     LinearLayout mRecentUnlocksFragmentHolder;
     CardView mMessageCardHolder;
+    CardView mNotificationsCardHolder;
     CardView mVacationModeCardHolder;
     FrameLayout mVacationModeCard;
     FrameLayout mReviewsCard;
@@ -97,6 +104,11 @@ public class DashboardFragment extends Fragment
     private BroadcastReceiver mRetrofitUnknownErrorReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             showMessage(MESSAGE_TYPE.ERROR_UNKNOWN);
+        }
+    };
+    private BroadcastReceiver mNotificationsReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            showNotificationIfExists();
         }
     };
 
@@ -138,13 +150,13 @@ public class DashboardFragment extends Fragment
         mCriticalItemsFragmentHolder = (LinearLayout) rootView.findViewById(R.id.fragment_dashboard_critical_items_holder);
 
         mMessageCardHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_message_card_holder);
+        mNotificationsCardHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_notifications_card_holder);
         mVacationModeCardHolder = (CardView) rootView.findViewById(R.id.fragment_dashboard_vacation_mode_card_holder);
 
         mVacationModeCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_vacation_mode_card);
         mReviewsCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_reviews_card);
         mProgressCard = (FrameLayout) rootView.findViewById(R.id.fragment_dashboard_progress_card);
 
-        mReviewsHolder.setOnClickListener(this);
         mProgressHolder.setOnClickListener(this);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -185,10 +197,11 @@ public class DashboardFragment extends Fragment
             checkVacationMode();
         }
 
+        showNotificationIfExists();
+
         setRefreshing();
 
         return rootView;
-
     }
 
     private void setRefreshing() {
@@ -222,6 +235,8 @@ public class DashboardFragment extends Fragment
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_CONNECTION()));
         LocalBroadcastManager.getInstance(activity).registerReceiver(mRetrofitUnknownErrorReceiver,
                 new IntentFilter(BroadcastIntents.RETROFIT_ERROR_UNKNOWN()));
+        LocalBroadcastManager.getInstance(activity).registerReceiver(mNotificationsReceiver,
+                new IntentFilter(BroadcastIntents.NOTIFICATION()));
     }
 
     private void unregisterReceivers() {
@@ -229,41 +244,66 @@ public class DashboardFragment extends Fragment
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionTimeoutErrorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitConnectionErrorReceiver);
         LocalBroadcastManager.getInstance(activity).unregisterReceiver(mRetrofitUnknownErrorReceiver);
+        LocalBroadcastManager.getInstance(activity).unregisterReceiver(mNotificationsReceiver);
     }
 
     private void showMessage(MESSAGE_TYPE msgType) {
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        MessageCard fragment = new MessageCard();
-        fragment.setListener(this);
+        if (getActivity() == null) return;
 
-        String title = "";
-        String prefix = "";
+        try {
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            MessageCard fragment = new MessageCard();
+            fragment.setListener(this);
 
-        if (msgType == MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT) {
-            title = getString(R.string.error_connection_timeout);
-            prefix = getString(R.string.content_last_updated) + " ";
+            String title = "";
+            String prefix = "";
+
+            if (msgType == MESSAGE_TYPE.ERROR_CONNECTION_TIMEOUT) {
+                title = getString(R.string.error_connection_timeout);
+                prefix = getString(R.string.content_last_updated) + " ";
+            }
+
+            if (msgType == MESSAGE_TYPE.ERROR_NO_CONNECTION) {
+                title = getString(R.string.error_no_connection);
+                prefix = getString(R.string.content_last_updated) + " ";
+            }
+
+            if (msgType == MESSAGE_TYPE.ERROR_UNKNOWN) {
+                title = getString(R.string.error_unknown_error);
+                prefix = getString(R.string.content_last_updated) + " ";
+            }
+
+            Bundle args = new Bundle();
+            args.putString(MessageCard.ARG_TITLE, title);
+            args.putString(MessageCard.ARG_PREFIX, prefix);
+            args.putLong(MessageCard.ARG_TIME, prefMan.getDashboardLastUpdateTime());
+            fragment.setArguments(args);
+
+            transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();
+
+            mMessageCardHolder.setVisibility(View.VISIBLE);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            // Probably http://www.androiddesignpatterns.com/2013/08/fragment-transaction-commit-state-loss.html
+            // Ignore. No need to show message if Activity has been killed.
         }
+    }
 
-        if (msgType == MESSAGE_TYPE.ERROR_NO_CONNECTION) {
-            title = getString(R.string.error_no_connection);
-            prefix = getString(R.string.content_last_updated) + " ";
+    private void showNotificationIfExists() {
+        List<Notification> notifications = new DatabaseManager(context).getNotifications();
+
+        if (notifications != null && notifications.size() != 0) {
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            Bundle args = new Bundle();
+            args.putSerializable(NotificationsCard.ARG_NOTIFICATIONS, (Serializable) notifications);
+            NotificationsCard card = new NotificationsCard();
+            card.setArguments(args);
+            transaction.replace(R.id.fragment_dashboard_notifications_card, card).commit();
+            mNotificationsCardHolder.setVisibility(View.VISIBLE);
+        } else {
+            mNotificationsCardHolder.setVisibility(View.GONE);
         }
-
-        if (msgType == MESSAGE_TYPE.ERROR_UNKNOWN) {
-            title = getString(R.string.error_unknown_error);
-            prefix = getString(R.string.content_last_updated) + " ";
-        }
-
-        Bundle args = new Bundle();
-        args.putString(MessageCard.ARG_TITLE, title);
-        args.putString(MessageCard.ARG_PREFIX, prefix);
-        args.putLong(MessageCard.ARG_TIME, prefMan.getDashboardLastUpdateTime());
-        fragment.setArguments(args);
-
-        transaction.replace(R.id.fragment_dashboard_message_card, fragment).commit();
-
-        mMessageCardHolder.setVisibility(View.VISIBLE);
     }
 
     private void setCriticalItemsFragmentHeight(int height) {
@@ -400,6 +440,8 @@ public class DashboardFragment extends Fragment
         isProgressCardSyncedSuccess = false;
         isRecentUnlocksCardSyncedSuccess = false;
         isCriticalItemsCardSyncedSuccess = false;
+
+        showNotificationIfExists();
 
         Intent intent = new Intent(BroadcastIntents.SYNC());
         LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);

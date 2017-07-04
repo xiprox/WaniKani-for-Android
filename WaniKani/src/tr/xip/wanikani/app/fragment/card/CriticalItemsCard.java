@@ -73,7 +73,7 @@ public class CriticalItemsCard extends Fragment implements CriticalItemsListGetT
         @Override
         public void onReceive(Context context, Intent intent) {
             mContext = context;
-            new CriticalItemsListGetTask(context, prefMan.getDashboardCriticalItemsPercentage(), CriticalItemsCard.this).executeParallel();
+            new CriticalItemsListGetTask(context, prefMan.getDashboardCriticalItemsPercentage(), CriticalItemsCard.this).executeSerial();
         }
     };
 

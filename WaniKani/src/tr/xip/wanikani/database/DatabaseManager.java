@@ -10,20 +10,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import tr.xip.wanikani.models.BaseItem;
-import tr.xip.wanikani.models.CriticalItem;
-import tr.xip.wanikani.models.LevelProgression;
-import tr.xip.wanikani.models.SRSDistribution;
-import tr.xip.wanikani.models.StudyQueue;
-import tr.xip.wanikani.models.UnlockItem;
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.database.table.CriticalItemsTable;
 import tr.xip.wanikani.database.table.ItemsTable;
 import tr.xip.wanikani.database.table.LevelProgressionTable;
+import tr.xip.wanikani.database.table.NotificationsTable;
 import tr.xip.wanikani.database.table.RecentUnlocksTable;
 import tr.xip.wanikani.database.table.SRSDistributionTable;
 import tr.xip.wanikani.database.table.StudyQueueTable;
 import tr.xip.wanikani.database.table.UsersTable;
+import tr.xip.wanikani.models.BaseItem;
+import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.models.LevelProgression;
+import tr.xip.wanikani.models.Notification;
+import tr.xip.wanikani.models.SRSDistribution;
+import tr.xip.wanikani.models.StudyQueue;
+import tr.xip.wanikani.models.UnlockItem;
+import tr.xip.wanikani.models.User;
 
 /**
  * Created by Hikari on 1/5/15.
@@ -35,9 +37,9 @@ public class DatabaseManager {
 
     private SQLiteDatabase db;
 
-    public DatabaseManager(Context context) {
-        this.context = context;
-        db = new DatabaseHelper(context).getWritableDatabase();
+    public DatabaseManager(Context ctx) {
+        this.context = ctx;
+        db = DatabaseHelper.getInstance(this.context).getWritableDatabase();
     }
 
     private void addItem(BaseItem item) {
@@ -89,50 +91,58 @@ public class DatabaseManager {
                     String.valueOf(level)
             };
 
-            Cursor c = db.query(
-                    ItemsTable.TABLE_NAME,
-                    ItemsTable.COLUMNS,
-                    whereClause,
-                    whereArgs,
-                    null,
-                    null,
-                    null
-            );
+            Cursor c = null;
 
-            if (c != null && c.moveToFirst()) {
-                do {
-                    BaseItem item = new BaseItem(
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_ID)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_CHARACTER)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_KANA)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_IMAGE)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_ONYOMI)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_KUNYOMI)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_IMPORTANT_READING)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_LEVEL)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_ITEM_TYPE)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_SRS)),
-                            c.getLong(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_UNLOCKED_DATE)),
-                            c.getLong(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_AVAILABLE_DATE)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_BURNED)) == 1,
-                            c.getLong(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_BURNED_DATE)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_CORRECT)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_INCORRECT)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_MAX_STREAK)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_CURRENT_STREAK)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_CORRECT)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_INCORRECT)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_MAX_STREAK)),
-                            c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_CURRENT_STREAK)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_NOTE)),
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_USER_SYNONYMS)) != null
-                                    ? c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_USER_SYNONYMS)).split(",")
-                                    : null,
-                            c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_NOTE))
-                    );
-                    list.add(item);
-                } while (c.moveToNext());
+            try {
+                c = db.query(
+                        ItemsTable.TABLE_NAME,
+                        ItemsTable.COLUMNS,
+                        whereClause,
+                        whereArgs,
+                        null,
+                        null,
+                        null
+                );
+
+                if (c != null && c.moveToFirst()) {
+                    do {
+                        BaseItem item = new BaseItem(
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_ID)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_CHARACTER)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_KANA)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_IMAGE)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_ONYOMI)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_KUNYOMI)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_IMPORTANT_READING)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_LEVEL)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_ITEM_TYPE)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_SRS)),
+                                c.getLong(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_UNLOCKED_DATE)),
+                                c.getLong(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_AVAILABLE_DATE)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_BURNED)) == 1,
+                                c.getLong(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_BURNED_DATE)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_CORRECT)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_INCORRECT)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_MAX_STREAK)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_CURRENT_STREAK)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_CORRECT)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_INCORRECT)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_MAX_STREAK)),
+                                c.getInt(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_CURRENT_STREAK)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_MEANING_NOTE)),
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_USER_SYNONYMS)) != null
+                                        ? c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_USER_SYNONYMS)).split(",")
+                                        : null,
+                                c.getString(c.getColumnIndexOrThrow(ItemsTable.COLUMN_NAME_READING_NOTE))
+                        );
+                        list.add(item);
+                    } while (c.moveToNext());
+                }
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
             }
         }
 
@@ -198,51 +208,59 @@ public class DatabaseManager {
     public List<UnlockItem> getRecentUnlocks(int limit) {
         List<UnlockItem> list = new ArrayList<>();
 
-        Cursor c = db.query(
-                RecentUnlocksTable.TABLE_NAME,
-                RecentUnlocksTable.COLUMNS,
-                null,
-                null,
-                null,
-                null,
-                null,
-                String.valueOf(limit)
-        );
+        Cursor c = null;
 
-        if (c != null && c.moveToFirst()) {
-            do {
-                UnlockItem item = new UnlockItem(
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_ID)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_CHARACTER)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_KANA)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_IMAGE)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_ONYOMI)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_KUNYOMI)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_IMPORTANT_READING)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_LEVEL)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_ITEM_TYPE)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_SRS)),
-                        c.getLong(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_UNLOCKED_DATE)),
-                        c.getLong(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_AVAILABLE_DATE)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_BURNED)) == 1,
-                        c.getLong(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_BURNED_DATE)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_CORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_INCORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_MAX_STREAK)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_CURRENT_STREAK)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_CORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_INCORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_MAX_STREAK)),
-                        c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_CURRENT_STREAK)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_NOTE)),
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_USER_SYNONYMS)) != null
-                                ? c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_USER_SYNONYMS)).split(",")
-                                : null,
-                        c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_NOTE))
-                );
-                list.add(item);
-            } while (c.moveToNext());
+        try {
+            c = db.query(
+                    RecentUnlocksTable.TABLE_NAME,
+                    RecentUnlocksTable.COLUMNS,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    String.valueOf(limit)
+            );
+
+            if (c != null && c.moveToFirst()) {
+                do {
+                    UnlockItem item = new UnlockItem(
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_ID)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_CHARACTER)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_KANA)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_IMAGE)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_ONYOMI)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_KUNYOMI)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_IMPORTANT_READING)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_LEVEL)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_ITEM_TYPE)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_SRS)),
+                            c.getLong(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_UNLOCKED_DATE)),
+                            c.getLong(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_AVAILABLE_DATE)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_BURNED)) == 1,
+                            c.getLong(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_BURNED_DATE)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_CORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_INCORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_MAX_STREAK)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_CURRENT_STREAK)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_CORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_INCORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_MAX_STREAK)),
+                            c.getInt(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_CURRENT_STREAK)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_MEANING_NOTE)),
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_USER_SYNONYMS)) != null
+                                    ? c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_USER_SYNONYMS)).split(",")
+                                    : null,
+                            c.getString(c.getColumnIndexOrThrow(RecentUnlocksTable.COLUMN_NAME_READING_NOTE))
+                    );
+                    list.add(item);
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
 
         return list.size() != 0 ? list : null;
@@ -308,51 +326,59 @@ public class DatabaseManager {
                 String.valueOf(percentage)
         };
 
-        Cursor c = db.query(
-                CriticalItemsTable.TABLE_NAME,
-                CriticalItemsTable.COLUMNS,
-                whereClause,
-                whereArgs,
-                null,
-                null,
-                null
-        );
+        Cursor c = null;
 
-        if (c != null && c.moveToFirst()) {
-            do {
-                CriticalItem item = new CriticalItem(
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_ID)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_CHARACTER)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_KANA)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_IMAGE)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_ONYOMI)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_KUNYOMI)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_IMPORTANT_READING)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_LEVEL)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_ITEM_TYPE)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_SRS)),
-                        c.getLong(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_UNLOCKED_DATE)),
-                        c.getLong(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_AVAILABLE_DATE)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_BURNED)) == 1,
-                        c.getLong(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_BURNED_DATE)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_CORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_INCORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_MAX_STREAK)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_CURRENT_STREAK)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_CORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_INCORRECT)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_MAX_STREAK)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_CURRENT_STREAK)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_NOTE)),
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_USER_SYNONYMS)) != null
-                                ? c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_USER_SYNONYMS)).split(",")
-                                : null,
-                        c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_NOTE)),
-                        c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_PERCENTAGE))
-                );
-                list.add(item);
-            } while (c.moveToNext());
+        try {
+            c = db.query(
+                    CriticalItemsTable.TABLE_NAME,
+                    CriticalItemsTable.COLUMNS,
+                    whereClause,
+                    whereArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            if (c != null && c.moveToFirst()) {
+                do {
+                    CriticalItem item = new CriticalItem(
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_ID)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_CHARACTER)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_KANA)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_IMAGE)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_ONYOMI)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_KUNYOMI)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_IMPORTANT_READING)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_LEVEL)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_ITEM_TYPE)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_SRS)),
+                            c.getLong(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_UNLOCKED_DATE)),
+                            c.getLong(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_AVAILABLE_DATE)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_BURNED)) == 1,
+                            c.getLong(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_BURNED_DATE)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_CORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_INCORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_MAX_STREAK)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_CURRENT_STREAK)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_CORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_INCORRECT)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_MAX_STREAK)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_CURRENT_STREAK)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_MEANING_NOTE)),
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_USER_SYNONYMS)) != null
+                                    ? c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_USER_SYNONYMS)).split(",")
+                                    : null,
+                            c.getString(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_READING_NOTE)),
+                            c.getInt(c.getColumnIndexOrThrow(CriticalItemsTable.COLUMN_NAME_PERCENTAGE))
+                    );
+                    list.add(item);
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
 
         return list;
@@ -385,30 +411,38 @@ public class DatabaseManager {
     }
 
     public StudyQueue getStudyQueue() {
-        Cursor c = db.query(
-                StudyQueueTable.TABLE_NAME,
-                StudyQueueTable.COLUMNS,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor c = null;
 
-        if (c != null && c.moveToFirst()) {
-            User user = getUser();
-            return new StudyQueue(
-                    c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_ID)),
-                    c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_LESSONS_AVAILABLE)),
-                    c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE)),
-                    c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_HOUR)),
-                    c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_DAY)),
-                    c.getLong(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE)),
-                    user != null ? user.getUserInformation() : null
+        try {
+            c = db.query(
+                    StudyQueueTable.TABLE_NAME,
+                    StudyQueueTable.COLUMNS,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
             );
-        } else {
-            Log.e(TAG, "No study queue found; returning null");
-            return null;
+
+            if (c != null && c.moveToFirst()) {
+                User user = getUser();
+                return new StudyQueue(
+                        c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_ID)),
+                        c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_LESSONS_AVAILABLE)),
+                        c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE)),
+                        c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_HOUR)),
+                        c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_DAY)),
+                        c.getLong(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE)),
+                        user != null ? user.getUserInformation() : null
+                );
+            } else {
+                Log.e(TAG, "No study queue found; returning null");
+                return null;
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
@@ -429,28 +463,36 @@ public class DatabaseManager {
     }
 
     public LevelProgression getLevelProgression() {
-        Cursor c = db.query(
-                LevelProgressionTable.TABLE_NAME,
-                LevelProgressionTable.COLUMNS,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor c = null;
 
-        if (c != null && c.moveToFirst()) {
-            return new LevelProgression(
-                    c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_ID)),
-                    getUser().getUserInformation(),
-                    c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_RADICALS_PROGRESS)),
-                    c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_RADICALS_TOTAL)),
-                    c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_PROGRESS)),
-                    c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_TOTAL))
+        try {
+            c = db.query(
+                    LevelProgressionTable.TABLE_NAME,
+                    LevelProgressionTable.COLUMNS,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
             );
-        } else {
-            Log.e(TAG, "No study queue found; returning null");
-            return null;
+
+            if (c != null && c.moveToFirst()) {
+                return new LevelProgression(
+                        c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_ID)),
+                        getUser().getUserInformation(),
+                        c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_RADICALS_PROGRESS)),
+                        c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_RADICALS_TOTAL)),
+                        c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_PROGRESS)),
+                        c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_TOTAL))
+                );
+            } else {
+                Log.e(TAG, "No study queue found; returning null");
+                return null;
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
@@ -482,39 +524,47 @@ public class DatabaseManager {
     }
 
     public SRSDistribution getSrsDistribution() {
-        Cursor c = db.query(
-                SRSDistributionTable.TABLE_NAME,
-                SRSDistributionTable.COLUMNS,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor c = null;
 
-        if (c != null && c.moveToFirst()) {
-            return new SRSDistribution(
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ID)),
-                    getUser().getUserInformation(),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_RADICALS)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_KANJI)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_VOCABULARY)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_GURU_RADICALS)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_GURU_KANJI)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_GURU_VOCABULARY)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_MASTER_RADICALS)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_MASTER_KANJI)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_MASTER_VOCABULARY)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_RADICALS)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_KANJI)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_VOCABULARY)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_BURNED_RADICALS)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_BURNED_KANJI)),
-                    c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_BURNED_VOCABULARY))
+        try {
+            c = db.query(
+                    SRSDistributionTable.TABLE_NAME,
+                    SRSDistributionTable.COLUMNS,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
             );
-        } else {
-            Log.e(TAG, "No srs distribution found; returning null");
-            return null;
+
+            if (c != null && c.moveToFirst()) {
+                return new SRSDistribution(
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ID)),
+                        getUser().getUserInformation(),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_RADICALS)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_KANJI)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_VOCABULARY)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_GURU_RADICALS)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_GURU_KANJI)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_GURU_VOCABULARY)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_MASTER_RADICALS)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_MASTER_KANJI)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_MASTER_VOCABULARY)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_RADICALS)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_KANJI)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_VOCABULARY)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_BURNED_RADICALS)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_BURNED_KANJI)),
+                        c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_BURNED_VOCABULARY))
+                );
+            } else {
+                Log.e(TAG, "No srs distribution found; returning null");
+                return null;
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
@@ -545,37 +595,128 @@ public class DatabaseManager {
     }
 
     public User getUser() {
-        Cursor c = db.query(
-                UsersTable.TABLE_NAME,
-                UsersTable.COLUMNS,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        Cursor c = null;
 
-        if (c != null && c.moveToFirst()) {
-            return new User(
-                    c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_USERNAME)),
-                    c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_GRAVATAR)),
-                    c.getInt(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_LEVEL)),
-                    c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_TITLE)),
-                    c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_ABOUT)),
-                    c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_WEBSITE)),
-                    c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_TWITTER)),
-                    c.getInt(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_TOPICS_COUNT)),
-                    c.getInt(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_POSTS_COUNT)),
-                    c.getLong(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_CREATION_DATE)),
-                    c.getLong(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_VACATION_DATE))
+        try {
+            c = db.query(
+                    UsersTable.TABLE_NAME,
+                    UsersTable.COLUMNS,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
             );
-        } else {
-            Log.e(TAG, "No users found; returning null");
-            return null;
+
+            if (c != null && c.moveToFirst()) {
+                return new User(
+                        c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_USERNAME)),
+                        c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_GRAVATAR)),
+                        c.getInt(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_LEVEL)),
+                        c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_ABOUT)),
+                        c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_WEBSITE)),
+                        c.getString(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_TWITTER)),
+                        c.getInt(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_TOPICS_COUNT)),
+                        c.getInt(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_POSTS_COUNT)),
+                        c.getLong(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_CREATION_DATE)),
+                        c.getLong(c.getColumnIndexOrThrow(UsersTable.COLUMN_NAME_VACATION_DATE))
+                );
+            } else {
+                Log.e(TAG, "No users found; returning null");
+                return null;
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 
     public void deleteUsers() {
         db.delete(UsersTable.TABLE_NAME, null, null);
+    }
+
+    public void saveNotification(Notification item) {
+        db.delete(
+                NotificationsTable.TABLE_NAME,
+                NotificationsTable.COLUMN_NAME_ID + " = ?",
+                new String[]{String.valueOf(item.getId())}
+        );
+
+        ContentValues values = new ContentValues();
+        values.put(NotificationsTable.COLUMN_NAME_ID, item.getId());
+        values.put(NotificationsTable.COLUMN_NAME_TITLE, item.getTitle());
+        values.put(NotificationsTable.COLUMN_NAME_SHORT_TEXT, item.getShortText());
+        values.put(NotificationsTable.COLUMN_NAME_TEXT, item.getText());
+        values.put(NotificationsTable.COLUMN_NAME_IMAGE, item.getImage());
+        values.put(NotificationsTable.COLUMN_NAME_ACTION_URL, item.getActionUrl());
+        values.put(NotificationsTable.COLUMN_NAME_READ, item.isRead() ? 1 : 0);
+        values.put(NotificationsTable.COLUMN_NAME_ACTION_TEXT, item.getActionText());
+
+        db.insert(NotificationsTable.TABLE_NAME, NotificationsTable.COLUMN_NAME_NULLABLE, values);
+    }
+
+    public void saveNotifications(List<Notification> list) {
+        deleteSameNotifications(list);
+
+        for (Notification item : list)
+            saveNotification(item);
+    }
+
+    public List<Notification> getNotifications() {
+        List<Notification> list = new ArrayList<>();
+
+        String whereClause = NotificationsTable.COLUMN_NAME_READ + " = ?";
+        String[] whereArgs = {
+                "0"
+        };
+
+        Cursor c = null;
+
+        try {
+            c = db.query(
+                    NotificationsTable.TABLE_NAME,
+                    NotificationsTable.COLUMNS,
+                    whereClause,
+                    whereArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            if (c != null && c.moveToFirst()) {
+                do {
+                    Notification item = new Notification(
+                            c.getInt(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_ID)),
+                            c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_TITLE)),
+                            c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_SHORT_TEXT)),
+                            c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_TEXT)),
+                            c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_IMAGE)),
+                            c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_ACTION_URL)),
+                            c.getString(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_ACTION_TEXT)),
+                            c.getInt(c.getColumnIndexOrThrow(NotificationsTable.COLUMN_NAME_READ)) == 1
+                    );
+                    list.add(item);
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+
+        return list;
+    }
+
+    private void deleteSameNotifications(List<Notification> list) {
+        for (Notification item : list) {
+            String whereClause = NotificationsTable.COLUMN_NAME_ID + " = ?";
+            String[] whereArgs = {
+                    String.valueOf(item.getId())
+            };
+
+            db.delete(NotificationsTable.TABLE_NAME, whereClause, whereArgs);
+        }
     }
 }

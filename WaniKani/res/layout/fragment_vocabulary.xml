@@ -14,8 +14,8 @@
         android:id="@+id/vocabulary_list_flipper"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:inAnimation="@anim/abc_fade_in"
-        android:outAnimation="@anim/abc_fade_out">
+        android:inAnimation="@anim/fade_in"
+        android:outAnimation="@anim/fade_out">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -26,8 +26,8 @@
             android:id="@+id/vocabulary_message_flipper"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:inAnimation="@anim/abc_fade_in"
-            android:outAnimation="@anim/abc_fade_out"
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out"
             android:paddingBottom="2dp">
 
             <RelativeLayout

@@ -16,8 +16,8 @@
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
         android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
         android:paddingTop="@dimen/action_bar_height"
         android:scrollbarStyle="outsideOverlay">
 
@@ -34,6 +34,7 @@
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/item_card"
+                    app:cardUseCompatPadding="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="?colorPrimary">
@@ -112,7 +113,7 @@
                     android:id="@+id/details_alternative_meanings_and_user_synonyms_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -174,7 +175,7 @@
                     android:id="@+id/details_readings_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -261,7 +262,7 @@
                     android:id="@+id/details_reading_note_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -290,8 +291,8 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/details_meaning_note_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    app:cardUseCompatPadding="true"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -320,8 +321,8 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/details_progress_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    app:cardUseCompatPadding="true"
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -12,8 +12,8 @@
             android:id="@+id/activity_critical_items_view_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inAnimation="@anim/abc_fade_in"
-            android:outAnimation="@anim/abc_fade_out">
+            android:inAnimation="@anim/fade_in"
+            android:outAnimation="@anim/fade_out">
 
             <ProgressBar
                 android:layout_width="wrap_content"

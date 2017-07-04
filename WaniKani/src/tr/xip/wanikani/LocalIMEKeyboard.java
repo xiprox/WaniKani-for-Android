@@ -216,8 +216,9 @@ public class LocalIMEKeyboard implements Keyboard {
         @Override
         public boolean onEditorAction (TextView tv, int actionId, KeyEvent event)
         {
-
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_DONE
+                    || (actionId == EditorInfo.IME_NULL && event != null &&
+                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
                 next ();
                 return true;
             }

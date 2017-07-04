@@ -60,7 +60,7 @@ public class VocabularyListGetTask extends AsyncTask<Void, Void, List<BaseItem>>
         super.onPostExecute(list);
 
         if (list != null) {
-            new ItemsSaveTask(context, BaseItem.ItemType.VOCABULARY, list, null).executeParallel();
+            new ItemsSaveTask(context, BaseItem.ItemType.VOCABULARY, list, null).executeSerial();
 
             if (mCallbacks != null)
                 mCallbacks.onVocabularyListGetTaskPostExecute(list);

@@ -21,4 +21,8 @@ public class BroadcastIntents {
         return "error.retrofit.UNKNOWN";
     }
 
+    public static String NOTIFICATION() {
+        return "NOTIFICATION";
+    }
+
 }

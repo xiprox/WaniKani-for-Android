@@ -2,18 +2,17 @@ package tr.xip.wanikani.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.widget.adapter.LevelPickerCheckBoxAdapter;
@@ -25,16 +24,15 @@ public class LevelPickerDialogFragment extends DialogFragment implements LevelPi
     private static final String ARG_SELECTED_ITEMS_STORAGE = "selected_items_storage";
     private static final String ARG_SELECTION_STORAGE = "selection_storage";
 
-    Context context;
-    LevelDialogListener mListener;
-    String userLevel;
+    private LevelDialogListener mListener;
+    private String userLevel;
 
-    int fragmentId;
+    private int fragmentId;
 
-    String selectedLevel = "0";
-    int wanikaniLevelsNumber;
+    private String selectedLevel = "0";
+    private int wanikaniLevelsNumber;
 
-    private HashSet<Integer> mSelectedItems;
+    private Set<Integer> mSelectedItems;
     private ArrayList<Integer> mSelectedItemsStorage;
 
     private boolean[] mSelection;
@@ -47,11 +45,8 @@ public class LevelPickerDialogFragment extends DialogFragment implements LevelPi
 
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
-        context = getActivity();
+        final Context context = getActivity();
         wanikaniLevelsNumber = context.getResources().getInteger(R.integer.wanikani_levels_number);
-
-        Dialog dialog = super.onCreateDialog(bundle);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         if (bundle != null) {
             userLevel = bundle.getString(ARG_USER_LEVEL);
@@ -62,7 +57,7 @@ public class LevelPickerDialogFragment extends DialogFragment implements LevelPi
 
         mListener = (LevelDialogListener) getFragmentManager().findFragmentById(fragmentId);
 
-        mSelectedItems = new HashSet<Integer>();
+        mSelectedItems = new HashSet<>();
         mSelection = new boolean[wanikaniLevelsNumber];
 
         if (mSelectedItemsStorage == null && mSelectionStorage == null) {
@@ -83,96 +78,91 @@ public class LevelPickerDialogFragment extends DialogFragment implements LevelPi
             }
         }
 
-        return dialog;
-    }
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        ListView checkList = (ListView) inflater.inflate(R.layout.dialog_level_picker, null);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_level_picker, null);
-
-        Button mOk = (Button) view.findViewById(R.id.button1);
-        Button mReset = (Button) view.findViewById(R.id.button2);
-        Button mCancel = (Button) view.findViewById(R.id.button3);
-
-        final ListView mCheckList = (ListView) view.findViewById(R.id.listView);
-
-        ArrayList<LevelPickerCheckBoxAdapter.LevelCheckBox> mListItems = new ArrayList<LevelPickerCheckBoxAdapter.LevelCheckBox>();
+        ArrayList<LevelPickerCheckBoxAdapter.LevelCheckBox> mListItems = new ArrayList<>();
 
         for (int i = 0; i < wanikaniLevelsNumber; i++) {
             LevelPickerCheckBoxAdapter.LevelCheckBox checkBox =
-                    new LevelPickerCheckBoxAdapter.LevelCheckBox(i + 1 + "", mSelection[i]);
+                    new LevelPickerCheckBoxAdapter.LevelCheckBox(String.valueOf(i + 1), mSelection[i]);
             mListItems.add(checkBox);
         }
 
-        mCheckList.setAdapter(new LevelPickerCheckBoxAdapter(context,
+        checkList.setAdapter(new LevelPickerCheckBoxAdapter(context,
                 R.layout.item_level_picker_checkbox, mListItems, this));
 
-        mOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedLevel = "0";
+        return new AlertDialog.Builder(context)
+                .setTitle(R.string.card_content_progress_level)
+                .setView(checkList)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedLevel = "0";
 
-                for (Integer item : mSelectedItems) {
-                    if (selectedLevel.equals("0")) {
-                        selectedLevel = (item + 1) + "";
-                    } else {
-                        selectedLevel += "," + (item + 1);
+                        for (Integer item : mSelectedItems) {
+                            if (selectedLevel.equals("0")) {
+                                selectedLevel = String.valueOf(item + 1);
+                            } else {
+                                selectedLevel += "," + (item + 1);
+                            }
+                        }
+
+                        if (!selectedLevel.equals("0")) {
+                            mListener.onLevelDialogPositiveClick(LevelPickerDialogFragment.this, selectedLevel);
+
+                            if (mSelectedItemsStorage == null) {
+                                mSelectedItemsStorage = new ArrayList<>();
+                            }
+
+                            if (mSelectionStorage == null) {
+                                mSelectionStorage = new boolean[wanikaniLevelsNumber];
+                            }
+
+                            mSelectedItemsStorage.clear();
+
+                            for (int item : mSelectedItems) {
+                                mSelectedItemsStorage.add(item);
+                            }
+
+                            for (int i = 0; i < mSelection.length; i++) {
+                                mSelectionStorage[i] = mSelection[i];
+                            }
+
+                            dismiss();
+                        } else {
+                            Toast.makeText(context, R.string.error_no_levels_selected, Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
+                })
+                .setNegativeButton(R.string.reset, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (mSelectedItems != null) {
+                            mSelectedItems.clear();
+                        }
+                        if (mSelection != null) {
+                            mSelection = new boolean[wanikaniLevelsNumber];
+                        }
+                        if (mSelectedItemsStorage != null) {
+                            mSelectedItemsStorage.clear();
+                        }
+                        if (mSelectionStorage != null) {
+                            mSelectionStorage = new boolean[wanikaniLevelsNumber];
+                        }
 
-                if (!selectedLevel.equals("0")) {
-                    mListener.onLevelDialogPositiveClick(LevelPickerDialogFragment.this, selectedLevel);
+                        mListener.onLevelDialogResetClick(LevelPickerDialogFragment.this, userLevel);
 
-                    if (mSelectedItemsStorage == null) {
-                        mSelectedItemsStorage = new ArrayList<Integer>();
+                        dismiss();
                     }
-
-                    if (mSelectionStorage == null) {
-                        mSelectionStorage = new boolean[wanikaniLevelsNumber];
+                })
+                .setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dismiss();
                     }
-
-                    mSelectedItemsStorage.clear();
-
-                    for (int item : mSelectedItems) {
-                        mSelectedItemsStorage.add(item);
-                    }
-
-                    for (int i = 0; i < mSelection.length; i++) {
-                        mSelectionStorage[i] = mSelection[i];
-                    }
-
-                    dismiss();
-                } else
-                    Toast.makeText(context, R.string.error_no_levels_selected, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        mReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mSelectedItems != null)
-                    mSelectedItems.clear();
-                if (mSelection != null)
-                    mSelection = new boolean[wanikaniLevelsNumber];
-                if (mSelectedItemsStorage != null)
-                    mSelectedItemsStorage.clear();
-                if (mSelectionStorage != null)
-                    mSelectionStorage = new boolean[wanikaniLevelsNumber];
-
-                mListener.onLevelDialogResetClick(LevelPickerDialogFragment.this, userLevel);
-
-                dismiss();
-            }
-        });
-
-        mCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        return view;
+                })
+                .create();
     }
 
     @Override
@@ -195,12 +185,9 @@ public class LevelPickerDialogFragment extends DialogFragment implements LevelPi
         super.onSaveInstanceState(outState);
     }
 
-
     public interface LevelDialogListener {
-        public void onLevelDialogPositiveClick(DialogFragment dialog, String level);
+        void onLevelDialogPositiveClick(DialogFragment dialog, String level);
 
-        public void onLevelDialogResetClick(DialogFragment dialog, String level);
+        void onLevelDialogResetClick(DialogFragment dialog, String level);
     }
-
 }
-

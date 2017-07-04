@@ -8,6 +8,7 @@
         <item name="colorPrimary">@color/apptheme_main</item>
         <item name="colorPrimaryDark">@color/apptheme_main_dark</item>
         <item name="colorAccent">@color/apptheme_main</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="AppTheme_NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -16,6 +17,7 @@
         <item name="colorPrimary">@color/apptheme_main</item>
         <item name="colorPrimaryDark">@color/apptheme_main_dark</item>
         <item name="colorAccent">@color/apptheme_main</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="AppTheme_NavigationDrawerActivity" parent="AppTheme_NoActionBar" />

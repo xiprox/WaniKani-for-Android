@@ -69,7 +69,7 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
         public void onReceive(Context context, Intent intent) {
             mContext = context;
             new RecentUnlocksListGetTask(context, prefMan.getDashboardRecentUnlocksNumber(),
-                    RecentUnlocksCard.this).executeParallel();
+                    RecentUnlocksCard.this).executeSerial();
         }
     };
 

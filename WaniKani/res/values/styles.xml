@@ -44,4 +44,9 @@
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
     </style>
+
+    <style name="AppTheme.NotificationActionButton" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">#F50057</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

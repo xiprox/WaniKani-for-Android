@@ -86,7 +86,7 @@ public class SRSCard extends Fragment implements SRSDistributionGetTaskCallbacks
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new SRSDistributionGetTask(context, SRSCard.this).executeParallel();
+            new SRSDistributionGetTask(context, SRSCard.this).executeSerial();
         }
     };
 

@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -104,6 +105,12 @@ public class WebReviewActivity extends ActionBarActivity {
 
         /** HTML id of the lessons quiz */
         static final String QUIZ = "quiz";
+
+        /** HTML id of the start quiz button (modal) */
+        static final String QUIZ_BUTTON1 = "quiz-ready-continue";
+
+        /** HTML id of the start quiz button (bottom green arrow) */
+        static final String QUIZ_BUTTON2 = "active-quiz";
 
         /** Any object on the lesson pages */
         static final String LESSONS_OBJ = "nav-lesson";
@@ -582,8 +589,12 @@ public class WebReviewActivity extends ActionBarActivity {
                     "textbox = document.getElementById (\"" + WKConfig.ANSWER_BOX + "\"); " +
                     "reviews = document.getElementById (\"" + WKConfig.REVIEWS_DIV + "\");" +
                     "quiz = document.getElementById (\"" + WKConfig.QUIZ + "\");" +
+                    "quiz_button = document.getElementById (\"" + WKConfig.QUIZ_BUTTON1 + "\");" +
+                    "function reload_quiz_arrow() { quiz_arrow = document.getElementsByClassName (\"" + WKConfig.QUIZ_BUTTON2 + "\")[0]; }; " +
                     "if (quiz != null) {" +
                     "   wknKeyboard.showLessonsNew ();" +
+                    "   quiz_button.addEventListener(\"click\", function(){ wknKeyboard.showLessonsNew (); });" +
+                    "   var interval = setInterval(function() { reload_quiz_arrow(); if (quiz_arrow != undefined) { quiz_arrow.addEventListener(\"click\", function() { wknKeyboard.showLessonsNew (); }); clearInterval(interval); } }, 200); " +
                     "} else if (textbox != null && !textbox.disabled) {" +
                     "   wknKeyboard.show (); " +
                     "} else {" +
@@ -652,7 +663,7 @@ public class WebReviewActivity extends ActionBarActivity {
     private Button singleb;
 
     /** Single mode is on? */
-    private boolean single = true;  // Added by @Aralox. Default: single mode selected.
+    private boolean single = false;
 
     /** Shall we download a file? */
     private boolean download;
@@ -728,6 +739,10 @@ public class WebReviewActivity extends ActionBarActivity {
         wv.getSettings ().setDatabaseEnabled (true);
         wv.getSettings ().setDomStorageEnabled (true);
         wv.getSettings ().setDatabasePath (getFilesDir ().getPath () + "/wv");
+        if (Build.VERSION.SDK_INT >= 17) {
+            wv.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        }
+
         wv.addJavascriptInterface (new WKNKeyboard (), "wknKeyboard");
         wv.setScrollBarStyle (ScrollView.SCROLLBARS_OUTSIDE_OVERLAY);
         wv.setWebViewClient (new WebViewClientImpl ());
