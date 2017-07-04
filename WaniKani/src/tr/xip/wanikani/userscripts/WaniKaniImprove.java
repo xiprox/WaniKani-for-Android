@@ -218,6 +218,13 @@ public class WaniKaniImprove {
             "function checkAnswer()\r\n" +
                     "{\r\n" +
                     "    answerException = $.trim($('#answer-exception').text());\r\n" +
+
+                    // Added by @Aralox, use these lines to print the page HTML, for debugging.
+//                    "    console.log('answer message: '+answerException);" +
+//                    "    console.log('document: ');" +
+//                    "    doclines = $('body').html().split('\\n');" +
+//                    "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); } " +
+
                     "    if(answerException)\r\n" +
                     "    {\r\n" +
                     "        if(answerException.indexOf('answer was a bit off') !== -1)\r\n" +
@@ -275,7 +282,12 @@ public class WaniKaniImprove {
                     "    currentType = $('#character').attr('class');" +
                     "    currentQuestionType = $.trim($('#question-type').text());" +
                     "    wknWanikaniImprove.save (currentItem, currentType, currentQuestionType, jstored_currentItem.en);" +
-                    "    checkAnswer();";
+
+
+                    // @Aralox introduced the delay, to allow enough time for the javascript to update the html so that this
+                    // script works properly after the 'info-panel' is opened. (https://github.com/xiprox/WaniKani-for-Android/issues/46)
+                    "    setTimeout(checkAnswer, 300);";
+                    //"    checkAnswer();"; // old
 
     /// The current state
     private State currentState;
