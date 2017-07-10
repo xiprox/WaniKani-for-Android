@@ -11,12 +11,14 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -527,6 +530,7 @@ public class LocalIMEKeyboard implements Keyboard {
 
             new JSListenerShow (sequence, new Rect (fleft, ftop, fright, fbottom),
                     new Rect (tleft, ttop, tright, tbottom));
+
         }
 
         /**
@@ -659,6 +663,34 @@ public class LocalIMEKeyboard implements Keyboard {
         {
             if (PrefManager.getLessonOrder())
                 wv.js (ifLessons (LessonOrder.JS_REFRESH_CODE));
+        }
+
+
+        /**
+         * Called by LocalIMEKeyboard.replace(), to appropriately call ew.requestFocus() if we are not editing a note/synonym. Added by @Aralox.
+         * @param noteBeingEdited return value of javascript which checks if note/synonym being edited (true/false).
+         */
+        @JavascriptInterface
+        public void requestFocusIfSafe (String noteBeingEdited)
+        {
+            //Log.d("aralox", "received " + noteBeingEdited);
+
+            if (noteBeingEdited.equals("false")) {
+                //Log.d("aralox", "note not being edited. calling ew.requestFocus()");
+
+                // Need to run EditText.requestFocus() on main thread, not UI thread. Technique from https://stackoverflow.com/a/11125271/1072869
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                Runnable myRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        //Log.d("aralox", "calling EditText.requestFocus()");
+                        ew.requestFocus();
+                    }
+                };
+                mainHandler.post(myRunnable);
+            }
+            //else Log.d("aralox", "note being edited. not calling ew.requestFocus()");
+
         }
     }
 
@@ -1148,7 +1180,22 @@ public class LocalIMEKeyboard implements Keyboard {
 
         if (bpos.shallShow ()) {
             divw.setVisibility (View.VISIBLE);
-            ew.requestFocus ();
+
+            //Log.d("aralox", "replace() ew.requestFocus()");
+            // This function (replace()) is called whenever the page is scrolled during reviews, e.g. when looking at the answer.
+            // This function usually just calls ew.requestFocus(), which switches keyboard focus to the answer textbox, which is not
+            // a javascript element but an android object (which is why pure JS solutions do not work for this bug).
+            // This refocusing causes problems as the page is resized/scrolled whenever the reading/meaning note (and occasionally synonym edit box) is opened.
+            // This problem is fixed by using JS to check the HTML to see if we are currently editing a note, then only calling requestFocus if we are not.
+
+            // jsl (JSListener)'s requestFocusIfSafe() will call ew.requestFocus() if we aren't editing a note or synonym.
+            wv.loadUrl("javascript:wknJSListener.requestFocusIfSafe(" +
+                    "$('#item-info').css('display') != 'none' && " +
+                    "( (typeof $('form>fieldset>textarea')[0] !== 'undefined') || (typeof $('.user-synonyms-add-form')[0] !== 'undefined') )" +
+                    ")");
+
+            // $('#item-info').css('display') != 'none' && ( (typeof $('form>fieldset>textarea')[0] !== 'undefined') || (typeof $('.user-synonyms-add-form')[0] !== 'undefined') )
+
             if (hwkeyb)
                 imm.hideSoftInputFromWindow (ew.getWindowToken (), 0);
         }

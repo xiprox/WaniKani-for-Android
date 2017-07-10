@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
@@ -591,12 +592,26 @@ public class WebReviewActivity extends ActionBarActivity {
                     "quiz = document.getElementById (\"" + WKConfig.QUIZ + "\");" +
                     "quiz_button = document.getElementById (\"" + WKConfig.QUIZ_BUTTON1 + "\");" +
                     "function reload_quiz_arrow() { quiz_arrow = document.getElementsByClassName (\"" + WKConfig.QUIZ_BUTTON2 + "\")[0]; }; " +
+
+                    // @Aralox added lines to help with debugging issue #27. Solution is in LocalIMEKeyboard.replace().
+                    // Run this through an unminifier to understand it better. Based on @jneapan's code
+                    //"var note_meaning_textarea;" +
+                    //"function reload_note_elements() { note_meaning = document.getElementsByClassName (\"note-meaning\")[0]; }; " +
+                    //"function note_meaning_listener() { console.log('note meaning div listener'); setTimeout(function(){note_meaning_textarea = $('div.note-meaning>form>fieldset>textarea')[0]; console.log('textarea: '+note_meaning_textarea); "+
+                    //"note_meaning_textarea.addEventListener('click', note_meaning_textarea_listener); }, 1000); };" +
+                    //"function note_meaning_textarea_listener() {console.log('clicked textarea'); setTimeout(function(){console.log('refocusing on textarea: ' + note_meaning_textarea); "+
+                    //"wknKeyboard.show(); note_meaning_textarea.focus(); }, 1000);};" +
+
                     "if (quiz != null) {" +
                     "   wknKeyboard.showLessonsNew ();" +
                     "   quiz_button.addEventListener(\"click\", function(){ wknKeyboard.showLessonsNew (); });" +
                     "   var interval = setInterval(function() { reload_quiz_arrow(); if (quiz_arrow != undefined) { quiz_arrow.addEventListener(\"click\", function() { wknKeyboard.showLessonsNew (); }); clearInterval(interval); } }, 200); " +
                     "} else if (textbox != null && !textbox.disabled) {" +
                     "   wknKeyboard.show (); " +
+
+                    // @Aralox added line to help with debugging issue #27
+                    //"var interval2 = setInterval(function() { console.log('looking for note-meaning...'); reload_note_elements(); if (note_meaning != undefined) { console.log('found note-meaning! adding click listener...'); note_meaning.addEventListener(\"click\", note_meaning_listener); clearInterval(interval2); } }, 200); " +
+
                     "} else {" +
                     "	wknKeyboard.hide ();" +
                     "}" +
@@ -789,7 +804,6 @@ public class WebReviewActivity extends ActionBarActivity {
     protected void onResume ()
     {
 //      Window window;
-
         super.onResume ();
 /*
         These features won't be implemented as of now
