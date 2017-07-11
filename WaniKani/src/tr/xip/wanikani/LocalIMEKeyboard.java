@@ -735,10 +735,13 @@ public class LocalIMEKeyboard implements Keyboard {
                     "   window.wknSequence++;" +
                     "};" +
                     "window.wknNewQuestion = function (entry, type) {" +
+
+                    WebReviewActivity.getHideLinkCode() + // Added by @Aralox, to hook onto new question event.
+
                     "   var qtype, e, item;" +
                     "   qtype = $.jStorage.get (\"questionType\");" +
                     "   window.wknReplace ();" +
-                    "   if (" + JS_REVIEWS_P + ")" +
+                    "   if (" + JS_REVIEWS_P + ") " +
                     "        window.wknOverrideQuestion ();" +
                     "   if ($(\"#character\").hasClass (\"vocabulary\")) {" +
                     "        e = $(\"#character span\");" +

@@ -17,7 +17,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
@@ -118,6 +117,18 @@ public class WebReviewActivity extends ActionBarActivity {
 
         /** Reviews div */
         static final String REVIEWS_DIV = "reviews";
+
+        /** HTML id of character div holding (kanji/radical/vocab) being reviewed. @Aralox **/
+        static final String CHARACTER_DIV = "character";
+
+        /** JQuery Element (kanji/radical/vocab) being reviewed. Assumed only 1 child span. @Aralox **/
+        static final String CHARACTER_SPAN_JQ = "#"+CHARACTER_DIV+">span";
+
+        /** HTML id of item-info panel. @Aralox **/
+        static final String ITEM_INFO_DIV = "item-info";
+
+        /** HTML id of item-info button. @Aralox **/
+        static final String ITEM_INFO_LI = "option-item-info";
     };
 
     /**
@@ -593,25 +604,48 @@ public class WebReviewActivity extends ActionBarActivity {
                     "quiz_button = document.getElementById (\"" + WKConfig.QUIZ_BUTTON1 + "\");" +
                     "function reload_quiz_arrow() { quiz_arrow = document.getElementsByClassName (\"" + WKConfig.QUIZ_BUTTON2 + "\")[0]; }; " +
 
-                    // @Aralox added lines to help with debugging issue #27. Solution is in LocalIMEKeyboard.replace().
-                    // Run this through an unminifier to understand it better. Based on @jneapan's code
-                    //"var note_meaning_textarea;" +
-                    //"function reload_note_elements() { note_meaning = document.getElementsByClassName (\"note-meaning\")[0]; }; " +
-                    //"function note_meaning_listener() { console.log('note meaning div listener'); setTimeout(function(){note_meaning_textarea = $('div.note-meaning>form>fieldset>textarea')[0]; console.log('textarea: '+note_meaning_textarea); "+
-                    //"note_meaning_textarea.addEventListener('click', note_meaning_textarea_listener); }, 1000); };" +
-                    //"function note_meaning_textarea_listener() {console.log('clicked textarea'); setTimeout(function(){console.log('refocusing on textarea: ' + note_meaning_textarea); "+
-                    //"wknKeyboard.show(); note_meaning_textarea.focus(); }, 1000);};" +
+                    // Section added by @Aralox, to show the 'character' (kanji/radical/vocab under review) with a hyperlink
+                    // when the item-info panel is open, and to show a non-hyperlinked version when the panel is closed.
+                    // Events are hooked onto the item info panel button, and the new question event (see getHideLinkCode())
+                    "var character_div, character_unlinked, character_linked, item_info_div, item_info_button;" +
+                    "character_div = $('#"+WKConfig.CHARACTER_DIV +"');" +
+                    "item_info_div = $('#" + WKConfig.ITEM_INFO_DIV + "');" +
+                    "item_info_button = $('#" + WKConfig.ITEM_INFO_LI + "');" +
+
+                    "function item_info_listener() {" +
+                    "   if (item_info_div.css('display') == 'block' && !item_info_button.hasClass('disabled')) {" +
+                    "       console.log('clicked open item info panel.');" +
+                    "       character_unlinked.css('display', 'none');" +
+                    "       character_linked.css  ('display', 'block');" +
+                    "   } else {" +
+                    "       console.log('clicked close item info panel.');" +
+                    "       character_unlinked.css('display', 'block');" +
+                    "       character_linked.css  ('display', 'none');" +
+                    "   } " +
+                    "};" +
+
+                    // real %E4%B8%8B%E3%81%95%E3%81%84
+                    // cych %E4%B8%8B%E3%81%95%E3%81%84
 
                     "if (quiz != null) {" +
                     "   wknKeyboard.showLessonsNew ();" +
                     "   quiz_button.addEventListener(\"click\", function(){ wknKeyboard.showLessonsNew (); });" +
                     "   var interval = setInterval(function() { reload_quiz_arrow(); if (quiz_arrow != undefined) { quiz_arrow.addEventListener(\"click\", function() { wknKeyboard.showLessonsNew (); }); clearInterval(interval); } }, 200); " +
                     "} else if (textbox != null && !textbox.disabled) {" +
+                    // Code for reviews (not lessons) happen in here
                     "   wknKeyboard.show (); " +
+
+                    // Code added for hyperlinking, as mentioned above.
+                    "   item_info_button.on('click', item_info_listener);" +
+
+                    "   character_div.append($('"+WKConfig.CHARACTER_SPAN_JQ +"').clone());" + //"   character_unlinked.clone().appendTo(character_div);" +
+                    "   $('"+WKConfig.CHARACTER_SPAN_JQ +":first-child').wrap('<a href=\"www.duckduckgo.com\" style=\"text-decoration:none;\"></a>');" +
+
+                    "   character_linked = $('#"+WKConfig.CHARACTER_DIV+">a>span');" +
+                    "   character_unlinked = $('"+WKConfig.CHARACTER_SPAN_JQ +"');" +
 
                     // @Aralox added line to help with debugging issue #27
                     //"var interval2 = setInterval(function() { console.log('looking for note-meaning...'); reload_note_elements(); if (note_meaning != undefined) { console.log('found note-meaning! adding click listener...'); note_meaning.addEventListener(\"click\", note_meaning_listener); clearInterval(interval2); } }, 200); " +
-
                     "} else {" +
                     "	wknKeyboard.hide ();" +
                     "}" +
@@ -626,6 +660,26 @@ public class WebReviewActivity extends ActionBarActivity {
                     "style.innerHTML = '.animated { -webkit-animation-duration:0s; }';" +
                     "document.getElementsByTagName('head')[0].appendChild(style);";
 
+    // Added by @Aralox to hook link hiding onto new question event in LocalIMEKeyboard.JS_INIT_TRIGGERS. Done in similar style as WaniKaniImprove.getCode().
+    // We need this because the user will often progress to the next question without clicking
+    // on the item info panel button to close it, so the button listener which hides the linked element will not be called.
+    public static String getHideLinkCode()
+    {
+        return LocalIMEKeyboard.ifReviews(
+                "       console.log('hide link on next question.');" +
+                "       $('"+WKConfig.CHARACTER_SPAN_JQ +"').css('display', 'block');" +
+                "       $('#"+WKConfig.CHARACTER_DIV+">a>span').css('display', 'none');"
+        );
+    }
+
+    // @Aralox added lines to help with debugging issue #27. Solution is in LocalIMEKeyboard.replace().
+    // Run this through an unminifier to understand it better. Based on @jneapan's code
+    //"var note_meaning_textarea;" +
+    //"function reload_note_elements() { note_meaning = document.getElementsByClassName (\"note-meaning\")[0]; }; " +
+    //"function note_meaning_listener() { console.log('note meaning div listener'); setTimeout(function(){note_meaning_textarea = $('div.note-meaning>form>fieldset>textarea')[0]; console.log('textarea: '+note_meaning_textarea); "+
+    //"note_meaning_textarea.addEventListener('click', note_meaning_textarea_listener); }, 1000); };" +
+    //"function note_meaning_textarea_listener() {console.log('clicked textarea'); setTimeout(function(){console.log('refocusing on textarea: ' + note_meaning_textarea); "+
+    //"wknKeyboard.show(); note_meaning_textarea.focus(); }, 1000);};" +
 
     private static final String
             JS_BULK_MODE = "if (window.trueRandom) Math.random=window.trueRandom;";
