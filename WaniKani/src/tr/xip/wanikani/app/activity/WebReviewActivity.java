@@ -622,10 +622,14 @@ public class WebReviewActivity extends ActionBarActivity {
                     "       character_unlinked.css('display', 'block');" +
                     "       character_linked.css  ('display', 'none');" +
                     "   } " +
-                    "};" +
 
-                    // real %E4%B8%8B%E3%81%95%E3%81%84
-                    // cych %E4%B8%8B%E3%81%95%E3%81%84
+                    // Added by @Aralox, use these lines to print the page HTML, for debugging.
+                    "    console.log('document 2: ');" +
+                    "    doclines = $('body').html().split('\\n');" +
+                    "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); }; " +
+                    //"   console.log('items actual href: ' + $('#"+WKConfig.CHARACTER_DIV +">a').attr(\"href\"));" +
+
+                    "};" +
 
                     "if (quiz != null) {" +
                     "   wknKeyboard.showLessonsNew ();" +
@@ -635,17 +639,17 @@ public class WebReviewActivity extends ActionBarActivity {
                     // Code for reviews (not lessons) happen in here
                     "   wknKeyboard.show (); " +
 
-                    // Code added for hyperlinking, as mentioned above.
+                    // Code added for hyperlinking, as mentioned above. @Aralox
                     "   item_info_button.on('click', item_info_listener);" +
 
-                    "   character_div.append($('"+WKConfig.CHARACTER_SPAN_JQ +"').clone());" + //"   character_unlinked.clone().appendTo(character_div);" +
-                    "   $('"+WKConfig.CHARACTER_SPAN_JQ +":first-child').wrap('<a href=\"www.duckduckgo.com\" style=\"text-decoration:none;\"></a>');" +
+                    "   $('"+WKConfig.CHARACTER_SPAN_JQ +"').clone().appendTo(character_div);" + //"   character_div.append($('"+WKConfig.CHARACTER_SPAN_JQ +"').clone());" +
+                    "   $('#"+WKConfig.CHARACTER_DIV +">span').first().wrap('<a href=\"\" " +
+                                "style=\"text-decoration:none;color:inherit\"></a>');" +
+                                //"style=\"text-decoration:none;\"></a>');" + // to show blue hyperlinks
 
                     "   character_linked = $('#"+WKConfig.CHARACTER_DIV+">a>span');" +
                     "   character_unlinked = $('"+WKConfig.CHARACTER_SPAN_JQ +"');" +
 
-                    // @Aralox added line to help with debugging issue #27
-                    //"var interval2 = setInterval(function() { console.log('looking for note-meaning...'); reload_note_elements(); if (note_meaning != undefined) { console.log('found note-meaning! adding click listener...'); note_meaning.addEventListener(\"click\", note_meaning_listener); clearInterval(interval2); } }, 200); " +
                     "} else {" +
                     "	wknKeyboard.hide ();" +
                     "}" +
@@ -661,14 +665,46 @@ public class WebReviewActivity extends ActionBarActivity {
                     "document.getElementsByTagName('head')[0].appendChild(style);";
 
     // Added by @Aralox to hook link hiding onto new question event in LocalIMEKeyboard.JS_INIT_TRIGGERS. Done in similar style as WaniKaniImprove.getCode().
-    // We need this because the user will often progress to the next question without clicking
-    // on the item info panel button to close it, so the button listener which hides the linked element will not be called.
+    // Note that this event also happens when you tab back into the program e.g. after using your browser.
     public static String getHideLinkCode()
     {
         return LocalIMEKeyboard.ifReviews(
-                "       console.log('hide link on next question.');" +
-                "       $('"+WKConfig.CHARACTER_SPAN_JQ +"').css('display', 'block');" +
-                "       $('#"+WKConfig.CHARACTER_DIV+">a>span').css('display', 'none');"
+        // Update the hyperlink appropriately.
+        "character_div = $('#"+WKConfig.CHARACTER_DIV+"');" +
+                "character_linked_a = character_div.find('a');" +
+                "character_linked = character_linked_a.find('span');" +
+
+                "itemLink = ' ';" +  // used in the hyperlink
+                "switch (character_div.attr('class')) {" +
+                "   case 'vocabulary':" +
+                "       itemLink = '/vocabulary/' + encodeURI(character_linked.text());" +
+                "       break;" +
+                "   case 'kanji':" +
+                "       itemLink = '/kanji/' + encodeURI(character_linked.text());" +
+                "       break;" +
+                "   case 'radical':" +
+                "       itemLink = '/radicals/' + document.getElementById('item-info-meaning').childNodes[1].nodeValue;" + // https://stackoverflow.com/a/3442757/1072869
+                "       break;" +
+                "};" +
+
+                "newHref = itemLink;" + // 'https://www.wanikani.com' doesnt seem to be necessary
+
+                "console.log('new href: ' + newHref);" +
+
+                "character_linked_a.attr('href', newHref);" +
+
+                // We need this because the user will often progress to the next question without clicking
+                // on the item info panel button to close it, so the button listener which hides the linked element will not be called.
+                // Since this event also fires on tab-back-in, we check to see if item-info panel is open before hiding hyperlink.
+                "item_info_div = $('#" + WKConfig.ITEM_INFO_DIV + "');" +
+                "item_info_button = $('#" + WKConfig.ITEM_INFO_LI + "');" +
+                // same condition used in item_info_listener() above
+                "if (item_info_div.css('display') == 'block' && !item_info_button.hasClass('disabled')) {" +
+                "   console.log('Tabbed back in (item info panel open). Dont hide hyperlink.');" +
+                "} else {" +
+                "   character_div.find('span').css('display', 'block');" + // (character_unlinked)
+                "   character_linked.css('display', 'none');" +
+                "}"
         );
     }
 
