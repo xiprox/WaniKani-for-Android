@@ -745,7 +745,13 @@ public class LocalIMEKeyboard implements Keyboard {
                     "        window.wknOverrideQuestion ();" +
                     "   if ($(\"#character\").hasClass (\"vocabulary\")) {" +
                     "        e = $(\"#character span\");" +
-                    "        e.text (e.text ().replace (/〜/g, \"~\")); " +
+                    "        e.text(e.first().text().replace (/〜/g, \"~\")); " + // JQuery will automatically call this on every element retrieved by query
+
+//                    // Added by @Aralox, use these lines to print the page HTML, for debugging.
+//                    "    console.log('document 2: ');" +
+//                    "    doclines = $('body').html().split('\\n');" +
+//                    "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); } " +
+
                     "   }" +
                     "   item = $.jStorage.get (\"currentItem\");" +
                     "   wknJSListener.newQuestion (qtype, item.srs);" +
