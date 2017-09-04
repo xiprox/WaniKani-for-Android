@@ -238,11 +238,13 @@
     <string name="pref_summary_reminder_notification_interval">The time it takes for a new reminder notification to be shown</string>
     <string name="pref_title_contributors">Contributors</string>
     <string name="pref_summary_contributors">Thanks to all the awesome people who helped make this app better. Including but not limited to\n
+        - Alberto Cuda (s84606) (Reviews, lessons, userscripts - it\'s all his work)\n
         - Adrien Pyke (kufii)\n
         - Aralox\n
         - Edward Luo (edluo)\n
         - Gustorn\n
         - Hal Avisado (hfavisado)\n
+        - Catalin Dragutu (jneapan)\n
         - lasrod\n
         - LiquidFire\n
         - Veyndan Stuart (veyndan)
