@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/xiprox/WaniKani-for-Android/raw/dev/WaniKani/ic_web.png" height="60px" width="60px"/>
+<img src="https://github.com/xiprox/WaniKani-for-Android/raw/master/WaniKani/ic_web.png" height="60px" width="60px"/>
 </p>
 
 <h3><p align="center">WaniKani for Android</p></h3>
