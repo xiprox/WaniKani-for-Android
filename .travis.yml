@@ -1,0 +1,45 @@
+language: android
+jdk: oraclejdk8
+
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-25.0.2
+    - android-25
+
+    - extra-android-m2repository
+
+branches:
+  only:
+    - "master"
+
+before_install:
+  - chmod +x gradlew
+  - chmod -R +x scripts
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then openssl aes-256-cbc -K $encrypted_61a7860f7f99_key -iv $encrypted_61a7860f7f99_iv -in secrets.tar.enc -out secrets.tar -d; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then tar xvf secrets.tar; fi'
+
+script: ./scripts/play-publish-if-not-pr.sh
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
+env:
+  global:
+    - secure: "J8x62muwZrz8aofmtw44OfiCl3/x3EEDgebr/KxBLbrPHU1k8htP7HDxX8MLNN0TxwA78msXIBE/8/qYxk6c6FoZsdo7egrf7g4qNELrlsXO+8Xa+fAfjWJ1sSd0TJINct9Dty+72ZwFWDi48+0TjbrZ+gubMDBmd/gW59MRMpk="
+    - secure: "ExBaeEYdtLmMJgaM5fbGfoQzxVrHnVcbcNcRGrO72tzF57ReZhyjNguG11jkfroULQ4ghDgLEw+QXr+Asyk8SheNZ1/azTcWHHcFVQHoZIE82Q/M7iNKmb5KWJU4MGztKO6B0tiS7AtCzcd+Ao6icd+vfikzmK6fwWmCaP3JOYo="
+
+notifications:
+  slack:
+    secure: "PopGfKFnRknzkFrhoHQJBv+e+YRlla0Ugbq/QRwN8JPSbs1GMNPFmJwbAz1Zd0PfyIjIGL9NKwxd8M3P/VCm9GSrMnh0myaA1jPlYPingqrKH3QzYo7uZhtc7QV0VorvUkqPHbKD5nkBkBHncKMb6xhV2qALGIDyuGBG/9IjLMU="
