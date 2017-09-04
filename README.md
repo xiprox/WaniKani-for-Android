@@ -11,9 +11,6 @@
 <p align="right">
 <a href='https://play.google.com/store/apps/details?id=tr.xip.wanikani&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="48" alt='Get it on Google Play' src='https://cloud.githubusercontent.com/assets/2550945/21590908/dd7857a8-d0ff-11e6-9d0c-a8ce8ba883d4.png'/></a>
 </p>
-<p align="right">
-<a href='https://github.com/xiprox/WaniKani-for-Android/releases/latest'><img height="48" alt='Get apk' src='https://cloud.githubusercontent.com/assets/2550945/21590907/dd74e0f0-d0ff-11e6-971f-d429148fd03d.png'/></a>
-</p>
 
 ## Development
 This app is no longer in active development. While this means that no new features will be added and no big changes will be made (probably), I will continue to maintain it on some level.
@@ -22,6 +19,9 @@ This app is no longer in active development. While this means that no new featur
 That being said about me working on this app, it doesn't mean contributions will be turned down. If you managed to do something cool with my broken code or fixed a funny mistake of mine, feel free to shoot a pull request at me.
 
 Just one thing though, if you are planning on working on something bigger, please create an issue here before starting work and let's talk about it _beforehand_. If there's one thing I hate doing here, it's closing pull requests despite the time and effort put into them, just because of our different views on what should go into the codebase.
+
+## Alpha testing
+The master branch is built and published on the alpha track on the Play Store automatically after every non-breaking push. If you'd like to have a taste, please register for alpha [here](https://play.google.com/apps/testing/tr.xip.wanikani) and install the app from the [listing page](https://play.google.com/store/apps/details?id=tr.xip.wanikani).
 
 ## License
 ```
