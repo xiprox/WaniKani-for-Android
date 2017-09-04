@@ -12,6 +12,8 @@ public abstract class ThroughDbCallback<T extends Request<B>, B extends Storable
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         T result = response.body();
+        if (result == null) return;
+
         final User userInfo = result.user_information;
         final B requestedInfo = result.requested_information;
 
