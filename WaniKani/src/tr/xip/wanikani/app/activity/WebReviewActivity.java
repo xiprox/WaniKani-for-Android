@@ -17,6 +17,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
@@ -604,6 +606,12 @@ public class WebReviewActivity extends ActionBarActivity {
                     "quiz_button = document.getElementById (\"" + WKConfig.QUIZ_BUTTON1 + "\");" +
                     "function reload_quiz_arrow() { quiz_arrow = document.getElementsByClassName (\"" + WKConfig.QUIZ_BUTTON2 + "\")[0]; }; " +
 
+
+//                    "document.onclick = function(e) {    \n" +
+//                    "   console.log('clicked: '+e.target.outerHTML);" +
+//                    "};" +
+
+
                     // Section added by @Aralox, to show the 'character' (kanji/radical/vocab under review) with a hyperlink
                     // when the item-info panel is open, and to show a non-hyperlinked version when the panel is closed.
                     // Events are hooked onto the item info panel button, and the new question event (see getHideLinkCode())
@@ -614,20 +622,20 @@ public class WebReviewActivity extends ActionBarActivity {
 
                     "function item_info_listener() {" +
                     "   if (item_info_div.css('display') == 'block' && !item_info_button.hasClass('disabled')) {" +
-                    "       console.log('clicked open item info panel.');" +
+                    //"       console.log('clicked open item info panel.');" +
                     "       character_unlinked.css('display', 'none');" +
                     "       character_linked.css  ('display', 'block');" +
                     "   } else {" +
-                    "       console.log('clicked close item info panel.');" +
+                    //"       console.log('clicked close item info panel.');" +
                     "       character_unlinked.css('display', 'block');" +
                     "       character_linked.css  ('display', 'none');" +
                     "   } " +
 
-                    // Added by @Aralox, use these lines to print the page HTML, for debugging.
-                    "    console.log('document 2: ');" +
-                    "    doclines = $('body').html().split('\\n');" +
-                    "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); }; " +
-                    //"   console.log('items actual href: ' + $('#"+WKConfig.CHARACTER_DIV +">a').attr(\"href\"));" +
+//                    // Added by @Aralox, use these lines to print the page HTML, for debugging.
+//                    "    console.log('document (panel): ');" +
+//                    "    doclines = $('body').html().split('\\n');" +
+//                    "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); }; " +
+//                    //"   console.log('items actual href: ' + $('#"+WKConfig.CHARACTER_DIV +">a').attr(\"href\"));" +
 
                     "};" +
 
@@ -649,6 +657,11 @@ public class WebReviewActivity extends ActionBarActivity {
 
                     "   character_linked = $('#"+WKConfig.CHARACTER_DIV+">a>span');" +
                     "   character_unlinked = $('"+WKConfig.CHARACTER_SPAN_JQ +"');" +
+
+                    // Just some rough working to figure out how to sort out item longpress.
+                    //"   character_unlinked.attr('id', 'itemlink');" +
+                    //"   character_unlinked.on('click', function(){ selectText('itemlink');});" + // change to longpress event
+                    //"   character_unlinked.on('click', function(){ wknKeyboard.selectText();});" +
 
                     "} else {" +
                     "	wknKeyboard.hide ();" +
@@ -674,6 +687,10 @@ public class WebReviewActivity extends ActionBarActivity {
                 "character_linked_a = character_div.find('a');" +
                 "character_linked = character_linked_a.find('span');" +
 
+                "curItem = $.jStorage.get('currentItem');" +
+                "console.log('curItem: '+JSON.stringify(curItem));" +
+
+                // Link is obtained similarly to Browser.java
                 "itemLink = ' ';" +  // used in the hyperlink
                 "switch (character_div.attr('class')) {" +
                 "   case 'vocabulary':" +
@@ -683,7 +700,7 @@ public class WebReviewActivity extends ActionBarActivity {
                 "       itemLink = '/kanji/' + encodeURI(character_linked.text());" +
                 "       break;" +
                 "   case 'radical':" +
-                "       itemLink = '/radicals/' + document.getElementById('item-info-meaning').childNodes[1].nodeValue;" + // https://stackoverflow.com/a/3442757/1072869
+                "       itemLink = '/radicals/' + curItem.en.toLowerCase();" +
                 "       break;" +
                 "};" +
 
@@ -705,6 +722,11 @@ public class WebReviewActivity extends ActionBarActivity {
                 "   character_div.find('span').css('display', 'block');" + // (character_unlinked)
                 "   character_linked.css('display', 'none');" +
                 "}"
+
+//                // Added by @Aralox, use these lines to print the page HTML, for debugging.
+//                +"    console.log('document (next q): ');" +
+//                        "    doclines = $('body').html().split('\\n');" +
+//                        "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); }; "
         );
     }
 
