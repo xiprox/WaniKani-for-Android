@@ -32,7 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String actionUrl = data.get(Notification.DATA_NOTIFICATION_ACTION_URL);
             String actionText = data.get(Notification.DATA_NOTIFICATION_ACTION_TEXT);
 
-            new DatabaseManager(getApplicationContext()).saveNotification(new Notification(
+            DatabaseManager.saveNotification(new Notification(
                     id,
                     title,
                     shortText,

@@ -23,7 +23,7 @@ public class LegendDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dismiss();
-                        new PrefManager(getActivity()).setLegendLearned(true);
+                        PrefManager.setLegendLearned(true);
                     }
                 })
                 .create();

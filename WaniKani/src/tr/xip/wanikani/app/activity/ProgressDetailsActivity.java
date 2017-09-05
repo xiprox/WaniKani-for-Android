@@ -1,7 +1,6 @@
 package tr.xip.wanikani.app.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -16,22 +15,27 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.widget.adapter.RemainingKanjiAdapter;
-import tr.xip.wanikani.widget.adapter.RemainingRadicalsAdapter;
-import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.BaseItem;
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.app.fragment.card.ProgressCard;
 import tr.xip.wanikani.app.fragment.card.ProgressCardNoTitle;
+import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.models.BaseItem;
+import tr.xip.wanikani.models.ItemsList;
+import tr.xip.wanikani.models.KanjiList;
+import tr.xip.wanikani.models.RadicalsList;
+import tr.xip.wanikani.models.Request;
+import tr.xip.wanikani.models.User;
+import tr.xip.wanikani.widget.adapter.RemainingKanjiAdapter;
+import tr.xip.wanikani.widget.adapter.RemainingRadicalsAdapter;
 
 /**
  * Created by Hikari on 9/18/14.
  */
 public class ProgressDetailsActivity extends ActionBarActivity implements ProgressCard.ProgressCardListener {
-
-    WaniKaniApi api;
-
     Toolbar mToolbar;
 
     List<BaseItem> mRemainingRadicals = new ArrayList<>();
@@ -52,11 +56,13 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
     CardView mRadicalsCard;
     CardView mKanjiCard;
 
+    private LoadState radicalsLoaded = LoadState.NOT_LOADED;
+    private LoadState kanjiLoaded = LoadState.NOT_LOADED;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_details);
-        api = new WaniKaniApi(this);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -87,7 +93,7 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
         ((ProgressCardNoTitle) mProgressCard).load();
         ((ProgressCardNoTitle) mProgressCard).setListener(this, this);
 
-        new RemainingItemsLoadTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        loadData();
     }
 
     @Override
@@ -101,31 +107,94 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
         /* empty */
     }
 
-    private class RemainingItemsLoadTask extends AsyncTask<Void, Void, Boolean> {
-        List<BaseItem> mRadicals;
-        List<BaseItem> mKanji;
+    private void loadData() {
+        final User user = DatabaseManager.getUser();
+        if (user == null) return;
 
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                User user = api.getUser();
-                mRadicals = api.getRadicalsList(user.getLevel() + "");
-                mKanji = api.getKanjiList(user.getLevel() + "");
-
-                filterRemaining();
-
-                return true; // success
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false; // failure
+        WaniKaniApi.getRadicalsList(user.level + "").enqueue(new ThroughDbCallback<Request<RadicalsList>, RadicalsList>() {
+            @Override
+            public void onResponse(Call<Request<RadicalsList>> call, Response<Request<RadicalsList>> response) {
+                super.onResponse(call, response);
+                if (response.isSuccessful() && response.body().requested_information != null) {
+                    load(response.body().requested_information);
+                } else {
+                    onFailure(call, null);
+                }
+                displayData();
             }
-        }
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
+            @Override
+            public void onFailure(Call<Request<RadicalsList>> call, Throwable t) {
+                super.onFailure(call, t);
 
-            if (success) {
+                RadicalsList items = new RadicalsList();
+                items.addAll(DatabaseManager.getItems(BaseItem.ItemType.RADICAL, new int[] {user.level}));
+
+                if (items.size() != 0) {
+                    load(items);
+                } else {
+                    radicalsLoaded = LoadState.FAILED;
+                }
+            }
+
+            void load(ItemsList list) {
+                for (BaseItem item : list) {
+                    if (item.isUnlocked()) {
+                        if (item.getSrsLevel().equals("apprentice")) {
+                            mRemainingRadicals.add(item);
+                        }
+                    } else {
+                        mRemainingRadicals.add(item);
+                    }
+                }
+                radicalsLoaded = LoadState.SUCCESS;
+            }
+        });
+
+        WaniKaniApi.getKanjiList(user.level + "").enqueue(new ThroughDbCallback<Request<KanjiList>, KanjiList>() {
+            @Override
+            public void onResponse(Call<Request<KanjiList>> call, Response<Request<KanjiList>> response) {
+                super.onResponse(call, response);
+                if (response.isSuccessful() && response.body().requested_information != null) {
+                    load(response.body().requested_information);
+                } else {
+                    onFailure(call, null);
+                }
+                displayData();
+            }
+
+            @Override
+            public void onFailure(Call<Request<KanjiList>> call, Throwable t) {
+                super.onFailure(call, t);
+
+                KanjiList items = new KanjiList();
+                items.addAll(DatabaseManager.getItems(BaseItem.ItemType.KANJI, new int[] {user.level}));
+
+                if (items.size() != 0) {
+                    load(items);
+                } else {
+                    kanjiLoaded = LoadState.FAILED;
+                }
+            }
+
+            void load(ItemsList list) {
+                for (BaseItem item : list) {
+                    if (item.isUnlocked()) {
+                        if (item.getSrsLevel().equals("apprentice")) {
+                            mRemainingKanji.add(item);
+                        }
+                    } else {
+                        mRemainingKanji.add(item);
+                    }
+                }
+                kanjiLoaded = LoadState.SUCCESS;
+            }
+        });
+    }
+
+    private void displayData() {
+        if (radicalsLoaded != LoadState.NOT_LOADED && kanjiLoaded != LoadState.NOT_LOADED) {
+            if (radicalsLoaded == LoadState.SUCCESS) {
                 if (mRemainingRadicals.size() > 0) {
                     mRadicalsGrid.setAdapter(
                             new RemainingRadicalsAdapter(
@@ -138,7 +207,13 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
                 } else {
                     mRadicalsCard.setVisibility(View.GONE);
                 }
+            } else {
+                mRadicalsMessageText.setText(R.string.error_loading_items);
+                if (mRadicalsMessageFlipper.getDisplayedChild() == 0)
+                    mRadicalsMessageFlipper.showNext();
+            }
 
+            if (kanjiLoaded == LoadState.SUCCESS) {
                 if (mRemainingKanji.size() > 0) {
                     mKanjiGrid.setAdapter(
                             new RemainingKanjiAdapter(
@@ -152,12 +227,7 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
                     mKanjiCard.setVisibility(View.GONE);
                 }
             } else {
-                mRadicalsMessageText.setText(R.string.error_loading_items);
                 mKanjiMessageText.setText(R.string.error_loading_items);
-
-                if (mRadicalsMessageFlipper.getDisplayedChild() == 0)
-                    mRadicalsMessageFlipper.showNext();
-
                 if (mKanjiMessageFlipper.getDisplayedChild() == 0)
                     mKanjiMessageFlipper.showNext();
             }
@@ -167,22 +237,6 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
 
             if (mKanjiFlipper.getDisplayedChild() == 0)
                 mKanjiFlipper.showNext();
-        }
-
-        private void filterRemaining() {
-            for (BaseItem item : mRadicals)
-                if (item.isUnlocked()) {
-                    if (item.getSrsLevel().equals("apprentice"))
-                        mRemainingRadicals.add(item);
-                } else
-                    mRemainingRadicals.add(item);
-
-            for (BaseItem item : mKanji)
-                if (item.isUnlocked()) {
-                    if (item.getSrsLevel().equals("apprentice"))
-                        mRemainingKanji.add(item);
-                } else
-                    mRemainingKanji.add(item);
         }
     }
 
@@ -208,5 +262,9 @@ public class ProgressDetailsActivity extends ActionBarActivity implements Progre
             intent.putExtra(ItemDetailsActivity.ARG_ITEM, item);
             startActivity(intent);
         }
+    }
+
+    private enum LoadState {
+        NOT_LOADED, SUCCESS, FAILED
     }
 }

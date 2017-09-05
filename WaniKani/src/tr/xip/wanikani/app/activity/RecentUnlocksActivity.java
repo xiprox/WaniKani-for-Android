@@ -14,20 +14,21 @@ import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.widget.adapter.RecentUnlocksStickyHeaderGridViewArrayAdapter;
 import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.models.RecentUnlocksList;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.UnlockItem;
-import tr.xip.wanikani.client.task.RecentUnlocksListGetTask;
-import tr.xip.wanikani.client.task.callback.RecentUnlocksListGetTaskCallbacks;
+import tr.xip.wanikani.widget.adapter.RecentUnlocksStickyHeaderGridViewArrayAdapter;
 
 /**
  * Created by xihsa_000 on 3/25/14.
  */
-public class RecentUnlocksActivity extends ActionBarActivity implements RecentUnlocksListGetTaskCallbacks {
-
-    WaniKaniApi api;
-
+public class RecentUnlocksActivity extends ActionBarActivity {
     Context context;
 
     ActionBar mActionBar;
@@ -45,7 +46,6 @@ public class RecentUnlocksActivity extends ActionBarActivity implements RecentUn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_unlocks);
 
-        api = new WaniKaniApi(this);
         context = this;
 
         mActionBar = getSupportActionBar();
@@ -59,38 +59,50 @@ public class RecentUnlocksActivity extends ActionBarActivity implements RecentUn
         mViewFlipper.setInAnimation(this, R.anim.abc_fade_in);
         mViewFlipper.setOutAnimation(this, R.anim.abc_fade_out);
 
-        new RecentUnlocksListGetTask(this, 100, this).executeParallel();
+        WaniKaniApi.getRecentUnlocksList(100).enqueue(new ThroughDbCallback<Request<RecentUnlocksList>, RecentUnlocksList>() {
+            @Override
+            public void onResponse(Call<Request<RecentUnlocksList>> call, Response<Request<RecentUnlocksList>> response) {
+                super.onResponse(call, response);
+                if (response.isSuccessful() && response.body().requested_information != null) {
+                    load(response.body().requested_information);
+                } else {
+                    onFailure(call, null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Request<RecentUnlocksList>> call, Throwable t) {
+                super.onFailure(call, t);
+
+                RecentUnlocksList list = DatabaseManager.getRecentUnlocks(100);
+                if (list != null) {
+                    load(list);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            void load(RecentUnlocksList list) {
+                recentUnlocksList = list;
+
+                mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
+                        recentUnlocksList, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
+                mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
+
+                mRecentUnlocksGrid.setOnItemClickListener(new recentUnlocksListItemClickListener());
+
+                if (mViewFlipper.getDisplayedChild() == 0) {
+                    mViewFlipper.showNext();
+                }
+            }
+        });
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
-    }
-
-    @Override
-    public void onRecentUnlocksListGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onRecentUnlocksListGetTaskPostExecute(List<UnlockItem> list) {
-        if (list != null) {
-            recentUnlocksList = list;
-
-            mRecentUnlocksAdapter = new RecentUnlocksStickyHeaderGridViewArrayAdapter(context,
-                    list, R.layout.header_recent_unlocks, R.layout.item_recent_unlock_grid);
-            mRecentUnlocksGrid.setAdapter(mRecentUnlocksAdapter);
-
-            mRecentUnlocksGrid.setOnItemClickListener(new recentUnlocksListItemClickListener());
-
-            if (mViewFlipper.getDisplayedChild() == 0) {
-                mViewFlipper.showNext();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.error_couldnt_load_data, Toast.LENGTH_SHORT).show();
-            finish();
-        }
     }
 
     private class recentUnlocksListItemClickListener implements android.widget.AdapterView.OnItemClickListener {

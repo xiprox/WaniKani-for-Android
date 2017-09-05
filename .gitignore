@@ -4,3 +4,6 @@ local.properties
 .idea
 *.iml
 /build
+xip-key.json
+secrets.tar
+keystore-upload.jks

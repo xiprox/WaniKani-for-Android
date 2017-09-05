@@ -4,9 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import tr.xip.wanikani.content.notification.NotificationPreferences;
-import tr.xip.wanikani.content.notification.NotificationPublisher;
-import tr.xip.wanikani.content.notification.NotificationScheduler;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.StudyQueue;
@@ -26,14 +23,13 @@ public class NotificationReceiver extends BroadcastReceiver {
 
     public void handleSituation(Context context) {
         NotificationPreferences prefs = new NotificationPreferences(context);
-        PrefManager prefManager = new PrefManager(context);
 
-        if (!prefManager.isFirstLaunch() && prefManager.notificationsEnabled()) {
+        if (!PrefManager.isFirstLaunch() && PrefManager.notificationsEnabled()) {
             if (!prefs.isAlarmSet()) {
                 /** Schedule an alarm if none is scheduled yet */
-                StudyQueue queue = new DatabaseManager(context).getStudyQueue();
+                StudyQueue queue = DatabaseManager.getStudyQueue();
                 //noinspection SimplifiableConditionalExpression
-                if (queue != null ? queue.getAvailableReviewsCount() == 0 : true) {
+                if (queue != null ? queue.reviews_available == 0 : true) {
                     new NotificationScheduler(context).schedule();
                 }
             }

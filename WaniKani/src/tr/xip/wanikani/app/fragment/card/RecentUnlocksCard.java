@@ -21,30 +21,31 @@ import android.widget.ViewFlipper;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Response;
+import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
 import tr.xip.wanikani.content.receiver.BroadcastIntents;
 import tr.xip.wanikani.app.fragment.DashboardFragment;
 import tr.xip.wanikani.app.activity.ItemDetailsActivity;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.app.activity.RecentUnlocksActivity;
+import tr.xip.wanikani.database.DatabaseManager;
+import tr.xip.wanikani.models.RecentUnlocksList;
+import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.widget.adapter.RecentUnlocksArrayAdapter;
-import tr.xip.wanikani.client.WaniKaniApi;
 import tr.xip.wanikani.models.UnlockItem;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.RecentUnlocksListGetTask;
-import tr.xip.wanikani.client.task.callback.RecentUnlocksListGetTaskCallbacks;
 import tr.xip.wanikani.utils.Fonts;
 import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetTaskCallbacks {
+public class RecentUnlocksCard extends Fragment {
 
     View rootView;
-
-    WaniKaniApi api;
     Utils utils;
-    PrefManager prefMan;
 
     Context mContext;
 
@@ -68,8 +69,29 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
         @Override
         public void onReceive(Context context, Intent intent) {
             mContext = context;
-            new RecentUnlocksListGetTask(context, prefMan.getDashboardRecentUnlocksNumber(),
-                    RecentUnlocksCard.this).executeSerial();
+
+            WaniKaniApi.getRecentUnlocksList(PrefManager.getDashboardRecentUnlocksNumber()).enqueue(new ThroughDbCallback<Request<RecentUnlocksList>, RecentUnlocksList>() {
+                @Override
+                public void onResponse(Call<Request<RecentUnlocksList>> call, Response<Request<RecentUnlocksList>> response) {
+                    super.onResponse(call, response);
+
+                    if (response.isSuccessful()) {
+                        displaydata(response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Request<RecentUnlocksList>> call, Throwable t) {
+                    super.onFailure(call, t);
+
+                    RecentUnlocksList list = DatabaseManager.getRecentUnlocks(PrefManager.getDashboardRecentUnlocksNumber());
+                    if (list != null) {
+                        displaydata(list);
+                    }
+                }
+            });
         }
     };
 
@@ -81,9 +103,7 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
 
     @Override
     public void onCreate(Bundle state) {
-        api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
-        prefMan = new PrefManager(getActivity());
         super.onCreate(state);
     }
 
@@ -152,13 +172,7 @@ public class RecentUnlocksCard extends Fragment implements RecentUnlocksListGetT
         return dp * mContext.getResources().getDisplayMetrics().density;
     }
 
-    @Override
-    public void onRecentUnlocksListGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onRecentUnlocksListGetTaskPostExecute(List<UnlockItem> list) {
+    private void displaydata(RecentUnlocksList list) {
         int height;
 
         if (list != null) {

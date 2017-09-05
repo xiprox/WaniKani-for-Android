@@ -40,14 +40,12 @@ public class Browser extends ActionBarActivity {
     ActionBar mActionBar;
 
     WebView mWebview;
-    PrefManager prefMan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        prefMan = new PrefManager(this);
 
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);

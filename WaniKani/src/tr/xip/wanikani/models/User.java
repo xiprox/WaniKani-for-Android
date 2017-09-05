@@ -2,87 +2,51 @@ package tr.xip.wanikani.models;
 
 import java.io.Serializable;
 
-/**
- * Created by xihsa_000 on 3/11/14.
- */
-public class User implements Serializable {
-    public UserInfo user_information;
+import tr.xip.wanikani.database.DatabaseManager;
+
+public class User implements Serializable, Storable {
+    public String username;
+    public String gravatar;
+    public int level;
+    public String title;
+    public String about;
+    public String website;
+    public String twitter;
+    public int topics_count;
+    public int posts_count;
+    public long creation_date;
+    public long vacation_date;
 
     public User(String username, String gravatar, int level, String title, String about,
                 String website, String twitter, int topicsCount, int postsCount, long creationDate,
                 long vacationDate) {
-        this.user_information = new UserInfo(
-                username,
-                gravatar,
-                level,
-                title,
-                about,
-                website,
-                twitter,
-                topicsCount,
-                postsCount,
-                creationDate,
-                vacationDate
-        );
+        this.username = username;
+        this.gravatar = gravatar;
+        this.level = level;
+        this.title = title;
+        this.about = about;
+        this.website = website;
+        this.twitter = twitter;
+        this.topics_count = topicsCount;
+        this.posts_count = postsCount;
+        this.creation_date = creationDate;
+        this.vacation_date = vacationDate;
     }
 
-    public UserInfo getUserInformation() {
-        return user_information;
+    public long getCreationDateInMillis() {
+        return creation_date * 1000;
     }
 
-    public String getUsername() {
-        return user_information != null ? user_information.getUsername() : null;
-    }
-
-    public String getGravatar() {
-        return user_information != null ? user_information.getGravatar() : null;
-    }
-
-    public int getLevel() {
-        return user_information != null ? user_information.getLevel() : 0;
-    }
-
-    public String getTitle() {
-        return user_information != null ? user_information.getTitle() : null;
-    }
-
-    public String getAbout() {
-        return user_information != null ? user_information.getAbout() : null;
-    }
-
-    public String getWebsite() {
-        return user_information != null ? user_information.getWebsite() : null;
-    }
-
-    public String getTwitter() {
-        return user_information != null ? user_information.getTwitter() : null;
-    }
-
-    public int getTopicsCount() {
-        return user_information != null ? user_information.getTopicsCount() : 0;
-    }
-
-    public int getPostsCount() {
-        return user_information != null ? user_information.getPostsCount() : 0;
-    }
-
-    public long getCreationDate() {
-        return user_information != null ? user_information.getCreationDate() : 0;
-    }
-
-    public long getCreationDateInSeconds() {
-        return user_information != null ? user_information.getCreationDateInSeconds() : 0;
-    }
-
-    public long getVacationDate() {
-        return user_information != null ? user_information.getVacationDate() : 0;
-    }
-
-    public long getVacationDateInSeconds() {
-        return user_information != null ? user_information.getVacationDateInSeconds() : 0;
+    public long getVacationDateInMillis() {
+        return vacation_date * 1000;
     }
 
     public boolean isVacationModeActive() {
-        return user_information != null ? user_information.isVacationModeActive() : false;
+        return getVacationDateInMillis() != 0;
+    }
+
+    @Override
+    public void save() {
+        DatabaseManager.saveUser(this);
     }
 }

@@ -2,75 +2,33 @@ package tr.xip.wanikani.models;
 
 import java.io.Serializable;
 
-/**
- * Created by xihsa_000 on 3/12/14.
- */
-public class LevelProgression implements Serializable {
+import tr.xip.wanikani.database.DatabaseManager;
 
-    private int id;
+public class LevelProgression implements Serializable, Storable {
+    public int id;
+    public int radicals_progress;
+    public int radicals_total;
+    public int kanji_progress;
+    public int kanji_total;
 
-    private UserInfo user_information;
-    private RequestedInformation requested_information;
-
-    public LevelProgression(int id,
-                            UserInfo userInfo,
-                            int radicalsProgress,
-                            int radicalsTotal,
-                            int kanjiProgress,
-                            int kanjiTotal) {
+    public LevelProgression(int id, int radicalsProgress, int radicalsTotal, int kanjiProgress, int kanjiTotal) {
         this.id = id;
-        this.user_information = userInfo;
-        this.requested_information = new RequestedInformation(
-                radicalsProgress,
-                radicalsTotal,
-                kanjiProgress,
-                kanjiTotal
-        );
-    }
-
-    public UserInfo getUserInfo() {
-        return user_information;
-    }
-
-    public int getRadicalsProgress() {
-        return requested_information != null ? requested_information.radicals_progress : 0;
-    }
-
-    public int getRadicalsTotal() {
-        return requested_information != null ? requested_information.radicals_total : 0;
+        this.radicals_progress = radicalsProgress;
+        this.radicals_total = radicalsTotal;
+        this.kanji_progress = kanjiProgress;
+        this.kanji_total = kanjiTotal;
     }
 
     public int getRadicalsPercentage() {
-        return requested_information != null
-                ? (int) ((double) requested_information.radicals_progress / requested_information.radicals_total * 100)
-                : 0;
-    }
-
-    public int getKanjiProgress() {
-        return requested_information != null ? requested_information.kanji_progress : 0;
-    }
-
-    public int getKanjiTotal() {
-        return requested_information != null ? requested_information.kanji_total : 0;
+        return (int) ((double) radicals_progress / radicals_total * 100);
     }
 
     public int getKanjiPercentage() {
-        return requested_information != null
-                ? (int) ((double) requested_information.kanji_progress / requested_information.kanji_total * 100)
-                : 0;
+        return (int) ((double) kanji_progress / kanji_total * 100);
     }
 
-    private class RequestedInformation implements Serializable {
-        private int radicals_progress;
-        private int radicals_total;
-        private int kanji_progress;
-        private int kanji_total;
-
-        public RequestedInformation(int radicalsProgress, int radicalsTotal, int kanjiProgress, int kanjiTotal) {
-            this.radicals_progress = radicalsProgress;
-            this.radicals_total = radicalsTotal;
-            this.kanji_progress = kanjiProgress;
-            this.kanji_total = kanjiTotal;
-        }
+    @Override
+    public void save() {
+        DatabaseManager.saveLevelProgression(this);
     }
 }

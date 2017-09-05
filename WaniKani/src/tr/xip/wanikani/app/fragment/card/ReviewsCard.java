@@ -1,5 +1,6 @@
 package tr.xip.wanikani.app.fragment.card;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,26 +16,27 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-import tr.xip.wanikani.content.receiver.BroadcastIntents;
-import tr.xip.wanikani.app.fragment.DashboardFragment;
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.app.fragment.DashboardFragment;
 import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.StudyQueue;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.StudyQueueGetTask;
-import tr.xip.wanikani.client.task.callback.StudyQueueGetTaskCallbacks;
+import tr.xip.wanikani.models.Request;
+import tr.xip.wanikani.models.StudyQueue;
+import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.utils.Utils;
 import tr.xip.wanikani.widget.RelativeTimeTextView;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks {
+public class ReviewsCard extends Fragment {
 
     Context context;
-
-    WaniKaniApi api;
-    PrefManager prefMan;
     Utils utils;
 
     View rootView;
@@ -51,7 +53,30 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new StudyQueueGetTask(context, ReviewsCard.this).executeSerial();
+            WaniKaniApi.getStudyQueue().enqueue(new ThroughDbCallback<Request<StudyQueue>, StudyQueue>() {
+                @Override
+                public void onResponse(Call<Request<StudyQueue>> call, Response<Request<StudyQueue>> response) {
+                    super.onResponse(call, response);
+
+                    if (response.isSuccessful()) {
+                        displayData(response.body().user_information, response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Request<StudyQueue>> call, Throwable t) {
+                    super.onFailure(call, t);
+
+                    User user = DatabaseManager.getUser();
+                    StudyQueue queue = DatabaseManager.getStudyQueue();
+
+                    if (user != null && queue != null) {
+                        displayData(user, queue);
+                    }
+                }
+            });
         }
     };
 
@@ -63,8 +88,6 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
 
     @Override
     public void onCreate(Bundle state) {
-        api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -86,45 +109,22 @@ public class ReviewsCard extends Fragment implements StudyQueueGetTaskCallbacks 
         return rootView;
     }
 
-    @Override
-    public void onStudyQueueGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
-        if (queue != null && queue.getUserInfo() != null) {
-            if (!queue.getUserInfo().isVacationModeActive()) {
-                mNextHour.setText(queue.getAvailableReviewsNextHourCount() + "");
-                mNextDay.setText(queue.getAvailableReviewsNextDayCount() + "");
+    @SuppressLint("SetTextI18n,SimpleDateFormat")
+    private void displayData(User user, StudyQueue queue) {
+        if (user != null && queue != null) {
+            if (!user.isVacationModeActive()) {
+                mNextHour.setText(queue.reviews_available_next_hour + "");
+                mNextDay.setText(queue.reviews_available_next_day + "");
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM HH:mm");
 
-                if (queue.getAvailableReviewsCount() != 0) {
+                if (queue.reviews_available != 0) {
                     mNextReview.setText(R.string.card_content_reviews_available_now);
-
-                        /*
-
-                        I had thought that the API was returning the date when more items would
-                        be added as next_review_date when you already had items available. Turns
-                        out I was wrong. It gives you current date if you have items to review...
-                        This feature will be implemented later in a slightly different way...
-
-                        mMoreReviewsHolder.setVisibility(View.VISIBLE);
-
-                        if (prefMan.isUseSpecificDates()) {
-                            mMoreReviews.setText(sdf.format(nextReview));
-                        } else {
-                            mMoreReviews.setText(Utils.getTimeDifference(context, new Date(nextReview),
-                                    Utils.getCurrentDate()));
-                        }
-
-                        */
                 } else {
-                    if (prefMan.isUseSpecificDates()) {
-                        mNextReview.setText(sdf.format(queue.getNextReviewDate()));
+                    if (PrefManager.isUseSpecificDates()) {
+                        mNextReview.setText(sdf.format(queue.getNextReviewDateInMillis()));
                     } else {
-                        mNextReview.setReferenceTime(queue.getNextReviewDate());
+                        mNextReview.setReferenceTime(queue.getNextReviewDateInMillis());
                     }
                 }
 

@@ -13,7 +13,7 @@ public class Fonts {
     private static Typeface normal = Typeface.create("sans-serif", Typeface.NORMAL);
 
     public Typeface getKanjiFont(Context context) {
-        if (new PrefManager(context).isUseCustomFonts()) {
+        if (PrefManager.isUseCustomFonts()) {
             if (custom == null)
                 custom = Typeface.createFromAsset(context.getAssets(), "fonts/MTLmr3m.ttf");
             return custom;

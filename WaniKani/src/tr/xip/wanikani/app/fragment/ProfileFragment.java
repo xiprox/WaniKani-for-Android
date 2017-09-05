@@ -1,5 +1,6 @@
 package tr.xip.wanikani.app.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,19 +17,22 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
-import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.app.activity.MainActivity;
-import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.UserInfoGetTask;
-import tr.xip.wanikani.client.task.callback.UserInfoGetTaskCallbacks;
+import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.graphics.bitmap.transform.CircleTransformation;
+import tr.xip.wanikani.managers.PrefManager;
+import tr.xip.wanikani.models.Request;
+import tr.xip.wanikani.models.User;
 
 /**
  * Created by xihsa_000 on 3/11/14.
  */
-public class ProfileFragment extends Fragment implements UserInfoGetTaskCallbacks {
+public class ProfileFragment extends Fragment {
 
     Context context;
 
@@ -50,9 +54,6 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
 
     ViewFlipper mViewFlipper;
 
-    WaniKaniApi api;
-    PrefManager prefMan;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +67,6 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
                 false);
 
         context = getActivity();
-
-        api = new WaniKaniApi(getActivity());
-        prefMan = new PrefManager(getActivity());
 
         mAvatar = (ImageView) rootView.findViewById(R.id.profile_avatar);
         mUsername = (TextView) rootView.findViewById(R.id.profile_username);
@@ -88,7 +86,7 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
 
         mViewFlipper = (ViewFlipper) rootView.findViewById(R.id.profile_view_flipper);
 
-        if (prefMan.isProfileFirstTime()) {
+        if (PrefManager.isProfileFirstTime()) {
             if (mViewFlipper.getDisplayedChild() == 0) {
                 mViewFlipper.showNext();
             }
@@ -106,55 +104,69 @@ public class ProfileFragment extends Fragment implements UserInfoGetTaskCallback
     }
 
     public void fetchData() {
-        new UserInfoGetTask(context, this).executeParallel();
-    }
+        WaniKaniApi.getUser().enqueue(new ThroughDbCallback<Request<User>, User>() {
+            @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
+            @Override
+            public void onResponse(Call<Request<User>> call, Response<Request<User>> response) {
+                super.onResponse(call, response);
 
-    @Override
-    public void onUserInfoGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onUserInfoGetTaskPostExecute(User user) {
-        if (user != null) {
-            Picasso.with(getActivity())
-                    .load("http://www.gravatar.com/avatar/" + user.getGravatar() + "?s=200")
-                    .fit()
-                    .transform(new CircleTransformation())
-                    .into(mAvatar);
-
-            mUsername.setText(user.getUsername());
-            mTitle.setText(user.getTitle());
-            mLevel.setText(user.getLevel() + "");
-            mTopicsCount.setText(user.getTopicsCount() + "");
-            mPostsCount.setText(user.getPostsCount() + "");
-            mCreationDate.setText(new SimpleDateFormat("MMMM d, yyyy").format(user.getCreationDate()));
-
-            if (user.getAbout().length() != 0) {
-                mAbout.setText(user.getAbout());
-                mAboutCard.setVisibility(View.VISIBLE);
-            } else
-                mAboutCard.setVisibility(View.GONE);
-
-            if (user.getWebsite() != null && user.getWebsite().trim().length() != 0) {
-                mWebsite.setText(user.getWebsite());
-                mWebsiteHolder.setVisibility(View.VISIBLE);
-            } else
-                mWebsiteHolder.setVisibility(View.GONE);
-
-            if (user.getTwitter() != null && user.getTwitter().trim().length() != 0) {
-                mTwitter.setText(user.getTwitter());
-                mTwitterHolder.setVisibility(View.VISIBLE);
-            } else
-                mTwitterHolder.setVisibility(View.GONE);
-
-            if (mViewFlipper.getDisplayedChild() == 1) {
-                mViewFlipper.showPrevious();
+                if (response.isSuccessful() && response.body().user_information != null) {
+                    load(response.body().user_information);
+                } else {
+                    onFailure(call, null);
+                }
             }
 
-            if (prefMan.isProfileFirstTime()) {
-                prefMan.setProfileFirstTime(false);
+            @Override
+            public void onFailure(Call<Request<User>> call, Throwable t) {
+                super.onFailure(call, t);
+
+                User user = DatabaseManager.getUser();
+                if (user != null) {
+                    load(user);
+                }
             }
-        }
+
+            void load(User user) {
+                Picasso.with(getActivity())
+                        .load("http://www.gravatar.com/avatar/" + user.gravatar + "?s=200")
+                        .fit()
+                        .transform(new CircleTransformation())
+                        .into(mAvatar);
+
+                mUsername.setText(user.username);
+                mTitle.setText(user.title);
+                mLevel.setText(user.level + "");
+                mTopicsCount.setText(user.topics_count + "");
+                mPostsCount.setText(user.posts_count + "");
+                mCreationDate.setText(new SimpleDateFormat("MMMM d, yyyy").format(user.getCreationDateInMillis()));
+
+                if (user.about.length() != 0) {
+                    mAbout.setText(user.about);
+                    mAboutCard.setVisibility(View.VISIBLE);
+                } else
+                    mAboutCard.setVisibility(View.GONE);
+
+                if (user.website != null && user.website.trim().length() != 0) {
+                    mWebsite.setText(user.website);
+                    mWebsiteHolder.setVisibility(View.VISIBLE);
+                } else
+                    mWebsiteHolder.setVisibility(View.GONE);
+
+                if (user.twitter != null && user.twitter.trim().length() != 0) {
+                    mTwitter.setText(user.twitter);
+                    mTwitterHolder.setVisibility(View.VISIBLE);
+                } else
+                    mTwitterHolder.setVisibility(View.GONE);
+
+                if (mViewFlipper.getDisplayedChild() == 1) {
+                    mViewFlipper.showPrevious();
+                }
+
+                if (PrefManager.isProfileFirstTime()) {
+                    PrefManager.setProfileFirstTime(false);
+                }
+            }
+        });
     }
 }

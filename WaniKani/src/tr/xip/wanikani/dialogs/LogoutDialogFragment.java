@@ -24,8 +24,7 @@ public class LogoutDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        PrefManager prefMan = new PrefManager(getActivity());
-                        prefMan.logout();
+                        PrefManager.logout(getContext());
                         startActivity(new Intent(getActivity(), FirstTimeActivity.class));
                         getActivity().finish();
                         dismiss();

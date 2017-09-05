@@ -2,7 +2,6 @@ package tr.xip.wanikani.app.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -12,17 +11,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
 import tr.xip.wanikani.client.WaniKaniApi;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.content.notification.NotificationScheduler;
 import tr.xip.wanikani.dialogs.HowToGetKeyDialogFragment;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.content.notification.NotificationScheduler;
+import tr.xip.wanikani.models.Request;
+import tr.xip.wanikani.models.User;
 
 public class FirstTimeActivity extends ActionBarActivity {
-
-    WaniKaniApi api;
-    PrefManager prefMan;
-
     EditText mApiKey;
     Button mHowTo;
     Button mSignIn;
@@ -37,8 +37,6 @@ public class FirstTimeActivity extends ActionBarActivity {
         setContentView(R.layout.activity_first_time);
 
         context = this;
-        api = new WaniKaniApi(getApplicationContext());
-        prefMan = new PrefManager(getApplicationContext());
 
         mApiKey = (EditText) findViewById(R.id.first_time_api_key);
         mHowTo = (Button) findViewById(R.id.first_time_how_to_api_key);
@@ -64,55 +62,37 @@ public class FirstTimeActivity extends ActionBarActivity {
                     if (mViewSwitcher.getDisplayedChild() == 0) {
                         mViewSwitcher.showNext();
                     }
-                    new SignInTask().execute(mApiKey.getText().toString());
+
+                    WaniKaniApi.getUser(mApiKey.getText().toString()).enqueue(new ThroughDbCallback<Request<User>, User>() {
+                        @Override
+                        public void onResponse(Call<Request<User>> call, Response<Request<User>> response) {
+                            super.onResponse(call, response);
+                            if (response.isSuccessful() && response.body().user_information != null) {
+                                PrefManager.setApiKey(mApiKey.getText().toString());
+                                PrefManager.setFirstLaunch(false);
+                                startActivity(new Intent(context, MainActivity.class));
+
+                                // Set an alarm for notifications for the first time
+                                new NotificationScheduler(context).schedule();
+
+                                finish();
+                            } else {
+                                onFailure(call, null);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Request<User>> call, Throwable t) {
+                            super.onFailure(call, t);
+
+                            if (mViewSwitcher.getDisplayedChild() == 1) {
+                                mViewSwitcher.showPrevious();
+                            }
+                            Toast.makeText(context, R.string.error_invalid_api_key, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
-    }
-
-    private class SignInTask extends AsyncTask<String, Void, String> {
-        String key;
-
-        @Override
-        protected String doInBackground(String... params) {
-            key = params[0];
-
-            try {
-                if (api.isApiKeyValid(key)) {
-                    return "success";
-                } else {
-                    return "no_user";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "failed";
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            if (result.equals("success")) {
-                prefMan.setApiKey(key);
-                prefMan.setFirstLaunch(false);
-                startActivity(new Intent(context, MainActivity.class));
-
-                // Set an alarm for notifications for the first time
-                new NotificationScheduler(context).schedule();
-
-                finish();
-            } else if (result.equals("no_user")) {
-                if (mViewSwitcher.getDisplayedChild() == 1) {
-                    mViewSwitcher.showPrevious();
-                }
-                Toast.makeText(context, R.string.error_invalid_api_key, Toast.LENGTH_SHORT).show();
-            } else {
-                if (mViewSwitcher.getDisplayedChild() == 1) {
-                    mViewSwitcher.showPrevious();
-                }
-                Toast.makeText(context, R.string.error_unknown_error, Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }

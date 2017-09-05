@@ -34,8 +34,6 @@ public class MainActivity extends ActionBarActivity
 
     public static CharSequence mTitle;
 
-    PrefManager prefMan;
-
     ActionBar mActionBar;
     Toolbar mToolbar;
 
@@ -54,33 +52,31 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        handleNotification(getIntent());
-
-        prefMan = new PrefManager(this);
-
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-
-        mActionBar = getSupportActionBar();
-
-        if (savedInstanceState != null) {
-            mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
-            mActionBar.setTitle(mTitle.toString());
-        }
-
-        if (prefMan.isFirstLaunch()) {
+        if (PrefManager.isFirstLaunch()) {
             startActivity(new Intent(this, FirstTimeActivity.class));
             finish();
+        } else {
+            setContentView(R.layout.activity_main);
+            handleNotification(getIntent());
+
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(mToolbar);
+
+            mActionBar = getSupportActionBar();
+
+            if (savedInstanceState != null) {
+                mTitle = savedInstanceState.getString(STATE_ACTIONBAR_TITLE);
+                mActionBar.setTitle(mTitle.toString());
+            }
+
+            mNavigationDrawerFragment = (NavigationDrawerFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer_holder,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
         }
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer_holder,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @Override
@@ -174,7 +170,7 @@ public class MainActivity extends ActionBarActivity
         String actionUrl = bundle.getString(Notification.DATA_NOTIFICATION_ACTION_URL);
         String actionText = bundle.getString(Notification.DATA_NOTIFICATION_ACTION_TEXT);
 
-        new DatabaseManager(this).saveNotification(new Notification(
+        DatabaseManager.saveNotification(new Notification(
                 id,
                 title,
                 shortText,

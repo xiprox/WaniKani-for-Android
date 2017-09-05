@@ -20,7 +20,6 @@ import tr.xip.wanikani.managers.PrefManager;
 public class CriticalItemsPercentagePreference extends DialogFragment {
 
     Context context;
-    PrefManager prefMan;
 
     NumberPicker mNumberPicker;
 
@@ -30,7 +29,6 @@ public class CriticalItemsPercentagePreference extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        prefMan = new PrefManager(context);
     }
 
     @Override
@@ -49,7 +47,7 @@ public class CriticalItemsPercentagePreference extends DialogFragment {
         mNumberPicker.setMaxValue(90);
         mNumberPicker.setWrapSelectorWheel(false);
 
-        mNumberPicker.setValue(prefMan.getDashboardCriticalItemsPercentage());
+        mNumberPicker.setValue(PrefManager.getDashboardCriticalItemsPercentage());
 
         Button mOk = (Button) view.findViewById(R.id.button1);
         Button mCancel = (Button) view.findViewById(R.id.button2);
@@ -57,7 +55,7 @@ public class CriticalItemsPercentagePreference extends DialogFragment {
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prefMan.setDashboardCriticalItemsPercentage(mNumberPicker.getValue());
+                PrefManager.setDashboardCriticalItemsPercentage(mNumberPicker.getValue());
                 dismiss();
             }
         });

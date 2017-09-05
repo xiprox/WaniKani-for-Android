@@ -18,31 +18,29 @@ import tr.xip.wanikani.database.table.RecentUnlocksTable;
 import tr.xip.wanikani.database.table.SRSDistributionTable;
 import tr.xip.wanikani.database.table.StudyQueueTable;
 import tr.xip.wanikani.database.table.UsersTable;
+import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.BaseItem;
 import tr.xip.wanikani.models.CriticalItem;
+import tr.xip.wanikani.models.CriticalItemsList;
+import tr.xip.wanikani.models.ItemsList;
 import tr.xip.wanikani.models.LevelProgression;
 import tr.xip.wanikani.models.Notification;
+import tr.xip.wanikani.models.RecentUnlocksList;
 import tr.xip.wanikani.models.SRSDistribution;
 import tr.xip.wanikani.models.StudyQueue;
 import tr.xip.wanikani.models.UnlockItem;
 import tr.xip.wanikani.models.User;
 
-/**
- * Created by Hikari on 1/5/15.
- */
 public class DatabaseManager {
     private static final String TAG = "Database Manager";
 
-    private Context context;
+    private static SQLiteDatabase db;
 
-    private SQLiteDatabase db;
-
-    public DatabaseManager(Context ctx) {
-        this.context = ctx;
-        db = DatabaseHelper.getInstance(this.context).getWritableDatabase();
+    public static void init(Context context) {
+        db = DatabaseHelper.getInstance(context).getWritableDatabase();
     }
 
-    private void addItem(BaseItem item) {
+    private static void addItem(BaseItem item) {
         ContentValues values = new ContentValues();
         values.put(ItemsTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(ItemsTable.COLUMN_NAME_KANA, item.getKana());
@@ -73,15 +71,15 @@ public class DatabaseManager {
         db.insert(ItemsTable.TABLE_NAME, ItemsTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveItems(List<BaseItem> list, BaseItem.ItemType type) {
+    public static void saveItems(List<BaseItem> list, BaseItem.ItemType type) {
         deleteAllItemsFromSameLevelAndType(list, type);
 
         for (BaseItem item : list)
             addItem(item);
     }
 
-    public List<BaseItem> getItems(BaseItem.ItemType itemType, int[] levels) {
-        List<BaseItem> list = new ArrayList<>();
+    public static ItemsList getItems(BaseItem.ItemType itemType, int[] levels) {
+        ItemsList list = new ItemsList();
 
         for (int level : levels) {
             String whereClause = ItemsTable.COLUMN_NAME_ITEM_TYPE + " = ?" + " AND "
@@ -149,7 +147,7 @@ public class DatabaseManager {
         return list.size() != 0 ? list : null;
     }
 
-    private void deleteAllItemsFromSameLevelAndType(List<BaseItem> list, BaseItem.ItemType type) {
+    private static void deleteAllItemsFromSameLevelAndType(List<BaseItem> list, BaseItem.ItemType type) {
         HashSet<Integer> levels = new HashSet();
 
         for (BaseItem item : list)
@@ -167,7 +165,7 @@ public class DatabaseManager {
         }
     }
 
-    private void addRecentUnlock(UnlockItem item) {
+    private static void addRecentUnlock(UnlockItem item) {
         ContentValues values = new ContentValues();
         values.put(RecentUnlocksTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(RecentUnlocksTable.COLUMN_NAME_KANA, item.getKana());
@@ -198,15 +196,15 @@ public class DatabaseManager {
         db.insert(RecentUnlocksTable.TABLE_NAME, RecentUnlocksTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveRecentUnlocks(List<UnlockItem> list) {
+    public static void saveRecentUnlocks(List<UnlockItem> list) {
         deleteSameRecentUnlocks(list);
 
         for (UnlockItem item : list)
             addRecentUnlock(item);
     }
 
-    public List<UnlockItem> getRecentUnlocks(int limit) {
-        List<UnlockItem> list = new ArrayList<>();
+    public static RecentUnlocksList getRecentUnlocks(int limit) {
+        RecentUnlocksList list = new RecentUnlocksList();
 
         Cursor c = null;
 
@@ -266,7 +264,7 @@ public class DatabaseManager {
         return list.size() != 0 ? list : null;
     }
 
-    public void deleteSameRecentUnlocks(List<UnlockItem> list) {
+    public static void deleteSameRecentUnlocks(List<UnlockItem> list) {
         for (UnlockItem item : list) {
             String whereClause = item.getImage() == null
                     ? RecentUnlocksTable.COLUMN_NAME_CHARACTER + " = ?"
@@ -279,7 +277,7 @@ public class DatabaseManager {
         }
     }
 
-    private void addCriticalItem(CriticalItem item) {
+    private static void addCriticalItem(CriticalItem item) {
         ContentValues values = new ContentValues();
         values.put(CriticalItemsTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(CriticalItemsTable.COLUMN_NAME_KANA, item.getKana());
@@ -311,15 +309,15 @@ public class DatabaseManager {
         db.insert(CriticalItemsTable.TABLE_NAME, CriticalItemsTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveCriticalItems(List<CriticalItem> list) {
+    public static void saveCriticalItems(CriticalItemsList list) {
         deleteSameCriticalItems(list);
 
         for (CriticalItem item : list)
             addCriticalItem(item);
     }
 
-    public List<CriticalItem> getCriticalItems(int percentage) {
-        List<CriticalItem> list = new ArrayList<>();
+    public static CriticalItemsList getCriticalItems(int percentage) {
+        CriticalItemsList list = new CriticalItemsList();
 
         String whereClause = CriticalItemsTable.COLUMN_NAME_PERCENTAGE + " < ?";
         String[] whereArgs = {
@@ -384,7 +382,7 @@ public class DatabaseManager {
         return list;
     }
 
-    private void deleteSameCriticalItems(List<CriticalItem> list) {
+    private static void deleteSameCriticalItems(List<CriticalItem> list) {
         for (CriticalItem item : list) {
             String whereClause = item.getImage() == null
                     ? CriticalItemsTable.COLUMN_NAME_CHARACTER + " = ?"
@@ -397,20 +395,20 @@ public class DatabaseManager {
         }
     }
 
-    public void saveStudyQueue(StudyQueue queue) {
+    public static void saveStudyQueue(StudyQueue queue) {
         deleteStudyQueue();
 
         ContentValues values = new ContentValues();
-        values.put(StudyQueueTable.COLUMN_NAME_LESSONS_AVAILABLE, queue.getAvailableLesonsCount());
-        values.put(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE, queue.getAvailableReviewsCount());
-        values.put(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_HOUR, queue.getAvailableReviewsNextHourCount());
-        values.put(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_DAY, queue.getAvailableReviewsNextDayCount());
-        values.put(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE, queue.getNextReviewDateInSeconds());
+        values.put(StudyQueueTable.COLUMN_NAME_LESSONS_AVAILABLE, queue.lessons_available);
+        values.put(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE, queue.reviews_available);
+        values.put(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_HOUR, queue.reviews_available_next_hour);
+        values.put(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_DAY, queue.reviews_available_next_day);
+        values.put(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE, queue.next_review_date);
 
         db.insert(StudyQueueTable.TABLE_NAME, StudyQueueTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public StudyQueue getStudyQueue() {
+    public static StudyQueue getStudyQueue() {
         Cursor c = null;
 
         try {
@@ -425,15 +423,13 @@ public class DatabaseManager {
             );
 
             if (c != null && c.moveToFirst()) {
-                User user = getUser();
                 return new StudyQueue(
                         c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_ID)),
                         c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_LESSONS_AVAILABLE)),
                         c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE)),
                         c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_HOUR)),
                         c.getInt(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_REVIEWS_AVAILABLE_NEXT_DAY)),
-                        c.getLong(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE)),
-                        user != null ? user.getUserInformation() : null
+                        c.getLong(c.getColumnIndexOrThrow(StudyQueueTable.COLUMN_NAME_NEXT_REVIEW_DATE))
                 );
             } else {
                 Log.e(TAG, "No study queue found; returning null");
@@ -446,23 +442,23 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteStudyQueue() {
+    public static void deleteStudyQueue() {
         db.delete(StudyQueueTable.TABLE_NAME, null, null);
     }
 
-    public void saveLevelProgression(LevelProgression progression) {
+    public static void saveLevelProgression(LevelProgression progression) {
         deleteLevelProgression();
 
         ContentValues values = new ContentValues();
-        values.put(LevelProgressionTable.COLUMN_NAME_RADICALS_PROGRESS, progression.getRadicalsProgress());
-        values.put(LevelProgressionTable.COLUMN_NAME_RADICALS_TOTAL, progression.getRadicalsTotal());
-        values.put(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_PROGRESS, progression.getKanjiProgress());
-        values.put(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_TOTAL, progression.getKanjiTotal());
+        values.put(LevelProgressionTable.COLUMN_NAME_RADICALS_PROGRESS, progression.radicals_progress);
+        values.put(LevelProgressionTable.COLUMN_NAME_RADICALS_TOTAL, progression.radicals_total);
+        values.put(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_PROGRESS, progression.kanji_progress);
+        values.put(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_TOTAL, progression.kanji_total);
 
         db.insert(LevelProgressionTable.TABLE_NAME, LevelProgressionTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public LevelProgression getLevelProgression() {
+    public static LevelProgression getLevelProgression() {
         Cursor c = null;
 
         try {
@@ -479,7 +475,6 @@ public class DatabaseManager {
             if (c != null && c.moveToFirst()) {
                 return new LevelProgression(
                         c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_ID)),
-                        getUser().getUserInformation(),
                         c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_RADICALS_PROGRESS)),
                         c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_RADICALS_TOTAL)),
                         c.getInt(c.getColumnIndexOrThrow(LevelProgressionTable.COLUMN_NAME_REVIEWS_KANJI_PROGRESS)),
@@ -496,34 +491,34 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteLevelProgression() {
+    public static void deleteLevelProgression() {
         db.delete(SRSDistributionTable.TABLE_NAME, null, null);
     }
 
-    public void saveSrsDistribution(SRSDistribution distribution) {
+    public static void saveSrsDistribution(SRSDistribution distribution) {
         deleteSrsDistribution();
 
         ContentValues values = new ContentValues();
-        values.put(SRSDistributionTable.COLUMN_NAME_APPRENTICE_RADICALS, distribution.getAprentice().getRadicalsCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_APPRENTICE_KANJI, distribution.getAprentice().getKanjiCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_APPRENTICE_VOCABULARY, distribution.getAprentice().getVocabularyCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_GURU_RADICALS, distribution.getGuru().getRadicalsCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_GURU_KANJI, distribution.getGuru().getKanjiCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_GURU_VOCABULARY, distribution.getGuru().getVocabularyCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_MASTER_RADICALS, distribution.getMaster().getRadicalsCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_MASTER_KANJI, distribution.getMaster().getKanjiCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_MASTER_VOCABULARY, distribution.getMaster().getVocabularyCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_RADICALS, distribution.getEnlighten().getRadicalsCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_KANJI, distribution.getEnlighten().getKanjiCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_VOCABULARY, distribution.getEnlighten().getVocabularyCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_BURNED_RADICALS, distribution.getBurned().getRadicalsCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_BURNED_KANJI, distribution.getBurned().getKanjiCount());
-        values.put(SRSDistributionTable.COLUMN_NAME_BURNED_VOCABULARY, distribution.getBurned().getVocabularyCount());
+        values.put(SRSDistributionTable.COLUMN_NAME_APPRENTICE_RADICALS, distribution.apprentice.radicals);
+        values.put(SRSDistributionTable.COLUMN_NAME_APPRENTICE_KANJI, distribution.apprentice.kanji);
+        values.put(SRSDistributionTable.COLUMN_NAME_APPRENTICE_VOCABULARY, distribution.apprentice.vocabulary);
+        values.put(SRSDistributionTable.COLUMN_NAME_GURU_RADICALS, distribution.guru.radicals);
+        values.put(SRSDistributionTable.COLUMN_NAME_GURU_KANJI, distribution.guru.kanji);
+        values.put(SRSDistributionTable.COLUMN_NAME_GURU_VOCABULARY, distribution.guru.vocabulary);
+        values.put(SRSDistributionTable.COLUMN_NAME_MASTER_RADICALS, distribution.master.radicals);
+        values.put(SRSDistributionTable.COLUMN_NAME_MASTER_KANJI, distribution.master.kanji);
+        values.put(SRSDistributionTable.COLUMN_NAME_MASTER_VOCABULARY, distribution.master.vocabulary);
+        values.put(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_RADICALS, distribution.enlighten.radicals);
+        values.put(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_KANJI, distribution.enlighten.kanji);
+        values.put(SRSDistributionTable.COLUMN_NAME_ENLIGHTENED_VOCABULARY, distribution.enlighten.vocabulary);
+        values.put(SRSDistributionTable.COLUMN_NAME_BURNED_RADICALS, distribution.burned.radicals);
+        values.put(SRSDistributionTable.COLUMN_NAME_BURNED_KANJI, distribution.burned.kanji);
+        values.put(SRSDistributionTable.COLUMN_NAME_BURNED_VOCABULARY, distribution.burned.vocabulary);
 
         db.insert(SRSDistributionTable.TABLE_NAME, SRSDistributionTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public SRSDistribution getSrsDistribution() {
+    public static SRSDistribution getSrsDistribution() {
         Cursor c = null;
 
         try {
@@ -540,7 +535,6 @@ public class DatabaseManager {
             if (c != null && c.moveToFirst()) {
                 return new SRSDistribution(
                         c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_ID)),
-                        getUser().getUserInformation(),
                         c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_RADICALS)),
                         c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_KANJI)),
                         c.getInt(c.getColumnIndexOrThrow(SRSDistributionTable.COLUMN_NAME_APPRENTICE_VOCABULARY)),
@@ -568,33 +562,33 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteSrsDistribution() {
+    public static void deleteSrsDistribution() {
         db.delete(SRSDistributionTable.TABLE_NAME, null, null);
     }
 
-    private void addUser(User user) {
+    private static void addUser(User user) {
         ContentValues values = new ContentValues();
-        values.put(UsersTable.COLUMN_NAME_USERNAME, user.getUsername());
-        values.put(UsersTable.COLUMN_NAME_GRAVATAR, user.getGravatar());
-        values.put(UsersTable.COLUMN_NAME_LEVEL, user.getLevel());
-        values.put(UsersTable.COLUMN_NAME_TITLE, user.getTitle());
-        values.put(UsersTable.COLUMN_NAME_ABOUT, user.getAbout());
-        values.put(UsersTable.COLUMN_NAME_WEBSITE, user.getWebsite());
-        values.put(UsersTable.COLUMN_NAME_TWITTER, user.getTwitter());
-        values.put(UsersTable.COLUMN_NAME_TOPICS_COUNT, user.getTopicsCount());
-        values.put(UsersTable.COLUMN_NAME_POSTS_COUNT, user.getPostsCount());
-        values.put(UsersTable.COLUMN_NAME_CREATION_DATE, user.getCreationDateInSeconds());
-        values.put(UsersTable.COLUMN_NAME_VACATION_DATE, user.getVacationDateInSeconds());
+        values.put(UsersTable.COLUMN_NAME_USERNAME, user.username);
+        values.put(UsersTable.COLUMN_NAME_GRAVATAR, user.gravatar);
+        values.put(UsersTable.COLUMN_NAME_LEVEL, user.level);
+        values.put(UsersTable.COLUMN_NAME_TITLE, user.title);
+        values.put(UsersTable.COLUMN_NAME_ABOUT, user.about);
+        values.put(UsersTable.COLUMN_NAME_WEBSITE, user.website);
+        values.put(UsersTable.COLUMN_NAME_TWITTER, user.twitter);
+        values.put(UsersTable.COLUMN_NAME_TOPICS_COUNT, user.topics_count);
+        values.put(UsersTable.COLUMN_NAME_POSTS_COUNT, user.posts_count);
+        values.put(UsersTable.COLUMN_NAME_CREATION_DATE, user.creation_date);
+        values.put(UsersTable.COLUMN_NAME_VACATION_DATE, user.vacation_date);
         db.insert(UsersTable.TABLE_NAME, UsersTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveUser(User user) {
+    public static void saveUser(User user) {
         deleteUsers();
 
         addUser(user);
     }
 
-    public User getUser() {
+    public static User getUser() {
         Cursor c = null;
 
         try {
@@ -633,11 +627,11 @@ public class DatabaseManager {
         }
     }
 
-    public void deleteUsers() {
+    public static void deleteUsers() {
         db.delete(UsersTable.TABLE_NAME, null, null);
     }
 
-    public void saveNotification(Notification item) {
+    public static void saveNotification(Notification item) {
         db.delete(
                 NotificationsTable.TABLE_NAME,
                 NotificationsTable.COLUMN_NAME_ID + " = ?",
@@ -657,14 +651,14 @@ public class DatabaseManager {
         db.insert(NotificationsTable.TABLE_NAME, NotificationsTable.COLUMN_NAME_NULLABLE, values);
     }
 
-    public void saveNotifications(List<Notification> list) {
+    public static void saveNotifications(List<Notification> list) {
         deleteSameNotifications(list);
 
         for (Notification item : list)
             saveNotification(item);
     }
 
-    public List<Notification> getNotifications() {
+    public static List<Notification> getNotifications() {
         List<Notification> list = new ArrayList<>();
 
         String whereClause = NotificationsTable.COLUMN_NAME_READ + " = ?";
@@ -709,7 +703,7 @@ public class DatabaseManager {
         return list;
     }
 
-    private void deleteSameNotifications(List<Notification> list) {
+    private static void deleteSameNotifications(List<Notification> list) {
         for (Notification item : list) {
             String whereClause = NotificationsTable.COLUMN_NAME_ID + " = ?";
             String[] whereArgs = {

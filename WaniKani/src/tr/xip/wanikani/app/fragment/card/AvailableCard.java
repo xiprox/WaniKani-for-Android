@@ -17,29 +17,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import tr.xip.wanikani.content.receiver.BroadcastIntents;
-import tr.xip.wanikani.app.activity.Browser;
-import tr.xip.wanikani.app.fragment.DashboardFragment;
+import retrofit2.Call;
+import retrofit2.Response;
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.app.activity.Browser;
 import tr.xip.wanikani.app.activity.WebReviewActivity;
+import tr.xip.wanikani.app.fragment.DashboardFragment;
 import tr.xip.wanikani.client.WaniKaniApi;
-import tr.xip.wanikani.models.StudyQueue;
+import tr.xip.wanikani.client.task.callback.ThroughDbCallback;
+import tr.xip.wanikani.content.receiver.BroadcastIntents;
+import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.managers.PrefManager;
-import tr.xip.wanikani.client.task.StudyQueueGetTask;
-import tr.xip.wanikani.client.task.callback.StudyQueueGetTaskCallbacks;
+import tr.xip.wanikani.models.Request;
+import tr.xip.wanikani.models.StudyQueue;
+import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.utils.Utils;
 
 /**
  * Created by xihsa_000 on 3/13/14.
  */
-public class AvailableCard extends Fragment implements StudyQueueGetTaskCallbacks {
+public class AvailableCard extends Fragment {
 
     public static final int BROWSER_REQUEST = 1;
 
     View rootView;
     Context context;
 
-    WaniKaniApi api;
     Utils utils;
 
     ImageView mLessonsGo;
@@ -53,7 +56,32 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
     private BroadcastReceiver mDoLoad = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            new StudyQueueGetTask(context, AvailableCard.this).executeSerial();
+            WaniKaniApi.getStudyQueue().enqueue(new ThroughDbCallback<Request<StudyQueue>, StudyQueue>() {
+                @Override
+                public void onResponse(Call<Request<StudyQueue>> call, Response<Request<StudyQueue>> response) {
+                    super.onResponse(call, response);
+
+                    if (response.isSuccessful() && response.body().user_information != null && response.body().requested_information != null) {
+                        displayData(response.body().user_information, response.body().requested_information);
+                    } else {
+                        onFailure(call, null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Request<StudyQueue>> call, Throwable t) {
+                    super.onFailure(call, t);
+
+                    User user = DatabaseManager.getUser();
+                    StudyQueue queue = DatabaseManager.getStudyQueue();
+
+                    if (user != null && queue != null) {
+                        displayData(user, queue);
+                    } else {
+                        mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+                    }
+                }
+            });
         }
     };
 
@@ -65,7 +93,6 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
 
     @Override
     public void onCreate(Bundle state) {
-        api = new WaniKaniApi(getActivity());
         utils = new Utils(getActivity());
         super.onCreate(state);
     }
@@ -100,7 +127,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
         mLessonsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new PrefManager(context).getWebViewIntent();
+                Intent intent = PrefManager.getWebViewIntent(context);
                 intent.setAction(WebReviewActivity.OPEN_ACTION);
                 intent.setData(Uri.parse(Browser.LESSON_URL));
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
@@ -110,7 +137,7 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
         mReviewsGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new PrefManager(context).getWebViewIntent();
+                Intent intent = PrefManager.getWebViewIntent(context);
                 intent.setAction(WebReviewActivity.OPEN_ACTION);
                 intent.setData(Uri.parse(Browser.REVIEW_URL));
                 getActivity().startActivityForResult(intent, BROWSER_REQUEST);
@@ -118,28 +145,20 @@ public class AvailableCard extends Fragment implements StudyQueueGetTaskCallback
         });
     }
 
-    @Override
-    public void onStudyQueueGetTaskPreExecute() {
-        /* Do nothing */
-    }
-
-    @Override
-    public void onStudyQueueGetTaskPostExecute(StudyQueue queue) {
-        if (queue != null && queue.getUserInfo() != null) {
-            if (!queue.getUserInfo().isVacationModeActive()) {
-                if (isAdded()) {
-                    int lessonsAvailable = queue.getAvailableLesonsCount();
-                    int reviewsAvailable = queue.getAvailableReviewsCount();
-                    Resources res = getResources();
-                    mLessonsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_lessons_capital, lessonsAvailable, lessonsAvailable));
-                    mReviewsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_reviews_capital, reviewsAvailable, reviewsAvailable));
-                }
-                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-            } else
-                // Vacation mode is handled in DashboardFragment
-                mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
-        } else
-            mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_FAILED);
+    private void displayData(User user, StudyQueue queue) {
+        if (!user.isVacationModeActive()) {
+            if (isAdded()) {
+                int lessonsAvailable = queue.lessons_available;
+                int reviewsAvailable = queue.reviews_available;
+                Resources res = getResources();
+                mLessonsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_lessons_capital, lessonsAvailable, lessonsAvailable));
+                mReviewsAvailable.setText(res.getQuantityString(R.plurals.card_content_available_reviews_capital, reviewsAvailable, reviewsAvailable));
+            }
+            mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
+        } else {
+            // Vacation mode is handled in DashboardFragment
+            mListener.onAvailableCardSyncFinishedListener(DashboardFragment.SYNC_RESULT_SUCCESS);
+        }
     }
 
     public interface AvailableCardListener {

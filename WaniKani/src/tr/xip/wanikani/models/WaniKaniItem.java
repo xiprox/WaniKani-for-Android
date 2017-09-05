@@ -1,11 +1,8 @@
 package tr.xip.wanikani.models;
 
-/**
- * Created by Hikari on 8/26/14.
- */
 public class WaniKaniItem {
 
-    public static enum Type {
+    public enum Type {
 
         RADICAL,
         KANJI,

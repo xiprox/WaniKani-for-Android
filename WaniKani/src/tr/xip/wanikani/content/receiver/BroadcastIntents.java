@@ -9,10 +9,6 @@ public class BroadcastIntents {
         return "action.SYNC";
     }
 
-    public static String RETROFIT_ERROR_TIMEOUT() {
-        return "error.retrofit.TIMEOUT";
-    }
-
     public static String RETROFIT_ERROR_CONNECTION() {
         return "error.retrofit.CONNECTION";
     }
