@@ -27,12 +27,14 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import java.lang.reflect.Method;
 import java.util.EnumMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -609,10 +611,23 @@ public class LocalIMEKeyboard implements Keyboard {
             needMenuUpdate = reviews != bpos.reviews;
             bpos.reviews = reviews;
 
-            if (correct)
-                new JSListenerSetClass ("correct", reviews);
-            if (incorrect)
-                new JSListenerSetClass ("incorrect", reviews);
+            //Log.d("aralox", "css sync called. correct: "+correct+" incorrect: "+incorrect+" text: " + text +" reviews: " + reviews);
+
+            if (correct) {
+                new JSListenerSetClass("correct", reviews);
+                // No case where both correct and incorrect are true, so dont need to handle.
+            }
+            else if (incorrect) {
+                new JSListenerSetClass("incorrect", reviews);
+            }
+            else {
+                // Both correct and incorrect are false => answer was ignored. @Aralox
+                // Blank text for the first element.
+                //Log.d("aralox", "set class to ignored. Blank text: " + (text.equals("")));
+                if (!text.equals(""))
+                    new JSListenerSetClass("WKO_ignored", reviews);
+            }
+
             new JSSetText (text);
         }
 
@@ -690,8 +705,9 @@ public class LocalIMEKeyboard implements Keyboard {
                 mainHandler.post(myRunnable);
             }
             //else Log.d("aralox", "note being edited. not calling ew.requestFocus()");
-
         }
+
+
     }
 
 
@@ -1190,7 +1206,6 @@ public class LocalIMEKeyboard implements Keyboard {
         if (bpos.shallShow ()) {
             divw.setVisibility (View.VISIBLE);
 
-            //Log.d("aralox", "replace() ew.requestFocus()");
             // This function (replace()) is called whenever the page is scrolled during reviews, e.g. when looking at the answer.
             // This function usually just calls ew.requestFocus(), which switches keyboard focus to the answer textbox, which is not
             // a javascript element but an android object (which is why pure JS solutions do not work for this bug).
@@ -1202,8 +1217,6 @@ public class LocalIMEKeyboard implements Keyboard {
                     "$('#item-info').css('display') != 'none' && " +
                     "( (typeof $('form>fieldset>textarea')[0] !== 'undefined') || (typeof $('.user-synonyms-add-form')[0] !== 'undefined') )" +
                     ")");
-
-            // $('#item-info').css('display') != 'none' && ( (typeof $('form>fieldset>textarea')[0] !== 'undefined') || (typeof $('.user-synonyms-add-form')[0] !== 'undefined') )
 
             if (hwkeyb)
                 imm.hideSoftInputFromWindow (ew.getWindowToken (), 0);
