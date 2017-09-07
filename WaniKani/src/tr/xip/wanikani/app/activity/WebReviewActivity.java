@@ -700,7 +700,7 @@ public class WebReviewActivity extends ActionBarActivity {
                 "       itemLink = '/kanji/' + encodeURI(character_linked.text());" +
                 "       break;" +
                 "   case 'radical':" +
-                "       itemLink = '/radicals/' + curItem.en.toLowerCase();" +
+                "       itemLink = '/radicals/' + String(curItem.en).toLowerCase();" +
                 "       break;" +
                 "};" +
 
