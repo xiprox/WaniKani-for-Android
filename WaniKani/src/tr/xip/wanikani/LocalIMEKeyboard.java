@@ -606,12 +606,12 @@ public class LocalIMEKeyboard implements Keyboard {
         @JavascriptInterface
         public void sync (boolean correct, boolean incorrect, String text, boolean reviews)
         {
-            boolean needMenuUpdate;
+            //boolean needMenuUpdate;     // Unused?
+            //needMenuUpdate = reviews != bpos.reviews;
 
-            needMenuUpdate = reviews != bpos.reviews;
-            bpos.reviews = reviews;
+            bpos.reviews = reviews;     // Also unused?
 
-            //Log.d("aralox", "css sync called. correct: "+correct+" incorrect: "+incorrect+" text: " + text +" reviews: " + reviews);
+            //Log.d("aralox", "css sync called. correct: "+correct+" incorrect: "+incorrect+" text: '" + text +"' reviews: " + reviews);
 
             if (correct) {
                 new JSListenerSetClass("correct", reviews);
@@ -623,9 +623,11 @@ public class LocalIMEKeyboard implements Keyboard {
             else {
                 // Both correct and incorrect are false => answer was ignored. @Aralox
                 // Blank text for the first element.
-                //Log.d("aralox", "set class to ignored. Blank text: " + (text.equals("")));
-                if (!text.equals(""))
+                // This only applies to reviews, as cannot ignore wrong answers in lessons (also causes issue #54).
+                if (reviews && !text.equals("")) {
+                    //Log.d("aralox", "set class to ignored. Blank text: " + (text.equals("")));
                     new JSListenerSetClass("WKO_ignored", reviews);
+                }
             }
 
             new JSSetText (text);
@@ -858,8 +860,18 @@ public class LocalIMEKeyboard implements Keyboard {
                     "form = $(\"#answer-form fieldset\");" +
                     "form.css ('visibility', 'hidden');" +
                     "tbox = $(\"#user-response\");" +
+
                     "wknJSListener.sync (form.hasClass (\"correct\"), form.hasClass (\"incorrect\"), " +
-                    "                    tbox.val (), " + JS_REVIEWS_P + ");";
+                    "                    tbox.val (), " + JS_REVIEWS_P + ");" +
+
+                    // Note: Don't need to print HTML, this involves android stuff, not HTML.
+//                    // Added by @Aralox, use these lines to print the page HTML, for debugging.
+//                    "    console.log('(aralox) Document HTML: ');" +
+//                    "    doclines = $('body').html().split('\\n');" +
+//                    "    for (var di = 0; di < doclines.length; di++) { console.log(doclines[di]); } " +
+
+                    "";
+
     /**
      * Uninstalls the triggers, when the keyboard is hidden
      */
