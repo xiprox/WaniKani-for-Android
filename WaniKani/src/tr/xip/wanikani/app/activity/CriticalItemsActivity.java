@@ -78,6 +78,8 @@ public class CriticalItemsActivity extends ActionBarActivity {
             }
 
             void loadData(CriticalItemsList list) {
+                mList = list;
+
                 mAdapter = new CriticalItemsGridAdapter(
                         CriticalItemsActivity.this,
                         R.layout.item_critical_grid,
