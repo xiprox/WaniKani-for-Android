@@ -90,6 +90,7 @@ android {
             dirs 'libs'
         }
         mavenCentral()
+        maven { url 'https://maven.google.com' }
     }
 
     dependencies {
