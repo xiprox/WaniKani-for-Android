@@ -88,10 +88,12 @@ public class VocabularyAdapter extends StickyGridHeadersSimpleArrayAdapter<BaseI
         } else
             viewHolder.srs.setBackgroundResource(R.drawable.oval_disabled);
 
-        String[] readings = vocabularyItem.getKana().split(",");
-
-        viewHolder.kana.setText(readings[0]);
-        viewHolder.kana.setTypeface(typeface);
+        String readingsString = vocabularyItem.getKana();
+        if (readingsString != null) {
+            String[] readings = readingsString.split(",");
+            viewHolder.kana.setText(readings[0]);
+            viewHolder.kana.setTypeface(typeface);
+        }
 
         String[] meanings = vocabularyItem.getMeaning().split(",");
 
