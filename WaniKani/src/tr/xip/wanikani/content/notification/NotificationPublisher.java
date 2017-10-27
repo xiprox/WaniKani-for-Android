@@ -53,7 +53,7 @@ public class NotificationPublisher extends BroadcastReceiver {
             public void onResponse(Call<Request<StudyQueue>> call, Response<Request<StudyQueue>> response) {
                 super.onResponse(call, response);
 
-                if (!response.isSuccessful() && response.body().requested_information != null) {
+                if (response.isSuccessful() && response.body().requested_information != null) {
                    load(response.body().requested_information);
                 } else {
                     onFailure(call, null);
