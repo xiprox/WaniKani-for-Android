@@ -384,6 +384,8 @@ public class DatabaseManager {
 
     private static void deleteSameCriticalItems(List<CriticalItem> list) {
         for (CriticalItem item : list) {
+            if (item == null) continue;
+
             String whereClause = item.getImage() == null
                     ? CriticalItemsTable.COLUMN_NAME_CHARACTER + " = ?"
                     : CriticalItemsTable.COLUMN_NAME_IMAGE + " = ?";
