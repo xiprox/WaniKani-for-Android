@@ -90,7 +90,7 @@ android {
         flatDir {
             dirs 'libs'
         }
-        mavenCentral()
+        jcenter()
         maven { url 'https://maven.google.com' }
     }
 
@@ -110,6 +110,8 @@ android {
         compile 'com.google.firebase:firebase-core:10.0.1'
         compile 'com.google.firebase:firebase-messaging:10.0.1'
         compile 'com.google.firebase:firebase-crash:10.0.1'
+
+        compile 'org.solovyev.android:checkout:1.2.1'
 
         compile files('libs/commons-io-2.4.jar')
         compile files('libs/commons-lang3-3.3.1.jar')

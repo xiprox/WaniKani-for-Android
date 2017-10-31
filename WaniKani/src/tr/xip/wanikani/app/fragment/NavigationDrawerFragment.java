@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import tr.xip.wanikani.R;
+import tr.xip.wanikani.app.activity.DonationsActivity;
 import tr.xip.wanikani.database.DatabaseManager;
 import tr.xip.wanikani.models.User;
 import tr.xip.wanikani.widget.adapter.NavigationItemsAdapter;
@@ -313,9 +314,12 @@ public class NavigationDrawerFragment extends Fragment {
 
             switch (position) {
                 case 0:
-                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    startActivity(new Intent(getActivity(), DonationsActivity.class));
                     break;
                 case 1:
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    break;
+                case 2:
                     showlogoutDialog();
                     break;
             }

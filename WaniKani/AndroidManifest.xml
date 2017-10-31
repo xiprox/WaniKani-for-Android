@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:name=".app.App"
@@ -136,6 +137,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".app.activity.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".app.activity.DonationsActivity"
+            android:label="@string/title_donations" />
 
         <receiver android:name=".content.notification.NotificationPublisher" />
 

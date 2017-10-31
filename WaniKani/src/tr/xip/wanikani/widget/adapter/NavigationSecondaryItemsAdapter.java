@@ -1,6 +1,7 @@
 package tr.xip.wanikani.widget.adapter;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class NavigationSecondaryItemsAdapter extends ArrayAdapter<NavigationSeco
     public NavigationSecondaryItemsAdapter(Context context) {
         super(context, R.layout.item_navigation_secondary);
 
+        mDataset.add(new NavSecondaryItem(R.drawable.ic_heart, R.string.title_support_the_developer));
         mDataset.add(new NavSecondaryItem(R.drawable.ic_settings_black_24dp, R.string.title_settings));
         mDataset.add(new NavSecondaryItem(R.drawable.ic_logout_black_24dp, R.string.title_logout));
     }
@@ -42,6 +44,11 @@ public class NavigationSecondaryItemsAdapter extends ArrayAdapter<NavigationSeco
 
             mIcon.setImageResource(item.getIcon());
             mTitle.setText(item.getTitle());
+
+            if (position != 0) {
+                int color = mIcon.getContext().getResources().getColor(R.color.text_gray);
+                mIcon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+            }
         }
 
         return v;

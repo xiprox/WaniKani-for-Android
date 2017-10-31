@@ -16,7 +16,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="16dp"
-            android:tint="@color/text_gray"
             tools:src="@drawable/ic_settings_black_24dp" />
 
         <TextView
