@@ -2,7 +2,7 @@
 <resources>
 
     <!-- App Strings -->
-    <string name="app_name">WaniKani</string>
+    <string name="app_name">WK</string>
 
     <!-- Navigation drawer Strings -->
     <string name="title_dashboard">Dashboard</string>
