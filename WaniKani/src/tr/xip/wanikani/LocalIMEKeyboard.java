@@ -624,10 +624,23 @@ public class LocalIMEKeyboard implements Keyboard {
                 // Both correct and incorrect are false => answer was ignored. @Aralox
                 // Blank text for the first element.
                 // This only applies to reviews, as cannot ignore wrong answers in lessons (also causes issue #54).
-                if (reviews && !text.equals("")) {
-                    //Log.d("aralox", "set class to ignored. Blank text: " + (text.equals("")));
-                    new JSListenerSetClass("WKO_ignored", reviews);
+                if (reviews) {
+                    if (!text.equals("")) {
+                        //Log.d("aralox", "set class to ignored. Blank text: " + (text.equals("")));
+                        new JSListenerSetClass("WKO_ignored", reviews);
+                    }
                 }
+                else {
+                    // There are only 2 situations where correct, incorrect and reviews are all False:
+                    //  1. Start of a lesson quiz
+                    //  2. Tabbed out and back into the app during a lesson quiz
+                    // In situation 2, the text in the textbox is not saved (for whatever reason, even though it could be useful), but in situation 1,
+                    // the text is carried over from the previous quiz. Since this behaviour is undesired, we forcefully blank the text here.
+                    // In the future, if we figure out a way to preserve answer text on tabbing out, it would be best to not blank the text here
+                    // but instead do it after the 'start lesson quiz' button is clicked or on some other event that signals start of lesson quiz.
+                    text = "";
+                }
+
             }
 
             new JSSetText (text);
