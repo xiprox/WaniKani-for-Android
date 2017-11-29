@@ -70,6 +70,7 @@ public class FirstTimeActivity extends ActionBarActivity {
                             if (response.isSuccessful() && response.body().user_information != null) {
                                 PrefManager.setApiKey(mApiKey.getText().toString());
                                 PrefManager.setFirstLaunch(false);
+                                WaniKaniApi.init();
                                 startActivity(new Intent(context, MainActivity.class));
 
                                 // Set an alarm for notifications for the first time

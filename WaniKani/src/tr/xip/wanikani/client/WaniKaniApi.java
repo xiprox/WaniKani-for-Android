@@ -1,8 +1,5 @@
 package tr.xip.wanikani.client;
 
-import java.io.IOException;
-import java.util.List;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -11,7 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import tr.xip.wanikani.BuildConfig;
 import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.CriticalItemsList;
-import tr.xip.wanikani.models.ItemsList;
 import tr.xip.wanikani.models.KanjiList;
 import tr.xip.wanikani.models.LevelProgression;
 import tr.xip.wanikani.models.RadicalsList;
@@ -29,12 +25,12 @@ public abstract class WaniKaniApi {
     private static String API_KEY;
 
     static {
-        if (API_KEY == null) {
-            API_KEY = PrefManager.getApiKey();
-        }
-        if (service == null) {
-            setupService();
-        }
+        init();
+    }
+
+    public static void init() {
+        API_KEY = PrefManager.getApiKey();
+        setupService();
     }
 
     private static void setupService() {
