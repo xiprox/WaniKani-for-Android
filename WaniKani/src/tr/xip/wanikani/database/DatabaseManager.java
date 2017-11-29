@@ -280,6 +280,8 @@ public class DatabaseManager {
     }
 
     private static void addCriticalItem(CriticalItem item) {
+        if (item == null) return; // WANIKANI API SMH
+
         ContentValues values = new ContentValues();
         values.put(CriticalItemsTable.COLUMN_NAME_CHARACTER, item.getCharacter());
         values.put(CriticalItemsTable.COLUMN_NAME_KANA, item.getKana());

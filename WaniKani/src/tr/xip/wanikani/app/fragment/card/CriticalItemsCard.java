@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -178,6 +179,9 @@ public class CriticalItemsCard extends Fragment {
 
         if (list != null) {
             List<CriticalItem> mNewList = new ArrayList<CriticalItem>();
+
+            // Cleanup null items (WaniKani API smh)
+            list.removeAll(Collections.singleton(null));
 
             for (int i = 0; i < list.size(); i++)
                 if (i < PrefManager.getCriticalItemsNumber())
