@@ -3,7 +3,7 @@ package tr.xip.wanikani.app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -28,7 +28,7 @@ import tr.xip.wanikani.managers.PrefManager;
 /**
  * Created by Hikari on 10/2/14.
  */
-public class CriticalItemsActivity extends ActionBarActivity {
+public class CriticalItemsActivity extends AppCompatActivity {
 
     ActionBar mActionBar;
 

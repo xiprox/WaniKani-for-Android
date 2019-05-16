@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -164,7 +164,7 @@ public class VocabularyFragment extends Fragment implements LevelPickerDialogFra
                     onFailure(call, null);
                 }
 
-                ((ActionBarActivity) context).invalidateOptionsMenu();
+                ((AppCompatActivity) context).invalidateOptionsMenu();
 
                 if (mListFlipper.getDisplayedChild() == 0)
                     mListFlipper.showNext();

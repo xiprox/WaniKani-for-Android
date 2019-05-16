@@ -14,11 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieSyncManager;
@@ -81,7 +79,7 @@ import tr.xip.wanikani.userscripts.PartOfSpeech;
  * it calls its <code>show</code> (vs. <code>hide</code>) method.
  * The JavascriptObject is implemented by @link WebReviewActivity.WKNKeyboard.
  */
-public class WebReviewActivity extends ActionBarActivity {
+public class WebReviewActivity extends AppCompatActivity {
 
     /**
      * This class is barely a container of all the strings that should match with the

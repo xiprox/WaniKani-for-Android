@@ -3,7 +3,7 @@ package tr.xip.wanikani.app.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -35,7 +35,7 @@ import tr.xip.wanikani.widget.adapter.RemainingRadicalsAdapter;
 /**
  * Created by Hikari on 9/18/14.
  */
-public class ProgressDetailsActivity extends ActionBarActivity implements ProgressCard.ProgressCardListener {
+public class ProgressDetailsActivity extends AppCompatActivity implements ProgressCard.ProgressCardListener {
     Toolbar mToolbar;
 
     List<BaseItem> mRemainingRadicals = new ArrayList<>();

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -49,7 +49,7 @@ import tr.xip.wanikani.widget.RelativeTimeTextView;
 /**
  * Created by xihsa_000 on 3/23/14.
  */
-public class ItemDetailsActivity extends ActionBarActivity {
+public class ItemDetailsActivity extends AppCompatActivity {
 
     public static final String ARG_ITEM = "arg_item";
     private static final String TAG = "ItemDetailsActivity";

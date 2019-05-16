@@ -3,7 +3,7 @@ package tr.xip.wanikani.app.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +22,7 @@ import tr.xip.wanikani.managers.PrefManager;
 import tr.xip.wanikani.models.Request;
 import tr.xip.wanikani.models.User;
 
-public class FirstTimeActivity extends ActionBarActivity {
+public class FirstTimeActivity extends AppCompatActivity {
     EditText mApiKey;
     Button mHowTo;
     Button mSignIn;
