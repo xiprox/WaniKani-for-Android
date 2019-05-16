@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -18,7 +18,7 @@ import tr.xip.wanikani.managers.PrefManager;
 /**
  * Created by xihsa_000 on 3/15/14.
  */
-public class Browser extends ActionBarActivity {
+public class Browser extends AppCompatActivity {
 
     public static final String ARG_ACTION = "action";
     public static final String ARG_ITEM = "item";

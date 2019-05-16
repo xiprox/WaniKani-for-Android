@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +53,7 @@ public class DashboardFragment extends Fragment
     public static final String SYNC_RESULT_SUCCESS = "success";
     public static final String SYNC_RESULT_FAILED = "failed";
     View rootView;
-    ActionBarActivity activity;
+    AppCompatActivity activity;
     boolean isAvailableCardSynced = false;
     boolean isReviewsCardSynced = false;
     boolean isStatusCardSynced = false;
@@ -125,7 +125,7 @@ public class DashboardFragment extends Fragment
 
         rootView = paramLayoutInflater.inflate(R.layout.fragment_dashboard, paramViewGroup, false);
 
-        activity = (ActionBarActivity) getActivity();
+        activity = (AppCompatActivity) getActivity();
 
         mSwipeToRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.dashboard_swipe_refresh);
         mSwipeToRefreshLayout.setOnRefreshListener(this);
