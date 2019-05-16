@@ -15,18 +15,19 @@ buildscript {
         mavenCentral()
         jcenter()
         maven { url 'https://maven.google.com' }
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath 'com.google.gms:google-services:4.2.0'
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
     }
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     playAccountConfigs {
         defaultAccountConfig {
@@ -36,27 +37,27 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
 
-    signingConfigs {
-        release {
-            storeFile file("../keystore-upload.jks")
-            storePassword keystorePassword
-            keyAlias keystoreAlias
-            keyPassword keystorePassword
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file("../keystore-upload.jks")
+//            storePassword keystorePassword
+//            keyAlias keystoreAlias
+//            keyPassword keystorePassword
+//        }
+//    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
     }
 
@@ -77,10 +78,10 @@ android {
 
         }
 
-        instrumentTest.setRoot('tests')
+//        instrumentTest.setRoot('tests')
 
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
+//        debug.setRoot('build-types/debug')
+//        release.setRoot('build-types/release')
     }
 
     repositories {
@@ -96,25 +97,27 @@ android {
 
     dependencies {
         // compile fileTree(dir: 'libs', include: '*.jar')
-        compile 'com.android.support:support-v4:25.1.0'
-        compile 'com.android.support:support-v13:25.1.0'
-        compile 'com.android.support:appcompat-v7:25.1.0'
-        compile 'com.android.support:cardview-v7:25.1.0'
-        compile 'com.tonicartos:stickygridheaders:1.0.1'
+        implementation 'com.android.support:support-v4:28.0.0'
+        implementation 'com.android.support:appcompat-v7:28.0.0'
+        implementation 'com.android.support:support-compat:28.0.0'
+        implementation 'com.android.support:support-v13:28.0.0'
+        implementation 'com.android.support:appcompat-v7:28.0.0'
+        implementation 'com.android.support:cardview-v7:28.0.0'
+        implementation 'com.tonicartos:stickygridheaders:1.0.1'
 
-        compile 'com.squareup.retrofit2:retrofit:2.1.0'
-        compile "com.squareup.retrofit2:converter-gson:2.1.0"
-        compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
+        implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+        implementation "com.squareup.retrofit2:converter-gson:2.1.0"
+        implementation 'com.squareup.okhttp3:logging-interceptor:3.3.0'
 
-        compile 'com.squareup.picasso:picasso:2.5.2'
-        compile 'com.google.firebase:firebase-core:10.0.1'
-        compile 'com.google.firebase:firebase-messaging:10.0.1'
-        compile 'com.google.firebase:firebase-crash:10.0.1'
+        implementation 'com.squareup.picasso:picasso:2.5.2'
+        implementation 'com.google.firebase:firebase-core:16.0.9'
+        implementation 'com.google.firebase:firebase-messaging:18.0.0'
+        implementation 'com.google.firebase:firebase-crash:16.2.1'
 
-        compile 'org.solovyev.android:checkout:1.2.1'
+        implementation 'org.solovyev.android:checkout:1.2.1'
 
-        compile files('libs/commons-io-2.4.jar')
-        compile files('libs/commons-lang3-3.3.1.jar')
+        implementation files('libs/commons-io-2.4.jar')
+        implementation files('libs/commons-lang3-3.3.1.jar')
     }
 }
 
