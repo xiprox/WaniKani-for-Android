@@ -44,14 +44,14 @@ android {
         playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
 
-//    signingConfigs {
-//        release {
-//            storeFile file("../keystore-upload.jks")
-//            storePassword keystorePassword
-//            keyAlias keystoreAlias
-//            keyPassword keystorePassword
-//        }
-//    }
+    signingConfigs {
+        release {
+            storeFile file("../keystore-upload.jks")
+            storePassword keystorePassword
+            keyAlias keystoreAlias
+            keyPassword keystorePassword
+        }
+    }
 
     buildTypes {
         release {
@@ -78,10 +78,10 @@ android {
 
         }
 
-//        instrumentTest.setRoot('tests')
+        instrumentTest.setRoot('tests')
 
-//        debug.setRoot('build-types/debug')
-//        release.setRoot('build-types/release')
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
     }
 
     repositories {
