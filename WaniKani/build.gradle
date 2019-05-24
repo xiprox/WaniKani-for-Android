@@ -78,7 +78,7 @@ android {
 
         }
 
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
 
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
