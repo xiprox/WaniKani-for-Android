@@ -1,3 +1,12 @@
+-----
+# End of Life 
+This project has reached EOL status. It will no longer be updated, patched, or supported. If you are interested in continuing the work, feel free to do so and republish the app anywhere, with respect to the license. Not sure why you would do that though, as this codebase is somewhat of a time machine and as such, in huge technical debt. It also doesn't integrate the new WaniKani API (v2).
+
+Thank you all for the support throughout the life of this effort.
+
+-----
+
+
 <p align="center">
 <img src="https://github.com/xiprox/WaniKani-for-Android/raw/master/WaniKani/ic_web.png" height="60px" width="60px"/>
 </p>
@@ -12,20 +21,9 @@
 <a href='https://play.google.com/store/apps/details?id=tr.xip.wanikani&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="48" alt='Get it on Google Play' src='https://cloud.githubusercontent.com/assets/2550945/21590908/dd7857a8-d0ff-11e6-9d0c-a8ce8ba883d4.png'/></a>
 </p>
 
-## Development
-This app is no longer in active development. While this means that no new features will be added and no big changes will be made (probably), I will continue to maintain it on some level.
-
-## Contributions
-That being said about me working on this app, it doesn't mean contributions will be turned down. If you managed to do something cool with my broken code or fixed a funny mistake of mine, feel free to shoot a pull request at me.
-
-Just one thing though, if you are planning on working on something bigger, please create an issue here before starting work and let's talk about it _beforehand_. If there's one thing I hate doing here, it's closing pull requests despite the time and effort put into them, just because of our different views on what should go into the codebase.
-
-## Alpha testing
-The master branch is built and published on the alpha track on the Play Store automatically after every non-breaking push. If you'd like to have a taste, please register for alpha [here](https://play.google.com/apps/testing/tr.xip.wanikani) and install the app from the [listing page](https://play.google.com/store/apps/details?id=tr.xip.wanikani).
-
 ## License
 ```
-Copyright (C) 2017  İhsan Işık
+Copyright (C) 2013-present  İhsan Işık
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
