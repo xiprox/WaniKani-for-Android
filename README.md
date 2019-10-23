@@ -17,10 +17,6 @@ Thank you all for the support throughout the life of this effort.
 
 ![](https://cloud.githubusercontent.com/assets/2550945/21590010/1997cdde-d0f8-11e6-8116-3ace674dd77f.png)
 
-<p align="right">
-<a href='https://play.google.com/store/apps/details?id=tr.xip.wanikani&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="48" alt='Get it on Google Play' src='https://cloud.githubusercontent.com/assets/2550945/21590908/dd7857a8-d0ff-11e6-9d0c-a8ce8ba883d4.png'/></a>
-</p>
-
 ## License
 ```
 Copyright (C) 2013-present  İhsan Işık
