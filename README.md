@@ -4,6 +4,8 @@ This project has reached EOL status. It will no longer be updated, patched, or s
 
 Thank you all for the support throughout the life of this effort.
 
+**UPDATE:** Revived by Michael Rothberg ([Google Play](https://play.google.com/store/apps/details?id=com.mrothberg.kakumei), [GitHub](https://github.com/mrothberg/Kakumei-for-WaniKani)).
+
 -----
 
 
@@ -19,7 +21,7 @@ Thank you all for the support throughout the life of this effort.
 
 ## License
 ```
-Copyright (C) 2013-present  İhsan Işık
+Copyright (C) 2013 İhsan Işık
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
